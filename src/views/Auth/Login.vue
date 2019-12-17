@@ -4,12 +4,12 @@
             <img src="../../assets/images/WACS.png" class="logo" alt="WACS logo">
             <div class="login-area">
                 <p>LOGIN</p>
-                <form action="">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter Username">
+                <form @submit.prevent="submit">
+                    <label for="username">Email</label>
+                    <input type="text" v-model="form.email" id="username" placeholder="Enter Email">
                     <label for="password">Password</label>
                     <div class="password-container">
-                        <input type="password" id="password" placeholder="Enter password">
+                        <input type="password" v-model="form.password" id="password" placeholder="Enter password">
                         <span>Visible</span>
                     </div>
                     <button>Enter</button>
@@ -20,8 +20,27 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     export default {
-        name: "Login"
+        name: "Login",
+        data(){
+            return {
+                form:{
+                    email:'',
+                    password:''
+                }
+            }
+        },
+        methods:{
+           ...mapActions({
+               signIn: 'auth/signIn'
+           }),
+
+            submit (){
+               this.signIn(this.form)
+            }
+        }
+
     }
 </script>
 
