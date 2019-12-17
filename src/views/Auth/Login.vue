@@ -26,18 +26,6 @@
 </script>
 
 <style scoped>
-    html{
-        margin: 0;
-        padding: 0;
-    }
-
-    body{
-        margin: 0;
-        padding: 0;
-        font-family: "Work Sans";
-        background-color: #F7F7F7;
-    }
-
     .container{
         background-image: url("../../assets/images/login-background.png");
         background-size: cover;
