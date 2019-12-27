@@ -2,11 +2,11 @@
     <div class="user-card">
         <div class="card-head dropleft">
             <div class="picture">
-                SF
+                {{initials}}
             </div>
             <div class="names">
-                <h5 class="fullname">{{fullName}}</h5>
-                <h5 class="user-detail">username: {{userName}}</h5>
+                <h5 class="fullname">{{cleanFullName}}</h5>
+                <h5 class="user-detail">username: {{cleanUserName}}</h5>
                 <span v-if="isActive" class="loan-status active-loan-status">Active</span>
                 <span v-else class="loan-status inactive-loan-status">Inactive</span>
             </div>
@@ -46,5 +46,17 @@
             'phone': [Number, String],
             'role': String
         },
+        computed: {
+            initials() {
+                const names = this.fullName.split(' ');
+                return names[0][0]+names[1][0];
+            },
+            cleanFullName() {
+               return  this.fullName.length > 20 ? this.fullName.substring(0, 17)+'..' : this.fullName;
+            },
+            cleanUserName() {
+               return  this.userName.length > 13 ? this.userName.substring(0, 9)+'..' : this.userName;
+            }
+        }
     }
 </script>

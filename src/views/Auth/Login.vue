@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="form-wrapper">
-            <img src="../../assets/images/WACS.png" class="logo" alt="WACS logo">
+            <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <div class="login-area">
                 <p>LOGIN</p>
                 <form action="">
@@ -27,7 +27,7 @@
 
 <style scoped>
     .container{
-        background-image: url("../../assets/images/login-background.png");
+        background-image: url("/assets/images/login-background.png");
         background-size: cover;
         min-height: 100vh;
         min-width: 100vw;
