@@ -3,13 +3,13 @@ export default ({
   namespaced:  true,
 
   state: {
-    token:'',
+    access_token:'',
     user: {}
   },
 
   getters :{
     authenticated(state){
-      return state.token && state.user
+      return state.access_token && state.user
     },
 
     user(state){
@@ -18,8 +18,8 @@ export default ({
   },
 
   mutations: {
-    SET_TOKEN (state, data) {
-      state.token = data.token_type+' '+data.access_token;
+    SET_TOKEN (state, access_token) {
+      state.access_token = 'Bearer'+' '+access_token;
     },
     SET_USER(state, data){
       state.user = data
@@ -28,20 +28,21 @@ export default ({
 
   actions: {
     async signIn({ dispatch }, credentials){
-      let response  = await axios.post('creditor/login', credentials)
-      const {access_token, token_type} = response.data.data;
-      console.log(access_token);
-      dispatch('attempt', {access_token, token_type})
+      let response  = await axios.post('creditor/login', credentials);
+      //const {access_token, token_type} = response.data.data;
+      //console.log(access_token);
+      return dispatch('attempt', response.data.data.access_token)
     },
 
-    async attempt ({ commit }, data){
-      commit('SET_TOKEN', data);
+    async attempt ({ commit, state }, access_token){
+      if(access_token){
+        commit('SET_TOKEN', access_token);
+      }
+      if (!state.access_token){
+        return
+      }
       try {
-        let response = await axios.get('creditor/dashboard', {
-          headers:{
-            'Authorization' : data.token_type+' '+data.access_token
-          }
-        });
+        let response = await axios.get('creditor/dashboard');
         console.log(response.data);
 
         commit('SET_USER', response.data)

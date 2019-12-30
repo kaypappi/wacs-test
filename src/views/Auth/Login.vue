@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
     export default {
         name: "Login",
         data(){
@@ -31,13 +31,23 @@
                 }
             }
         },
+        computed:{
+            ...mapGetters({
+                authenticated : 'auth/authenticated',
+                user : 'auth/user'
+            })
+        },
         methods:{
            ...mapActions({
                signIn: 'auth/signIn'
            }),
 
             submit (){
-               this.signIn(this.form)
+               this.signIn(this.form).then(()=> {
+                   this.$router.replace({
+                       name: 'dashboard'
+                   })
+               })
             }
         }
 
