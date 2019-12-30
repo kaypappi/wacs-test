@@ -156,7 +156,7 @@
             }
         },
         mounted() {
-            this.$store.dispatch('fetchAdmins');
+            this.$store.dispatch('AdminUser/fetchAdmins');
         },
     }
 </script>

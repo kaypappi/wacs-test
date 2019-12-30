@@ -45,7 +45,7 @@
             submit (){
                this.signIn(this.form).then(()=> {
                    this.$router.replace({
-                       name: 'dashboard'
+                       name: 'user-setup'
                    })
                })
             }
