@@ -37,14 +37,14 @@ export default ({
    actions : {
     fetchAdmins({commit}) {
       commit('IS_GETTING_ADMIN', true)
-      axios.get('http://127.0.0.1:8000/api/v1/user/creditor').then((res) => {
+      axios.get('http://127.0.0.1:8000/api/v1/creditor').then((res) => {
         commit('IS_GETTING_ADMIN', false);
         commit('FETCH_ADMIN_SUCCESS', res.data);
       })
     },
     createAdmin({commit}, userData) {
       commit('IS_POSTING_ADMIN', true);
-      axios.post('http://127.0.0.1:8000/api/v1/user/creditor', userData)
+      axios.post('http://127.0.0.1:8000/api/v1/creditor', userData)
           .then(function (res) {
             commit('IS_POSTING_ADMIN', false);
             commit('CREATE_ADMIN_SUCCESS', res.data);

@@ -1,10 +1,10 @@
 <template>
      <div class="users">
          <addUserModal :onHide="onHide">
-             <div v-if="postSuccess">
-                 <p class="modal-success-message">You have successfully added <b>{{addUser.full_name}}</b> as a {{addUser.role}}</p> 
-                 <button class="form-modal-button" @click="$bvModal.hide('form-modal')">Close</button>
-             </div>
+            <div v-if="postSuccess">
+                <p class="modal-success-message">You have successfully added <b>{{addUser.full_name}}</b> as a {{addUser.role}}</p> 
+                <button class="form-modal-button" @click="$bvModal.hide('form-modal')">Close</button>
+            </div>
             <template v-else>
                 <h5 class="form-modal-title">New User</h5>
                 <div class="form-modal-title-border"></div>
@@ -51,9 +51,10 @@
                         :keyupEvent="keyupEvent"
                     />
                     <label for="role" class="form-modal-label">User Role</label>
-                    <select name="role" id="role" class="form-modal-inputs" required v-model="addUser.role">
-                        <option value="Super Admin">Super Admin</option>
-                        <option value="User Admin">User Admin</option>
+                    <select name="role" id="role" class="form-modal-inputs" required v-model="addUser.role_id">
+                        <template v-for="role in roles">
+                            <option :value="role.id" :key="role.id">{{role.name}}</option>
+                        </template>
                     </select>
                     <button type="submit" class="form-modal-button">
                         <img src="/assets/images/form-loader.gif" alt="loader" v-if="isPosting">
@@ -71,7 +72,7 @@
             :isActive = "user.is_active"
             :email = "user.user.email"
             :phone = "user.phone_number"
-            :role = "user.role"
+            :role = "getRole(user.role)"
             :key="user.id"
          />
          <AddUserCard />
@@ -105,12 +106,30 @@
                     user_name: '',
                     email: '',
                     phone_number: '',
-                }
+                },
+                roles: [
+                    {
+                        id: 1,
+                        name: "Super Admin",
+                    },
+                    {
+                        id: 2,
+                        name: "User Admin",
+                    },
+                ]
             }
         },
         methods: {
+            getRole(roleData) {
+                if(roleData.role_id){
+                    const requiredRole = this.roles.find(role => role.id === roleData.role_id);
+                    return requiredRole.name;
+                }else {
+                    return roleData[0].name;
+                }
+            },
             onSubmit() {
-                this.$store.dispatch('createAdmin', this.addUser);
+                this.$store.dispatch('AdminUser/createAdmin', this.addUser);
             },
             keyupEvent(name) {
                 this.formErrors[name] = '';
@@ -118,7 +137,7 @@
             onHide() {
                 this.resetInputs();
                 this.resetFormErrors();
-                this.$store.dispatch('resetPostingStatus');
+                this.$store.dispatch('AdminUser/resetPostingStatus');
             },
             resetInputs() {
                 this.addUser.full_name = '';
