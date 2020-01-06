@@ -9,7 +9,7 @@ export default ({
 
   getters :{
     authenticated(state){
-      return state.access_token && state.user
+      return (state.access_token && state.user)
     },
 
     user(state){
@@ -27,8 +27,10 @@ export default ({
   },
 
   actions: {
-    async signIn({ dispatch }, credentials){
+    async signIn({ commit, dispatch }, credentials){
+      commit('SET_VALIDATION_ERROR', [], {root: true});
       let response  = await axios.post('creditor/login', credentials);
+
       //const {access_token, token_type} = response.data.data;
       //console.log(access_token);
       return dispatch('attempt', response.data.data.access_token)
@@ -43,13 +45,11 @@ export default ({
       }
       try {
         let response = await axios.get('creditor/dashboard');
-        console.log(response.data);
 
         commit('SET_USER', response.data)
       } catch(e){
         commit('SET_TOKEN', null);
         commit('SET_USER', null);
-        console.log(e)
       }
     }
 

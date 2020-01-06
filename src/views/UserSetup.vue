@@ -75,6 +75,11 @@
             :key="user.id"
          />
          <AddUserCard />
+         <Can I="edit" a="user">
+             <div>
+                 fffdd
+             </div>
+         </Can>
      </div>
 </template>
 
@@ -110,6 +115,10 @@
         },
         methods: {
             onSubmit() {
+                if(!this.$can('create', 'user')){
+                    alert('No Permission');
+                    return;
+                }
                 this.$store.dispatch('createAdmin', this.addUser);
             },
             keyupEvent(name) {

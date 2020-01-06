@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue';
 import store from '../store'
 import Main from "../components/Layout/Main";
 import UserSetup from "../views/UserSetup";
+import {beforeEach} from './beforeEach';
 
 Vue.use(VueRouter);
 
@@ -52,6 +53,8 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
+
+router.beforeEach(beforeEach);
 
 export default router

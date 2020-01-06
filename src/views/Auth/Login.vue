@@ -5,13 +5,22 @@
             <div class="login-area">
                 <p>LOGIN</p>
                 <form @submit.prevent="submit">
+
                     <label for="username">Email</label>
-                    <input type="text" v-model="form.email" id="username" placeholder="Enter Email">
+                    <input type="text" v-model="form.email" id="username" class="form-control" :class="{ ' is-invalid': 'validation.email'}" placeholder="Enter Email">
+                    <span class="invalid-feedback" role="alert" v-if="validation.email">
+                         <strong>{{ validation.email[0] }}</strong>
+                     </span>
+
                     <label for="password">Password</label>
                     <div class="password-container">
-                        <input type="password" v-model="form.password" id="password" placeholder="Enter password">
+                        <input type="password" v-model="form.password"  id="password" placeholder="Enter password">
                         <span>Visible</span>
                     </div>
+                    <span class="invalid-feedback" role="alert" v-if="validation.password">
+                         <strong>{{ validation.password[0] }}</strong>
+                     </span>
+
                     <button>Enter</button>
                 </form>
             </div>
@@ -34,7 +43,8 @@
         computed:{
             ...mapGetters({
                 authenticated : 'auth/authenticated',
-                user : 'auth/user'
+                user : 'auth/user',
+                validation: 'getValidationError'
             })
         },
         methods:{
@@ -47,7 +57,7 @@
                    this.$router.replace({
                        name: 'user-setup'
                    })
-               })
+               }).catch(()=>{})
             }
         }
 
