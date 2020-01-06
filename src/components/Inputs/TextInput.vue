@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label :for="id" class="form-modal-label">{{label}}</label>
+        <label :for="id" :class="labelClass">{{label}}</label>
         <input 
             :value="value" 
             @input="$emit('input', $event.target.value)" 
@@ -9,10 +9,10 @@
             :id="id"
             :name="name" 
             :placeholder="placeholder" 
-            :class="classes"
+            :class="inputClass"
             @keyup="keyupEven"
         >
-        <span v-if="error !== ''" class="form-input-error">{{error}}</span>
+        <span v-if="error" class="form-input-error">{{error[0]}}</span>
     </div>
 </template>
 
@@ -28,18 +28,25 @@
                default: true,
            },
            'error': {
-               type: String,
-               default: '',
+               type: Array,
+               default: () => [],
            },
            'keyupEvent': {
                type: Function,
                default: () => '',
            },
+           'inputClass': {
+               type: String,
+               default: '',
+           },
+           'labelClass': {
+               type: String,
+               default: '',
+           },
            'label': String,
            'id': String,
            'name': String,
            'placeholder': String,
-           'classes': String,
            'value': String,
        },
        methods: {

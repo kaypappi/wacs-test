@@ -13,7 +13,15 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if(store.getters['auth/authenticated']) {
+        return next({
+          name: 'user-setup'
+        })
+      }
+      next()
+    }
   },
   {
     path: '/',
