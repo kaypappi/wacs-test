@@ -4,16 +4,19 @@ export default ({
 
   state: {
     access_token:'',
-    user: {}
+    user: {},
+    isLoading: false,
   },
 
   getters :{
     authenticated(state){
       return (state.access_token && state.user)
     },
-
     user(state){
       return state.user
+    },
+    isLoading(state){
+      return state.isLoading
     }
   },
 
@@ -23,20 +26,23 @@ export default ({
     },
     SET_USER(state, data){
       state.user = data
+    },
+    IS_LOGGING_USER_IN(state, bool){
+      state.isLoading = bool;
     }
   },
 
   actions: {
     async signIn({ commit, dispatch }, credentials){
       commit('SET_VALIDATION_ERROR', [], {root: true});
-      try {
+      commit('IS_LOGGING_USER_IN', true);
+      try{
         let response  = await axios.post('creditor/login', credentials);
-
-        return dispatch('attempt', response.data.data.access_token)
-      }catch (e) {
-        return Promise.reject(e)
+        return dispatch('attempt', response.data.data.access_token);
+      } catch(e){
+        commit('IS_LOGGING_USER_IN', false);
+        return Promise.reject(e);
       }
-
     },
 
     async attempt ({ commit, state }, access_token){
@@ -48,13 +54,18 @@ export default ({
       }
       try {
         let response = await axios.get('creditor/dashboard');
-
+        commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){
         commit('SET_TOKEN', null);
         commit('SET_USER', null);
       }
+    },
+
+    clearOneError({commit}) {
+      commit('IS_LOGGING_USER_IN', false);
     }
+
 
   },
 

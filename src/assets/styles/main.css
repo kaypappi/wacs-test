@@ -31,6 +31,36 @@ svg.icon {
     padding: .25rem .6rem;
 }
 
+.login-form-label{
+    display: block;
+    height: 19px;
+    width: 80px;
+    color: #333333;
+    font-size: 16px;
+    line-height: 19px;
+    margin: 30px 0 6px 0;
+}
+
+.login-form-input{
+    box-sizing: border-box;
+    height: 45px;
+    width: 338px;
+    border: 1px solid #CCCCCC;
+    background-color: #F8F8F8;
+    padding: 15px;
+}
+
+.button-loader{
+    height: 40px;
+    width: 45px;
+}
+
+.page-loader{
+    margin: 50px auto;
+    height: 250px;
+    width: 250px;
+}
+
 
 /* ---------custom modal styling ------- */
 
@@ -743,8 +773,13 @@ svg.icon {
     height: 45px;
     width: 313px;
     border: 1px solid #CCCCCC;
+    color: #535353;
     background-color: #F8F8F8;
     display: block;
+}
+
+select.form-modal-inputs{
+    padding: 10px 0px 10px 15px;
 }
 
 .form-input-error{

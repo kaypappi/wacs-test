@@ -5,23 +5,34 @@
             <div class="login-area">
                 <p>LOGIN</p>
                 <form @submit.prevent="submit">
+                    <TextInput 
+                        label="Email"
+                        id="username"
+                        name="email"
+                        inputClass="login-form-input"
+                        labelClass="login-form-label"
+                        :error="validation.email"
+                        placeholder="Enter Email"
+                        v-model="form.email"
+                        :keyupEvent="keyupEvent"
+                    />
 
-                    <label for="username">Email</label>
-                    <input type="text" v-model="form.email" id="username" class="form-control" :class="{ ' is-invalid': 'validation.email'}" placeholder="Enter Email">
-                    <span class="invalid-feedback" role="alert" v-if="validation.email">
-                         <strong>{{ validation.email[0] }}</strong>
-                     </span>
-
-                    <label for="password">Password</label>
-                    <div class="password-container">
-                        <input type="password" v-model="form.password"  id="password" placeholder="Enter password">
-                        <span>Visible</span>
-                    </div>
-                    <span class="invalid-feedback" role="alert" v-if="validation.password">
-                         <strong>{{ validation.password[0] }}</strong>
-                     </span>
-
-                    <button>Enter</button>
+                    <TextInput 
+                        label="Password"
+                        id="password"
+                        name="password"
+                        inputClass="login-form-input"
+                        labelClass="login-form-label"
+                        :error="validation.password"
+                        placeholder="Enter password"
+                        classes="form-control"
+                        v-model="form.password"
+                        :keyupEvent="keyupEvent"
+                    />
+                    <SubmitButton 
+                        name="Enter"
+                        :isLoading="isLoading"
+                    />
                 </form>
             </div>
         </div>
@@ -29,9 +40,15 @@
 </template>
 
 <script>
+    import TextInput from '../../components/Inputs/TextInput';
+    import SubmitButton from '../../components/Buttons/SubmitButton';
     import { mapActions, mapGetters } from 'vuex'
     export default {
         name: "Login",
+        components: {
+            TextInput,
+            SubmitButton,
+        },
         data(){
             return {
                 form:{
@@ -44,21 +61,27 @@
             ...mapGetters({
                 authenticated : 'auth/authenticated',
                 user : 'auth/user',
-                validation: 'getValidationError'
+                isLoading: 'auth/isLoading',
+                validation: 'getValidationError',
             })
         },
         methods:{
-           ...mapActions({
-               signIn: 'auth/signIn'
-           }),
-
+            ...mapActions({
+                signIn: 'auth/signIn',
+                clearOneError: 'clearOneValidationError',
+            }),
             submit (){
                this.signIn(this.form).then(()=> {
                    this.$router.replace({
                        name: 'user-setup'
                    })
                }).catch(()=>{})
-            }
+            },
+            keyupEvent(name) {
+                if(this.validation[name]) {
+                    this.clearOneError(name);
+                }
+            },
         }
 
     }
@@ -86,7 +109,7 @@
     }
 
     .form-wrapper .login-area{
-        height: 402px;
+        min-height: 402px;
         padding: 35px;
         box-sizing: border-box;
         border-radius: 8px;
@@ -101,25 +124,6 @@
         color: #333333;
         font-size: 20px;
         line-height: 24px;
-    }
-
-    .form-wrapper .login-area label{
-        display: block;
-        height: 19px;
-        width: 80px;
-        color: #333333;
-        font-size: 16px;
-        line-height: 19px;
-        margin: 30px 0 6px 0;
-    }
-
-    .form-wrapper .login-area input{
-        box-sizing: border-box;
-        height: 45px;
-        width: 338px;
-        border: 1px solid #CCCCCC;
-        background-color: #F8F8F8;
-        padding: 15px;
     }
 
     .form-wrapper .login-area input::-webkit-input-placeholder {
@@ -146,7 +150,7 @@
     .form-wrapper .login-area button{
         height: 50px;
         width: 338px;
-        margin: 44px 0;
+        margin: 44px 0 0 0;
         background-color: #27BE58;
         border: none;
         color: #FFFFFF;
