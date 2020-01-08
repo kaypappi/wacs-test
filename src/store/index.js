@@ -14,6 +14,9 @@ export default new Vuex.Store({
     SET_VALIDATION_ERROR (state, errors) {
       state.validation = errors;
     },
+    CLEAR_ONE_VALIDATION_ERROR (state, field) {
+      delete state.validation[field];
+    },
   },
 
   getters :{
@@ -24,11 +27,14 @@ export default new Vuex.Store({
 
   actions: {
     setValidationErrors({ commit }, errors){
-      commit('SET_VALIDATION_ERROR', errors.errors)
+      commit('SET_VALIDATION_ERROR', errors.errors);
     },
 
-    clearValidationErrors({ commit },){
+    clearAllValidationErrors({ commit },){
       commit('SET_VALIDATION_ERROR', [])
+    },
+    clearOneValidationError({ commit }, field){
+      commit('CLEAR_ONE_VALIDATION_ERROR', field)
     }
   },
 

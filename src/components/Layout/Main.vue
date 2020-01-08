@@ -14,8 +14,8 @@
         <div class="right">
             <Header
               title="User Setup"
-              entityName="Gtbank"
-              userName="Olaniyi Mohammed"
+              :entityName="companyName"
+              :userName="fullName"
             />
             <div class="main-body">
                 <div class="main-body-content">
@@ -56,6 +56,14 @@
                         to: "/",
                     }
                 ]
+            }
+        },
+        computed: {
+            fullName() {
+                return this.$store.state.auth.user.data.full_name;
+            },
+            companyName() {
+                return this.$store.state.auth.user.data.profile.company.name;
             }
         },
     }
