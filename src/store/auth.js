@@ -29,11 +29,14 @@ export default ({
   actions: {
     async signIn({ commit, dispatch }, credentials){
       commit('SET_VALIDATION_ERROR', [], {root: true});
-      let response  = await axios.post('creditor/login', credentials);
+      try {
+        let response  = await axios.post('creditor/login', credentials);
 
-      //const {access_token, token_type} = response.data.data;
-      //console.log(access_token);
-      return dispatch('attempt', response.data.data.access_token)
+        return dispatch('attempt', response.data.data.access_token)
+      }catch (e) {
+        return Promise.reject(e)
+      }
+
     },
 
     async attempt ({ commit, state }, access_token){
