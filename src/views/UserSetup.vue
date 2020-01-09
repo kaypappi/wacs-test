@@ -72,21 +72,21 @@
         <template v-else>
             <UserCard 
                 v-for="user in users"
-                :fullName = "user.user.full_name"
-                :userName = "user.user_name"
-                :isActive = "user.is_active"
-                :email = "user.user.email"
-                :phone = "user.phone_number"
-                :role = "getRole(user.role)"
+                :fullName = "user.full_name"
+                :userName = "user.profile.user_name"
+                :isActive = "user.profile.is_active"
+                :email = "user.email"
+                :phone = "user.profile.phone_number"
+                :role = "user.roles[0]"
                 :key="user.id"
             />
             <AddUserCard />
         </template>
         
         <Can I="edit" a="user">
-            <div>
+            <!-- <div>
                 fffdd
-            </div>
+            </div> -->
         </Can>
     </div>
 </template>
@@ -122,14 +122,6 @@
             }
         },
         methods: {
-            getRole(roleData) {
-                if(roleData.role_id){
-                    const requiredRole = this.roles.find(role => role.id === roleData.role_id);
-                    return requiredRole.name;
-                }else {
-                    return roleData[0].name;
-                }
-            },
             onSubmit() {
                 if(!this.$can('create', 'user')){
                     alert('No Permission');
