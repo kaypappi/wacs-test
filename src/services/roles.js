@@ -7,7 +7,7 @@ Vue.component('Can', Can);
 
 
 let abilities = AbilityBuilder.define(can => {
-    if(store.getters['auth/authenticated'].data){
+    if(store.getters['auth/authenticated']){
         store.getters['auth/user'].data.permissions.forEach((permission)=>{
             can(...permission)
         })
