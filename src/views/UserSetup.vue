@@ -73,7 +73,7 @@
             <UserCard 
                 v-for="user in users"
                 :fullName = "user.full_name"
-                :userName = "user.profile.user_name"
+                :userName = "user.full_name"
                 :isActive = "user.profile.is_active"
                 :email = "user.email"
                 :phone = "user.profile.phone_number"

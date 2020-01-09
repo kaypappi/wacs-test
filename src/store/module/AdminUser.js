@@ -35,7 +35,7 @@ export default ({
       commit('IS_GETTING_ADMIN', true)
       axios.get('creditor').then((res) => {
         commit('IS_GETTING_ADMIN', false);
-        commit('FETCH_ADMIN_SUCCESS', res.data);
+        commit('FETCH_ADMIN_SUCCESS', res.data.data);
       })
     },
     createAdmin({commit}, userData) {
@@ -43,7 +43,7 @@ export default ({
       axios.post('creditor', userData)
           .then(function (res) {
             commit('IS_POSTING_ADMIN', false);
-            commit('CREATE_ADMIN_SUCCESS', res.data);
+            commit('CREATE_ADMIN_SUCCESS', res.data.data);
           })
           .catch(function () {
             commit('IS_POSTING_ADMIN', false);
