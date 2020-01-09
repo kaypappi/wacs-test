@@ -55,7 +55,7 @@
                return  this.fullName.length > 20 ? this.fullName.substring(0, 17)+'..' : this.fullName;
             },
             cleanUserName() {
-               return  this.userName.length > 13 ? this.userName.substring(0, 9)+'..' : this.userName;
+               return  this.userName.length > 12 ? this.userName.substring(0, 9)+'..' : this.userName;
             }
         }
     }
