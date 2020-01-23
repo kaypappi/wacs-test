@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="form-modal" hide-footer no-close-on-backdrop @hidden="onHide">
+    <b-modal id="add-user-form-modal" hide-footer no-close-on-backdrop @hidden="onHide">
         <template v-slot:modal-header="{ close }">
             <div class="close"  @click="close()">
                 <span aria-hidden="true">&times;</span>
