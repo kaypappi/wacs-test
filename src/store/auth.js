@@ -12,6 +12,9 @@ export default ({
     authenticated(state){
       return (state.access_token && state.user)
     },
+    isSuperAdmin(state){
+      return state.user.data.roles.includes('Super Admin');
+    },
     user(state){
       return state.user
     },

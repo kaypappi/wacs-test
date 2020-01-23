@@ -2,18 +2,11 @@
      <div class="main">
         <div class="left">
             <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
-            <div class="left-menu">
-                <LeftMenuItems v-for="(menu, index) in menuItems" :key="index"
-                    :name="menu.name"
-                    :iconPath="menu.iconPath"
-                    :altText="menu.altText"
-                    :to="menu.to"
-                />
-            </div>
+            <LeftMenuItems />
         </div>
         <div class="right">
             <Header
-              title="User Setup"
+              :title="$route.name"
               :entityName="companyName"
               :userName="fullName"
             />
@@ -34,36 +27,18 @@
             Header,
             LeftMenuItems,
         },
-         data() {
-            return {
-                menuItems: [
-                    {
-                        name: "Loan Management",
-                        iconPath: "/assets/images/Money.svg",
-                        altText: "money",
-                        to: "/",
-                    },
-                    {
-                        name: "User Setup",
-                        iconPath: "/assets/images/User.svg",
-                        altText: "money",
-                        to: "/user-setup",
-                    },
-                    {
-                        name: "Loan Management",
-                        iconPath: "/assets/images/Chart-bar.svg",
-                        altText: "money",
-                        to: "/",
-                    }
-                ]
-            }
-        },
         computed: {
             fullName() {
-                return this.$store.state.auth.user.data.full_name;
+                if(this.$store.getters['auth/authenticated']) {
+                    return this.$store.state.auth.user.data.full_name;
+                }
+                return '';
             },
             companyName() {
-                return this.$store.state.auth.user.data.profile.company.name;
+                if(this.$store.getters['auth/authenticated']) {
+                    return this.$store.state.auth.user.data.profile.company.name;
+                }
+                return '';
             }
         },
     }

@@ -21,6 +21,7 @@
                         label="Password"
                         id="password"
                         name="password"
+                        type="password"
                         inputClass="login-form-input"
                         labelClass="login-form-label"
                         :error="validation.password"
@@ -42,7 +43,9 @@
 <script>
     import TextInput from '../../components/Inputs/TextInput';
     import SubmitButton from '../../components/Buttons/SubmitButton';
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex';
+    import {defineAbilities} from '@/services/roles';
+
     export default {
         name: "Login",
         components: {
@@ -73,8 +76,9 @@
             submit (){
                this.signIn(this.form).then(()=> {
                    this.$router.replace({
-                       name: 'user-setup'
+                       name: 'User'
                    })
+                   defineAbilities();
                }).catch(()=>{})
             },
             keyupEvent(name) {
@@ -109,7 +113,7 @@
     }
 
     .form-wrapper .login-area{
-        min-height: 402px;
+        min-height: 370px;
         padding: 35px;
         box-sizing: border-box;
         border-radius: 8px;
@@ -128,7 +132,7 @@
 
     .form-wrapper .login-area input::-webkit-input-placeholder {
         height: 16px;
-        width: 110px;
+        width: 106px;
         color: #9D9D9D;
         font-size: 14.4px;
         font-weight: 300;
@@ -150,7 +154,7 @@
     .form-wrapper .login-area button{
         height: 50px;
         width: 338px;
-        margin: 44px 0 0 0;
+        margin: 31px 0 0 0;
         background-color: #27BE58;
         border: none;
         color: #FFFFFF;
