@@ -3,12 +3,12 @@ import { Can, abilitiesPlugin } from '@casl/vue'
 import { AbilityBuilder } from '@casl/ability'
 import store from '@/store'
 
-Vue.component('Can', Can);
+    Vue.component('Can', Can);
 
 
 let abilities = AbilityBuilder.define(can => {
-    if(store.getters['auth/authenticated']){
-        store.getters['auth/user'].data.permissions.forEach((permission)=>{
+    if (store.getters['auth/authenticated']) {
+        store.getters['auth/user'].data.permissions.forEach((permission) => {
             can(...permission)
         })
     }

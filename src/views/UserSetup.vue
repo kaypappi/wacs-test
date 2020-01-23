@@ -84,9 +84,9 @@
         </template>
         
         <Can I="edit" a="user">
-            <!-- <div>
+            <div>
                 fffdd
-            </div> -->
+            </div>
         </Can>
     </div>
 </template>
