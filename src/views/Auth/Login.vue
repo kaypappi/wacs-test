@@ -44,7 +44,6 @@
     import TextInput from '../../components/Inputs/TextInput';
     import SubmitButton from '../../components/Buttons/SubmitButton';
     import { mapActions, mapGetters } from 'vuex';
-    import {defineAbilities} from '@/services/roles';
 
     export default {
         name: "Login",
@@ -78,7 +77,6 @@
                    this.$router.replace({
                        name: 'User'
                    })
-                   defineAbilities();
                }).catch(()=>{})
             },
             keyupEvent(name) {
