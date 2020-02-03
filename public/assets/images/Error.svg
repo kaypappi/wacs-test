@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59 (86127) - https://sketch.com -->
+    <title>Group 9</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Style-Guide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="StyleGuide" transform="translate(-529.000000, -5996.000000)" fill="#E13026">
+            <g id="Group-5" transform="translate(514.000000, 5978.000000)">
+                <g id="Group-9" transform="translate(15.000000, 18.000000)">
+                    <circle id="Oval-Copy-17" fill-opacity="0.2" cx="20" cy="20" r="20"></circle>
+                    <g id="Close-Copy-3" transform="translate(8.000000, 8.000000)">
+                        <g id="Group" transform="translate(11.947413, 11.952860) rotate(-45.000000) translate(-11.947413, -11.952860) translate(3.947413, 3.952860)">
+                            <rect id="Rectangle-185" x="0" y="7" width="15.8730159" height="2" rx="1"></rect>
+                            <path d="M0.928571429,7.00793651 L14.9444444,7.00793651 C15.492346,7.00793651 15.9365079,7.45209846 15.9365079,8 C15.9365079,8.54790154 15.492346,8.99206349 14.9444444,8.99206349 L0.928571429,8.99206349 C0.380669891,8.99206349 -0.0634920635,8.54790154 -0.0634920635,8 C-0.0634920635,7.45209846 0.380669891,7.00793651 0.928571429,7.00793651 Z" id="Rectangle-185-Copy" transform="translate(7.936508, 8.000000) rotate(-270.000000) translate(-7.936508, -8.000000) "></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

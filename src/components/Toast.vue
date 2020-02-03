@@ -2,7 +2,8 @@
     <div>
         <b-toast id="my-toast" toaster="b-toaster-top-center" :visible="show" solid>
             <template v-slot:toast-title>
-                <img src="/assets/images/check.svg" class="logo" alt="WACS logo">
+                <img src="/assets/images/check.svg" class="logo" alt="WACS logo" v-if="success">
+                <img src="/assets/images/Error.svg" class="logo" alt="WACS logo" v-else>
                 <div>
                     <h5 v-if="success">{{title}}</h5>
                     <span v-if="success">{{successMessage}}</span>

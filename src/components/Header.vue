@@ -5,20 +5,38 @@
             <li>{{entityName}}</li>
             <li v-if="userName"><img src="/assets/images/notification-icon.svg" alt="bell"></li>
             <li v-if="userName">
-                <select name="" id="">
-                    <option value="">{{userName}}</option>
-                </select>
+                {{userName}}
             </li>
+            <Dropdown 
+                iconName="sprite.svg#carret-arrow"
+                :options="[
+                    {
+                        name: 'Edit',
+                        icon: 'Edit.svg',
+                        handler: ()=>'',
+                    }, 
+                    {
+                        name: 'Edit',
+                        icon: 'Edit.svg',
+                        handler: ()=>'',
+                    }, 
+                ]"
+            />
         </ul>
+        
     </nav>
 </template>
 
 <script>
+    import Dropdown from './Dropdown/Dropdown';
     export default {
-       props: {
+        components: {
+            Dropdown,
+        },
+        props: {
            'title': String,
            'entityName': String,
            'userName': String,
-       }
+        }
     }
 </script>
