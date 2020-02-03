@@ -7,7 +7,7 @@
                 </svg>
             </template>
             <b-dropdown-item-button v-for="(option, index) in options" :key="index" @click="option.handler">
-                <img :src="'/assets/images/' + option.icon" alt="pencil">{{option.name}}
+                <img :src="'/assets/images/' + option.icon">{{option.name}}
             </b-dropdown-item-button>
         </b-dropdown>
     </div>

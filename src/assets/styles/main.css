@@ -19,8 +19,8 @@ svg.icon {
     fill: currentColor;
     display: inline-block;
     font-size: 1em;
-    width: 1em;
-    height: 1em;
+    /* width: 1em; */
+    /* height: 1em; */
     vertical-align: middle;
     overflow: hidden;
     margin-right: 0.2em;
@@ -67,8 +67,8 @@ svg.icon {
 }
 
 .page-loader{
-    margin: 50px auto;
-    height: 250px;
+    margin: 30px 20px;
+    height: 100px;
     width: 250px;
 }
 
@@ -176,6 +176,7 @@ svg.icon {
     border-radius: 10px 0 0 10px;
     background-color: #F7F7F7;
     padding: 18px 18px 18px 20px;
+    overflow: hidden;
 }
 
 .main .right nav{
@@ -188,7 +189,7 @@ svg.icon {
     padding: 12px 25px 0 0;
 }
 
-.main .right nav ul{
+.main .right nav>ul{
     display: flex;
     padding: 0;
 }
@@ -227,7 +228,7 @@ svg.icon {
     line-height: 24px;
 }
 
-.main .right nav ul li img{
+.main .right nav ul li>img{
     height: 24px;
     width: 26px;
     cursor: pointer;
@@ -650,8 +651,13 @@ svg.icon {
 }
 
 .inactive-status{
-    background-color: #DEDEDE;
-    color: rgba(101,106,114,0.56);
+    background-color: #E6E6E6;
+    color: #A7A7A7;
+}
+
+.new-status{
+    background-color: rgba(240,140,20,0.2);
+    color: #F08C14
 }
 
 .status-oval{
@@ -707,9 +713,6 @@ svg.icon {
 /* ----------- loan confirmation modal ------------ */
 
 #confirm-action-modal .modal-content{
-    height: 202px;
-    width: 311px;
-    padding-bottom: 0;
     border-radius: 10px;
 }
 
@@ -717,8 +720,7 @@ svg.icon {
     border-radius: 10px;
     box-shadow: 0 1px 20px 0 rgba(172,181,185,0.15);
     text-align: center;
-    margin: 10px 0 0 0;
-    padding-bottom: 0;
+    padding-bottom: 30px;
 }
 #confirm-action-modal .modal-body h5{
     color: #535353;
@@ -731,15 +733,17 @@ svg.icon {
     color: #535353;
     font-size: 14px;
     line-height: 20px;
-    margin: 9px 0 40px 0;
+    margin: 9px auto 20px auto;
+    width: 220px;
 }
 
-#confirm-action-modal .modal-body button{
+#confirm-action-modal button{
     height: 40px;
     width: 116px;
     background-color: #fff;
     color: #27BE58;
     border: 1px solid #27BE58;
+    margin: 0 10px;
     cursor: pointer;
 }
 
@@ -927,7 +931,7 @@ td>.t-value{
     line-height: 16px;
     border-bottom: 2px solid #E7E7E7;
     vertical-align: middle;
-    padding: 8px;
+    padding: 8px 8px 8px 10px;
 }
 
 .main-body-content .table td.user-initials-cell>span{
@@ -1063,7 +1067,7 @@ td>.t-value{
 }
 
 .dropdown .dropdown-menu{
-    position: relative;
+    position: absolute;
     top: 24px !important;
     left: 29px !important;
     border: none;
@@ -1073,7 +1077,6 @@ td>.t-value{
     min-width: fit-content;
     height: auto !important;
     padding: 0;
-    padding-bottom: 15px;
 }
 
 .dropdown>button{
@@ -1094,8 +1097,8 @@ td>.t-value{
 }
 
 .dropdown>.dropdown-menu li>button{
-    padding: 15px 7px;
-    margin: 2px;
+    padding: 5px 7px 10px 7px;
+    margin: 4px 0;
     height: 25px;	
     color: #535353;	
     font-size: 14px;

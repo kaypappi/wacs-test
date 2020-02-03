@@ -13,7 +13,7 @@ export default ({
       return (state.access_token && state.user)
     },
     isSuperAdmin(state){
-      return state.user.data.roles.includes('Super Admin');
+      return state.user.data.roles[0].name === 'Super Admin';
     },
     user(state){
       return state.user

@@ -7,6 +7,7 @@ import store from '../store'
 import Main from "../components/Layout/Main";
 import UserSetup from "../views/UserSetup";
 import LoanMangement from "../views/LoanMangement";
+import Home from "../views/Home";
 import {beforeEach} from './beforeEach';
 
 Vue.use(VueRouter);
@@ -19,7 +20,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if(store.getters['auth/authenticated']) {
         return next({
-          name: 'User'
+          name: 'Home'
         })
       }
       next()
@@ -35,10 +36,15 @@ const routes = [
         component: UserSetup,
         beforeEnter: (to, from, next) => {
           if(!store.getters['auth/isSuperAdmin']) {
-            return next('loan')
+            return next('Home')
           }
           next()
         }
+      },
+      {
+        path: '/loan',
+        name: 'Loan Management',
+        component: Home,
       },
       {
         path: '/loan',

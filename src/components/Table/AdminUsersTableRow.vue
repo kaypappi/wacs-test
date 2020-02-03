@@ -8,8 +8,9 @@
         <td>{{email}}</td>
         <td>{{role}}</td>
         <td>
-            <span v-if="isActive" class="status-oval active-status">Active</span>
-            <span v-else class="status-oval inactive-status">Inactive</span>
+            <span v-if="isActive === 'Active'" class="status-oval active-status">Active</span>
+            <span v-if="isActive ==='Inactive'" class="status-oval inactive-status">Inactive</span>
+            <span v-if="isActive ==='New'" class="status-oval new-status">New</span>
         </td>
         <td class="dropdown-cell">
             <Dropdown 
@@ -20,9 +21,9 @@
                         handler: edit,
                     }, 
                     {
-                        name: 'Deactivate',
+                        name: isActive === 'Inactive' ? 'Activate' : 'Deactivate',
                         icon: 'switch.svg',
-                        handler: deactivate,
+                        handler: changeStatus,
                     }, 
                     {
                         name: 'Reset Password',
@@ -47,31 +48,38 @@
             Dropdown,
         },
         props: {
+            'id': [String, Number],
             'fullName': String,
             'userName': String,
-            'isActive': [Boolean, Number],
+            'isActive': String,
             'email': String,
             'role': String,
+            'roleId': Number,
             'onEdit': Function,
+            'onResetPassword': Function,
+            'onToggleStatus': Function,
+            'onChangeRole': Function,
         },
         methods: {
             edit() {
-                const cardInfo = {
+                const userInfo = {
                     full_name: this.fullName,
                     user_name: this.userName,
                     email: this.email,
-                    role: this.role,
                 }
-                this.onEdit(cardInfo);
+                this.onEdit(userInfo, this.id);
             },
-            deactivate() {
-                alert('deactivating');
+            changeStatus() {
+                this.onToggleStatus(this.id);
             },
             resetPassword() {
-                alert('resetting password');
+                this.onResetPassword(this.email, this.fullName);
             },
             changeRole() {
-                alert('changing role');
+                const roleInfo = {
+                    role_id: this.roleId,
+                }
+                this.onChangeRole(roleInfo, this.id);
             },
             initials() {
                 const names = this.fullName.split(' ');

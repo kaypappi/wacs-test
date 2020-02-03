@@ -25,8 +25,17 @@ export default ({
       state.adminUsers.push(userData);
       state.postAdminSuccess = true;
     },
+    EDIT_ADMIN_SUCCESS(state, data) {
+      const targetIdex = state.adminUsers.findIndex(user => user.id === data.id);
+      state.adminUsers[targetIdex] = data;
+      state.postAdminSuccess = true;
+    },
     RESET_POST_ADMIN_STATUS(state) {
       state.postAdminSuccess = false;
+    },
+    UPDATE_USER_STATUS(state, data) {
+      const targetIdex = state.adminUsers.findIndex(user => user.id === data.userId);
+      state.adminUsers[targetIdex].status = data.newStatus;
     }
   },
 
@@ -49,8 +58,22 @@ export default ({
             commit('IS_POSTING_ADMIN', false);
           });
     },
+    editAdmin({commit}, userData) {
+      commit('IS_POSTING_ADMIN', true);
+      axios.patch('creditor/' + userData.userId, userData)
+          .then(function (res) {
+            commit('IS_POSTING_ADMIN', false);
+            commit('EDIT_ADMIN_SUCCESS', res.data.data);
+          })
+          .catch(function () {
+            commit('IS_POSTING_ADMIN', false);
+          });
+    },
     resetPostingStatus({commit}) {
       commit('RESET_POST_ADMIN_STATUS');
+    },
+    updateUserStatus({commit}, data) {
+      commit('UPDATE_USER_STATUS', {userId: data.id, newStatus: data.newStatus});
     }
   }
 });

@@ -8,6 +8,8 @@
 </template>
 
 <script>
+    import {defineAbilities} from '@/services/roles';
+
     export default {
         props: {
            'name': String,
@@ -55,6 +57,9 @@
             menus() {
                 return this.menuItems.filter(item => this.$can(item.permission[0], item.permission[1]))
             },
-        }
+        },
+        mounted() {
+            defineAbilities();
+        },
     }
 </script>

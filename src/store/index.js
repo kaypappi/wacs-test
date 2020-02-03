@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from "./auth";
 import AdminUser from './module/AdminUser';
 import ResetPassword from './module/PasswordReset';
+import UserStatus from './module/UserStatus';
 
 Vue.use(Vuex);
 
@@ -42,6 +43,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     AdminUser,
-    ResetPassword
+    ResetPassword,
+    UserStatus,
   }
 })
