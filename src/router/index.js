@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Auth/Login.vue';
+import ResetPassword from '../views/Auth/Reset-password.vue';
 import Dashboard from '../views/Dashboard.vue';
 import store from '../store'
 import Main from "../components/Layout/Main";
 import UserSetup from "../views/UserSetup";
+import LoanMangement from "../views/LoanMangement";
 import {beforeEach} from './beforeEach';
 
 Vue.use(VueRouter);
@@ -17,7 +19,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if(store.getters['auth/authenticated']) {
         return next({
-          name: 'user-setup'
+          name: 'User'
         })
       }
       next()
@@ -29,12 +31,32 @@ const routes = [
     children: [
       {
         path: 'user-setup',
-        name: 'user-setup',
-        component: UserSetup
+        name: 'User',
+        component: UserSetup,
+        beforeEnter: (to, from, next) => {
+          if(!store.getters['auth/isSuperAdmin']) {
+            return next('loan')
+          }
+          next()
+        }
+      },
+      {
+        path: '/loan',
+        name: 'Loan Management',
+        component: LoanMangement,
+      },
+      {
+        path: '/password-reset/:token',
+        name: 'change password',
+        component: ResetPassword,
+        beforeEnter: (to, from, next) => {
+          store.dispatch('ResetPassword/confirmToken', to.params.token)
+          next()
+        }
       }
     ],
     beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated']) {
+      if(!store.getters['auth/authenticated'] && to.name != 'change password') {
         return next({
           name: 'login'
         })

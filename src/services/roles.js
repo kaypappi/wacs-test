@@ -5,12 +5,19 @@ import store from '@/store'
 
     Vue.component('Can', Can);
 
+export const defineAbilities = () => {
+    function defineAbilitiesFor() {
+        const { rules, can } = AbilityBuilder.extract();
+        if(store.getters['auth/authenticated']){
+            store.getters['auth/user'].data.permissions.forEach((permission)=>{
+                can(...permission)
+            })
+        }
+        return rules;
+      }
+    
+    Vue.prototype.$ability.update(defineAbilitiesFor());
+}
 
-let abilities = AbilityBuilder.define(can => {
-    if (store.getters['auth/authenticated']) {
-        store.getters['auth/user'].data.permissions.forEach((permission) => {
-            can(...permission)
-        })
-    }
-});
-Vue.use(abilitiesPlugin, abilities);
+Vue.use(abilitiesPlugin);
+

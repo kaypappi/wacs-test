@@ -1,7 +1,9 @@
 <template>
-    <div class="left-menu-items" @click="redirectToHome">
-        <img :src="iconPath" :alt="altText">
-        <span>{{name}}</span>
+    <div class="left-menu">
+        <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" @click="goTo(menu.to)">
+            <img :src="menu.iconPath" :alt="menu.altText">
+            <span>{{menu.name}}</span>
+        </div>
     </div>
 </template>
 
@@ -15,17 +17,44 @@
         },
         data() {
             return {
-                // img: "/assets/images/"+this.iconPath,
+                menuItems: [
+                    {
+                    name: "Loan Management",
+                    iconPath: "/assets/images/Money.svg",
+                    altText: "money",
+                    to: "/",
+                    permission: ["manage", "loan"],
+                },
+                {
+                    name: "User Management",
+                    iconPath: "/assets/images/User.svg",
+                    altText: "money",
+                    to: "/user-setup",
+                    permission: ["create", "user"],
+                },
+                {
+                    name: "Repayment",
+                    iconPath: "/assets/images/Chart-bar.svg",
+                    altText: "chart",
+                    to: "/",
+                    permission: ["manage", "repayment"],
+                }
+                ],
             }
         },
         methods: {
-         redirectToHome () {
-            this.$router.push(
-                {
-                path: this.to,
-                }
-            )
-         },
+            goTo(location) {
+                this.$router.push(
+                    {
+                        path: location,
+                    }
+                )
+            },
+        },
+        computed: {
+            menus() {
+                return this.menuItems.filter(item => this.$can(item.permission[0], item.permission[1]))
+            },
         }
     }
 </script>

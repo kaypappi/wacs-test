@@ -27,18 +27,26 @@ svg.icon {
     text-align: center;
 }
 
-.dropdown-menu .dropdown-item{
-    padding: .25rem .6rem;
+.dropleft .dropdown-toggle::before {
+    display: none;
 }
 
 .login-form-label{
     display: block;
     height: 19px;
-    width: 80px;
     color: #333333;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 19px;
-    margin: 30px 0 6px 0;
+    margin: 20px 0 6px 0;
+}
+
+.reset-password-label{
+    display: block;
+    height: 19px;
+    color: #333333;
+    font-size: 14px;
+    line-height: 19px;
+    margin: 20px 0 6px 0;
 }
 
 .login-form-input{
@@ -48,6 +56,9 @@ svg.icon {
     border: 1px solid #CCCCCC;
     background-color: #F8F8F8;
     padding: 15px;
+    font-weight: 300;
+    color: #9D9D9D;
+    font-size: 14.4px;
 }
 
 .button-loader{
@@ -137,6 +148,7 @@ svg.icon {
     height: 45px;
     padding: 8px 0 0 7px;
 }
+
 .main .left .left-menu .left-menu-items:hover{
     background-color: rgba(255,255,255,0.26);
     padding-left: 0;
@@ -241,7 +253,7 @@ svg.icon {
     box-shadow: 0 1px 10px 0 rgba(172,181,185,0.11);
 }
 
-.main .right .main-body ul{
+.main .right .main-body>ul{
     height: 52px;
     padding: 22px 0 0 0;
     display: flex;
@@ -262,7 +274,7 @@ svg.icon {
     line-height: 19px;
 }
 
-.main .right .main-body ul li{
+.main .right .main-body>ul li{
     list-style-type: none;
     height: 19px;
     color: #27BE58;
@@ -273,7 +285,7 @@ svg.icon {
     cursor: pointer;
 }
 
-.main .right .main-body ul li>span{
+.main .right .main-body>ul li>span{
     padding: 2px;
     border-radius: 50%;
     background-color: #d0e9cc;
@@ -284,7 +296,7 @@ svg.icon {
     text-align: center;
 }
 
-.main .right .main-body ul li:hover{
+.main .right .main-body>ul li:hover{
     border-bottom: 4px solid #009831;
 }
 
@@ -422,10 +434,11 @@ svg.icon {
 .main-body-content .page-filters{
     background-color: #F8F8F8;
     display: flex;
-    justify-content: center;;
+    /* justify-content: center; */
     flex-wrap: wrap;
     border-radius: 2px 0 0 2px;
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1.5px solid #fff;
+    border-top: 1.5px solid #fff;
 }
 
 .filter-boxes{
@@ -631,26 +644,26 @@ svg.icon {
     letter-spacing: 0.24px;
 }
 
-.active-loan-status{
+.active-status{
     background-color: rgba(14,119,230,0.15);
     color: #0E77E6;
 }
 
-.inactive-loan-status{
+.inactive-status{
     background-color: #DEDEDE;
     color: rgba(101,106,114,0.56);
 }
 
-.loan-status{
+.status-oval{
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.24px;
-    margin-top: 2px;
     width: 90px;
     height: 20px;
     border-radius: 12.5px;
-    display: block;
+    display: inline-block;
+    padding-top: 2px;
 }
 
 .card .card-row:last-child{
@@ -887,14 +900,17 @@ td>.t-value{
     height: 49px;
     border-radius: 2px 0 0 2px;
     background-color: #F8F8F8;
+    border-bottom: 2px solid #E7E7E7;;
 }
 
 .main-body-content .table th{
     height: 49px;
     color: #424242;
+    background-color: #fff;
     font-size: 16px;
     font-weight: 500;
     line-height: 19px;
+    border-bottom: none;
 }
 
 .main-body-content .table th>input, .main-body-content .table td>input{
@@ -904,16 +920,33 @@ td>.t-value{
     border: none;
 }
 
-.main-body-content .table tr{
-    height: 43px;
-}
-
 .main-body-content .table td{
-    height: 43px;
     color: #535353;
     font-size: 14px;
+    font-weight: 450;
     line-height: 16px;
-    border-bottom: 1px solid #E7E7E7;
+    border-bottom: 2px solid #E7E7E7;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.main-body-content .table td.user-initials-cell>span{
+    background-color: #E6E6E6;
+    color: #A7A7A7;
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 6px;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
+.main-body-content .table td.dropdown-cell>div{
+    width: 0px;
 }
 
 .status-circle{
@@ -1016,10 +1049,7 @@ td>.t-value{
     text-transform: capitalize;
 }
 
-.users .user-card .card-head svg{
-    position: absolute;
-    top: -19px;
-    right: -3px;
+.dropdown svg{
     color: #9D9D9D;
     cursor: pointer;
     width: 25px;
@@ -1028,18 +1058,55 @@ td>.t-value{
     border-radius: 50%;
 }
 
-.users .user-card .card-head svg:hover{
+.dropdown svg:hover{
     background-color: #F4F4F4;
 }
 
-.users .user-card .card-head .dropdown-menu{
+.dropdown .dropdown-menu{
     position: relative;
-    top: 30px !important;
-    left: 25px !important;
+    top: 24px !important;
+    left: 29px !important;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0 0 20px 0 rgba(226,222,222,0.5);
+    outline: none;
+    min-width: fit-content;
+    height: auto !important;
+    padding: 0;
+    padding-bottom: 15px;
 }
+
+.dropdown>button{
+    padding: 0;
+    color: #535353;
+}
+
+.dropdown>.dropdown-menu li{
+    width: fit-content;
+    padding: 0;
+    height: auto;
+    width: 100%;
+}
+
+.dropdown>.dropdown-menu li:hover{
+    border: none;
+    background-color: #F8F9FA;
+}
+
+.dropdown>.dropdown-menu li>button{
+    padding: 15px 7px;
+    margin: 2px;
+    height: 25px;	
+    color: #535353;	
+    font-size: 14px;
+}
+
+.dropdown>.dropdown-menu li>button>img{
+    width: 16px;
+    height: 15px;
+    margin-right: 10px;
+}
+
 
 .user-card .user-detail{
     color: #CDCDCD;
@@ -1051,16 +1118,15 @@ td>.t-value{
 }
 
 .user-card .card-body{
-    padding: 10px 3px 10px 10px;
+    padding: 5px 3px 0 10px;
 }
 
 .user-card .user-detail-value{
     color: #535353;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0.24px;
-    line-height: 15px;
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     width: 230px;
     -ms-overflow-style: none;
     overflow-x: scroll;
@@ -1070,6 +1136,47 @@ td>.t-value{
     display: none;
 }
 
-.user-card .card-body .loan-status{
+.user-card .card-body .status-oval{
     margin-top: 3px;
+}
+
+
+
+/* ------------ Toast -------------- */
+
+.toast{
+    max-width: 649px;
+    width: 649px;
+    padding: 7px 0px;
+    border: none;
+    border-top: 4px solid #01C04F;
+}
+
+.toast-header{
+    border-bottom: none;
+}
+
+.toast-header>img{
+    height: 40px;	
+    width: 40px;
+    margin-right: 13px;
+}
+
+.toast-header h5{
+    color: #01C04F;	
+    font-family: "Work Sans";	
+    font-size: 20px;
+    font-weight: 400;	
+    letter-spacing: 0.34px;	
+    line-height: 24px;
+    margin: 0px;
+}
+
+.b-toaster-slot{
+    max-width: 649px !important;
+    margin-top: 75px !important;
+    width: 649px;
+}
+.toast-body{
+    padding: 0;
 }
