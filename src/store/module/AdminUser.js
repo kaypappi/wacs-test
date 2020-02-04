@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Vue from 'vue';
 
 export default ({
   namespaced:  true,
@@ -27,6 +28,7 @@ export default ({
     },
     EDIT_ADMIN_SUCCESS(state, data) {
       const targetIdex = state.adminUsers.findIndex(user => user.id === data.id);
+      Vue.set(state.adminUsers, state.adminUsers[targetIdex], data)
       state.adminUsers[targetIdex] = data;
       state.postAdminSuccess = true;
     },

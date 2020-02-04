@@ -4,6 +4,7 @@
             <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <div class="login-area">
                 <p>LOGIN</p>
+                <div v-if="validation.message" class="error-div login-form-input">{{validation.message}}</div>
                 <form @submit.prevent="submit">
                     <TextInput 
                         label="Username"

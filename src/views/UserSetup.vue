@@ -15,6 +15,7 @@
             <CustomModal :onHide="onHide" id="add-user-form-modal">
                 <div v-if="postSuccess">
                     <p class="modal-success-message" v-if="edittingUser">Edit Successful</p>
+                    <p class="modal-success-message" v-else-if="changingUserRole">Users role has been changed successfully</p>
                     <p class="modal-success-message" v-else>You have successfully added <b>{{addUser.full_name}}</b> as an admin</p> 
                     <button class="form-modal-button" @click="$bvModal.hide('add-user-form-modal')">Close</button>
                 </div>

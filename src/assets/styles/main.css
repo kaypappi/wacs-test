@@ -72,6 +72,14 @@ svg.icon {
     width: 250px;
 }
 
+.error-div{
+    background-color: #FFCCCB;
+    border: none;
+    color: red;
+    font-weight: 400;
+    font-size: 13px;
+}
+
 
 /* ---------custom modal styling ------- */
 
@@ -84,7 +92,7 @@ svg.icon {
 }
 
 .modal-content{
-    width: fit-content;
+    width: 368px;
     background-color: inherit;
     display: flex;
     flex-direction: row-reverse;
@@ -147,9 +155,10 @@ svg.icon {
 .main .left .left-menu .left-menu-items{
     height: 45px;
     padding: 8px 0 0 7px;
+    cursor: pointer;
 }
 
-.main .left .left-menu .left-menu-items:hover{
+.active-left-menu{
     background-color: rgba(255,255,255,0.26);
     padding-left: 0;
     border-left: 7px #27BE58 solid;
@@ -214,7 +223,7 @@ svg.icon {
     top: -1.5px;
 }
 
-.main .right nav ul li{
+.main .right nav>ul>li{
     list-style-type: none;
     margin-left: 15px;
 }
