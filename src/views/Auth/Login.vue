@@ -6,14 +6,14 @@
                 <p>LOGIN</p>
                 <form @submit.prevent="submit">
                     <TextInput 
-                        label="Email"
+                        label="Username"
                         id="username"
-                        name="email"
+                        name="user_name"
                         inputClass="login-form-input"
                         labelClass="login-form-label"
-                        :error="validation.email"
+                        :error="validation.user_name"
                         placeholder="Enter Email"
-                        v-model="form.email"
+                        v-model="form.user_name"
                         :keyupEvent="keyupEvent"
                     />
 
@@ -54,7 +54,7 @@
         data(){
             return {
                 form:{
-                    email:'',
+                    user_name:'',
                     password:''
                 }
             }

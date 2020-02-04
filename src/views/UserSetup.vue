@@ -79,7 +79,7 @@
                         v-for="user in users"
                         :id="user.id"
                         :fullName="user.full_name"
-                        :userName="user.full_name"
+                        :userName="user.user_name"
                         :isActive="user.status"
                         :email="user.email"
                         :role="user.roles[0].name"
@@ -227,4 +227,3 @@
     }
 </script>
 
-//'roles' => $this->roles()->select('id', 'name')->get();

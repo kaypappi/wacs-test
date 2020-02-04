@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "react-my-coffee": {
+      "hosting": {
+        "wacs": [
+          "wacs-v1"
+        ]
+      }
+    }
+  }
+}

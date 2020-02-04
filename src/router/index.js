@@ -42,8 +42,8 @@ const routes = [
         }
       },
       {
-        path: '/loan',
-        name: 'Loan Management',
+        path: '/home',
+        name: 'Home',
         component: Home,
       },
       {
