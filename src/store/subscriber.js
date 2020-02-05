@@ -12,6 +12,9 @@ store.subscribe((mutation) => {
                 axios.defaults.headers.common['Authorization'] = null;
                 localStorage.removeItem('token')
             }
-            break;
+        break;
+        case 'auth/LOG_USER_OUT':
+            localStorage.removeItem('access_token');
+        break;
     }
 });

@@ -1,6 +1,6 @@
 <template>
     <div class="left-menu">
-        <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" @click="goTo(menu.to)">
+        <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" :class="{'active-left-menu': currentRoute === menu.to}" @click="goTo(menu.to)">
             <img :src="menu.iconPath" :alt="menu.altText">
             <span>{{menu.name}}</span>
         </div>
@@ -21,26 +21,26 @@
             return {
                 menuItems: [
                     {
-                    name: "Loan Management",
-                    iconPath: "/assets/images/Money.svg",
-                    altText: "money",
-                    to: "/",
-                    permission: ["manage", "loan"],
-                },
-                {
-                    name: "User Management",
-                    iconPath: "/assets/images/User.svg",
-                    altText: "money",
-                    to: "/user-setup",
-                    permission: ["create", "user"],
-                },
-                {
-                    name: "Repayment",
-                    iconPath: "/assets/images/Chart-bar.svg",
-                    altText: "chart",
-                    to: "/",
-                    permission: ["manage", "repayment"],
-                }
+                        name: "Loan Management",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/loan",
+                        permission: ["manage", "loan"],
+                    },
+                    {
+                        name: "User Management",
+                        iconPath: "/assets/images/User.svg",
+                        altText: "money",
+                        to: "/user-setup",
+                        permission: ["create", "user"],
+                    },
+                    {
+                        name: "Repayment",
+                        iconPath: "/assets/images/Chart-bar.svg",
+                        altText: "chart",
+                        to: "/",
+                        permission: ["manage", "repayment"],
+                    }
                 ],
             }
         },
@@ -57,9 +57,13 @@
             menus() {
                 return this.menuItems.filter(item => this.$can(item.permission[0], item.permission[1]))
             },
+            currentRoute() {
+                return this.$route.path;
+            }
         },
         mounted() {
             defineAbilities();
+            console.log(this.$route.path);
         },
     }
 </script>

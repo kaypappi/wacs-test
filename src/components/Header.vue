@@ -11,14 +11,14 @@
                 iconName="sprite.svg#carret-arrow"
                 :options="[
                     {
-                        name: 'Edit',
-                        icon: 'Edit.svg',
+                        name: 'Change Password',
+                        icon: 'change-password.svg',
                         handler: ()=>'',
                     }, 
                     {
-                        name: 'Edit',
-                        icon: 'Edit.svg',
-                        handler: ()=>'',
+                        name: 'Logout',
+                        icon: 'Sign-out.svg',
+                        handler: logout
                     }, 
                 ]"
             />
@@ -37,6 +37,14 @@
            'title': String,
            'entityName': String,
            'userName': String,
-        }
+        },
+        methods: {
+            logout() {
+                this.$store.dispatch('auth/logout');
+                this.$router.push({
+                    name: 'login',
+                })
+            }
+        },
     }
 </script>
