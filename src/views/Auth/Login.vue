@@ -4,7 +4,7 @@
             <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <div class="login-area">
                 <p>LOGIN</p>
-                <div v-if="validation.message" class="error-div login-form-input">{{validation.message}}</div>
+                <div v-if="loginError" class="error-div login-form-input">{{loginError}}</div>
                 <form @submit.prevent="submit">
                     <TextInput 
                         label="Username"
@@ -66,6 +66,7 @@
                 user : 'auth/user',
                 isLoading: 'auth/isLoading',
                 validation: 'getValidationError',
+                loginError: 'auth/loginError',
             })
         },
         methods:{

@@ -52,8 +52,13 @@ const routes = [
         component: LoanMangement,
       },
       {
-        path: '/password-reset/:token',
+        path: '/change-password',
         name: 'change password',
+        component: ResetPassword,
+      },
+      {
+        path: '/password-reset/:token',
+        name: 'reset password',
         component: ResetPassword,
         beforeEnter: (to, from, next) => {
           store.dispatch('ResetPassword/confirmToken', to.params.token)
@@ -62,7 +67,7 @@ const routes = [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated'] && to.name != 'change password') {
+      if(!store.getters['auth/authenticated'] && to.name != 'reset password') {
         return next({
           name: 'login'
         })

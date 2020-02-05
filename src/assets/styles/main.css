@@ -78,6 +78,11 @@ svg.icon {
     color: red;
     font-weight: 400;
     font-size: 13px;
+    padding: 5px;
+    height: auto;
+    text-align: center;
+    margin-top: 20px;
+    text-transform: lowercase;
 }
 
 
@@ -1155,13 +1160,28 @@ td>.t-value{
 
 
 /* ------------ Toast -------------- */
+.error-toast{
+    border: none;
+    border-top: 4px solid red;
+}
+
+.error-toast h5{
+    color: red;
+}
+
+.success-toast{
+    border: none;
+    border-top: 4px solid #01C04F;
+}
+
+.success-toast h5{
+    color: #01C04F;
+}
 
 .toast{
     max-width: 649px;
     width: 649px;
     padding: 7px 0px;
-    border: none;
-    border-top: 4px solid #01C04F;
 }
 
 .toast-header{
@@ -1175,7 +1195,6 @@ td>.t-value{
 }
 
 .toast-header h5{
-    color: #01C04F;	
     font-family: "Work Sans";	
     font-size: 20px;
     font-weight: 400;	

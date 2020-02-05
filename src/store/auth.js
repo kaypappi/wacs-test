@@ -6,6 +6,7 @@ export default ({
     access_token:'',
     user: {},
     isLoading: false,
+    loginError: ''
   },
 
   getters :{
@@ -20,6 +21,9 @@ export default ({
     },
     isLoading(state){
       return state.isLoading
+    },
+    loginError(state){
+      return state.loginError
     }
   },
 
@@ -32,17 +36,22 @@ export default ({
     },
     IS_LOGGING_USER_IN(state, bool){
       state.isLoading = bool;
-    }
+    },
+    SET_ERROR_MESSAGE(state, error) {
+      state.loginError = error;
+    },
   },
 
   actions: {
     async signIn({ commit, dispatch }, credentials){
       commit('SET_VALIDATION_ERROR', [], {root: true});
+      commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
       try{
         let response  = await axios.post('creditor/login', credentials);
         return dispatch('attempt', response.data.data.access_token);
       } catch(e){
+        commit('SET_ERROR_MESSAGE', e.response.data.message);
         commit('IS_LOGGING_USER_IN', false);
         return Promise.reject(e);
       }
@@ -69,9 +78,11 @@ export default ({
       commit('IS_LOGGING_USER_IN', false);
     },
 
-    logout({commit}) {
+    async logout({commit}) {
+      let response = await axios.post('user/logout');
       commit('SET_TOKEN', null);
       commit('SET_USER', null);
+      return response;
     },
   },
 
