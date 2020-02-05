@@ -13,7 +13,7 @@
                     {
                         name: 'Change Password',
                         icon: 'change-password.svg',
-                        handler: ()=>'',
+                        handler: changePassword,
                     }, 
                     {
                         name: 'Logout',
@@ -40,9 +40,15 @@
         },
         methods: {
             logout() {
-                this.$store.dispatch('auth/logout');
+                this.$store.dispatch('auth/logout').then(() => {
+                    this.$router.push({
+                        name: 'login',
+                    }).catch(()=>{})
+                });
+            },
+            changePassword() {
                 this.$router.push({
-                    name: 'login',
+                    name: 'change password',
                 })
             }
         },

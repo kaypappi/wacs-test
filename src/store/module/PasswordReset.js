@@ -9,6 +9,7 @@ export default ({
     resetSuccess: false,
     tokenIsInvalid: false,
     tokenIsValid: false,
+    error: '',
   },
 
   mutations : {
@@ -24,6 +25,9 @@ export default ({
     SET_VALID_TOKEN(state) {
       state.tokenIsValid = true;
     },
+    SET_ERROR_MESSAGE(state, error) {
+      state.error = error;
+    },
   },
 
    actions : {
@@ -31,8 +35,7 @@ export default ({
       axios.get('user/password/'+token).then(() => {
         commit('SET_VALID_TOKEN');
       })
-      .catch(function (err) {
-        console.log(err, 'tokeennnnnnnnnnnn');
+      .catch(function () {
         commit('SET_INVALID_TOKEN');
       });
     },
@@ -44,6 +47,19 @@ export default ({
             commit('RESET_SUCCESS', true);
           })
           .catch(function () {
+            commit('IS_POSTING', false);
+          });
+    },
+    changePassword({commit}, data) {
+      commit('SET_ERROR_MESSAGE', null);
+      commit('IS_POSTING', true);
+      axios.post('user/password/change', data)
+          .then(function () {
+            commit('IS_POSTING', false);
+            commit('RESET_SUCCESS', true);
+          })
+          .catch(function (err) {
+            commit('SET_ERROR_MESSAGE', err.response.data.message);
             commit('IS_POSTING', false);
           });
     },

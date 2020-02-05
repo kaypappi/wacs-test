@@ -63,7 +63,6 @@
         },
         mounted() {
             defineAbilities();
-            console.log(this.$route.path);
         },
     }
 </script>

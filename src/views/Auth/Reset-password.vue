@@ -3,16 +3,31 @@
         
         <Toast 
             :show="isInvalidToken || resetSuccess"
-            title="Successful!"
+            :title="isInvalidToken ? 'Error!' : 'Successful!'"
             successMessage="You have Successfully changed your password"
             failureMessage="Invalid token"
             :success="resetSuccess"
         />
 
-        <div class="form-wrapper" v-if="isValidToken">
+        <div class="form-wrapper" v-if="isValidToken || isActiveUser">
             <img src="/assets/images/change-password.svg" class="logo" alt="WACS logo">
             <div class="login-area">
+                <div v-if="serverResponse" class="error-div login-form-input">{{serverResponse}}</div>
                 <form @submit.prevent="submit">
+                    <TextInput 
+                        v-if="isActiveUser"
+                        label="Current Password"
+                        id="old_password"
+                        name="old_password"
+                        type="password"
+                        inputClass="login-form-input"
+                        labelClass="login-form-label"
+                        :error="error.old_password"
+                        placeholder="Enter Password"
+                        v-model="formData.old_password"
+                        :keyupEvent="keyupEvent"
+                    />
+
                     <TextInput 
                         label="New Password"
                         id="password"
@@ -21,7 +36,7 @@
                         inputClass="login-form-input"
                         labelClass="login-form-label"
                         :error="error.password"
-                        placeholder="Enter Password"
+                        placeholder="Enter New Password"
                         v-model="formData.password"
                         :keyupEvent="keyupEvent"
                     />
@@ -29,13 +44,13 @@
                     <TextInput 
                         label="Re-Enter Password"
                         id="password-confirm"
-                        name="passwordConfirm"
+                        name="password_confirmation"
                         type="password"
                         inputClass="login-form-input"
                         labelClass="login-form-label"
-                        :error="error.passwordConfirm"
+                        :error="error.password_confirmation"
                         placeholder="Enter New Password"
-                        v-model="formData.passwordConfirm"
+                        v-model="formData.password_confirmation"
                         :keyupEvent="keyupEvent"
                     />
 
@@ -81,17 +96,27 @@
             },
             resetSuccess() {
                 return this.$store.state.ResetPassword.resetSuccess;
+            },
+            isActiveUser() {
+                return this.$route.name === "change password";
+            },
+            serverResponse() {
+                return this.$store.state.ResetPassword.error;
             }
         },
         methods:{
             submit() {
-                if(this.formData.password !== this.formData.passwordConfirm) {
+                if(this.formData.password !== this.formData.password_confirmation) {
                     const error = {
                         errors: {
-                            passwordConfirm: ["passwords do not match"]
+                            password_confirmation: ["passwords do not match"]
                         }
                     }
                     this.$store.dispatch('setValidationErrors', error);
+                    return;
+                }
+                if(this.isActiveUser) {
+                    this.$store.dispatch('ResetPassword/changePassword', this.formData);
                     return;
                 }
                 this.formData.token = this.$route.params.token;
@@ -105,6 +130,7 @@
         },
         mounted() { 
             this.$root.$on('bv::toast:hidden', () => { 
+                this.$store.dispatch('ResetPassword/resetPasswordSuccess');
                 this.$router.replace({
                     name: 'login'
                 }); 
@@ -117,7 +143,6 @@
 <style scoped>
     .form-wrapper{
         width: 408px;
-        /* height: 100%; */
         margin: 0 auto;
         padding: 40px 0 86px 0;
     }
