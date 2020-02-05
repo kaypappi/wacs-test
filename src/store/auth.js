@@ -32,9 +32,6 @@ export default ({
     },
     IS_LOGGING_USER_IN(state, bool){
       state.isLoading = bool;
-    },
-    LOG_USER_OUT(state){
-      state.access_token = null;
     }
   },
 
@@ -73,7 +70,8 @@ export default ({
     },
 
     logout({commit}) {
-      commit('LOG_USER_OUT');
+      commit('SET_TOKEN', null);
+      commit('SET_USER', null);
     },
   },
 
