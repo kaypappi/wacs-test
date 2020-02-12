@@ -67,9 +67,19 @@ svg.icon {
 }
 
 .page-loader{
-    margin: 100px 35%;
+    margin: 100px 0 0 50%;
     height: 100px;
     width: 250px;
+    position: relative;
+    left: -125px;
+}
+
+.confirm-modal-loader{
+    margin: 20px 0 20px 50%;
+    height: 70px;
+    width: 210px;
+    position: relative;
+    left: -105px;
 }
 
 .error-div{
@@ -78,11 +88,6 @@ svg.icon {
     color: red;
     font-weight: 400;
     font-size: 13px;
-    padding: 5px;
-    height: auto;
-    text-align: center;
-    margin-top: 20px;
-    text-transform: lowercase;
 }
 
 
@@ -981,13 +986,14 @@ td>.t-value{
     margin: 8px 40px 0 10px;
 }
 
-.main-body-content .pagination a{
+.main-body-content .pagination-button{
     color: #009831;
+    cursor: pointer;
     font-size: 14px;
     line-height: 19px;
 }
 
-.main-body-content .pagination span{
+.main-body-content .pagination-text{
     color: #424242;
     font-size: 14px;
     line-height: 19px;
@@ -1113,8 +1119,8 @@ td>.t-value{
 .dropdown>.dropdown-menu li>button{
     padding: 5px 7px 10px 7px;
     margin: 4px 0;
-    height: 25px;	
-    color: #535353;	
+    height: 25px;
+    color: #535353;
     font-size: 14px;
 }
 
@@ -1160,28 +1166,13 @@ td>.t-value{
 
 
 /* ------------ Toast -------------- */
-.error-toast{
-    border: none;
-    border-top: 4px solid red;
-}
-
-.error-toast h5{
-    color: red;
-}
-
-.success-toast{
-    border: none;
-    border-top: 4px solid #01C04F;
-}
-
-.success-toast h5{
-    color: #01C04F;
-}
 
 .toast{
     max-width: 649px;
     width: 649px;
     padding: 7px 0px;
+    border: none;
+    border-top: 4px solid #01C04F;
 }
 
 .toast-header{
@@ -1189,16 +1180,17 @@ td>.t-value{
 }
 
 .toast-header>img{
-    height: 40px;	
+    height: 40px;
     width: 40px;
     margin-right: 13px;
 }
 
 .toast-header h5{
-    font-family: "Work Sans";	
+    color: #01C04F;
+    font-family: "Work Sans";
     font-size: 20px;
-    font-weight: 400;	
-    letter-spacing: 0.34px;	
+    font-weight: 400;
+    letter-spacing: 0.34px;
     line-height: 24px;
     margin: 0px;
 }

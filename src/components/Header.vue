@@ -7,7 +7,7 @@
             <li v-if="userName">
                 {{userName}}
             </li>
-            <Dropdown 
+            <Dropdown v-if="userName"
                 iconName="sprite.svg#carret-arrow"
                 :options="[
                     {
