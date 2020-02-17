@@ -98,7 +98,6 @@
           :lastPage="paginationData.last_page"
           :from="paginationData.from"
           :to="paginationData.to"
-          :navigate="changePage"
         />
     </template>
 </div>
@@ -144,9 +143,16 @@
                 confirmModal: {}
             }
         },
+        watch:{
+          '$route.query':{
+              handler(){
+                  this.changePage()
+              }
+          }
+        },
         methods: {
-            changePage(page) {
-                this.$store.dispatch('AdminUser/fetchAdmins', page);
+            changePage(page=this.$route.query.page, query=this.$route.query) {
+                this.$store.dispatch('AdminUser/fetchAdmins', page, query);
             },
             onSubmit() {
                 if(!this.$can('create', 'user') || !Object.keys(this.addUser).length){
@@ -247,7 +253,8 @@
             },
         },
         mounted() {
-            this.$store.dispatch('AdminUser/fetchAdmins');
+            //this.$store.dispatch('AdminUser/fetchAdmins');
+            this.changePage();
         },
     }
 </script>

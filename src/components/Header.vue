@@ -14,11 +14,13 @@
                         name: 'Change Password',
                         icon: 'change-password.svg',
                         handler: changePassword,
+                        shouldRender: true,
                     }, 
                     {
                         name: 'Logout',
                         icon: 'Sign-out.svg',
-                        handler: logout
+                        handler: logout,
+                        shouldRender: true,
                     }, 
                 ]"
             />

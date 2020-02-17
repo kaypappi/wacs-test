@@ -13,34 +13,37 @@
             <span v-if="isActive ==='New'" class="status-oval new-status">New</span>
         </td>
         <td class="dropdown-cell">
-            <Dropdown 
-                :options="[
+            <Dropdown
+              :options="[
                     {
                         name: 'Edit',
                         icon: 'Edit.svg',
                         handler: edit,
-                    }, 
+                        shouldRender: true,
+                    },
                     {
                         name: isActive === 'Inactive' ? 'Activate' : 'Deactivate',
                         icon: 'switch.svg',
                         handler: changeStatus,
-                    }, 
+                        shouldRender: isActive !== 'New',
+                    },
                     {
                         name: 'Reset Password',
                         icon: 'Unlock.svg',
                         handler: resetPassword,
+                        shouldRender: true,
                     },
                     {
                         name: 'Change Role',
                         icon: 'Lock-overturning.svg',
                         handler: changeRole,
+                        shouldRender: true,
                     }
                 ]"
             />
         </td>
     </tr>
 </template>
-
 <script>
     import Dropdown from '../Dropdown/Dropdown';
     export default {

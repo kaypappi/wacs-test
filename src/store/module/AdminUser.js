@@ -40,10 +40,15 @@ export default ({
         }
     },
     actions : {
-        fetchAdmins({commit}, page=null) {
-            const link = page ? `creditor?page=${page}` : 'creditor';
-            commit('IS_GETTING_ADMIN', true)
-            axios.get(link).then((res) => {
+        fetchAdmins({commit}, page, query) {
+            //const link = page ? `creditor?page=${page}` : 'creditor';
+            commit('IS_GETTING_ADMIN', true);
+            axios.get('/creditor', {
+                params:{
+                    page,
+                    ...query
+                }
+            }).then((res) => {
                 commit('IS_GETTING_ADMIN', false);
                 commit('FETCH_ADMIN_SUCCESS', res.data);
             })
