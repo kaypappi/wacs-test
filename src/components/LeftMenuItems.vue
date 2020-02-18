@@ -1,6 +1,6 @@
 <template>
     <div class="left-menu">
-        <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" :class="{'active-left-menu': currentRoute === menu.to}" @click="goTo(menu.to)">
+        <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" :class="{'active-left-menu': currentNameSpace === menu.nameSpace}" @click="goTo(menu.to)">
             <img :src="menu.iconPath" :alt="menu.altText">
             <span>{{menu.name}}</span>
         </div>
@@ -24,8 +24,9 @@
                         name: "Loan Management",
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
-                        to: "/loan",
+                        to: "/loan-request",
                         permission: ["manage", "loan"],
+                        nameSpace: 'loan',
                     },
                     {
                         name: "User Management",
@@ -33,6 +34,7 @@
                         altText: "money",
                         to: "/user-setup",
                         permission: ["create", "user"],
+                        nameSpace: 'users',
                     },
                     {
                         name: "Repayment",
@@ -40,6 +42,7 @@
                         altText: "chart",
                         to: "/",
                         permission: ["manage", "repayment"],
+                        nameSpace: 'repayment',
                     }
                 ],
             }
@@ -57,8 +60,8 @@
             menus() {
                 return this.menuItems.filter(item => this.$can(item.permission[0], item.permission[1]))
             },
-            currentRoute() {
-                return this.$route.path;
+            currentNameSpace() {
+                return this.$route.meta.nameSpace;
             }
         },
         mounted() {

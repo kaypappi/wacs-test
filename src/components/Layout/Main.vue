@@ -6,13 +6,14 @@
         </div>
         <div class="right">
             <Header
-              :title="$route.name"
+              :details="$route.meta"
               :entityName="companyName"
               :userName="fullName"
             />
             <div class="main-body">
+                <LoanManagementMenu v-if="currentNameSpace === 'loan'"/>
                 <div class="main-body-content">
-                    <router-view/>
+                    <router-view />
                 </div>
             </div>
         </div>
@@ -22,10 +23,12 @@
 <script>
     import Header from '../Header';
     import LeftMenuItems from '../LeftMenuItems';
+    import LoanManagementMenu from '../LoanManagementMenu';
     export default {
         components: {
             Header,
             LeftMenuItems,
+            LoanManagementMenu,
         },
         computed: {
             fullName() {
@@ -39,7 +42,10 @@
                     return this.$store.state.auth.user.data.profile.company.name;
                 }
                 return '';
-            }
+            },
+            currentNameSpace() {
+                return this.$route.meta.nameSpace;
+            },
         },
     }
 </script>

@@ -6,7 +6,9 @@ import Dashboard from '../views/Dashboard.vue';
 import store from '../store'
 import Main from "../components/Layout/Main";
 import UserSetup from "../views/UserSetup";
-import LoanMangement from "../views/LoanMangement";
+import LoanRequest from "../views/LoanRequest";
+import LoanOffers from "../views/LoanOffers";
+import LoanRequestDetails from "../views/LoanRequestDetails";
 import Home from "../views/Home";
 import {beforeEach} from './beforeEach';
 
@@ -20,7 +22,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if(store.getters['auth/authenticated']) {
         return next({
-          name: 'Home'
+          name: 'home'
         })
       }
       next()
@@ -32,34 +34,71 @@ const routes = [
     children: [
       {
         path: 'user-setup',
-        name: 'User',
+        name: 'userManagement',
         component: UserSetup,
+        meta: {
+          title: 'Users',
+          nameSpace: 'users',
+        },
         beforeEnter: (to, from, next) => {
           if(!store.getters['auth/isSuperAdmin']) {
-            return next('Home')
+            return next('home')
           }
           next()
         }
       },
       {
         path: '/home',
-        name: 'Home',
+        name: 'home',
         component: Home,
+        meta: {
+          title: 'WACS',
+        },
       },
       {
-        path: '/loan',
-        name: 'Loan Management',
-        component: LoanMangement,
+        path: '/loan-request',
+        name: 'loanRequest',
+        component: LoanRequest,
+        meta: {
+          title: 'Loan Management',
+          nameSpace: 'loan',
+        },
+      },
+      {
+        path: '/loan-request/:requestId',
+        name: 'loanRequestDetails',
+        component: LoanRequestDetails,
+        meta: {
+          title: 'Loan Details',
+          nameSpace: 'loan',
+          parents: ['Loan Request'],
+        },
+      },
+      {
+        path: '/loan-offers',
+        name: 'loanOffers',
+        component: LoanOffers,
+        meta: {
+          title: 'Loan Management',
+          nameSpace: 'loan',
+          // parents: ['Loan Request', 'Loan Details'],
+        },
       },
       {
         path: '/change-password',
-        name: 'change password',
+        name: 'changePassword',
         component: ResetPassword,
+        meta: {
+          title: 'Change Password',
+        },
       },
       {
         path: '/password-reset/:token',
-        name: 'reset password',
+        name: 'resetPassword',
         component: ResetPassword,
+        meta: {
+          title: 'Reset Password',
+        },
         beforeEnter: (to, from, next) => {
           store.dispatch('ResetPassword/confirmToken', to.params.token)
           next()
@@ -67,7 +106,7 @@ const routes = [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated'] && to.name != 'reset password') {
+      if(!store.getters['auth/authenticated'] && to.name != 'resetPassword') {
         return next({
           name: 'login'
         })

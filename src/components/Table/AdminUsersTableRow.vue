@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr class="admin-table-row">
         <td class="user-initials-cell">
             <span >{{initials(fullName)}}</span>
         </td>

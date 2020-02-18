@@ -1,7 +1,11 @@
 <template>
     <nav>
         <ul>
-            <li class="page-title">{{title}}</li>
+            <li v-if="details.parents" class="page-title">
+                <span v-for="(parent, index) in details.parents" :key="index" @click="goBack((details.parents.length - index)*-1)" class="back-link">{{parent}} / </span>
+                <span>{{details.title}}</span>
+            </li>
+            <li v-else class="page-title">{{details.title}}</li>
             <li>{{entityName}}</li>
             <li v-if="userName"><img src="/assets/images/notification-icon.svg" alt="bell"></li>
             <li v-if="userName">
@@ -36,7 +40,7 @@
             Dropdown,
         },
         props: {
-           'title': String,
+           'details': Object,
            'entityName': String,
            'userName': String,
         },
@@ -50,8 +54,11 @@
             },
             changePassword() {
                 this.$router.push({
-                    name: 'change password',
+                    name: 'changePassword',
                 })
+            },
+            goBack(times) {
+                this.$router.go(times);
             }
         },
     }
