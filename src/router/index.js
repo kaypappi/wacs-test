@@ -8,6 +8,7 @@ import Main from "../components/Layout/Main";
 import UserSetup from "../views/UserSetup";
 import LoanRequest from "../views/LoanRequest";
 import LoanOffers from "../views/LoanOffers";
+import MakeOffer from "../views/makeOffer";
 import LoanRequestDetails from "../views/LoanRequestDetails";
 import Home from "../views/Home";
 import {beforeEach} from './beforeEach';
@@ -81,7 +82,16 @@ const routes = [
         meta: {
           title: 'Loan Management',
           nameSpace: 'loan',
-          // parents: ['Loan Request', 'Loan Details'],
+        },
+      },
+      {
+        path: '/make-offer',
+        name: 'makeOffer',
+        component: MakeOffer,
+        meta: {
+          title: 'Make Offer',
+          nameSpace: 'loan',
+          parents: ['Loan Request', 'Loan Details'],
         },
       },
       {

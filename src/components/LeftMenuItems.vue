@@ -49,11 +49,7 @@
         },
         methods: {
             goTo(location) {
-                this.$router.push(
-                    {
-                        path: location,
-                    }
-                )
+                this.$router.push({path: location})
             },
         },
         computed: {

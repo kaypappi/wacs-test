@@ -11,7 +11,7 @@
               :userName="fullName"
             />
             <div class="main-body">
-                <LoanManagementMenu v-if="currentNameSpace === 'loan'"/>
+                <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/>
                 <div class="main-body-content">
                     <router-view />
                 </div>

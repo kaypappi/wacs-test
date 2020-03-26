@@ -1,5 +1,5 @@
 <template>
-    <div class="tagged-input-container">
+    <div :class="[length == 'long' ? 'long-tagged-input' : 'short-tagged-input']">
         <label :for="id" :class="labelClass">{{label}}</label>
         <div class="tagged-input-box">
             <div class=" tag-box left-tag-box" v-if="tagLeft">
@@ -56,6 +56,10 @@
            'labelClass': {
                type: String,
                default: '',
+           },
+           'length': {
+               type: String,
+               default: 'short',
            },
            'tagLeft': {
                type: Boolean,

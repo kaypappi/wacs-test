@@ -4,11 +4,11 @@
         <template v-else>
             <div class="details-top">
                 <h3>{{customerName}}</h3>
-                <Button class="cta-button margin-left-auto">
+                <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
                     <img src="/assets/images/cancel.svg" alt="Plus sign">
                     Decline
                 </Button>
-                <Button class="cta-button margin-left-30">
+                <Button class="cta-button margin-left-30" @click="makeOffer">
                     <img src="/assets/images/double-check.svg" alt="Plus sign">
                     Make Offer
                 </Button>
@@ -91,19 +91,26 @@
                 thirdRowBio: [],
                 loanDetailsRow: [],
                 loanHistory: [],
+                requestId: '',
             }
         },
         methods: {
             fetchLoanDetails() {
-                const requestId = this.$route.params.requestId;
+                this.requestId = this.$route.params.requestId;
                 this.fetchingRequests = true;
                 axios.get('http://wacs.mocklab.io/viewloan')
                 .then((res) => {
                     this.fetchingRequests = false;
-                    const loanData = res.data.find(data => data.id == requestId);
+                    const loanData = res.data.find(data => data.id == this.requestId);
                     this.splitDetails(loanData);
                 })
                
+            },
+            declineRequest() {
+                alert(`declining loan request of id ${this.requestId} for ${this.customerName}`);
+            },
+            makeOffer() {
+                this.$router.push('/make-offer');
             },
             splitDetails(loanData) {
                 this.customerName = loanData['bio-data'].Name;

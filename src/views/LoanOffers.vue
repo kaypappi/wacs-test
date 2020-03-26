@@ -145,7 +145,7 @@
                 this.formValues.append('moratorium_principal', this.addOffer.moratorium_principal);
                 axios.post(
                     'creditor/offer/create', 
-                    this.gg, 
+                    this.formValues, 
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'
