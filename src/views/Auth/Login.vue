@@ -77,7 +77,7 @@
             submit (){
                this.signIn(this.form).then(()=> {
                    this.$router.replace({
-                       name: 'User Management'
+                       name: 'home'
                    })
                }).catch(()=>{})
             },

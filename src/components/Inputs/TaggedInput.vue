@@ -1,6 +1,7 @@
 <template>
     <div :class="[length == 'long' ? 'long-tagged-input' : 'short-tagged-input']">
         <label :for="id" :class="labelClass">{{label}}</label>
+        <span class="form-field-info" v-if="fieldInfo">{{fieldInfo}}</span>
         <div class="tagged-input-box">
             <div class=" tag-box left-tag-box" v-if="tagLeft">
                 <img :src="`/assets/images/${leftImage}`">
@@ -60,6 +61,10 @@
            'length': {
                type: String,
                default: 'short',
+           },
+           'fieldInfo': {
+               type: String,
+               default: '',
            },
            'tagLeft': {
                type: Boolean,

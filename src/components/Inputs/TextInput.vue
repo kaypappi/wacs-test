@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="[length == 'short' ? 'short-tagged-input' : 'long-text-input']">
         <label :for="id" :class="labelClass">{{label}}</label>
         <input 
             :value="value" 
@@ -47,6 +47,10 @@
            'labelClass': {
                type: String,
                default: '',
+           },
+           'length': {
+               type: String,
+               default: 'long',
            },
            'label': String,
            'id': String,

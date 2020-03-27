@@ -19,6 +19,8 @@
             <form @submit.prevent="onSubmit">
                     <DragDropFileInput 
                         :onfile="fileChange"
+                        label="Upload Banner"
+                        fileTypes="PNG, JPG up to 5MB"
                     />
                     <TaggedInput
                         label="Amount"

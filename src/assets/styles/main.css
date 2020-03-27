@@ -855,8 +855,9 @@ li.page-title .back-link{
 
 .form-modal-label{
     display: block;
-    color: #535353;
-    font-size: 14px;
+    /* color: #535353; */
+    color: #424242;
+    font-size: 16px;
     font-weight: 400;
     margin: 15px 0 6px 0;
 }
@@ -866,20 +867,33 @@ li.page-title .back-link{
     font-size: 11px;
     margin: 0;
     position: relative;
-    top: -11px;
+    top: -14px;
 }
+
+.form-field-info + .tagged-input-box{
+    top: -10px;
+}
+
+.form-field-info + .form-modal-inputs{
+    position: relative;
+    top: -10px;
+}
+
 
 .form-modal-inputs{
     padding: 15px;
     box-sizing: border-box;
     height: 45px;
-    width: 313px;
     border: 1px solid #CCCCCC;
     color: #535353;
+    width: 100%;
     background-color: #F8F8F8;
     display: block;
 }
 
+.long-text-input{
+    width: 313px;
+}
 
 .form-short-input{
     /* !important below is to override the width of .form-modal-inputs class when used with this class */
@@ -888,7 +902,7 @@ li.page-title .back-link{
 }
 
 [disabled="disabled"]{
-    background-color: lightgrey;
+    background-color: lightgrey !important;
 }
 
 select.form-modal-inputs{
@@ -924,12 +938,10 @@ button.form-modal-button{
 
 .make-offer-div{
     max-width: 800px;
-    /* width: 80%; */
     margin: 60px 0;
     display: flex;
     justify-content: space-between;
     padding: 0 10px 0 20px;
-    /* background-color: red; */
 }
 
 .progress-div{
@@ -947,6 +959,16 @@ button.form-modal-button{
     width: 22px;
     border: 2px solid #E9E9E9;
     border-radius: 50%;
+    position: relative;
+    text-align: center;
+}
+
+.progress-circle>img{
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 .progress-stage{
@@ -965,9 +987,69 @@ button.form-modal-button{
 
 .progress-middle{
     height: 220px;
-    width: 3px;
+    width: 0px;
     margin-left: 9px;
     background-color: #E9E9E9;
+    border: 1.5px solid #E9E9E9;
+}
+
+.current-stage-circle{
+    border: 2px solid #27BE58;
+}
+
+.radio-div{
+    width: 156px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.radio-div label{
+    position: relative;
+    padding: 6px 0 0 10px;
+    color: #424242;
+    font-size: 14px;
+}
+
+.radio-select{
+    display: none;
+}
+
+.custom-radio::after{
+    content: "";
+    display: inline-block;
+    height: 35px;
+    width: 156px;
+    border: 1px solid #CCCCCC;
+    background-color: rgba(248, 248, 248, .1);
+    box-shadow: 0 1px 10px 0 rgba(215,215,215,0.15);
+    position: absolute;
+    top: -11px;
+    left: -10.5px;
+}
+
+.radio-select:checked + label .custom-radio{
+    background-color: #FFFFFF;
+    border: 5px solid #27BE58;
+}
+
+.radio-select:checked + label .custom-radio::after{
+    background-color: rgba(39,190,88,0.1);
+    border: 1px solid #27BE58;
+    left: -15px;
+    top: -15px;
+}
+
+.custom-radio{
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    position: relative;
+    top: 2.5px;
+    box-sizing: border-box;
+    border: 1px solid #E7E7E7;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 1px 0 rgba(162,162,162,0.5);
 }
 
 
@@ -1349,8 +1431,6 @@ td>.t-value{
     padding: 0;
 }
 
-
-
 .file-input-div{
     position: relative;
 }
@@ -1405,7 +1485,7 @@ td>.t-value{
 }
 
 .file-input-label .top-label-text{
-    color: #535353;
+    color: #424242;
     font-size: 14px;
     display: block;
     font-weight: 400;
@@ -1418,11 +1498,6 @@ td>.t-value{
     margin-top: -3px;
 
 }
-
-/* .double-input-container{
-    display: flex;
-    justify-content: space-between;
-} */
 
 .short-dropdown-box{
     width: 140px;
@@ -1473,15 +1548,6 @@ td>.t-value{
     position: relative;
 }
 
-/* .tagged-short-input-box{
-    background-color: #F8F8F8;
-    display: inline-flex;
-    border: 1px solid #CCCCCC;
-    width: 150px;
-    height: 45px;
-    position: relative;
-} */
-
 .double-input-range-text{
     height: 14px;
     text-transform: uppercase;
@@ -1504,7 +1570,6 @@ td>.t-value{
 }
 
 .tagged-input-box{
-    /* background-color: #F8F8F8; */
     display: flex;
     border: 1px solid #CCCCCC;
     height: 45px;
