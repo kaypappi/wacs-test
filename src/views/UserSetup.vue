@@ -1,15 +1,16 @@
 <template>
 <div>
     <div class="page-filters">
-        <div class="search-box filter-boxes">
-            <input type="text" v-model="searchTerm" placeholder="Search by name, role, status">
-            <img src="assets/images/search-icon.svg" alt="">
-        </div>
-        <div class="new-offer-div">
-            <button v-b-modal.add-user-form-modal>
+        <SearchFilterInput 
+            placeholder="Search by name, role, status"
+            v-model="searchTerm"
+            :onSearch="searchAdmin"
+        />        
+        <div class="cta-div">
+            <Button v-b-modal.add-user-form-modal class="cta-button">
                 <img src="assets/images/Plus.svg" alt="Plus sign">
                 Add User
-            </button>
+            </Button>
         </div>
     </div>
     <CustomModal :onHide="onHide" id="add-user-form-modal">
@@ -39,6 +40,7 @@
                   label="Username"
                   id="username"
                   name="user_name"
+                  :disabled="edittingUser"
                   :error="error.user_name"
                   inputClass="form-modal-inputs"
                   labelClass="form-modal-label"
@@ -108,8 +110,10 @@
     import Table from '../components/Table/Table';
     import AdminUsersTableRow from '../components/Table/AdminUsersTableRow';
     import SubmitButton from '../components/Buttons/SubmitButton';
+    import Button from '../components/Buttons/Botton';
     import TextInput from '../components/Inputs/TextInput';
     import Pagination from '../components/Pagination/Pagination';
+    import SearchFilterInput from '../components/Inputs/SearchFilterInput';
     import {EventBus} from '@/event.js';
     //import Fuse from 'fuse.js';
     export default {
@@ -117,10 +121,12 @@
             Table,
             AdminUsersTableRow,
             SubmitButton,
+            Button,
             TextInput,
             CustomModal,
             ConfirmModal,
             Pagination,
+            SearchFilterInput,
         },
         data() {
             return {
@@ -151,6 +157,11 @@
           }
         },
         methods: {
+            searchAdmin() {
+                if(this.searchTerm){
+                    alert('searching for ' + this.searchTerm);
+                }
+            },
             changePage(page=this.$route.query.page, query=this.$route.query) {
                 this.$store.dispatch('AdminUser/fetchAdmins', page, query);
             },

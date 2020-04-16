@@ -4,7 +4,7 @@
             <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <div class="login-area">
                 <p>LOGIN</p>
-                <div v-if="loginError" class="error-div login-form-input">{{loginError}}</div>
+                <div v-if="loginError" class="error-div">{{loginError}}</div>
                 <form @submit.prevent="submit">
                     <TextInput 
                         label="Username"
@@ -77,7 +77,7 @@
             submit (){
                this.signIn(this.form).then(()=> {
                    this.$router.replace({
-                       name: 'User'
+                       name: 'home'
                    })
                }).catch(()=>{})
             },

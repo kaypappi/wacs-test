@@ -6,7 +6,7 @@
                 <h5>Confirmation</h5>
                 <p>{{propObject.promptMessage}}</p>
                 <button @click="$bvModal.hide('confirm-action-modal')">Cancel</button>
-                <button @click="onConfirm">Proceed</button>
+                <button class="proceed-button" @click="onConfirm">Proceed</button>
             </div>
         </template>
         <template v-else>

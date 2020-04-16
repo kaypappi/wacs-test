@@ -12,7 +12,7 @@
         <div class="form-wrapper" v-if="isValidToken || isActiveUser">
             <img src="/assets/images/change-password.svg" class="logo" alt="WACS logo">
             <div class="login-area">
-                <div v-if="serverResponse" class="error-div login-form-input">{{serverResponse}}</div>
+                <div v-if="serverResponse" class="error-div">{{serverResponse}}</div>
                 <form @submit.prevent="submit">
                     <TextInput 
                         v-if="isActiveUser"
@@ -98,7 +98,7 @@
                 return this.$store.state.ResetPassword.resetSuccess;
             },
             isActiveUser() {
-                return this.$route.name === "change password";
+                return this.$route.name === "changePassword";
             },
             serverResponse() {
                 return this.$store.state.ResetPassword.error;
