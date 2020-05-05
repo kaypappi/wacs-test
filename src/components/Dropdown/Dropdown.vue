@@ -7,9 +7,11 @@
                 </svg>
             </template>
             <template v-for="(option, index) in options">
-                <b-dropdown-item-button v-if="option.shouldRender" :key="index" @click="option.handler">
+                <div :key="index" :class="option.class">
+                    <b-dropdown-item-button v-if="option.shouldRender" :key="index" @click="option.handler">
                     <img :src="'/assets/images/' + option.icon">{{option.name}}
                 </b-dropdown-item-button>
+                </div>
             </template>
         </b-dropdown>
     </div>
