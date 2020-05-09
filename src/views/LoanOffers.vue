@@ -1,5 +1,12 @@
 <template>
   <div class='loan-offers-wrapper'>
+    <Toast 
+            :show="toast.show"
+            :title="toast.title"
+            :successMessage="toast.message"
+            failureMessage="Invalid token"
+            :success="toast.success"
+        />
     <div class="page-filters">
       <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div>
 
@@ -111,26 +118,15 @@
       class="page-loader"
     />
     <template v-else>
-      <LoanOffersTable :items="loanOffers.data" />
+      <div v-if="loanOffers.length===0" class="no-offers">
+        <img src="/assets/images/Empty-State-Icon.svg" alt="" class="empty-file">
+        <h4>No Loan Offers</h4>
+        <p>There are no loan offers yet. Create one above.</p>
+      </div>
+      <template v-else>
+        <LoanOffersTable :items="loanOffers.data" />
+      </template>
     </template>
-    <!-- <Table :tableHeaders="['Date', 'Code', 'Title', 'Amount', 'Interest', 'Duration', 'Status', '']" v-else>
-            <LoanOffersTableRow
-              v-for="loanOffer in loanOffers"
-              :key="loanOffer.id"
-              :id="loanOffer.id"
-              :date="loanOffer.date"
-              :code="loanOffer.code"
-              :title="loanOffer.title"
-              :amount="loanOffer.amount"
-              :interest="loanOffer.interestRate"
-              :duration="loanOffer.duration"
-              :status="loanOffer.status"
-              :onEdit="editUser"
-              :onResetPassword="confirmResetPassword"
-              :onToggleStatus="toggleUserStatus"
-              :onChangeRole="changeUserRole"
-            />
-    </Table>-->
   </div>
 </template>
 
@@ -147,23 +143,28 @@ import TextArea from "../components/Inputs/TextArea"
 import SubmitButton from "../components/Buttons/SubmitButton";
 import Button from "../components/Buttons/Botton";
 import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
+import Toast from '../components/Toast'
 export default {
   components: {
     CustomModal,
     LoanOffersFilter,
     TextInput,
     TextArea,
-    /* Table,
-            LoanOffersTableRow, */
     LoanOffersTable,
-    //DragDropFileInput,
     TaggedInput,
     SubmitButton,
-    Button
+    Button,
+    Toast
   },
   data() {
     return {
       errors:{},
+      toast:{
+        show:false,
+        title:'',
+        message:"",
+        success:false
+      },
       searchTerm: "",
       creatingOffer: false,
       fetchingOffers: false,
@@ -206,7 +207,8 @@ export default {
         )
         .then(() => {
           this.creatingOffer = false;
-          console.log("success");
+          this.toast={show:true,title:'Successful!',message:"You created a loan offer",success:true}
+          this.fetchLoanOffers()
         })
         .catch(err => {
           console.log("err", err.response.data);
@@ -229,7 +231,6 @@ export default {
       axios
         .get("https://wacs2.herokuapp.com/api/v1/creditor/offer/view")
         .then(res => {
-          console.log(res.data);
           this.loanOffers = res.data;
           this.fetchingOffers = false;
         })
@@ -271,6 +272,7 @@ export default {
 .inputClasses {
     width: inherit;
     background: #f8f8f8;
+    background-color: #f8f8f8 !important;
     border: 1px solid #CCCCCC;
     padding: 10px;
 }
@@ -291,5 +293,15 @@ export default {
 .cta-div {
   padding: 3px 0px 3px 3px;
   border-left: 0px;
+}
+.no-offers{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.no-offers img{
+  margin-bottom: 20px;
 }
 </style>
