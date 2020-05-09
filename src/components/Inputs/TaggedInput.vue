@@ -13,6 +13,7 @@
                 :required="required"
                 :disabled="disabled" 
                 :id="id"
+                :min="min"
                 :name="name" 
                 :placeholder="placeholder" 
                 :class="resolveClasses"
@@ -87,6 +88,7 @@
            'name': String,
            'placeholder': String,
            'value': [String, Number],
+           'min':Number
        },
        methods: {
            keyupEven() {

@@ -7,9 +7,8 @@
                 :onSearch="()=>{}"
       />-->
       <div class="requests-no">50 Loan Requests</div>
-      
-        <FilterDropdown></FilterDropdown>
-      
+
+      <LoanRequestFilter />
     </div>
     <img
       src="/assets/images/page-ring-loader.svg"
@@ -42,14 +41,14 @@ import axios from "axios";
 //import SearchFilterInput from '../components/Inputs/SearchFilterInput';
 import Table from "../components/Table/Table";
 import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
-import FilterDropdown from "../components/Dropdown/FilterDropdown";
+import LoanRequestFilter from "../components/Dropdown/LoanRequestFilter";
 
 export default {
   components: {
     //SearchFilterInput,
     Table,
     LoanRequestTableRow,
-    FilterDropdown
+    LoanRequestFilter
   },
   data() {
     return {

@@ -11,8 +11,8 @@
       responsive="sm"
     >
       <template v-slot:cell(Status)="data">
-        <span v-if="data.item.Status === 'Active'" class="status-oval active-status">Active</span>
-        <span v-if="data.item.Status ==='Inactive'" class="status-oval inactive-status">Inactive</span>
+        <span v-if="data.item.status === 'Active'" class="status-oval active-status">Active</span>
+        <span v-if="data.item.status ==='Inactive'" class="status-oval inactive-status">Inactive</span>
       </template>
       <template v-slot:head(Options)>
         <span></span>
@@ -76,6 +76,24 @@
           <label class="custom-control-label" :for=index></label>
         </div>
       </template>
+      <template v-slot:cell(Date)="data">
+        {{data.item.date}}
+      </template>
+      <template v-slot:cell(Code)="data">
+        {{data.item.code_name}}
+      </template>
+      <template v-slot:cell(Title)="data">
+        {{data.item.title}}
+      </template>
+      <template v-slot:cell(Amount)="data">
+        {{data.item.amount_from}} to {{data.item.amount_to}}
+      </template>
+      <template v-slot:cell(Interest)="data">
+        {{data.item.interest_rate}}%
+      </template>
+      <template v-slot:cell(Duration)="data">
+        {{data.item.payback_period}}mnths
+      </template>
     </b-table>
   </div>
 </template>
@@ -85,6 +103,9 @@ import Dropdown from "../Dropdown/Dropdown";
 export default {
   components: {
     Dropdown
+  },
+  props:{
+    items:Array
   },
   data() {
     return {
@@ -98,10 +119,11 @@ export default {
         "Title",
         "Amount",
         "Interest",
+        "Duration",
         "Status",
         "Options"
       ],
-      items: [
+      /* items: [
         {
           Date: "13/02/2019",
           Code: "0346",
@@ -134,7 +156,7 @@ export default {
           Interest: "3%",
           Status: "Active"
         }
-      ],
+      ], */
       selectMode: "multi",
       selected: []
     };
@@ -168,6 +190,9 @@ export default {
       // Rows are indexed from 0, so the third row is index 2
       this.$refs.selectableTable.unselectRow(2);
     }
+  },
+  mounted(){
+    console.log(this.items)
   }
 };
 </script>

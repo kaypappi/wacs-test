@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class='loan-offers-wrapper'>
     <div class="page-filters">
-      <div class="requests-no">50 Loan Requests</div>
+      <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div>
 
-      <FilterDropdown></FilterDropdown>
+      <LoanOffersFilter :filterOffers="filterLoanOffers"></LoanOffersFilter>
 
       <div class="cta-div">
         <Button v-b-modal.add-form-modal class="cta-button">
@@ -16,18 +16,33 @@
       <h5 class="form-modal-title">Create Offer</h5>
       <div class="form-modal-title-border"></div>
       <form @submit.prevent="onSubmit">
-        <DragDropFileInput
+        <!-- <DragDropFileInput
           :onfile="fileChange"
           label="Upload Banner"
           fileTypes="PNG, JPG up to 5MB"
-        />
+        />-->
+        <div class="cot">
+            
+            <div class="cot-code">
+                <TextInput :required="true" type="number" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
+            </div>
+            <div class="double-input-range-text"></div>
+            <div class="cot-title">
+                <TextInput :required="true" @input="handleText($event,'title')" placeholder="Enter Title"  inputClass="inputClasses" length="short" label="Title"></TextInput>
+            </div>
+        </div>
+        <div class="description">
+          <TextArea row="2" :required="true" @changes="handleText($event,'description')" label='Description' inputClass="inputClasses" placeholder="Enter Description"/>
+        </div>
         <TaggedInput
           label="Amount"
           id="amount"
           name="amount"
           labelClass="form-modal-label"
           placeholder="e.g 200,000"
+          type="number"
           :tagLeft="true"
+          :required="true"
           :tagRight="false"
           leftImage="naira.svg"
           v-model.number="addOffer.amount_from"
@@ -36,6 +51,9 @@
         <TaggedInput
           :tagLeft="true"
           :tagRight="false"
+          :required="true"
+          type="number"
+          :min="this.addOffer.amount_from"
           placeholder="e.g 500,000"
           leftImage="naira.svg"
           v-model.number="addOffer.amount_to"
@@ -62,8 +80,9 @@
           labelClass="form-modal-label margin-top-30"
           :tagLeft="false"
           :tagRight="true"
+          :required="true"
           rightImage="percent.svg"
-          v-model.number="addOffer.interest_rate_from"
+          v-model.number="addOffer.interest_rate"
         />
         <label
           for="moratorium"
@@ -91,7 +110,9 @@
       v-if="fetchingOffers"
       class="page-loader"
     />
-    <LoanOffersTable />
+    <template v-else>
+      <LoanOffersTable :items="loanOffers.data" />
+    </template>
     <!-- <Table :tableHeaders="['Date', 'Code', 'Title', 'Amount', 'Interest', 'Duration', 'Status', '']" v-else>
             <LoanOffersTableRow
               v-for="loanOffer in loanOffers"
@@ -119,29 +140,34 @@ import CustomModal from "../components/Modals/CustomModal";
 //import Table from '../components/Table/Table';
 import LoanOffersTable from "../components/Table/LoanOffersTable";
 //  import LoanOffersTableRow from '../components/Table/LoanOffersTableRow';
-import DragDropFileInput from "../components/Inputs/DragDropFileInput";
+//import DragDropFileInput from "../components/Inputs/DragDropFileInput";
 import TaggedInput from "../components/Inputs/TaggedInput";
+import TextInput from "../components/Inputs/TextInput";
+import TextArea from "../components/Inputs/TextArea"
 import SubmitButton from "../components/Buttons/SubmitButton";
 import Button from "../components/Buttons/Botton";
-import FilterDropdown from '../components/Dropdown/FilterDropdown'
+import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
 export default {
   components: {
     CustomModal,
-    FilterDropdown,
+    LoanOffersFilter,
+    TextInput,
+    TextArea,
     /* Table,
             LoanOffersTableRow, */
     LoanOffersTable,
-    DragDropFileInput,
+    //DragDropFileInput,
     TaggedInput,
     SubmitButton,
     Button
   },
   data() {
     return {
+      errors:{},
       searchTerm: "",
       creatingOffer: false,
       fetchingOffers: false,
-      loanOffers: [],
+      loanOffers: {},
       addOffer: {
         moratorium_principal: 0,
         payback_period: 0
@@ -151,40 +177,44 @@ export default {
   },
   methods: {
     onSubmit() {
+      var formValues = new FormData();
       this.creatingOffer = true;
-      this.formValues.append("interest_rate_to", 10);
-      this.formValues.append("code_name", 1234567890);
-      this.formValues.append("title", "Cheap anual loan");
-      this.formValues.append(
+      formValues.append("code_name", this.addOffer.code);
+      formValues.append("title", this.addOffer.title);
+      formValues.append(
         "description",
-        "Do You Need To Renovate Your House? A Personal Loan Is The"
+        this.addOffer.description
       );
-      this.formValues.append("moratorium_interest", 1);
-      this.formValues.append("payback_date", "year");
-      this.formValues.append("amount_from", this.addOffer.amount_from);
-      this.formValues.append("amount_to", this.addOffer.amount_to);
-      this.formValues.append("payback_period", this.addOffer.payback_period);
-      this.formValues.append(
-        "interest_rate_from",
-        this.addOffer.interest_rate_from
-      );
-      this.formValues.append(
-        "moratorium_principal",
+      formValues.append("interest_rate", this.addOffer.interest_rate);
+      formValues.append("amount_from", this.addOffer.amount_from);
+      formValues.append("amount_to", this.addOffer.amount_to);
+      formValues.append("payback_period", this.addOffer.payback_period);
+      formValues.append("interest_rate_from", this.addOffer.interest_rate_from);
+      formValues.append(
+        "moratorium_period",
         this.addOffer.moratorium_principal
       );
       axios
-        .post("creditor/offer/create", this.formValues, {
-          headers: {
-            "Content-Type": "multipart/form-data"
+        .post(
+          "https://wacs2.herokuapp.com/api/v1/creditor/offer/create",
+          formValues,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
           }
-        })
+        )
         .then(() => {
           this.creatingOffer = false;
+          console.log("success");
         })
         .catch(err => {
           console.log("err", err.response.data);
           this.creatingOffer = false;
         });
+    },
+    handleText(event,type){
+         this.addOffer[type]=event
     },
     fileChange(file) {
       const formData = new FormData();
@@ -197,14 +227,19 @@ export default {
     fetchLoanOffers() {
       this.fetchingOffers = true;
       axios
-        .get("http://wacs.mocklab.io/loanoffers")
+        .get("https://wacs2.herokuapp.com/api/v1/creditor/offer/view")
         .then(res => {
-          this.fetchingOffers = false;
+          console.log(res.data);
           this.loanOffers = res.data;
+          this.fetchingOffers = false;
         })
-        .catch(() => {
+        .catch(err => {
+          console.log(err);
           this.fetchingOffers = false;
         });
+    },
+    filterLoanOffers(data){
+      this.loanOffers=data
     },
     editUser() {
       alert("editting");
@@ -225,20 +260,36 @@ export default {
 };
 </script>
 
-<style scoped>
-
-.page-filters{
-    align-items: center;
-    padding:0 30px;
-    background-color: white;
-    color: #A1A1A1;
+<style >
+.page-filters {
+  align-items: center;
+  padding: 0 30px;
+  background-color: white;
+  color: #a1a1a1;
 }
 
-.filter-by{
-    margin-left: 20px;
+.inputClasses {
+    width: inherit;
+    background: #f8f8f8;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
 }
-.cta-div{
-    padding: 3px 0px 3px 3px;
-    border-left: 0px ;
+
+.description{
+  margin-top: 15px;
+}
+
+.cot{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.filter-by {
+  margin-left: 40px;
+}
+.cta-div {
+  padding: 3px 0px 3px 3px;
+  border-left: 0px;
 }
 </style>

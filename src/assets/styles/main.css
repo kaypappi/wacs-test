@@ -70,8 +70,8 @@ svg.icon {
 }
 
 .button-loader {
-    height: 40px;
-    width: 45px;
+    height: 100%;
+    width: auto;
 }
 
 .page-loader {
@@ -458,7 +458,7 @@ li.page-title .back-link {
 /*---------- page filters style ------------*/
 
 .page-filters {
-    background-color: #F8F8F8;
+    background-color: #ffffff;
     display: flex;
     flex-wrap: wrap;
     border-radius: 2px 0 0 2px;
@@ -552,9 +552,9 @@ li.page-title .back-link {
 }
 
 .cta-div {
-    border-left: 1px solid #DDDDDD;
     height: inherit;
-    padding: 12px 20px 12px 20px;
+    padding: 3px 0px 3px 3px;
+    border-left: 0px;
     margin-left: auto;
     display: inline-block;
 }

@@ -18,12 +18,13 @@ export default {
   props: {
     id: String,
     placeholders: String,
+    value:String
   },
   data(){
       return{
           date:''
       }
-  }
+  },
 };
 </script>
 
