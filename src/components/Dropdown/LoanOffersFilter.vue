@@ -156,11 +156,10 @@ export default {
       const MInterest=this.filters.MInterest ? `moratoriuminterest=${this.filters.MInterest}`:''
       const amountFrom=this.filters.amount.from? `from=${this.filters.amount.from}`:''
       const amountTo=this.filters.amount.to? `from=${this.filters.amount.to}`:''
-      const interestRateFrom=this.filters.interestRate.from? `interestRateFrom=${this.filters.interestRate.from}`:''
-      const interestRateTo=this.filters.interestRate.to? `interestRateTo=${this.filters.interestRate.to}`:''
+      const interest=(this.filters.interestRateFrom&&this.filters.interestRateTo)?`interest=${this.filters.interestRateFrom}##${this.filters.interestRateTo}`:''
       const date=(this.filters.date.from&&this.filters.date.to) ? `date=${this.filters.date.from}##${this.filters.date.to}`:'' 
       
-      const URL=`${LOANOFFERSAPI}?${code}&${Status}&${MInterest}&${amountFrom}&${amountTo}&${interestRateFrom}&${interestRateTo}&${date}`
+      const URL=`${LOANOFFERSAPI}?${code}&${Status}&${MInterest}&${amountFrom}&${amountTo}&${interest}&${date}`
     axios.get(URL,{code:'001'}).then(res=>{
       this.filterOffers(res.data)
       this.isLoading=false
