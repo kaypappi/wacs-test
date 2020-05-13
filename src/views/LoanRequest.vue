@@ -1,13 +1,21 @@
 <template>
   <div>
     <div class="page-filters requests-header">
-      <!-- <SearchFilterInput 
-                placeholder="Search by name, role, status"
+      <div class="requests-no">50 Loan Requests</div>
+      <SearchFilterInput 
+                placeholder="Search by name, ippiss Nogit"
                 v-model="searchTerm"
                 :onSearch="()=>{}"
-      />-->
-      <div class="requests-no">50 Loan Requests</div>
-      
+      />
+      <div class="day-options">
+        <template v-for="(option,index) in dayOptions">
+          <span
+            :class="[option===activeOption? 'isActive' : '']"
+            :key="index"
+            @click="activeOption=option"
+          >{{option}}</span>
+        </template>
+      </div>
         <FilterDropdown></FilterDropdown>
       
     </div>
@@ -39,14 +47,14 @@
 
 <script>
 import axios from "axios";
-//import SearchFilterInput from '../components/Inputs/SearchFilterInput';
+import SearchFilterInput from '../components/Inputs/SearchFilterInput';
 import Table from "../components/Table/Table";
 import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
 import FilterDropdown from "../components/Dropdown/FilterDropdown";
 
 export default {
   components: {
-    //SearchFilterInput,
+    SearchFilterInput,
     Table,
     LoanRequestTableRow,
     FilterDropdown
@@ -55,7 +63,9 @@ export default {
     return {
       searchTerm: "",
       loanRequests: [],
-      fetchingRequests: true
+      fetchingRequests: true,
+      dayOptions: ["Today", "Last 7days", "30 days", "1 year"],
+      activeOption: "Today",
     };
   },
   methods: {
@@ -100,5 +110,22 @@ export default {
   padding: 7px 5px;
   background-color: #f8f8f8;
   position: relative;
+}
+
+.isActive {
+  border: 1px solid #cccccc;
+  background-color: #f8f8f8;
+  color: #27be58;
+}
+.day-options {
+  display: flex;
+  color: #424242;
+  font-weight: 500;
+  justify-content: space-between;
+}
+
+.day-options span {
+  padding: 4px 10px;
+  cursor: pointer;
 }
 </style>
