@@ -63,7 +63,7 @@ export default {
       this.fetchingRequests = true;
       axios
         .get(
-          "https://eefa7b97-cdec-42d9-a0ec-cdfd47d37847.mock.pstmn.io/loanrequest",
+          "https://wacs2.herokuapp.com/api/v1/creditor/Request/view",
           {
             headers: {
               "x-api-key":
@@ -72,6 +72,7 @@ export default {
           }
         )
         .then(res => {
+          console.log(res.data)
           this.fetchingRequests = false;
           this.loanRequests = res.data;
         });
