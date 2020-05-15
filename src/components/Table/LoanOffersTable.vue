@@ -19,7 +19,7 @@
         <div class="cot">
             
             <div class="cot-code">
-                <TextInput :value="this.addOffer.code_name"  :required="true" type="number" @input="handleText($event,'code_name')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
+                <TextInput :value="this.addOffer.code_name"  :required="true" type="text" @input="handleText($event,'code_name')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
             </div>
             <div class="double-input-range-text"></div>
             <div class="cot-title">
@@ -260,15 +260,15 @@ export default {
   methods: {
     changeId(item){
       this.activeRow=item.id
-      this.addOffer=this.getFields()
+      this.addOffer={...this.getFields()}
     },
     getFields(){
       if(this.activeRow===null){
         return
       }
-      const item=this.items.filter(item=>{
+      const item={...this.items.filter(item=>{
         return item.id===this.activeRow
-      })
+      })}
     
       return item[0]
     },
@@ -299,9 +299,8 @@ export default {
       let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
       axios.get(url)
       .then(response=>{
-        console.log(response)
         this.showToast("Successful",response.data.message,true)
-        this.deleteRow(response.data.data)
+        this.deleteRow(this.addOffer.id)
       })
       .catch(err=>{
         console.log(err)
@@ -334,6 +333,7 @@ export default {
         )
         .then((response) => {
           this.creatingOffer = false;
+          this.updateItems(response.data.data)
           this.$bvModal.hide('edit-form-modal')
           this.showToast('Successful',response.data.message,true)
         })

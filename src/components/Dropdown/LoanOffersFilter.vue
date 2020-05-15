@@ -4,7 +4,7 @@
       <span class="title">
         <BIconFunnelFill />Filtered by:
       </span>
-      <span>Date</span>
+      <span>{{shownTerms}}</span>
     </template>
     <template v-slot:body>
         <form @submit.prevent="applyFilter">
@@ -31,6 +31,7 @@
             @changed="handleText($event,'date','to')"
             id="end-datePicker"
             placeholders="End date"
+            :value="filters.date.to"
           ></date-field>
         </div>
       </div>
@@ -61,16 +62,16 @@
         <div class="status-header section-header">Interest Rate</div>
         <div class="section-body">
           <TextInput placeholder="From" :required="filters.interestRate.to? true:false" :value="filters.interestRate.from" @input="handleText($event,'interestRate','from')" inputClass="inputClass" length="short" ></TextInput>
-          <TextInput placeholder="To" :required="filters.interestRate.from? true:false" :value="filters.to" @input="handleText($event,'interestRate','to')" inputClass="inputClass" length="short" ></TextInput>
+          <TextInput placeholder="To" :required="filters.interestRate.from? true:false" :value="filters.interestRate.to" @input="handleText($event,'interestRate','to')" inputClass="inputClass" length="short" ></TextInput>
         </div>
       </div>
        <div class="filter-section">
-        <div class="status-header section-header">
+        <!-- <div class="status-header section-header">
           <Checkbox title="Save as default filter" />
-        </div>
+        </div> -->
         <div class="section-body">
-          <div class="clear">
-            <Botton :onclick="()=>{filters={...clearFilters}}">Clear</Botton>
+          <div  class="clear">
+            <Botton :onclick="clearFilters" type="button" >Clear</Botton>
           </div>
           <div ><SubmitButton  name="Apply" :isLoading="isLoading" /></div>
         </div>
@@ -115,6 +116,8 @@ export default {
       return{
           isLoading:false,
           errors:{},
+          filteredTerms:[],
+          shownTerms:'',
           filters:{
               status:true,
               code:'',
@@ -133,7 +136,56 @@ export default {
               }
 
           },
-          clearFilters:{
+          
+      }
+  },
+  methods:{
+      updateSwitch(event){
+          this.filters.status=event
+      },
+    handleText(event,type,position){
+        if(position){
+            this.filters[type][position]=event
+            if(event){
+              this.filteredTerms=!this.filteredTerms.includes(type)?[...this.filteredTerms,type]:[...this.filteredTerms]
+            }
+            else{
+              this.filteredTerms=[...this.filteredTerms.filter(term=>{return term!==type})]
+            }
+        }
+        else{
+            this.filters[type]=event
+            if(event){
+              this.filteredTerms=!this.filteredTerms.includes(type)?[...this.filteredTerms,type]:[...this.filteredTerms]
+            }
+            else{
+              this.filteredTerms=[...this.filteredTerms.filter(term=>{return term!==type})]
+            }
+        }
+    },
+    updateChecked(checked, type) {
+      this.filters.status = { ...this.filters.status, [type]: checked };
+    },
+    applyFilter(){
+      this.isLoading=true
+      //const Status=!this.filters.status? 'status=active':'status=inactive'
+      const code=this.filters.code ? `code=${this.filters.code}`:''
+      const MInterest=this.filters.MInterest ? `moratoriuminterest=${this.filters.MInterest}`:''
+      const amountFrom=this.filters.amount.from? `from=${this.filters.amount.from}`:''
+      const amountTo=this.filters.amount.to? `from=${this.filters.amount.to}`:''
+      const interests=(this.filters.interestRate.from&&this.filters.interestRate.to)?`interest=${this.filters.interestRate.from}##${this.filters.interestRate.to}`:''
+      const date=(this.filters.date.from) ? `date=${this.filters.date.from}##${this.filters.date.to}`:'' 
+      const URL=`${LOANOFFERSAPI.view}?${code}&${MInterest}&${amountFrom}&${amountTo}&${interests}&${date}`
+    axios.get(URL,{code:'001'}).then(res=>{
+      this.filterOffers(res.data)
+      this.isLoading=false
+    }).catch(err=>{
+      this.errors=err
+    })
+    this.shownTerms=this.filteredTerms.join(", ")
+},
+    clearFilters(){
+      const clearFilter={
               status:true,
               code:'',
               MInterest:'',
@@ -150,42 +202,12 @@ export default {
                   to:'',
               }
 
-          } 
-      }
-  },
-  methods:{
-      updateSwitch(event){
-          this.filters.status=event
-      },
-    handleText(event,type,position){
-        if(position){
-            this.filters[type][position]=event
-        }
-        else{
-            this.filters[type]=event
-        }
-    },
-    updateChecked(checked, type) {
-      this.filters.status = { ...this.filters.status, [type]: checked };
-      console.log(this.filters.status);
-    },
-    applyFilter(){
-      this.isLoading=true
-      //const Status=!this.filters.status? 'status=active':'status=inactive'
-      const code=this.filters.code ? `code=${this.filters.code}`:''
-      const MInterest=this.filters.MInterest ? `moratoriuminterest=${this.filters.MInterest}`:''
-      const amountFrom=this.filters.amount.from? `from=${this.filters.amount.from}`:''
-      const amountTo=this.filters.amount.to? `from=${this.filters.amount.to}`:''
-      const interest=(this.filters.interestRateFrom&&this.filters.interestRateTo)?`interest=${this.filters.interestRateFrom}##${this.filters.interestRateTo}`:''
-      const date=(this.filters.date.from&&this.filters.date.to) ? `date=${this.filters.date.from}##${this.filters.date.to}`:'' 
+          }
+      this.filters={...clearFilter}
+      this.filteredTerms=[]
+      this.shownTerms=""
+      this.applyFilter()
       
-      const URL=`${LOANOFFERSAPI}?${code}&${MInterest}&${amountFrom}&${amountTo}&${interest}&${date}`
-    axios.get(URL,{code:'001'}).then(res=>{
-      this.filterOffers(res.data)
-      this.isLoading=false
-    }).catch(err=>{
-      this.errors=err
-    })
     }
   }
 };

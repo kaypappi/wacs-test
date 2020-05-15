@@ -10,9 +10,9 @@
     <div class="page-filters">
       <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
       <SearchFilterInput 
-                placeholder="Search by name, role, status"
+                placeholder="Search by name,title"
                 v-model="searchTerm"
-                :onSearch="()=>{}"
+                :onSearch="searchLoanOffer"
       />
       <LoanOffersFilter :filterOffers="filterLoanOffers"></LoanOffersFilter>
 
@@ -35,7 +35,7 @@
         <div class="cot">
             
             <div class="cot-code">
-                <TextInput :required="true" type="number" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
+                <TextInput :required="true" type="text" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
             </div>
             <div class="double-input-range-text"></div>
             <div class="cot-title">
@@ -128,7 +128,7 @@
         <p>There are no loan offers yet. Create one above.</p>
       </div>
       <template v-else>
-        <LoanOffersTable :items="loanOffers.data" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
+        <LoanOffersTable :items="offers" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
       </template>
     </template>
   </div>
@@ -185,7 +185,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      var formValues = new FormData();
       const url=baseUrl+`creditor/offer/create`
       const data={
         code_name:this.addOffer.code,
@@ -199,22 +198,6 @@ export default {
         moratorium_period:this.addOffer.moratorium_principal
       }
       this.creatingOffer = true;
-      formValues.append("code_name", this.addOffer.code);
-      formValues.append("title", this.addOffer.title);
-      formValues.append(
-        "description",
-        this.addOffer.description
-      );
-      formValues.append("interest_rate", this.addOffer.interest_rate);
-      formValues.append("amount_from", this.addOffer.amount_from);
-      formValues.append("amount_to", this.addOffer.amount_to);
-      formValues.append("payback_period", this.addOffer.payback_period);
-      formValues.append("interest_rate_from", this.addOffer.interest_rate_from);
-      formValues.append(
-        "moratorium_period",
-        this.addOffer.moratorium_principal
-      );
-
       axios
         .post(
           url,
@@ -223,6 +206,7 @@ export default {
         .then(() => {
           this.creatingOffer = false;
           this.toast={show:true,title:'Successful!',message:"You created a loan offer",success:true}
+          this.$bvModal.hide('add-form-modal')
           this.fetchLoanOffers()
         })
         .catch(err => {
@@ -262,8 +246,24 @@ export default {
       this.loanOffers.data.splice(index,1,newRow)
     },
     deleteLoanOffersRow(row){
-      const index=this.loanOffers.data.findIndex(x=>x.id===row.id)
-      this.loanOffers.data.splice(index-1,1)
+      const index=this.loanOffers.data.findIndex(x=>x.id===row)
+      this.loanOffers.data.splice(index,1)
+    },
+    searchLoanOffer(){
+      console.log('serching for' + this.searchTerm)
+    }
+  },
+  computed:{
+    offers(){
+      let loanOffers=this.loanOffers.data
+      if(this.searchTerm && loanOffers) {
+                    loanOffers = loanOffers.filter((row) => {
+                        return Object.keys(row).some((key) => {
+                            return String(row[key]).toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
+                        })
+                    })
+                }
+        return loanOffers
     }
   },
   mounted() {
