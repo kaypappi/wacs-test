@@ -1158,6 +1158,10 @@ td>.t-value {
     display: inline-block;
 }
 
+.status-circle.pending{
+    background-color: #F08C14;
+}
+
 .main-body-content .pagination {
     float: right;
     margin: 8px 40px 0 10px;

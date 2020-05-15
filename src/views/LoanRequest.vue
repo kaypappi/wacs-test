@@ -7,7 +7,7 @@
                 v-model="searchTerm"
                 :onSearch="()=>{}"
       />
-      <div class="day-options">
+      <!-- <div class="day-options">
         <template v-for="(option,index) in dayOptions">
           <span
             :class="[option===activeOption? 'isActive' : '']"
@@ -15,7 +15,7 @@
             @click="activeOption=option"
           >{{option}}</span>
         </template>
-      </div>
+      </div> -->
         <FilterDropdown></FilterDropdown>
       
     </div>
@@ -26,20 +26,19 @@
       class="page-loader"
     />
     <Table
-      :tableHeaders="['Date', 'Name', 'Ippiss No.', 'Mont. Salary', 'Loan Request', 'Available Loan', 'Status']"
+      :tableHeaders="['Date', 'Name', 'Ippiss No.', 'Mont. Salary', 'Loan Request', 'Status']"
       v-else
     >
       <LoanRequestTableRow
-        v-for="loanRequest in loanRequests"
+        v-for="loanRequest in loanRequests.data"
         :key="loanRequest.id"
         :id="loanRequest.id"
-        :date="loanRequest.Date"
-        :name="loanRequest.Name"
-        :ippissNo="7777777777"
-        :salary="loanRequest.Mon_Salary"
-        :loanRequest="loanRequest.Loan_Req"
-        :availableLoan="loanRequest.Avail_loan"
-        :status="loanRequest.Status"
+        :date="loanRequest.date"
+        :name="loanRequest.user_info.full_name"
+        :ippissNo="loanRequest.user_info.ippiss_number"
+        :salary="loanRequest.user_info.monthly_salary"
+        :loanRequest="loanRequest.amount"
+        :status="loanRequest.status"
       />
     </Table>
   </div>
