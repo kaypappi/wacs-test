@@ -472,13 +472,11 @@ li.page-title .back-link {
     max-width: 350px;
     border: 1px solid #CCCCCC;
     padding: 0 8px;
-    margin: 12px 10px 12px 0;
 }
 
 .main-body-content .page-filters .search-box {
-    max-width: 350px;
-    min-width: 250px;
-    margin-left: 20px;
+    max-width: 250px;
+    min-width: 200px;
     background-color: #F8F8F8;
     flex: 1;
 }

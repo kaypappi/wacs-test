@@ -14,6 +14,7 @@
                 :disabled="disabled" 
                 :id="id"
                 :min="min"
+                :max="max"
                 :name="name" 
                 :placeholder="placeholder" 
                 :class="resolveClasses"
@@ -88,7 +89,8 @@
            'name': String,
            'placeholder': String,
            'value': [String, Number],
-           'min':Number
+           'min':[Number,String],
+           'max':[Number,String],
        },
        methods: {
            keyupEven() {

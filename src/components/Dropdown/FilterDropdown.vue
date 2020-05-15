@@ -78,7 +78,7 @@ export default {
   position: absolute;
   z-index: 1;
   top: 55px;
-  right: 0;
+  left: 0;
 }
 .day-options {
   padding: 20px;

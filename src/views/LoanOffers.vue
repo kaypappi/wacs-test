@@ -8,8 +8,12 @@
             :success="toast.success"
         />
     <div class="page-filters">
-      <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div>
-
+      <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
+      <SearchFilterInput 
+                placeholder="Search by name, role, status"
+                v-model="searchTerm"
+                :onSearch="()=>{}"
+      />
       <LoanOffersFilter :filterOffers="filterLoanOffers"></LoanOffersFilter>
 
       <div class="cta-div">
@@ -124,7 +128,7 @@
         <p>There are no loan offers yet. Create one above.</p>
       </div>
       <template v-else>
-        <LoanOffersTable :items="loanOffers.data" />
+        <LoanOffersTable :items="loanOffers.data" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
       </template>
     </template>
   </div>
@@ -144,6 +148,8 @@ import SubmitButton from "../components/Buttons/SubmitButton";
 import Button from "../components/Buttons/Botton";
 import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
 import Toast from '../components/Toast'
+import SearchFilterInput from "../components/Inputs/SearchFilterInput"
+import {LOANOFFERSAPI,baseUrl} from '../router/api_routes'
 export default {
   components: {
     CustomModal,
@@ -154,7 +160,8 @@ export default {
     TaggedInput,
     SubmitButton,
     Button,
-    Toast
+    Toast,
+    SearchFilterInput
   },
   data() {
     return {
@@ -179,6 +186,18 @@ export default {
   methods: {
     onSubmit() {
       var formValues = new FormData();
+      const url=baseUrl+`creditor/offer/create`
+      const data={
+        code_name:this.addOffer.code,
+        title:this.addOffer.title,
+        description:this.addOffer.description,
+        interest_rate:this.addOffer.interest_rate,
+        amount_from:this.addOffer.amount_from,
+        amount_to:this.addOffer.amount_to,
+        payback_period:this.addOffer.payback_period,
+        interest_rate_from:this.addOffer.interest_rate_from,
+        moratorium_period:this.addOffer.moratorium_principal
+      }
       this.creatingOffer = true;
       formValues.append("code_name", this.addOffer.code);
       formValues.append("title", this.addOffer.title);
@@ -195,15 +214,11 @@ export default {
         "moratorium_period",
         this.addOffer.moratorium_principal
       );
+
       axios
         .post(
-          "https://wacs2.herokuapp.com/api/v1/creditor/offer/create",
-          formValues,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
+          url,
+          data,
         )
         .then(() => {
           this.creatingOffer = false;
@@ -229,7 +244,7 @@ export default {
     fetchLoanOffers() {
       this.fetchingOffers = true;
       axios
-        .get("https://wacs2.herokuapp.com/api/v1/creditor/offer/view")
+        .get(LOANOFFERSAPI.view)
         .then(res => {
           this.loanOffers = res.data;
           this.fetchingOffers = false;
@@ -242,22 +257,18 @@ export default {
     filterLoanOffers(data){
       this.loanOffers=data
     },
-    editUser() {
-      alert("editting");
+    updateLoanOffers(newRow){
+      const index=this.loanOffers.data.findIndex(x=>x.id===newRow.id)
+      this.loanOffers.data.splice(index,1,newRow)
     },
-    changeUserRole() {
-      alert("changing role");
-    },
-    confirmResetPassword() {
-      alert("resetting");
-    },
-    toggleUserStatus() {
-      alert("changing status");
+    deleteLoanOffersRow(row){
+      const index=this.loanOffers.data.findIndex(x=>x.id===row.id)
+      this.loanOffers.data.splice(index-1,1)
     }
   },
   mounted() {
     this.fetchLoanOffers();
-  }
+  },
 };
 </script>
 
@@ -288,7 +299,7 @@ export default {
 }
 
 .filter-by {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 .cta-div {
   padding: 3px 0px 3px 3px;

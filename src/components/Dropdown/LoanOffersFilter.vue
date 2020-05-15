@@ -2,13 +2,13 @@
   <FilterDropdown>
     <template v-slot:header>
       <span class="title">
-        <BIconFunnelFill />Filtered by Date:
+        <BIconFunnelFill />Filtered by:
       </span>
       <span>Date</span>
     </template>
     <template v-slot:body>
         <form @submit.prevent="applyFilter">
-          <div class="filter-top">
+          <!-- <div class="filter-top">
           <div class="switch-section">
           <label for="">Status</label>
           <Switchs :title="!filters.status ? 'active': 'inactive'" @switchChange="updateSwitch($event)"></Switchs>
@@ -16,22 +16,8 @@
             <div class="filter-code">
                 <TextInput :required="false" :value="filters.code" @input="handleText($event,'code')" inputClass="inputClass" length="short" label="Code"></TextInput>
             </div>
-        </div>
-      <div class="filter-section">
-        <div class="status-header section-header">Amount</div>
-        <div class="section-body">
-          <TextInput :required="filters.amount.to? true:false" :value="filters.amount.from" @input="handleText($event,'amount','from')" inputClass="inputClass" length="short" label="From"></TextInput>
-          <TextInput :required="filters.amount.from? true:false" :value="filters.amount.to" @input="handleText($event,'amount','to')" inputClass="inputClass" length="short" label="To"></TextInput>
-        </div>
-      </div>
-      <div class="filter-section">
-        <div class="status-header section-header">Interest Rate</div>
-        <div class="section-body">
-          <TextInput :required="filters.interestRate.to? true:false" :value="filters.interestRate.from" @input="handleText($event,'interestRate','from')" inputClass="inputClass" length="short" label="From"></TextInput>
-          <TextInput :required="filters.interestRate.from? true:false" :value="filters.to" @input="handleText($event,'interestRate','to')" inputClass="inputClass" length="short" label="To"></TextInput>
-        </div>
-      </div>
-      <div class="filter-section">
+        </div> -->
+        <div class="filter-section">
         <div class="date-header section-header">Date</div>
         <div class="section-body">
           <date-field
@@ -46,6 +32,36 @@
             id="end-datePicker"
             placeholders="End date"
           ></date-field>
+        </div>
+      </div>
+        <div class="filter-section">
+        <div class="status-header section-header">Status</div>
+        <div class="section-body">
+          <div class="checkbox-wrapper">
+            <div>
+              <Checkbox @changed="updateChecked($event,'Active')" title="Active" />
+            </div>
+            <div>
+              <Checkbox @changed="updateChecked($event,'Inactive')" title="Inactive" />
+            </div>
+            <div>
+              <Checkbox @changed="updateChecked($event,'Draft')" title="Draft" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="filter-section">
+        <div class="status-header section-header">Amount</div>
+        <div class="section-body">
+          <TextInput placeholder="From" :required="filters.amount.to? true:false" :value="filters.amount.from" @input="handleText($event,'amount','from')" inputClass="inputClass" length="short"></TextInput>
+          <TextInput placeholder="To" :required="filters.amount.from? true:false" :value="filters.amount.to" @input="handleText($event,'amount','to')" inputClass="inputClass" length="short" ></TextInput>
+        </div>
+      </div>
+      <div class="filter-section">
+        <div class="status-header section-header">Interest Rate</div>
+        <div class="section-body">
+          <TextInput placeholder="From" :required="filters.interestRate.to? true:false" :value="filters.interestRate.from" @input="handleText($event,'interestRate','from')" inputClass="inputClass" length="short" ></TextInput>
+          <TextInput placeholder="To" :required="filters.interestRate.from? true:false" :value="filters.to" @input="handleText($event,'interestRate','to')" inputClass="inputClass" length="short" ></TextInput>
         </div>
       </div>
        <div class="filter-section">
@@ -69,7 +85,7 @@
 import axios from "axios";
 import FilterDropdown from "../Dropdown/FilterDropdown";
 import { BIconFunnelFill } from "bootstrap-vue";
-import Switchs from "../Inputs/Switch"
+//import Switchs from "../Inputs/Switch"
 import TextInput from '../Inputs/TextInput'
 import DateField from "../Inputs/DateField";
 import SubmitButton from "../Buttons/SubmitButton";
@@ -82,7 +98,7 @@ export default {
     "date-field": DateField,
     FilterDropdown,
     BIconFunnelFill,
-    Switchs,
+    //Switchs,
     TextInput,
     SubmitButton,
     Botton,
@@ -149,9 +165,13 @@ export default {
             this.filters[type]=event
         }
     },
+    updateChecked(checked, type) {
+      this.filters.status = { ...this.filters.status, [type]: checked };
+      console.log(this.filters.status);
+    },
     applyFilter(){
       this.isLoading=true
-      const Status=!this.filters.status? 'status=active':'status=inactive'
+      //const Status=!this.filters.status? 'status=active':'status=inactive'
       const code=this.filters.code ? `code=${this.filters.code}`:''
       const MInterest=this.filters.MInterest ? `moratoriuminterest=${this.filters.MInterest}`:''
       const amountFrom=this.filters.amount.from? `from=${this.filters.amount.from}`:''
@@ -159,7 +179,7 @@ export default {
       const interest=(this.filters.interestRateFrom&&this.filters.interestRateTo)?`interest=${this.filters.interestRateFrom}##${this.filters.interestRateTo}`:''
       const date=(this.filters.date.from&&this.filters.date.to) ? `date=${this.filters.date.from}##${this.filters.date.to}`:'' 
       
-      const URL=`${LOANOFFERSAPI}?${code}&${Status}&${MInterest}&${amountFrom}&${amountTo}&${interest}&${date}`
+      const URL=`${LOANOFFERSAPI}?${code}&${MInterest}&${amountFrom}&${amountTo}&${interest}&${date}`
     axios.get(URL,{code:'001'}).then(res=>{
       this.filterOffers(res.data)
       this.isLoading=false
@@ -177,6 +197,7 @@ input.inputClass {
     width: inherit;
     background: #f8f8f8;
     border: 1px solid #CCCCCC;
+    padding: 6px 12px;
 }
 
 .filter-top{

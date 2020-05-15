@@ -7,9 +7,9 @@
       :class="inputClass"
       :rows="row"
       no-resize
-      v-model="description"
+      v-model="inputVal"
       :required="required"
-      @change="$emit('changes',description)"
+      
     ></b-form-textarea>
     <span v-if="error" class="form-input-error">{{error[0]}}</span>
   </div>
@@ -65,6 +65,16 @@ export default {
   methods: {
     keyupEven() {
       this.keyupEvent(this.name);
+    }
+  },
+  computed: {
+    inputVal: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit('changes',val);
+      }
     }
   }
 };
