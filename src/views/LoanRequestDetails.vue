@@ -1,7 +1,7 @@
 <template>
     <div class="full-user-details">
         <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingRequests" class="page-loader">
-        <template v-else>
+        <template >
             <div class="details-top">
                 <h3>{{customerName}}</h3>
                 <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
@@ -10,7 +10,7 @@
                 </Button>
                 <Button class="cta-button margin-left-30" @click="makeOffer">
                     <img src="/assets/images/double-check.svg" alt="Plus sign">
-                    Make Offer
+                    Make Offer 
                 </Button>
             </div>
             <table class="table personal-info-table no-border-table">
@@ -104,6 +104,7 @@
                     const loanData = res.data.find(data => data.id == this.requestId);
                     this.splitDetails(loanData);
                 })
+                .catch(err=>console.log(err))
                
             },
             declineRequest() {

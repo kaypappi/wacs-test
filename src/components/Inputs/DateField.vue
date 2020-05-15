@@ -6,8 +6,7 @@
       :id="id"
       :placeholder="placeholders"
       local="en"
-      v-model="date"
-      @context="$emit('changed',date)"
+      v-model="inputVal"
       dropright
     ></b-form-datepicker>
   </div>
@@ -18,11 +17,22 @@ export default {
   props: {
     id: String,
     placeholders: String,
+    value:String
   },
   data(){
       return{
           date:''
       }
+  },
+  computed: {
+    inputVal: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit('changed',val)
+      }
+    }
   }
 };
 </script>
