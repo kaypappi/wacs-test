@@ -2,10 +2,10 @@
   <div>
     <div class="page-filters requests-header">
       <div class="requests-no">50 Loan Requests</div>
-      <SearchFilterInput 
-                placeholder="Search by name, ippiss Nogit"
-                v-model="searchTerm"
-                :onSearch="()=>{}"
+      <SearchFilterInput
+        placeholder="Search by name, ippiss No"
+        v-model="searchTerm"
+        :onSearch="()=>{}"
       />
       <!-- <div class="day-options">
         <template v-for="(option,index) in dayOptions">
@@ -15,9 +15,8 @@
             @click="activeOption=option"
           >{{option}}</span>
         </template>
-      </div> -->
-        <FilterDropdown></FilterDropdown>
-      
+      </div>-->
+      <FilterDropdown></FilterDropdown>
     </div>
     <img
       src="/assets/images/page-ring-loader.svg"
@@ -30,7 +29,7 @@
       v-else
     >
       <LoanRequestTableRow
-        v-for="loanRequest in loanRequests.data"
+        v-for="loanRequest in requests"
         :key="loanRequest.id"
         :id="loanRequest.id"
         :date="loanRequest.date"
@@ -46,7 +45,7 @@
 
 <script>
 import axios from "axios";
-import SearchFilterInput from '../components/Inputs/SearchFilterInput';
+import SearchFilterInput from "../components/Inputs/SearchFilterInput";
 import Table from "../components/Table/Table";
 import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
 import FilterDropdown from "../components/Dropdown/FilterDropdown";
@@ -64,30 +63,44 @@ export default {
       loanRequests: [],
       fetchingRequests: true,
       dayOptions: ["Today", "Last 7days", "30 days", "1 year"],
-      activeOption: "Today",
+      activeOption: "Today"
     };
   },
   methods: {
     fetchLoanRequests() {
       this.fetchingRequests = true;
       axios
-        .get(
-          "https://wacs2.herokuapp.com/api/v1/creditor/Request/view",
-          {
-            headers: {
-              "x-api-key":
-                "PMAK-5e68f691b9867b002aa8f289-dc8516605218b3d250fe4da3a28142662c"
-            }
+        .get("https://wacs2.herokuapp.com/api/v1/creditor/Request/view", {
+          headers: {
+            "x-api-key":
+              "PMAK-5e68f691b9867b002aa8f289-dc8516605218b3d250fe4da3a28142662c"
           }
-        )
+        })
         .then(res => {
-          console.log(res.data)
+          console.log(res.data);
           this.fetchingRequests = false;
           this.loanRequests = res.data;
         });
       // .catch(err => {
       //     console.log('err', err);
       // });
+    }
+  },
+  computed: {
+    requests() {
+      let requests = this.loanRequests.data;
+      if (this.searchTerm && requests) {
+        requests = requests.filter(row => {
+          return Object.keys(row).some(key => {
+            return (
+              String(row[key])
+                .toLowerCase()
+                .indexOf(this.searchTerm.toLowerCase()) > -1
+            );
+          });
+        });
+      }
+      return requests;
     }
   },
   mounted() {
