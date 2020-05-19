@@ -1,5 +1,5 @@
 <template>
-    <button @click="onclick">
+    <button :type="type" @click="onclick">
         <slot></slot>
     </button>
 </template>
@@ -11,6 +11,11 @@
                type: Function,
                default: () => {}
            },
+           'type':{
+               type:String,
+               default:"button"
+           }
        },
+
     }
 </script>
