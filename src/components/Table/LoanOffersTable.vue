@@ -112,7 +112,7 @@
     >
       <template v-slot:cell(Status)="data">
         <span v-if="data.item.status === 'Active'" class="status-oval active-status">Active</span>
-        <span v-else-if="data.item.status ==='Inactive'" class="status-oval inactive-status">Inactive</span>
+        <span v-else-if="data.item.status ==='InActive'" class="status-oval inactive-status">Inactive</span>
         <span v-else class="status-oval new-status">Draft</span>
       </template>
       <template v-slot:head(Options)>

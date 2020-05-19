@@ -17,7 +17,7 @@ export default {
   props: {
     id: String,
     placeholders: String,
-    value:String
+    value:String,
   },
   data(){
       return{

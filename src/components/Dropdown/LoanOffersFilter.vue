@@ -40,13 +40,13 @@
         <div class="section-body">
           <div class="checkbox-wrapper">
             <div>
-              <Checkbox @changed="updateChecked($event,'Active')" title="Active" />
+              <Checkbox :value="filters.statusValue.active" @changed="handleText($event,'status','active')" title="Active" />
             </div>
             <div>
-              <Checkbox @changed="updateChecked($event,'Inactive')" title="Inactive" />
+              <Checkbox :value="filters.statusValue.inactive" @changed="handleText($event,'status','inactive')" title="Inactive" />
             </div>
             <div>
-              <Checkbox @changed="updateChecked($event,'Draft')" title="Draft" />
+              <Checkbox :value="filters.statusValue.draft" @changed="handleText($event,'status','draft')" title="Draft" />
             </div>
           </div>
         </div>
@@ -110,6 +110,10 @@ export default {
     filterOffers:{
       type:Function,
       default:()=>{}
+    },
+    toggleFound: {
+      type: Function,
+      default: () => {}
     }
   },
   data(){
@@ -119,7 +123,12 @@ export default {
           filteredTerms:[],
           shownTerms:'',
           filters:{
-              status:true,
+              status:[],
+              statusValue:{
+                active:false,
+                inactive:false,
+                draft:false
+              },
               code:'',
               MInterest:'',
               amount:{
@@ -145,7 +154,11 @@ export default {
       },
     handleText(event,type,position){
         if(position){
-            this.filters[type][position]=event
+          if(type==='status'){
+            this.filters.status=!this.filters.status.includes(position)?[...this.filters.status,position]:[...this.filters.status.filter(term=>{return term!==position})]
+            this.filters.statusValue[position]=event
+          }
+          else{this.filters[type][position]=event}
             if(event){
               this.filteredTerms=!this.filteredTerms.includes(type)?[...this.filteredTerms,type]:[...this.filteredTerms]
             }
@@ -168,25 +181,48 @@ export default {
     },
     applyFilter(){
       this.isLoading=true
-      //const Status=!this.filters.status? 'status=active':'status=inactive'
-      const code=this.filters.code ? `code=${this.filters.code}`:''
-      const MInterest=this.filters.MInterest ? `moratoriuminterest=${this.filters.MInterest}`:''
-      const amountFrom=this.filters.amount.from? `from=${this.filters.amount.from}`:''
-      const amountTo=this.filters.amount.to? `from=${this.filters.amount.to}`:''
-      const interests=(this.filters.interestRate.from&&this.filters.interestRate.to)?`interest=${this.filters.interestRate.from}##${this.filters.interestRate.to}`:''
-      const date=(this.filters.date.from) ? `date=${this.filters.date.from}##${this.filters.date.to}`:'' 
-      const URL=`${LOANOFFERSAPI.view}?${code}&${MInterest}&${amountFrom}&${amountTo}&${interests}&${date}`
-    axios.get(URL,{code:'001'}).then(res=>{
+      let date = "";
+      this.shownTerms=this.filteredTerms.join(", ")
+      if (this.filters.date.from) {
+        if (this.filters.date.to) {
+          date = `date=${this.filters.date.from}.${this.filters.date.to}`;
+        } else {
+          date = `date=${this.filters.date.from}`;
+        }
+      }
+      const status=this.filters.status.length>0? `status=${this.filters.status.join(',')}`:''
+      const code=this.filters.code ? `&code=${this.filters.code}`:''
+      const MInterest=this.filters.MInterest ? `&moratoriuminterest=${this.filters.MInterest}`:''
+      const amountFrom=this.filters.amount.from? `&from=${this.filters.amount.from}`:''
+      const amountTo=this.filters.amount.to? `&to=${this.filters.amount.to}`:''
+      const interests=(this.filters.interestRate.from&&this.filters.interestRate.to)?`&rate=${this.filters.interestRate.from}.${this.filters.interestRate.to}`:''
+
+      const URL=`${LOANOFFERSAPI.view}?`+`${status}`+`${code}`+`${MInterest}`+`${amountFrom}`+`${amountTo}`+`${interests}`+`${date}`
+    axios.get(URL).then(response=>{
+      if (response.data.data.length === 0) {
+            this.toggleFound(false);
+            this.isLoading=false
+          } else {
+            this.filterOffers(response.data);
+            this.toggleFound(true);
+            this.isLoading=false
+          }
+      /* console.log(res.data)
       this.filterOffers(res.data)
-      this.isLoading=false
+      this.isLoading=false */
     }).catch(err=>{
       this.errors=err
     })
-    this.shownTerms=this.filteredTerms.join(", ")
+    
 },
     clearFilters(){
       const clearFilter={
-              status:true,
+              status:[],
+              statusValue:{
+                active:false,
+                inactive:false,
+                draft:false
+              },
               code:'',
               MInterest:'',
               amount:{

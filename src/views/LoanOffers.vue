@@ -10,11 +10,11 @@
     <div class="page-filters">
       <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
       <SearchFilterInput 
-                placeholder="Search by name,title"
+                placeholder="Search by code,title"
                 v-model="searchTerm"
                 :onSearch="searchLoanOffer"
       />
-      <LoanOffersFilter :filterOffers="filterLoanOffers"></LoanOffersFilter>
+      <LoanOffersFilter :toggleFound="toggleSearchFound" :filterOffers="filterLoanOffers"></LoanOffersFilter>
 
       <div class="cta-div">
         <Button v-b-modal.add-form-modal class="cta-button">
@@ -122,14 +122,31 @@
       class="page-loader"
     />
     <template v-else>
-      <div v-if="loanOffers.length===0" class="no-offers">
-        <img src="/assets/images/Empty-State-Icon.svg" alt="" class="empty-file">
-        <h4>No Loan Offers</h4>
-        <p>There are no loan offers yet. Create one above.</p>
-      </div>
-      <template v-else>
+      <template v-if="searchFound===false">
+        <NoData>
+          <template v-slot:title>
+            <h4>Not Found</h4>
+          </template>
+          <template v-slot:subtitle>
+            <p>The data you are searching for could not be found</p>
+          </template>
+        </NoData>
+      </template>
+      <template v-else-if="loanOffers.data">
         <LoanOffersTable :items="offers" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
       </template>
+      <template v-else>
+        <NoData>
+          <template v-slot:title>
+            <h4>No Loan Offers</h4>
+          </template>
+          <template v-slot:subtitle>
+            <p>There are no loan offers yet. Create one above.</p>
+          </template>
+        </NoData>
+      </template>
+      
+      
     </template>
   </div>
 </template>
@@ -148,6 +165,7 @@ import SubmitButton from "../components/Buttons/SubmitButton";
 import Button from "../components/Buttons/Botton";
 import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
 import Toast from '../components/Toast'
+import NoData from "../components/NoData"
 import SearchFilterInput from "../components/Inputs/SearchFilterInput"
 import {LOANOFFERSAPI,baseUrl} from '../router/api_routes'
 export default {
@@ -161,7 +179,8 @@ export default {
     SubmitButton,
     Button,
     Toast,
-    SearchFilterInput
+    SearchFilterInput,
+    NoData
   },
   data() {
     return {
@@ -173,6 +192,7 @@ export default {
         success:false
       },
       searchTerm: "",
+      searchFound: true,
       creatingOffer: false,
       fetchingOffers: false,
       loanOffers: {},
@@ -251,6 +271,25 @@ export default {
     },
     searchLoanOffer(){
       console.log('serching for' + this.searchTerm)
+      if (this.searchTerm) {
+        const URL = baseUrl + `creditor/offer/search/${this.searchTerm}`;
+        this.fetchingOffers = true;
+        axios.get(URL).then(response => {
+          this.fetchingOffers = false;
+          if (response.data.data.length === 0) {
+            this.searchFound = false;
+          } else {
+            this.loanOffers = { ...response.data };
+            this.searchTerm = "";
+            this.searchFound = true;
+          }
+        });
+      } else {
+        this.searchFound = true;
+      }
+    },
+    toggleSearchFound(state) {
+      this.searchFound = state;
     }
   },
   computed:{
