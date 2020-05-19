@@ -50,7 +50,7 @@
             :id="loanRequest.id"
             :date="loanRequest.date"
             :name="loanRequest.user_info.full_name"
-            :ippissNo="loanRequest.user_info.ippiss_number"
+            :ippissNo="loanRequest.user_info.ippis_number"
             :salary="loanRequest.user_info.monthly_salary"
             :loanRequest="loanRequest.amount"
             :status="loanRequest.status"
@@ -102,14 +102,11 @@ export default {
   methods: {
     fetchLoanRequests() {
       this.fetchingRequests = true;
+      const URL=baseUrl+"creditor/request/view"
       axios
-        .get("https://wacs2.herokuapp.com/api/v1/creditor/request/view", {
-          headers: {
-            "x-api-key":
-              "PMAK-5e68f691b9867b002aa8f289-dc8516605218b3d250fe4da3a28142662c"
-          }
-        })
+        .get(URL)
         .then(res => {
+          console.log(res.data)
           this.fetchingRequests = false;
           this.searchFound = true;
           this.loanRequests = res.data;

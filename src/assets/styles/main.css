@@ -1161,6 +1161,10 @@ td>.t-value {
     background-color: #F08C14;
 }
 
+.status-circle.rejected{
+    background-color: red;
+}
+
 .main-body-content .pagination {
     float: right;
     margin: 8px 40px 0 10px;
