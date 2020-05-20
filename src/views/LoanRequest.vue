@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="page-filters requests-header">
-      <!-- <div class="requests-no">50 Loan Requests</div> -->
-
       <div class="day-options">
         <template v-for="(option,index) in dayOptions">
           <span
@@ -13,12 +11,12 @@
         </template>
       </div>
 
-      <LoanRequestFilter :toggleFound="toggleSearchFound" :filterRequests="filterLoanRequests" />
+      <LoanRequestFilter :isLoading="fetchingRequests"  />
       <div class="right-search">
         <SearchFilterInput
           placeholder="Search by name, ippiss No"
           v-model="searchTerm"
-          :onSearch="searchRequests"
+          :onSearch="enterSearch"
         />
       </div>
     </div>
@@ -68,6 +66,14 @@
         </NoData>
       </template>
     </template>
+    <Pagination
+          v-if="!searchTerm && loanRequests.meta && searchFound"
+          :total="loanRequests.meta.total"
+          :currentPage="loanRequests.meta.current_page"
+          :lastPage="loanRequests.meta.last_page"
+          :from="loanRequests.meta.from"
+          :to="loanRequests.meta.to"
+        />
   </div>
 </template>
 
@@ -80,6 +86,7 @@ import LoanRequestFilter from "../components/Dropdown/LoanRequestFilter";
 import { baseUrl } from "../router/api_routes";
 import moment from "moment";
 import NoData from "../components/NoData";
+import Pagination from "../components/Pagination/Pagination"
 
 export default {
   components: {
@@ -87,7 +94,8 @@ export default {
     Table,
     LoanRequestTableRow,
     LoanRequestFilter,
-    NoData
+    NoData,
+    Pagination
   },
   data() {
     return {
@@ -100,20 +108,21 @@ export default {
     };
   },
   methods: {
-    fetchLoanRequests() {
+    fetchLoanRequests(query) {
       this.fetchingRequests = true;
-      const URL=baseUrl+"creditor/request/view"
-      axios
-        .get(URL)
-        .then(res => {
-          console.log(res.data)
-          this.fetchingRequests = false;
-          this.searchFound = true;
-          this.loanRequests = res.data;
-        });
-      // .catch(err => {
-      //     console.log('err', err);
-      // });
+      const URL = baseUrl + "creditor/request/view?" + this.serialize(query);
+      axios.get(URL).then(response => {
+        this.fetchingRequests = false;
+        if (response.data.data.length === 0) {
+            this.searchFound = false;
+          } else {
+            this.loanRequests = { ...response.data };
+            this.searchFound = true;
+          }
+      })
+       .catch(err => {
+          console.log('err', err);
+       });
     },
     filterLoanRequests(data) {
       this.loanRequests = { ...data };
@@ -139,36 +148,34 @@ export default {
             .format("YYYY-MM-DD");
         }
 
-        const date = `date=${endDate}.${startDate}`;
-        const URL = baseUrl + `creditor/request/view?` + date;
-        this.fetchingRequests = true;
-        axios.get(URL).then(response => {
-          this.fetchingRequests = false;
-          if (response.data.data.length === 0) {
-            this.searchFound = false;
-          } else {
-            this.loanRequests = { ...response.data };
-            this.searchFound = true;
-          }
-        });
+        const date = `${endDate}.${startDate}`;
+        this.$router.push({ name: "loanRequest", query: { date } });
       } else {
-        this.fetchLoanRequests();
+        this.$router.push({ name: "loanRequest", query: {} });
       }
-
-      //console.log(startDate, endDate);
     },
-    searchRequests() {
+    enterSearch(){
+      if(this.searchTerm){
+        this.$router.push({ name: 'loanRequest', query: {search:this.searchTerm} })
+      }
+      else{
+        this.searchFound=true
+      }
+    },
+    searchRequests(query) {
       if (this.searchTerm) {
-        const URL = baseUrl + `creditor/request/search/${this.searchTerm}`;
+        const URL = baseUrl + `creditor/request/search/${query.search}`;
         this.fetchingRequests = true;
         axios.get(URL).then(response => {
           this.fetchingRequests = false;
           if (response.data.data.length === 0) {
             this.searchFound = false;
+            this.fetchingRequests = false;
           } else {
             this.loanRequests = { ...response.data };
             this.searchTerm = "";
             this.searchFound = true;
+            this.fetchingRequests = false;
           }
         });
       } else {
@@ -177,7 +184,23 @@ export default {
     },
     toggleSearchFound(state) {
       this.searchFound = state;
-    }
+    },
+    serialize(obj, prefix) {
+      var str = [],
+        p;
+      for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          var k = prefix ? prefix + "[" + p + "]" : p,
+            v = obj[p];
+          str.push(
+            v !== null && typeof v === "object"
+              ? this.serialize(v, k)
+              : k + "=" + v
+          );
+        }
+      }
+      return str.join("&");
+    },
   },
   computed: {
     requests() {
@@ -194,10 +217,23 @@ export default {
         });
       }
       return requests;
-    }
+    },
   },
   mounted() {
     this.fetchLoanRequests();
+  },
+  watch: {
+    "$route.query": {
+      handler(query) {
+        if(query.search){
+          return this.searchRequests(query)
+        }
+        else{
+          this.fetchLoanRequests(query)
+        }
+      },
+      deep: true
+    }
   }
 };
 </script>
