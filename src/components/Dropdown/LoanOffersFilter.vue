@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 import FilterDropdown from "../Dropdown/FilterDropdown";
 import { BIconFunnelFill } from "bootstrap-vue";
 //import Switchs from "../Inputs/Switch"
@@ -92,7 +92,7 @@ import DateField from "../Inputs/DateField";
 import SubmitButton from "../Buttons/SubmitButton";
 import Botton from "../Buttons/Botton";
 import Checkbox from "../Inputs/Checkbox";
-import{LOANOFFERSAPI} from '../../router/api_routes'
+//import{LOANOFFERSAPI} from '../../router/api_routes'
 
 export default {
   components: {
@@ -114,11 +114,11 @@ export default {
     toggleFound: {
       type: Function,
       default: () => {}
-    }
+    },
+    'isLoading':Boolean
   },
   data(){
       return{
-          isLoading:false,
           errors:{},
           filteredTerms:[],
           shownTerms:'',
@@ -180,40 +180,35 @@ export default {
       this.filters.status = { ...this.filters.status, [type]: checked };
     },
     applyFilter(){
-      this.isLoading=true
-      let date = "";
-      this.shownTerms=this.filteredTerms.join(", ")
+      const query={}
+      if(this.filters.status.length>0){
+        query.status=this.filters.status.join(',')
+      }
+      if(this.filters.code){
+        query.code=this.filters.code
+      }
+      if(this.filters.MInterest){
+        query.moratoriuminterest=this.filters.MInterest
+      }
+      if(this.filters.amount.from){
+        query.from=this.filters.amount.from
+      }
+      if(this.filters.amount.to){
+        query.to=this.filters.amount.to
+      }
+      if(this.filters.interestRate.from&&this.filters.interestRate.to){
+        query.rate=`${this.filters.interestRate.from}.${this.filters.interestRate.to}`
+      }
       if (this.filters.date.from) {
         if (this.filters.date.to) {
-          date = `date=${this.filters.date.from}.${this.filters.date.to}`;
+          query.date = `${this.filters.date.from}.${this.filters.date.to}`;
         } else {
-          date = `date=${this.filters.date.from}`;
+          query.date = `${this.filters.date.from}`;
         }
       }
-      const status=this.filters.status.length>0? `status=${this.filters.status.join(',')}`:''
-      const code=this.filters.code ? `&code=${this.filters.code}`:''
-      const MInterest=this.filters.MInterest ? `&moratoriuminterest=${this.filters.MInterest}`:''
-      const amountFrom=this.filters.amount.from? `&from=${this.filters.amount.from}`:''
-      const amountTo=this.filters.amount.to? `&to=${this.filters.amount.to}`:''
-      const interests=(this.filters.interestRate.from&&this.filters.interestRate.to)?`&rate=${this.filters.interestRate.from}.${this.filters.interestRate.to}`:''
-
-      const URL=`${LOANOFFERSAPI.view}?`+`${status}`+`${code}`+`${MInterest}`+`${amountFrom}`+`${amountTo}`+`${interests}`+`${date}`
-    axios.get(URL).then(response=>{
-      if (response.data.data.length === 0) {
-            this.toggleFound(false);
-            this.isLoading=false
-          } else {
-            this.filterOffers(response.data);
-            this.toggleFound(true);
-            this.isLoading=false
-          }
-      /* console.log(res.data)
-      this.filterOffers(res.data)
-      this.isLoading=false */
-    }).catch(err=>{
-      this.errors=err
-    })
     
+    
+    this.$router.push({name:'loanOffers',query})
 },
     clearFilters(){
       const clearFilter={

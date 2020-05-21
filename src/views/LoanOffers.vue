@@ -12,9 +12,9 @@
       <SearchFilterInput 
                 placeholder="Search by code,title"
                 v-model="searchTerm"
-                :onSearch="searchLoanOffer"
+                :onSearch="enterSearch"
       />
-      <LoanOffersFilter :toggleFound="toggleSearchFound" :filterOffers="filterLoanOffers"></LoanOffersFilter>
+      <LoanOffersFilter :isLoading="fetchingOffers"></LoanOffersFilter>
 
       <div class="cta-div">
         <Button v-b-modal.add-form-modal class="cta-button">
@@ -148,16 +148,21 @@
       
       
     </template>
+    <Pagination
+          v-if="!searchTerm && loanOffers.meta && searchFound"
+          :total="loanOffers.meta.total"
+          :currentPage="loanOffers.meta.current_page"
+          :lastPage="loanOffers.meta.last_page"
+          :from="loanOffers.meta.from"
+          :to="loanOffers.meta.to"
+        />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import CustomModal from "../components/Modals/CustomModal";
-//import Table from '../components/Table/Table';
 import LoanOffersTable from "../components/Table/LoanOffersTable";
-//  import LoanOffersTableRow from '../components/Table/LoanOffersTableRow';
-//import DragDropFileInput from "../components/Inputs/DragDropFileInput";
 import TaggedInput from "../components/Inputs/TaggedInput";
 import TextInput from "../components/Inputs/TextInput";
 import TextArea from "../components/Inputs/TextArea"
@@ -168,6 +173,7 @@ import Toast from '../components/Toast'
 import NoData from "../components/NoData"
 import SearchFilterInput from "../components/Inputs/SearchFilterInput"
 import {LOANOFFERSAPI,baseUrl} from '../router/api_routes'
+import Pagination from "../components/Pagination/Pagination"
 export default {
   components: {
     CustomModal,
@@ -180,7 +186,8 @@ export default {
     Button,
     Toast,
     SearchFilterInput,
-    NoData
+    NoData,
+    Pagination
   },
   data() {
     return {
@@ -245,13 +252,35 @@ export default {
     onHide() {
       this.addOffer = {};
     },
-    fetchLoanOffers() {
+    serialize(obj, prefix) {
+      var str = [],
+        p;
+      for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          var k = prefix ? prefix + "[" + p + "]" : p,
+            v = obj[p];
+          str.push(
+            v !== null && typeof v === "object"
+              ? this.serialize(v, k)
+              : k + "=" + v
+          );
+        }
+      }
+      return str.join("&");
+    },
+    fetchLoanOffers(query) {
       this.fetchingOffers = true;
       axios
-        .get(LOANOFFERSAPI.view)
-        .then(res => {
-          this.loanOffers = res.data;
-          this.fetchingOffers = false;
+        .get(LOANOFFERSAPI.view + '?'+ this.serialize(query))
+        .then(response => {
+           this.fetchingOffers = false;
+          if (response.data.data.length === 0) {
+            this.searchFound = false;
+          } else {
+            this.loanOffers = { ...response.data };
+            this.searchTerm = "";
+            this.searchFound = true;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -269,8 +298,15 @@ export default {
       const index=this.loanOffers.data.findIndex(x=>x.id===row)
       this.loanOffers.data.splice(index,1)
     },
+    enterSearch(){
+      if(this.searchTerm){
+        this.$router.push({name:'loanOffers',query:{search:this.searchTerm}})
+      }
+      else{
+        this.searchFound=true
+      }
+    },
     searchLoanOffer(){
-      console.log('serching for' + this.searchTerm)
       if (this.searchTerm) {
         const URL = baseUrl + `creditor/offer/search/${this.searchTerm}`;
         this.fetchingOffers = true;
@@ -306,8 +342,22 @@ export default {
     }
   },
   mounted() {
-    this.fetchLoanOffers();
+    console.log(this.$router)
+    this.fetchLoanOffers(this.$router.history.current.query);
   },
+  watch: {
+    "$route.query": {
+      handler(query) {
+        if(query.search){
+         this.searchLoanOffer(query)
+        }
+        else{
+          this.fetchLoanOffers(query)
+        }
+      },
+      deep: true
+    }
+  }
 };
 </script>
 

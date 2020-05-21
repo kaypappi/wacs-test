@@ -32,25 +32,25 @@
             <div class="checkbox-wrapper">
               <div>
                 <Checkbox
-                  :value="filters.status.Pending"
+                  :value="filters.statusValue.Pending"
                   @changed="handleInput($event,'status','Pending')"
                   title="Pending"
                 />
                 <Checkbox
-                  :value="filters.status.Running"
+                  :value="filters.statusValue.Running"
                   @changed="handleInput($event,'status','Running')"
                   title="Running"
                 />
               </div>
               <div>
                 <Checkbox
-                  :value="filters.status.Ippis"
+                  :value="filters.statusValue.Approved"
                   @changed="handleInput($event,'status','Approved')"
                   title="Ippis Approved"
                 />
 
                 <Checkbox
-                  :value="filters.status.Declined"
+                  :value="filters.statusValue.Rejected"
                   @changed="handleInput($event,'status','Rejected')"
                   title="User Declined"
                 />
@@ -78,8 +78,6 @@ import Checkbox from "../Inputs/Checkbox";
 import Botton from "../Buttons/Botton";
 import SubmitButton from "../Buttons/SubmitButton";
 import FilterDropdown from "../Dropdown/FilterDropdown";
-import { baseUrl } from "../../router/api_routes";
-import axios from "axios";
 
 export default {
   components: {
@@ -91,6 +89,7 @@ export default {
     FilterDropdown
   },
   props: {
+    "isLoading":Boolean,
     filterRequests: {
       type: Function,
       default: () => {}
@@ -103,7 +102,6 @@ export default {
   data() {
     return {
       popUpVisible: false,
-      isLoading: false,
       filteredTerms: [],
       shownTerms:"",
       filters: {
@@ -113,9 +111,10 @@ export default {
         },
         status: [],
         statusValue: {
-          active: false,
-          inactive: false,
-          draft: false
+          Pending:false,
+          Running:false,
+          Approved:false,
+          Rejected:false
         }
       }
     };
@@ -167,11 +166,12 @@ export default {
           startDate: "",
         endDate: "",
         },
-        status: {
-          Pending: false,
-          Running: false,
-          Ippiss: false,
-          Declined: false
+        status: [],
+        statusValue: {
+          Pending:false,
+          Running:false,
+          Approved:false,
+          Rejected:false
         }
       };
       this.filters = { ...clearFilters };
@@ -180,36 +180,25 @@ export default {
       this.applyFilter();
     },
     applyFilter() {
-      let date = "";
+     let  query={}
       this.shownTerms=this.filteredTerms.join(", ")
-      this.isLoading=true
       if (this.filters.date.startDate) {
         if (this.filters.date.endDate) {
-          date = `date=${this.filters.date.startDate}.${this.filters.date.endDate}`;
+         const date = `${this.filters.date.startDate}.${this.filters.date.endDate}`;
+          query.date=date
         } else {
-          date = `date=${this.filters.date.startDate}`;
+         const date = `${this.filters.date.startDate}`;
+         query.date=date
         }
       }
-      const status =
-        this.filters.status.length > 0
-          ? `&status=${this.filters.status.join(",")}`
-          : "";
-      const URL = baseUrl + `creditor/request/view?` + `${date}` + `${status}`;
-      axios
-        .get(URL)
-        .then(response => {
-          if (response.data.data.length === 0) {
-            this.toggleFound(false);
-            this.isLoading=false
-          } else {
-            this.filterRequests(response.data);
-            this.toggleFound(true);
-            this.isLoading=false
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+
+    if(this.filters.status.length>0){
+      const status=`${this.filters.status.join(",")}`
+      query.status=status
+    }
+
+      
+      this.$router.push({ name: "loanRequest", query })
     }
   }
 };
