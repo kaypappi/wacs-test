@@ -220,7 +220,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchLoanRequests();
+    this.fetchLoanRequests(this.$router.history.current.query);
   },
   watch: {
     "$route.query": {

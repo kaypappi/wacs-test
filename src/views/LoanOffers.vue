@@ -342,7 +342,8 @@ export default {
     }
   },
   mounted() {
-    this.fetchLoanOffers();
+    console.log(this.$router)
+    this.fetchLoanOffers(this.$router.history.current.query);
   },
   watch: {
     "$route.query": {
