@@ -44,6 +44,7 @@
         <template>
           <LoanRequestTableRow
             v-for="loanRequest in requests"
+            :userData="loanRequest"
             :key="loanRequest.id"
             :id="loanRequest.id"
             :date="loanRequest.date"
@@ -112,6 +113,7 @@ export default {
       this.fetchingRequests = true;
       const URL = baseUrl + "creditor/request/view?" + this.serialize(query);
       axios.get(URL).then(response => {
+        console.log(response)
         this.fetchingRequests = false;
         if (response.data.data.length === 0) {
             this.searchFound = false;

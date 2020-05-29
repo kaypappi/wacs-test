@@ -7,8 +7,9 @@
         </div>
         <b-form-file v-model="file" plain></b-form-file>
         <div class="file-input-background">
-            <img src="/assets/images/Double-check1.svg" alt="">
-            <span>{{ file ? file.name : 'Select or Drag & Drop file to upload' }}</span>
+            <img src="/assets/images/Cloud-upload.svg" alt="">
+            <span>{{ file ? file.name : 'Drag & Drop to upload' }}</span>
+            <p class="subtext">or <span>browse</span> to select an xls/csv file</p>
         </div>
     </div>
 </template>
@@ -32,3 +33,18 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.subtext{
+    font-size: 10px;
+    color: #898989;
+    display: flex;
+    justify-content: center;
+}
+
+.subtext span{
+    color: #27BE58;
+    margin: 0 5px;
+    font-size: 10px;
+}
+</style>
