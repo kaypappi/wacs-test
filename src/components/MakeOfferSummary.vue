@@ -12,14 +12,14 @@
         <template v-if="offer.csv_repayment.length>0">
           <table class="table personal-info-table table-borderless no-border-table">
             <template v-for="(item,index) in offer.csv_repayment">
-              <NoBorderTableRow :key="item.no" :data="getUnequalSchedule(item,index)" />
+              <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
             </template>
           </table>
         </template>
         <template v-else>
           <table class="table personal-info-table table-borderless no-border-table">
             <template v-for="(item,index) in offer.unequal_repayment">
-              <NoBorderTableRow :key="item.no" :data="getUnequalSchedule(item,index)" />
+              <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
             </template>
           </table>
         </template>
@@ -27,7 +27,7 @@
       <template v-else>
         <table class="table personal-info-table table-borderless no-border-table">
           <template v-for="(item,index) in equalRepaymentData">
-            <NoBorderTableRow :key="item.no" :data="getUnequalSchedule(item,index)" />
+            <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
           </template>
         </table>
       </template>
@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     getUnequalSchedule(item, index) {
-        console.log(item)
       const data = [];
       data.push(
         { name: index === 0 ? "No." : "", value: item.no },
@@ -116,7 +115,7 @@ export default {
             Math.floor((this.offer.first_repayment_month + i) / 12);
         const obj = {
           no: i + 1,
-          months: month,
+          month: month,
           year,
           amount: this.offer.repayment_amount
         };
@@ -154,7 +153,6 @@ export default {
   mounted() {
     if (this.equalRepayment) {
       this.equalRepaymentData = this.getEqualSchedule();
-      console.log(this.offer, this.equalRepaymentData);
     }
   }
 };

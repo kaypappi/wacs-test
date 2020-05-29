@@ -1,5 +1,12 @@
 <template>
     <div class="full-user-details">
+        <Toast 
+            :show="toast.show"
+            :title="toast.title"
+            :successMessage="toast.message"
+            failureMessage="Invalid token"
+            :success="toast.success"
+        />
         <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingRequests" class="page-loader">
         <template v-else >
             <div class="details-top">
@@ -79,9 +86,11 @@
     import axios from 'axios';
     import NoBorderTableRow from '../components/Table/NoBorderTableRow';
     import {baseUrl} from '../router/api_routes'
+    import Toast from '../components/Toast'
     export default {
         components: {
             NoBorderTableRow,
+            Toast
         },
         data() {
             return {
@@ -94,6 +103,12 @@
                 loanDetailsRow: [],
                 loanHistory: [],
                 requestId: '',
+                toast:{
+                    show:false,
+                    title:'',
+                    message:"",
+                    success:false
+                },
             }
         },
         methods: {
@@ -106,19 +121,31 @@
                     this.fetchingRequests = false;
                     const loanData = res.data.data[0]
                     this.splitDetails(loanData);
-                    console.log(res)
                 })
                 .catch(err=>console.log(err))
                
             },
+            showToast(title,message,success){
+                    this.toast={show:true,title,message,success}
+                        setTimeout(()=>{
+                            this.toast.show=false
+                        },2000)
+            },
             declineRequest() {
-                alert(`declining loan request of id ${this.requestId} for ${this.customerName}`);
+                const URL=baseUrl+`creditor/request/decline`
+                const data={id:this.offerId}
+                axios.post(URL,data).then(Response=>{
+                    this.showToast('Successful',Response.message,true)
+                    setTimeout(()=>{
+                            this.$router.push({name:'loanRequest'})
+                        },2000)
+                }).catch(err=>{console.log(err)})
+                
             },
             makeOffer() {
                 this.$router.push({name:'makeOffer',params:{offerId:this.offerId}});
             },
             splitDetails(loanData) {
-                console.log(loanData)
                 this.customerName = loanData.user_info.full_name;
                 this.offerId=loanData.offer_details.id
                 //const userData=this.$route.params.userData

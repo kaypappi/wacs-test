@@ -276,7 +276,7 @@
                                     <span><BIconArrowLeft/></span>
                                     Back
                                 </button>
-                                <button @click="submitWizard">Submit</button>
+                                <button @click="submitWizard"><img :style="{height:'100%',width:'auto'}" v-show="isLoading" src="/assets/images/button-ring-loader.svg"/><span v-show="!isLoading">Submit</span></button>
                                 </div>
                     </template>
                    
@@ -308,6 +308,7 @@
         data() {
             return {
                 monthCount: 1,
+                isLoading:false,
                 equalRepayment: true,
                 steps:1,
                 offerId:'',
@@ -342,10 +343,8 @@
                 const URL=baseUrl+'creditor/repayments/csvRead'
                 axios.post(URL,this.formValues).then(response=>{
                     this.offer.csv_repayment=[...response.data]
-                    console.log(response)
                 })
                 .catch(err=>{console.log(err)})
-                console.log(this.formValues.csvUpload,'file present')
             },
             addMonth() {
                 /* if(this.monthCount + this.offer.moratorium < this.offer.paybackPeriod) {
@@ -357,11 +356,9 @@
             },
             goToNext() {
                 this.steps = this.steps+1;
-                console.log(this.offer)
             },
             goToPrev() {
                 this.steps = this.steps-1;
-                console.log(this.steps)
             },
             handleInput(event,type,position){
                 if(position){
@@ -380,6 +377,7 @@
             },
             submitWizard(){
                 const data={}
+                this.isLoading=true
                 //const formData=new FormData()
                 const URL=baseUrl+'creditor/repayments'
                 data.loan_amount=this.offer.loan_amount
@@ -412,19 +410,20 @@
 
                 axios.post(URL,this.offer.csv_repayment.length>0 ? this.formData:data).then(response=>{
                     if(response.statusText==="Created"){
+                        this.isLoading=false
                         this.showToast('Successful','Successfully made offer',true)
                         setTimeout(()=>{
                             this.$router.push({name:'loanRequest'})
-                        })
+                        },2000)
                     }
-                    console.log(response)
                 }).catch(err=>{
                     console.log(err)
+                    this.isLoading=false
                     this.showToast('Error!',err.message,false)
                 })
 
-                console.log(data)
-            }
+                
+            },
         },
         computed: {
             payBackDuration() {
