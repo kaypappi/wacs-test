@@ -169,6 +169,7 @@
                 ];
                 this.loanDetailsRow = [
                     {name: 'Date Requested', value: loanData.date},
+                    {name:  'Loan Offer', value:loanData.offer_details.title},
                     {name: 'Requested Amount', value: loanData.amount},
                     {name: 'Repayment Period', value: loanData.offer_details.payback_period+" Months"},
                     {name: 'First Repayment Date', value: loanData.offer_details.moratorium_period+ " months after"},

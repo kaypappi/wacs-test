@@ -43,7 +43,7 @@
                             <div class="">
                             <label for="payback-period" class="form-modal-label">Repayment Period</label>
                             <select name="payback-period" id="payback-period" class="form-modal-inputs " required v-model="offer.repayment_period">
-                                <option value="0" hidden>Select Month</option>
+                                <option value="0" >Select Month</option>
                                 <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
                             </select>
                         </div>
@@ -68,6 +68,7 @@
                             <option :value="2">2 Months</option>
                             <option :value="3">3 Months</option>
                         </select>
+                        <p class="error-div" v-show="errors.step1">{{errors.step1}}</p>
                         <button >Next</button>
                          </div>
                     </template>
@@ -107,6 +108,8 @@
                                     labelClass="form-modal-label"
                                     placeholder="e.g 200,000"
                                     length="long"
+                                    type="number"
+                                    :max="offer.loan_amount"
                                     :tagLeft="true"
                                     :tagRight="false"
                                     leftImage="naira.svg"
@@ -171,6 +174,7 @@
                                 </div>
                                 
                                 </div>
+                                 <p class="error-div" v-if="errors.step2.equal">{{errors.step2.equal}}</p>
                                 <div class="nav-buttons-wrapper">
                                     <button @click="goToPrev" class="previous-btn" type="button">
                                     <span><BIconArrowLeft/></span>
@@ -185,6 +189,9 @@
                             <form @submit.prevent="goToNext">
                                 <DragDropFileInput 
                                 :onfile="fileChange"
+                                :value="file"
+                                :isLoading="fileLoading"
+                                @changed="fileChange($event)"
                                 label="Upload Payment Schedule"
                                 fileTypes="xls, csv up to 5MB"
                             />
@@ -248,12 +255,15 @@
                                         :required="false"
                                         :placeholder="n <= offer.moratorium ? 'moratorium' : 'e.g 200,000'"
                                         :tagLeft="true"
+                                        :max="offer.loan_amount"
+                                        type="number"
                                         :tagRight="false"
                                         leftImage="naira.svg"
                                         v-model="offer.unequal_repayment[index].amount"
                                     />
                             </div>
                             <img src="/assets/images/plus-icon.svg" alt="" class="add-sign" @click="addMonth">
+                            <p class="error-div" v-show="errors.step2.unequal">{{errors.step2.unequal}}</p>
                             <div class="nav-buttons-wrapper">
                                     <button @click="goToPrev" class="previous-btn" type="button">
                                     <span><BIconArrowLeft/></span>
@@ -314,6 +324,16 @@
                 offerId:'',
                 completeBasicInfo: false,
                 formData:new FormData(),
+                file:new File([""], ""),
+                formValues:'',
+                fileLoading:false,
+                errors:{
+                    step1:'',
+                    step2:{
+                        equal:'',
+                        unequal:''
+                    }
+                },
                 toast:{
                     show:false,
                     title:'',
@@ -340,22 +360,89 @@
                 //const formData = new FormData();
                 this.formData.append('csvUpload', file);
                 this.formValues = this.formData;
+                this.file=file
                 const URL=baseUrl+'creditor/repayments/csvRead'
+                this.fileLoading=true
                 axios.post(URL,this.formValues).then(response=>{
                     this.offer.csv_repayment=[...response.data]
+                    this.fileLoading=false
                 })
-                .catch(err=>{console.log(err)})
+                .catch(err=>{
+                    this.fileLoading=false
+                    console.log(err)})
             },
             addMonth() {
-                /* if(this.monthCount + this.offer.moratorium < this.offer.paybackPeriod) {
-                    this.monthCount++;
-                } */
                 if(this.offer.unequal_repayment.length<this.offer.repayment_period){
                     this.offer.unequal_repayment=[...this.offer.unequal_repayment,{month:0,year:0}]
                 }
             },
+            checkProperties(obj) {
+                for (var key in obj) {
+                    if (obj[key] !== null && obj[key] != ""&& obj[key]!==0)
+                        return true;
+                }
+                return false;
+            },
+            validateStepOne(){
+                if(this.offer.repayment_period==0 || this.offer.moratorium==0){
+                    this.errors.step1='All fields are required'
+                    return false
+                }
+                this.errors.step1=''
+                return true
+            },
+            validateEqual(){
+                if(this.offer.first_repayment_month==0||this.offer.first_repayment_year==0||this.offer.last_repayment_month==0||this.offer.last_repayment_year==0){
+                    this.errors.step2.equal='All fields are required'
+                    return false
+                }
+                this.errors.step2.equal=''
+                return true
+            },
+            validateUnequal(){
+                if(this.formValues){
+                    return true
+                }
+                else{
+                    let valid=true
+                    this.offer.unequal_repayment.map(obj=>{
+                        return valid=this.checkProperties(obj)
+                    })
+
+                    if(!valid){
+                        this.errors.step2.unequal='All fields are required for manual schedule entry'
+                    }
+                    else{
+                        this.errors.step2.unequal=''
+                    }
+
+                    return valid
+                }
+            },
+
+            validateStepTwo(){
+                if(this.equalRepayment){
+                    return this.validateEqual()
+                }
+                else{
+                    return this.validateUnequal()
+                }
+            },
             goToNext() {
-                this.steps = this.steps+1;
+                if(this.steps===1){
+                    const valid=this.validateStepOne()
+                    if(valid){
+                        this.steps = this.steps+1;
+                    }
+                    return
+                }
+                if(this.steps===2){
+                    const valid=this.validateStepTwo()
+                    if(valid){
+                        this.steps=this.steps+1
+                    }
+                    return
+                }
             },
             goToPrev() {
                 this.steps = this.steps-1;
@@ -363,10 +450,10 @@
             handleInput(event,type,position){
                 if(position){
                 this.offer[type][position]=event
-                    
                 }
                 else{
                     this.offer[type]=event
+                    
                 }
             },
             showToast(title,message,success){
@@ -534,6 +621,9 @@
     width: 100%;
     display: inline-block;
     margin-bottom: 10px;
+}
+.form-modal-label img{
+    margin-right: 10px;
 }
 .nav-buttons-wrapper{
     display: grid;
