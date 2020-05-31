@@ -5,8 +5,7 @@
         <td>{{ippissNo}}</td>
         <td>{{salary}}</td>
         <td>{{loanRequest}}</td>
-        <td>{{availableLoan}}</td>
-        <td><span class="status-circle"></span>{{status}}</td>
+        <td><span :class="{'status-circle':true, pending:status==='Pending', rejected:status==='Rejected'}"></span>{{status}}</td>
     </tr>
 </template>
 <script>
@@ -20,12 +19,13 @@
             'loanRequest': [String, Number],
             'availableLoan': [String, Number],
             'status': String,
+            'userData':Object,
         },
         methods: {
             goToDetails(id) {
                 this.$router.push(
                     {
-                        path: 'loan-request/'+id,
+                        name:'loanRequestDetails',params:{requestId:id,userData:this.userData}
                     }
                 )
             }

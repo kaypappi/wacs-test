@@ -1,206 +1,407 @@
 <template>
-    <div>
-        <div class="page-filters">
-            <SearchFilterInput 
-                placeholder="Search by name, role, status"
+  <div class='loan-offers-wrapper'>
+    <Toast 
+            :show="toast.show"
+            :title="toast.title"
+            :successMessage="toast.message"
+            failureMessage="Invalid token"
+            :success="toast.success"
+        />
+    <div class="page-filters">
+      <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
+      <SearchFilterInput 
+                placeholder="Search by code,title"
                 v-model="searchTerm"
-                :onSearch="()=>{}"
-            />        
-            <div class="cta-div">
-                <Button v-b-modal.add-form-modal class="cta-button">
-                    <img src="assets/images/Plus.svg" alt="Plus sign">
-                    Create New Offer
-                </Button>
+                :onSearch="enterSearch"
+      />
+      <LoanOffersFilter :isLoading="fetchingOffers"></LoanOffersFilter>
+
+      <div class="cta-div">
+        <Button v-b-modal.add-form-modal class="cta-button">
+          <img src="assets/images/Plus.svg" alt="Plus sign" />
+          Create New Offer
+        </Button>
+      </div>
+    </div>
+    <CustomModal :onHide="onHide" id="add-form-modal">
+      <h5 class="form-modal-title">Create Offer</h5>
+      <div class="form-modal-title-border"></div>
+      <form @submit.prevent="onSubmit">
+        <!-- <DragDropFileInput
+          :onfile="fileChange"
+          label="Upload Banner"
+          fileTypes="PNG, JPG up to 5MB"
+        />-->
+        <div class="cot">
+            
+            <div class="cot-code">
+                <TextInput :required="true" type="text" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
+            </div>
+            <div class="double-input-range-text"></div>
+            <div class="cot-title">
+                <TextInput :required="true" @input="handleText($event,'title')" placeholder="Enter Title"  inputClass="inputClasses" length="short" label="Title"></TextInput>
             </div>
         </div>
-        <CustomModal :onHide="onHide" id="add-form-modal">
-            <h5 class="form-modal-title">Create Offer</h5>
-            <div class="form-modal-title-border"></div>
-            <form @submit.prevent="onSubmit">
-                    <DragDropFileInput 
-                        :onfile="fileChange"
-                        label="Upload Banner"
-                        fileTypes="PNG, JPG up to 5MB"
-                    />
-                    <TaggedInput
-                        label="Amount"
-                        id="amount"
-                        name="amount"
-                        labelClass="form-modal-label"
-                        placeholder="e.g 200,000"
-                        :tagLeft="true"
-                        :tagRight="false"
-                        leftImage="naira.svg"
-                        v-model.number="addOffer.amount_from"
-                    />
-                    <div class="double-input-range-text">To</div>
-                    <TaggedInput
-                        :tagLeft="true"
-                        :tagRight="false"
-                        placeholder="e.g 500,000"
-                        leftImage="naira.svg"
-                        v-model.number="addOffer.amount_to"
-                    />
-                    <div class="short-dropdown-box">
-                        <label for="payback-period" class="form-modal-label">Payback Period</label>
-                        <select name="payback-period" id="payback-period" class="form-modal-inputs form-short-input" required v-model="addOffer.payback_period">
-                            <option value="0" hidden>Select</option>
-                            <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
-                        </select>
-                    </div>
-                    <div class="double-input-range-text"></div>
-                    <TaggedInput
-                        label="Interest Rate"
-                        id="interest"
-                        name="interest"
-                        placeholder="e.g 4"
-                        labelClass="form-modal-label margin-top-30"
-                        :tagLeft="false"
-                        :tagRight="true"
-                        rightImage="percent.svg"
-                        v-model.number="addOffer.interest_rate_from"
-                    />
-                    <label for="moratorium" class="form-modal-label margin-top-30">Moratorium Period (first repayment)</label>
-                    <span class="form-field-info">(on interest and principal)</span>
-                    <select name="moratorium" id="moratorium" class="form-modal-inputs" required v-model="addOffer.moratorium_principal">
-                        <option value="0" hidden>Select</option>
-                        <option value="1">1 Month</option>
-                        <option value="2">2 Months</option>
-                        <option value="3">3 Months</option>
-                    </select>
-                    <SubmitButton
-                        buttonClass="form-modal-button"
-                        name="Submit"
-                        :isLoading="creatingOffer"
-                    />
-            </form>
-        </CustomModal>
-        <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingOffers" class="page-loader">
-        <Table :tableHeaders="['Date', 'Code', 'Title', 'Amount', 'Interest', 'Duration', 'Status', '']" v-else>
-            <LoanOffersTableRow
-              v-for="loanOffer in loanOffers"
-              :key="loanOffer.id"
-              :id="loanOffer.id"
-              :date="loanOffer.date"
-              :code="loanOffer.code"
-              :title="loanOffer.title"
-              :amount="loanOffer.amount"
-              :interest="loanOffer.interestRate"
-              :duration="loanOffer.duration"
-              :status="loanOffer.status"
-              :onEdit="editUser"
-              :onResetPassword="confirmResetPassword"
-              :onToggleStatus="toggleUserStatus"
-              :onChangeRole="changeUserRole"
-            />
-        </Table>
-    </div>
+        <div class="description">
+          <TextArea row="2" :required="true" @changes="handleText($event,'description')" label='Description' inputClass="inputClasses" placeholder="Enter Description"/>
+        </div>
+        <TaggedInput
+          label="Amount"
+          id="amount"
+          name="amount"
+          labelClass="form-modal-label"
+          placeholder="e.g 200,000"
+          type="number"
+          :tagLeft="true"
+          :required="true"
+          :tagRight="false"
+          leftImage="naira.svg"
+          v-model.number="addOffer.amount_from"
+        />
+        <div class="double-input-range-text">To</div>
+        <TaggedInput
+          :tagLeft="true"
+          :tagRight="false"
+          :required="true"
+          type="number"
+          :min="this.addOffer.amount_from"
+          placeholder="e.g 500,000"
+          leftImage="naira.svg"
+          v-model.number="addOffer.amount_to"
+        />
+        <div class="short-dropdown-box">
+          <label for="payback-period" class="form-modal-label">Payback Period</label>
+          <select
+            name="payback-period"
+            id="payback-period"
+            class="form-modal-inputs form-short-input"
+            required
+            v-model="addOffer.payback_period"
+          >
+            <option value="0" hidden>Select</option>
+            <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
+          </select>
+        </div>
+        <div class="double-input-range-text"></div>
+        <TaggedInput
+          label="Interest Rate"
+          id="interest"
+          name="interest"
+          placeholder="e.g 4"
+          labelClass="form-modal-label margin-top-30"
+          :tagLeft="false"
+          :tagRight="true"
+          :required="true"
+          rightImage="percent.svg"
+          v-model.number="addOffer.interest_rate"
+        />
+        <label
+          for="moratorium"
+          class="form-modal-label margin-top-30"
+        >Moratorium Period (first repayment)</label>
+        <span class="form-field-info">(on interest and principal)</span>
+        <select
+          name="moratorium"
+          id="moratorium"
+          class="form-modal-inputs"
+          required
+          v-model="addOffer.moratorium_principal"
+        >
+          <option value="0" hidden>Select</option>
+          <option value="1">1 Month</option>
+          <option value="2">2 Months</option>
+          <option value="3">3 Months</option>
+        </select>
+        <SubmitButton buttonClass="form-modal-button" name="Submit" :isLoading="creatingOffer" />
+      </form>
+    </CustomModal>
+    <img
+      src="/assets/images/page-ring-loader.svg"
+      alt="loader"
+      v-if="fetchingOffers"
+      class="page-loader"
+    />
+    <template v-else>
+      <template v-if="searchFound===false">
+        <NoData>
+          <template v-slot:title>
+            <h4>Not Found</h4>
+          </template>
+          <template v-slot:subtitle>
+            <p>The data you are searching for could not be found</p>
+          </template>
+        </NoData>
+      </template>
+      <template v-else-if="loanOffers.data">
+        <LoanOffersTable :items="offers" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
+      </template>
+      <template v-else>
+        <NoData>
+          <template v-slot:title>
+            <h4>No Loan Offers</h4>
+          </template>
+          <template v-slot:subtitle>
+            <p>There are no loan offers yet. Create one above.</p>
+          </template>
+        </NoData>
+      </template>
+      
+      
+    </template>
+    <Pagination
+          v-if="!searchTerm && loanOffers.meta && searchFound"
+          :total="loanOffers.meta.total"
+          :currentPage="loanOffers.meta.current_page"
+          :lastPage="loanOffers.meta.last_page"
+          :from="loanOffers.meta.from"
+          :to="loanOffers.meta.to"
+        />
+  </div>
 </template>
 
 <script>
-    import axios from 'axios';
-    import CustomModal from '../components/Modals/CustomModal';
-    import Table from '../components/Table/Table';
-    import LoanOffersTableRow from '../components/Table/LoanOffersTableRow';
-    import DragDropFileInput from '../components/Inputs/DragDropFileInput';
-    import TaggedInput from '../components/Inputs/TaggedInput';
-    import SearchFilterInput from '../components/Inputs/SearchFilterInput';
-    import SubmitButton from '../components/Buttons/SubmitButton';
-    import Button from '../components/Buttons/Botton';
-    export default {
-        components: {
-            CustomModal,
-            Table,
-            LoanOffersTableRow,
-            DragDropFileInput,
-            TaggedInput,
-            SearchFilterInput,
-            SubmitButton,
-            Button,
-        },
-        data() {
-            return {
-                searchTerm: '',
-                creatingOffer: false,
-                fetchingOffers: false,
-                loanOffers: [],
-                addOffer: {
-                    moratorium_principal: 0,
-                    payback_period: 0,
-                },
-                formValues: null,
-            }
-        },
-        methods: {
-            onSubmit() {
-                this.creatingOffer = true;
-                this.formValues.append('interest_rate_to', 10);
-                this.formValues.append('code_name', 1234567890);
-                this.formValues.append('title', 'Cheap anual loan')
-                this.formValues.append('description', 'Do You Need To Renovate Your House? A Personal Loan Is The');
-                this.formValues.append('moratorium_interest', 1);
-                this.formValues.append('payback_date', 'year');
-                this.formValues.append('amount_from', this.addOffer.amount_from);
-                this.formValues.append('amount_to', this.addOffer.amount_to);
-                this.formValues.append('payback_period', this.addOffer.payback_period);
-                this.formValues.append('interest_rate_from', this.addOffer.interest_rate_from);
-                this.formValues.append('moratorium_principal', this.addOffer.moratorium_principal);
-                axios.post(
-                    'creditor/offer/create', 
-                    this.formValues, 
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }
-                )
-                .then(() => {
-                    this.creatingOffer = false;
-                })
-                .catch(err => {
-                    console.log('err', err.response.data);
-                    this.creatingOffer = false;
-                });
-                
-            },
-            fileChange(file) {
-                const formData = new FormData();
-                formData.append('image_banner', file);
-                this.formValues = formData;
-            },
-            onHide() {
-                this.addOffer = {};
-            },
-            fetchLoanOffers() {
-                this.fetchingOffers = true;
-                axios.get('http://wacs.mocklab.io/loanoffers')
-                .then((res) => {
-                    this.fetchingOffers = false;
-                    this.loanOffers = res.data;
-                })
-                .catch(() => {
-                    this.fetchingOffers = false;
-                });
-            },
-            editUser() {
-                alert('editting');
-            },
-            changeUserRole() {
-                alert('changing role');
-            },
-            confirmResetPassword() {
-                alert('resetting');
-            },
-            toggleUserStatus() {
-                alert('changing status');
-            },
-        },
-        mounted() {
-            this.fetchLoanOffers();
-        },
+import axios from "axios";
+import CustomModal from "../components/Modals/CustomModal";
+import LoanOffersTable from "../components/Table/LoanOffersTable";
+import TaggedInput from "../components/Inputs/TaggedInput";
+import TextInput from "../components/Inputs/TextInput";
+import TextArea from "../components/Inputs/TextArea"
+import SubmitButton from "../components/Buttons/SubmitButton";
+import Button from "../components/Buttons/Botton";
+import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
+import Toast from '../components/Toast'
+import NoData from "../components/NoData"
+import SearchFilterInput from "../components/Inputs/SearchFilterInput"
+import {LOANOFFERSAPI,baseUrl} from '../router/api_routes'
+import Pagination from "../components/Pagination/Pagination"
+export default {
+  components: {
+    CustomModal,
+    LoanOffersFilter,
+    TextInput,
+    TextArea,
+    LoanOffersTable,
+    TaggedInput,
+    SubmitButton,
+    Button,
+    Toast,
+    SearchFilterInput,
+    NoData,
+    Pagination
+  },
+  data() {
+    return {
+      errors:{},
+      toast:{
+        show:false,
+        title:'',
+        message:"",
+        success:false
+      },
+      searchTerm: "",
+      searchFound: true,
+      creatingOffer: false,
+      fetchingOffers: false,
+      loanOffers: {},
+      addOffer: {
+        moratorium_principal: 0,
+        payback_period: 0
+      },
+      formValues: null
+    };
+  },
+  methods: {
+    onSubmit() {
+      const url=baseUrl+`creditor/offer/create`
+      const data={
+        code_name:this.addOffer.code,
+        title:this.addOffer.title,
+        description:this.addOffer.description,
+        interest_rate:this.addOffer.interest_rate,
+        amount_from:this.addOffer.amount_from,
+        amount_to:this.addOffer.amount_to,
+        payback_period:this.addOffer.payback_period,
+        interest_rate_from:this.addOffer.interest_rate_from,
+        moratorium_period:this.addOffer.moratorium_principal
+      }
+      this.creatingOffer = true;
+      axios
+        .post(
+          url,
+          data,
+        )
+        .then(() => {
+          this.creatingOffer = false;
+          this.toast={show:true,title:'Successful!',message:"You created a loan offer",success:true}
+          this.$bvModal.hide('add-form-modal')
+          this.fetchLoanOffers()
+        })
+        .catch(err => {
+          console.log("err", err.response.data);
+          this.creatingOffer = false;
+        });
+    },
+    handleText(event,type){
+         this.addOffer[type]=event
+    },
+    fileChange(file) {
+      const formData = new FormData();
+      formData.append("image_banner", file);
+      this.formValues = formData;
+    },
+    onHide() {
+      this.addOffer = {};
+    },
+    serialize(obj, prefix) {
+      var str = [],
+        p;
+      for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          var k = prefix ? prefix + "[" + p + "]" : p,
+            v = obj[p];
+          str.push(
+            v !== null && typeof v === "object"
+              ? this.serialize(v, k)
+              : k + "=" + v
+          );
+        }
+      }
+      return str.join("&");
+    },
+    fetchLoanOffers(query) {
+      this.fetchingOffers = true;
+      axios
+        .get(LOANOFFERSAPI.view + '?'+ this.serialize(query))
+        .then(response => {
+           this.fetchingOffers = false;
+          if (response.data.data.length === 0) {
+            this.searchFound = false;
+          } else {
+            this.loanOffers = { ...response.data };
+            this.searchTerm = "";
+            this.searchFound = true;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.fetchingOffers = false;
+        });
+    },
+    filterLoanOffers(data){
+      this.loanOffers=data
+    },
+    updateLoanOffers(newRow){
+      const index=this.loanOffers.data.findIndex(x=>x.id===newRow.id)
+      this.loanOffers.data.splice(index,1,newRow)
+    },
+    deleteLoanOffersRow(row){
+      const index=this.loanOffers.data.findIndex(x=>x.id===row)
+      this.loanOffers.data.splice(index,1)
+    },
+    enterSearch(){
+      if(this.searchTerm){
+        this.$router.push({name:'loanOffers',query:{search:this.searchTerm}})
+      }
+      else{
+        this.searchFound=true
+      }
+    },
+    searchLoanOffer(){
+      if (this.searchTerm) {
+        const URL = baseUrl + `creditor/offer/search/${this.searchTerm}`;
+        this.fetchingOffers = true;
+        axios.get(URL).then(response => {
+          this.fetchingOffers = false;
+          if (response.data.data.length === 0) {
+            this.searchFound = false;
+          } else {
+            this.loanOffers = { ...response.data };
+            this.searchTerm = "";
+            this.searchFound = true;
+          }
+        });
+      } else {
+        this.searchFound = true;
+      }
+    },
+    toggleSearchFound(state) {
+      this.searchFound = state;
     }
+  },
+  computed:{
+    offers(){
+      let loanOffers=this.loanOffers.data
+      if(this.searchTerm && loanOffers) {
+                    loanOffers = loanOffers.filter((row) => {
+                        return Object.keys(row).some((key) => {
+                            return String(row[key]).toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
+                        })
+                    })
+                }
+        return loanOffers
+    }
+  },
+  mounted() {
+    console.log(this.$router)
+    this.fetchLoanOffers(this.$router.history.current.query);
+  },
+  watch: {
+    "$route.query": {
+      handler(query) {
+        if(query.search){
+         this.searchLoanOffer(query)
+        }
+        else{
+          this.fetchLoanOffers(query)
+        }
+      },
+      deep: true
+    }
+  }
+};
 </script>
 
-<style>
+<style >
+.page-filters {
+  align-items: center;
+  padding: 0 30px;
+  background-color: white;
+  color: #a1a1a1;
+}
 
+.inputClasses {
+    width: inherit;
+    background: #f8f8f8;
+    background-color: #f8f8f8 !important;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+}
+
+.description{
+  margin-top: 15px;
+}
+
+.cot{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.filter-by {
+  margin-left: 20px;
+}
+.cta-div {
+  padding: 3px 0px 3px 3px;
+  border-left: 0px;
+}
+.no-offers{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.no-offers img{
+  margin-bottom: 20px;
+}
 </style>

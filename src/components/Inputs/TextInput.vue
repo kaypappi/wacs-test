@@ -3,7 +3,7 @@
         <label :for="id" :class="labelClass">{{label}}</label>
         <input 
             :value="value" 
-            @input="$emit('input', $event.target.value)" 
+            @change="$emit('input', $event.target.value)" 
             :type="type" 
             :required="required"
             :disabled="disabled" 
