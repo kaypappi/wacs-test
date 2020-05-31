@@ -69,6 +69,7 @@ const routes = [
         path: '/loan-request/:requestId',
         name: 'loanRequestDetails',
         component: LoanRequestDetails,
+        props: true,
         meta: {
           title: 'Loan Details',
           nameSpace: 'loan',
@@ -85,9 +86,10 @@ const routes = [
         },
       },
       {
-        path: '/make-offer',
+        path: '/make-offer/:offerId',
         name: 'makeOffer',
         component: MakeOffer,
+        props:true,
         meta: {
           title: 'Make Offer',
           nameSpace: 'loan',

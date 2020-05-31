@@ -1,7 +1,14 @@
 <template>
     <div class="full-user-details">
+        <Toast 
+            :show="toast.show"
+            :title="toast.title"
+            :successMessage="toast.message"
+            failureMessage="Invalid token"
+            :success="toast.success"
+        />
         <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingRequests" class="page-loader">
-        <template >
+        <template v-else >
             <div class="details-top">
                 <h3>{{customerName}}</h3>
                 <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
@@ -52,21 +59,21 @@
                     </td>
                 </tr>
                 <template v-for="history in loanHistory">
-                    <tr class="t-field" :key="history.Date">
+                    <tr class="t-field" :key="history.date">
                         <td>
-                            {{history.Date}}
+                            {{history.date}}
                         </td>
                         <td>
-                            {{history.loanOffer_coll}}
+                            {{history.title}}
                         </td>
                         <td>
-                            {{history.crdt_admin}}
+                            {{history.description}}
                         </td>
                         <td>
-                            {{history.loan_amount}}
+                            {{history.amount_from}}
                         </td>
                         <td>
-                            {{history.amount_paid}}
+                            {{history.amount_from}}
                         </td>
                     </tr>
                 </template>
@@ -78,13 +85,17 @@
 <script>
     import axios from 'axios';
     import NoBorderTableRow from '../components/Table/NoBorderTableRow';
+    import {baseUrl} from '../router/api_routes'
+    import Toast from '../components/Toast'
     export default {
         components: {
             NoBorderTableRow,
+            Toast
         },
         data() {
             return {
                 customerName: '',
+                offerId:"",
                 fetchingRequests: true,
                 firstRowBio: [],
                 secondRowBio: [],
@@ -92,59 +103,84 @@
                 loanDetailsRow: [],
                 loanHistory: [],
                 requestId: '',
+                toast:{
+                    show:false,
+                    title:'',
+                    message:"",
+                    success:false
+                },
             }
         },
         methods: {
             fetchLoanDetails() {
                 this.requestId = this.$route.params.requestId;
                 this.fetchingRequests = true;
-                axios.get('http://wacs.mocklab.io/viewloan')
+                const URL=baseUrl+'creditor/request/view/'+this.requestId
+                axios.get(URL)
                 .then((res) => {
                     this.fetchingRequests = false;
-                    const loanData = res.data.find(data => data.id == this.requestId);
+                    const loanData = res.data.data[0]
                     this.splitDetails(loanData);
                 })
                 .catch(err=>console.log(err))
                
             },
+            showToast(title,message,success){
+                    this.toast={show:true,title,message,success}
+                        setTimeout(()=>{
+                            this.toast.show=false
+                        },2000)
+            },
             declineRequest() {
-                alert(`declining loan request of id ${this.requestId} for ${this.customerName}`);
+                const URL=baseUrl+`creditor/request/decline`
+                const data={id:this.offerId}
+                axios.post(URL,data).then(Response=>{
+                    this.showToast('Successful',Response.message,true)
+                    setTimeout(()=>{
+                            this.$router.push({name:'loanRequest'})
+                        },2000)
+                }).catch(err=>{console.log(err)})
+                
             },
             makeOffer() {
-                this.$router.push('/make-offer');
+                this.$router.push({name:'makeOffer',params:{offerId:this.offerId}});
             },
             splitDetails(loanData) {
-                this.customerName = loanData['bio-data'].Name;
+                this.customerName = loanData.user_info.full_name;
+                this.offerId=loanData.offer_details.id
+                //const userData=this.$route.params.userData
                 this.firstRowBio = [
-                    {name: 'Ippiss Number', value: loanData['bio-data'].Ippis_No},
-                    {name: 'Phone Number', value: loanData['bio-data'].phone_no},
-                    {name: 'Marital Status', value: loanData['bio-data'].Marital_Stat},
-                    {name: 'Monthly Salary', value: loanData['bio-data'].Mon_Salary},
+                    {name: 'Ippiss Number', value: loanData.user_info.ippis_number},
+                    {name: 'Phone Number', value: loanData.user_info.mobile_number},
+                    {name: 'Marital Status', value: loanData.user_info.marital_status},
+                    {name: 'Monthly Salary', value: loanData.user_info.monthly_salary},
                 ];
                 this.secondRowBio = [
-                    {name: 'MDA', value: loanData['bio-data'].MDA},
-                    {name: 'Gender', value: loanData['bio-data'].Gender},
-                    {name: 'BVN', value: loanData['bio-data'].BVN},
-                    {name: 'Email', value: loanData['bio-data'].Email},
+                    {name: 'MDA', value: loanData.user_info.mda},
+                    {name: 'Gender', value: loanData.user_info.gender},
+                    {name: 'BVN', value: loanData.user_info.bvn},
+                    {name: 'Email', value: loanData.user_info.email},
                 ];
                 this.thirdRowBio = [
-                    {name: 'Religion', value: loanData['bio-data'].religion},
-                    {name: 'State Of Origin', value: loanData['bio-data'].State_of_origin},
-                    {name: 'Nationality', value: loanData['bio-data'].Nationality},
-                    {name: 'Address', value: loanData['bio-data'].Address},
+                    {name: 'Religion', value: loanData.user_info.religion},
+                    {name: 'State Of Origin', value: loanData.user_info.state},
+                    {name: 'Nationality', value: loanData.user_info.nationality},
+                    {name: 'Address', value: loanData.user_info.address},
                 ];
                 this.loanDetailsRow = [
-                    {name: 'Date Requested', value: loanData['loan-details'].Date_req},
-                    {name: 'Requested Amount', value: loanData['loan-details'].Req_Amount},
-                    {name: 'Repayment Period', value: loanData['loan-details'].First_PaynDate},
-                    {name: 'First Repayment Date', value: loanData['loan-details'].Repayn_Period},
-                    {name: 'Interest Rate', value: loanData['loan-details'].Interest_rate},
+                    {name: 'Date Requested', value: loanData.date},
+                    {name:  'Loan Offer', value:loanData.offer_details.title},
+                    {name: 'Requested Amount', value: loanData.amount},
+                    {name: 'Repayment Period', value: loanData.offer_details.payback_period+" Months"},
+                    {name: 'First Repayment Date', value: loanData.offer_details.moratorium_period+ " months after"},
+                    {name: 'Interest Rate', value: loanData.offer_details.interest_rate},
                 ];
-                this.loanHistory = loanData['loan-history'];
+                this.loanHistory = loanData.user_info.loan_history;
             }
         },
         mounted() {
             this.fetchLoanDetails();
+            //console.log(this.$route)
         },
     }
 </script>

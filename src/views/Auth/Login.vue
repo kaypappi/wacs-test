@@ -56,7 +56,8 @@
             return {
                 form:{
                     user_name:'',
-                    password:''
+                    password:'',
+                    device:navigator.platform
                 }
             }
         },
