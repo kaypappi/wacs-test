@@ -123,7 +123,6 @@
                     const loanData = res.data.data[0]
                     this.splitDetails(loanData);
                 })
-                .catch(err=>console.log(err))
                
             },
             showToast(title,message,success){
@@ -140,7 +139,7 @@
                     setTimeout(()=>{
                             this.$router.push({name:'loanRequest'})
                         },2000)
-                }).catch(err=>{console.log(err)})
+                })
                 
             },
             makeOffer() {
@@ -176,7 +175,7 @@
                     {name: 'First Repayment Date', value: loanData.offer.moratorium_period+ " months after"},
                     {name: 'Interest Rate', value: loanData.offer.interest_rate},
                 ];
-                this.loanHistory = loanData.user_info.loan_history;
+                this.loanHistory = loanData.user.loan_history;
             }
         },
         mounted() {

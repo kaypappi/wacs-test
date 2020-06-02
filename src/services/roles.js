@@ -17,7 +17,8 @@ export const defineAbilities = () => {
       }
     
     Vue.prototype.$ability.update(defineAbilitiesFor());
-}
+};
 
 Vue.use(abilitiesPlugin);
+
 

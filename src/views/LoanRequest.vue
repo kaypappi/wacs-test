@@ -113,6 +113,7 @@ export default {
       this.fetchingRequests = true;
       const URL = baseUrl + "creditor/request/view?" + this.serialize(query);
       axios.get(URL).then(response => {
+
         this.fetchingRequests = false;
         if (response.data.data.length === 0) {
             this.searchFound = false;
@@ -120,10 +121,7 @@ export default {
             this.loanRequests = { ...response.data };
             this.searchFound = true;
           }
-      })
-       .catch(err => {
-          console.log('err', err);
-       });
+      });
     },
     filterLoanRequests(data) {
       this.loanRequests = { ...data };
