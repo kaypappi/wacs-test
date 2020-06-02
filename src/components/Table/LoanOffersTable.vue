@@ -291,9 +291,6 @@ export default {
           console.log(err)
         })
     },
-    toggleDetails() {
-      console.log("toggling details")
-    },
     Delete() {
       let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
       axios.get(url)

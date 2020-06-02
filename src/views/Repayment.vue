@@ -64,7 +64,6 @@ export default {
       axios.get(URL).then(response => {
         this.repayments = {...response.data};
         this.fetchingRepayments=false
-        console.log(response);
       });
     },
     handleText(event,position){

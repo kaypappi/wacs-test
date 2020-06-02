@@ -43,7 +43,6 @@ export default {
         this.schedule = { ...response.data };
         this.scheduleTitle = `Repayment Schedule Breakdown - ${this.schedule.data[0].schedule_number} - NGN ${this.schedule.data[0].amount}`;
         this.fetchingSchedule=false
-        console.log(response);
       });
     },
     serialize(obj, prefix) {

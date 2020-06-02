@@ -99,22 +99,22 @@ const routes = [
         },
       },
       {
-        path:'/repayments/:id',
+        path:'/report/:id',
         name:'repaymentsSchedule',
         component:Schedule,
         meta:{
           title: 'Schedule Details',
-          nameSpace:'repayments',
-          parents:['Repayment Schedule']
+          nameSpace:'report',
+          parents:['Report']
         }
       },
       {
-        path:'/repayments',
+        path:'/report',
         name:'repayments',
         component:Repayment,
         meta:{
-          title:'Repayment Schedule',
-          nameSpace:'repayments'
+          title:'Report',
+          nameSpace:'report'
         }
       },
       {

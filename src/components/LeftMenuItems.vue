@@ -37,12 +37,12 @@
                         nameSpace: 'users',
                     },
                     {
-                        name: "Repayment",
+                        name: "Report",
                         iconPath: "/assets/images/Chart-bar.svg",
                         altText: "chart",
-                        to: "/repayments",
+                        to: "/report",
                         permission: ["manage", "loan"],
-                        nameSpace: 'repayments',
+                        nameSpace: 'report',
                     }
                 ],
             }

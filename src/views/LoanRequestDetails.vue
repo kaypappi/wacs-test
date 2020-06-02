@@ -118,7 +118,6 @@
                 const URL=baseUrl+'creditor/request/view/'+this.requestId
                 axios.get(URL)
                 .then((res) => {
-                    console.log(res.data)
                     this.fetchingRequests = false;
                     const loanData = res.data.data[0]
                     this.splitDetails(loanData);
@@ -180,7 +179,6 @@
         },
         mounted() {
             this.fetchLoanDetails();
-            //console.log(this.$route)
         },
     }
 </script>

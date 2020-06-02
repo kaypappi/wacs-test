@@ -129,7 +129,7 @@
                                         
                                 >
                                         <option value="0" hidden>Select Month</option>
-                                        <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
+                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
                                     </select>
                                     <select
                                         name="first-repayment-year"
@@ -158,7 +158,7 @@
                                         
                                 >
                                         <option value="0" hidden>Select Month</option>
-                                        <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
+                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
                                     </select>
                                     <select
                                         name="last-repayment-year"
@@ -214,19 +214,8 @@
                                         required
                                         
                                 >
-                                        <option value="0" hidden>Select</option>
-                                         <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
+                                        <option value="0" hidden>Select Month</option>
+                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
                                     </select>
                                 </div>
     
@@ -318,6 +307,18 @@
         data() {
             return {
                 monthCount: 1,
+                months:["January",
+                        "Febuary",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"],
                 isLoading:false,
                 equalRepayment: true,
                 steps:1,
@@ -364,7 +365,6 @@
                 const URL=baseUrl+'creditor/repayments/csvRead'
                 this.fileLoading=true
                 axios.post(URL,this.formValues).then(response=>{
-                    console.log(response.data)
                     this.offer.csv_repayment=[...response.data]
                     this.fileLoading=false
                 })
@@ -465,7 +465,6 @@
             submitWizard(){
                 const data={}
                 this.isLoading=true
-                //const formData=new FormData()
                 const URL=baseUrl+'creditor/repayments'
                 data.loan_amount=this.offer.loan_amount
                 data.repayment_period=this.offer.repayment_period
@@ -535,7 +534,6 @@
         mounted() {
             this.offerId=this.$route.params.offerId
             this.loan_request_id=this.$route.params.loan_request_id
-            console.log(this.loan_request_id)
         },
     }
 </script>
