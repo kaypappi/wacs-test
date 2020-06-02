@@ -122,7 +122,6 @@
                     const loanData = res.data.data[0]
                     this.splitDetails(loanData);
                 })
-                .catch(err=>console.log(err))
                
             },
             showToast(title,message,success){
@@ -139,43 +138,43 @@
                     setTimeout(()=>{
                             this.$router.push({name:'loanRequest'})
                         },2000)
-                }).catch(err=>{console.log(err)})
+                })
                 
             },
             makeOffer() {
                 this.$router.push({name:'makeOffer',params:{offerId:this.offerId}});
             },
             splitDetails(loanData) {
-                this.customerName = loanData.user_info.full_name;
-                this.offerId=loanData.offer_details.id
+                this.customerName = loanData.user.full_name;
+                this.offerId=loanData.offer.id
                 //const userData=this.$route.params.userData
                 this.firstRowBio = [
-                    {name: 'Ippiss Number', value: loanData.user_info.ippis_number},
-                    {name: 'Phone Number', value: loanData.user_info.mobile_number},
-                    {name: 'Marital Status', value: loanData.user_info.marital_status},
-                    {name: 'Monthly Salary', value: loanData.user_info.monthly_salary},
+                    {name: 'Ippiss Number', value: loanData.user.ippis_number},
+                    {name: 'Phone Number', value: loanData.user.mobile_number},
+                    {name: 'Marital Status', value: loanData.user.marital_status},
+                    {name: 'Monthly Salary', value: loanData.user.monthly_salary},
                 ];
                 this.secondRowBio = [
-                    {name: 'MDA', value: loanData.user_info.mda},
-                    {name: 'Gender', value: loanData.user_info.gender},
-                    {name: 'BVN', value: loanData.user_info.bvn},
-                    {name: 'Email', value: loanData.user_info.email},
+                    {name: 'MDA', value: loanData.user.mda},
+                    {name: 'Gender', value: loanData.user.gender},
+                    {name: 'BVN', value: loanData.user.bvn},
+                    {name: 'Email', value: loanData.user.email},
                 ];
                 this.thirdRowBio = [
-                    {name: 'Religion', value: loanData.user_info.religion},
-                    {name: 'State Of Origin', value: loanData.user_info.state},
-                    {name: 'Nationality', value: loanData.user_info.nationality},
-                    {name: 'Address', value: loanData.user_info.address},
+                    {name: 'Religion', value: loanData.user.religion},
+                    {name: 'State Of Origin', value: loanData.user.state},
+                    {name: 'Nationality', value: loanData.user.nationality},
+                    {name: 'Address', value: loanData.user.address},
                 ];
                 this.loanDetailsRow = [
                     {name: 'Date Requested', value: loanData.date},
-                    {name:  'Loan Offer', value:loanData.offer_details.title},
+                    {name:  'Loan Offer', value:loanData.offer.title},
                     {name: 'Requested Amount', value: loanData.amount},
-                    {name: 'Repayment Period', value: loanData.offer_details.payback_period+" Months"},
-                    {name: 'First Repayment Date', value: loanData.offer_details.moratorium_period+ " months after"},
-                    {name: 'Interest Rate', value: loanData.offer_details.interest_rate},
+                    {name: 'Repayment Period', value: loanData.offer.payback_period+" Months"},
+                    {name: 'First Repayment Date', value: loanData.offer.moratorium_period+ " months after"},
+                    {name: 'Interest Rate', value: loanData.offer.interest_rate},
                 ];
-                this.loanHistory = loanData.user_info.loan_history;
+                this.loanHistory = loanData.user.loan_history;
             }
         },
         mounted() {

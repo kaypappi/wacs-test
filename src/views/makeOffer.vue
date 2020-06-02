@@ -367,10 +367,9 @@
                     this.offer.csv_repayment=[...response.data]
                     this.fileLoading=false
                 })
-                .catch(err=>{
+                .catch(()=>{
                     this.fileLoading=false
-                    console.log(err)})
-            },
+            })},
             addMonth() {
                 if(this.offer.unequal_repayment.length<this.offer.repayment_period){
                     this.offer.unequal_repayment=[...this.offer.unequal_repayment,{month:0,year:0}]
@@ -504,7 +503,6 @@
                         },2000)
                     }
                 }).catch(err=>{
-                    console.log(err)
                     this.isLoading=false
                     this.showToast('Error!',err.message,false)
                 })
