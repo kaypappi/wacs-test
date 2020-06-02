@@ -16,7 +16,7 @@
                     Decline
                 </Button>
                 <Button class="cta-button margin-left-30" @click="makeOffer">
-                    <img src="/assets/images/double-check.svg" alt="Plus sign">
+                    <img src="/assets/images/Double-check.svg" alt="Plus sign">
                     Make Offer 
                 </Button>
             </div>
@@ -142,7 +142,7 @@
                 
             },
             makeOffer() {
-                this.$router.push({name:'makeOffer',params:{offerId:this.offerId}});
+                this.$router.push({name:'makeOffer',params:{offerId:this.offerId,loan_request_id:this.requestId}});
             },
             splitDetails(loanData) {
                 this.customerName = loanData.user.full_name;
@@ -179,7 +179,6 @@
         },
         mounted() {
             this.fetchLoanDetails();
-            //console.log(this.$route)
         },
     }
 </script>

@@ -103,7 +103,7 @@ export default {
       searchTerm: "",
       searchFound: true,
       loanRequests: [],
-      fetchingRequests: true,
+      fetchingRequests: false,
       dayOptions: ["Today", "Last 7days", "30 days"],
       activeOption: ""
     };

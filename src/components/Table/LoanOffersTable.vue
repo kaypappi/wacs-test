@@ -103,7 +103,6 @@
     <b-table
       ref="selectableTable"
       selectable
-      small
       :select-mode="selectMode"
       :items="offers"
       :fields="fields"
@@ -291,9 +290,6 @@ export default {
         .catch(err=>{
           console.log(err)
         })
-    },
-    toggleDetails() {
-      console.log("toggling details")
     },
     Delete() {
       let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
