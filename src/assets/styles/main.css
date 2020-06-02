@@ -1087,14 +1087,15 @@ td>.t-value {
 }
 
 .main-body-content .table th {
-    height: auto;
-    padding: 10px 5px;
+    height: 50px;
+    padding: 0 20px;
     color: #424242;
     background-color: #f8f8f8;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
     border-bottom: none;
+    vertical-align: middle;
 }
 
 .main-body-content .table th>input, .main-body-content .table td>input {
@@ -1107,7 +1108,8 @@ td>.t-value {
 .main-body-content .table td {
     color: #535353;
     font-size: 16px;
-    padding: 10px 5px;
+    padding: 0 20px;
+    height: 50px;
     font-weight: 450;
     line-height: 14px;
     border-bottom: 2px solid #E7E7E7;

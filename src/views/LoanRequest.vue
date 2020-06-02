@@ -48,9 +48,9 @@
             :key="loanRequest.id"
             :id="loanRequest.id"
             :date="loanRequest.date"
-            :name="loanRequest.user_info.full_name"
-            :ippissNo="loanRequest.user_info.ippis_number"
-            :salary="loanRequest.user_info.monthly_salary"
+            :name="loanRequest.user.full_name"
+            :ippissNo="loanRequest.user.ippis_number"
+            :salary="loanRequest.user.monthly_salary"
             :loanRequest="loanRequest.amount"
             :status="loanRequest.status"
           />
@@ -103,7 +103,7 @@ export default {
       searchTerm: "",
       searchFound: true,
       loanRequests: [],
-      fetchingRequests: true,
+      fetchingRequests: false,
       dayOptions: ["Today", "Last 7days", "30 days"],
       activeOption: ""
     };
@@ -113,7 +113,6 @@ export default {
       this.fetchingRequests = true;
       const URL = baseUrl + "creditor/request/view?" + this.serialize(query);
       axios.get(URL).then(response => {
-        console.log(response)
         this.fetchingRequests = false;
         if (response.data.data.length === 0) {
             this.searchFound = false;

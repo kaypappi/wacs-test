@@ -40,9 +40,9 @@
                         name: "Repayment",
                         iconPath: "/assets/images/Chart-bar.svg",
                         altText: "chart",
-                        to: "/",
-                        permission: ["manage", "repayment"],
-                        nameSpace: 'repayment',
+                        to: "/repayments",
+                        permission: ["manage", "loan"],
+                        nameSpace: 'repayments',
                     }
                 ],
             }

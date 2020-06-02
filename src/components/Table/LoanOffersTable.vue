@@ -103,7 +103,6 @@
     <b-table
       ref="selectableTable"
       selectable
-      small
       :select-mode="selectMode"
       :items="offers"
       :fields="fields"

@@ -364,6 +364,7 @@
                 const URL=baseUrl+'creditor/repayments/csvRead'
                 this.fileLoading=true
                 axios.post(URL,this.formValues).then(response=>{
+                    console.log(response.data)
                     this.offer.csv_repayment=[...response.data]
                     this.fileLoading=false
                 })
@@ -472,6 +473,7 @@
                 data.interest_rate=this.offer.interest
                 data.offer_id=this.offerId
                 data.moratorium_period=this.offer.moratorium
+                data.loan_request_id=this.loan_request_id
                 if(this.equalRepayment){
                     const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
                     const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
@@ -480,7 +482,6 @@
                     data.plan=JSON.stringify({first,last,amount})
                 }
                 else{
-                    data.plan_type='unequal'
                     if(this.offer.csv_repayment.length>0){
                         this.formData.append("loan_amount",this.offer.loan_amount);
                         this.formData.append("offer_id",this.offerId );
@@ -489,6 +490,7 @@
                         this.formData.append("moratorium_period", this.offer.moratorium);
                         this.formData.append("plan_type", "unequal");
                         this.formData.append("csvUpload",this.formValues);
+                        this.formData.append("loan_request_id",this.loan_request_id)
                     }
                     else{
                         data.plan=JSON.stringify([...this.offer.unequal_repayment])
@@ -534,6 +536,8 @@
         },
         mounted() {
             this.offerId=this.$route.params.offerId
+            this.loan_request_id=this.$route.params.loan_request_id
+            console.log(this.loan_request_id)
         },
     }
 </script>

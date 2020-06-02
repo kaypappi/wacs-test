@@ -8,6 +8,9 @@
       local="en"
       v-model="inputVal"
       dropright
+      today-button
+      reset-button
+      close-button
     ></b-form-datepicker>
   </div>
 </template>

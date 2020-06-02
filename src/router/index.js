@@ -11,6 +11,8 @@ import LoanOffers from "../views/LoanOffers";
 import MakeOffer from "../views/makeOffer";
 import LoanRequestDetails from "../views/LoanRequestDetails";
 import Home from "../views/Home";
+import Repayment from "../views/Repayment";
+import Schedule from "../views/Schedule"
 import {beforeEach} from './beforeEach';
 
 Vue.use(VueRouter);
@@ -95,6 +97,25 @@ const routes = [
           nameSpace: 'loan',
           parents: ['Loan Request', 'Loan Details'],
         },
+      },
+      {
+        path:'/repayments/:id',
+        name:'repaymentsSchedule',
+        component:Schedule,
+        meta:{
+          title: 'Schedule Details',
+          nameSpace:'repayments',
+          parents:['Repayment Schedule']
+        }
+      },
+      {
+        path:'/repayments',
+        name:'repayments',
+        component:Repayment,
+        meta:{
+          title:'Repayment Schedule',
+          nameSpace:'repayments'
+        }
       },
       {
         path: '/change-password',
