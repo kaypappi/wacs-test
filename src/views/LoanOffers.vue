@@ -236,8 +236,7 @@ export default {
           this.$bvModal.hide('add-form-modal')
           this.fetchLoanOffers()
         })
-        .catch(err => {
-          console.log("err", err.response.data);
+        .catch(() => {
           this.creatingOffer = false;
         });
     },
@@ -282,8 +281,7 @@ export default {
             this.searchFound = true;
           }
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
           this.fetchingOffers = false;
         });
     },
