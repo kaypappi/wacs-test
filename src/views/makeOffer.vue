@@ -491,6 +491,7 @@
                         this.formData.append("loan_request_id",this.loan_request_id)
                     }
                     else{
+                        data.plan_type='unequal'
                         data.plan=JSON.stringify([...this.offer.unequal_repayment])
                     }
                 }
