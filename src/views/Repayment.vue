@@ -3,19 +3,19 @@
     <div class="page-filters">
       <div class="start-date">
         <DateField
-        @changed="handleText($event,'from')"
-        id="start-datePicker"
-        placeholders="Start date"
-        :value="filters.from"
-
-      />
+          @changed="handleText($event,'from')"
+          id="start-datePicker"
+          placeholders="Start date"
+          :value="filters.from"
+        />
+        <span class="date-separator">-</span>
+        <DateField
+          @changed="handleText($event,'to')"
+          id="end-datePicker"
+          placeholders="End date"
+          :value="filters.to"
+        />
       </div>
-      <DateField
-        @changed="handleText($event,'to')"
-        id="end-datePicker"
-        placeholders="End date"
-        :value="filters.to"
-      />
     </div>
     <template v-if="!fetchingRepayments">
       <div class="schedule-wrapper">
@@ -111,9 +111,15 @@ export default {
 
 <style >
 .repayments-wrapper .page-filters{
-  padding: 10px 30px ;
+  padding: 3px 30px ;
 }
 .page-filters .start-date{
   margin-right: 30px;
+  display: flex;
+    align-items: center;
 }
+.date-separator {
+  margin: 0 30px;
+}
+
 </style>

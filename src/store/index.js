@@ -4,6 +4,8 @@ import auth from "./auth";
 import AdminUser from './module/AdminUser';
 import ResetPassword from './module/PasswordReset';
 import UserStatus from './module/UserStatus';
+import LoanRequest from './module/LoanRequest'
+import LoanOffers from "./module/LoanOffers"
 
 Vue.use(Vuex);
 
@@ -45,5 +47,7 @@ export default new Vuex.Store({
     AdminUser,
     ResetPassword,
     UserStatus,
+    LoanRequest,
+    LoanOffers
   }
 })

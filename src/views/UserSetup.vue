@@ -238,6 +238,7 @@
         computed: {
             users() {
                 let admins = this.$store.state.AdminUser.adminUsers;
+                
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
                         return Object.keys(row).some((key) => {
