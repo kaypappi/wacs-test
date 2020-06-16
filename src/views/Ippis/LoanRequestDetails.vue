@@ -33,10 +33,12 @@
         <NoBorderTableRow :data="splitDetails.thirdRowBio" />
       </table>
 
-      <h5>Loan Details</h5>
+      <div class="loan-details-header">
+        <h5>Loan Details</h5>
+        <p>View Repayment Schedule</p>
+      </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
-        <NoBorderTableRow :data=" splitDetails.loanDetailsRowTwo" />
       </table>
 
       <h5>Loan History</h5>
@@ -137,4 +139,15 @@ export default {
 </script>
 
 <style>
+.loan-details-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.loan-details-header p{
+  color: #009831;
+  margin-bottom: 0;
+  font-size: 14px;
+}
 </style>
