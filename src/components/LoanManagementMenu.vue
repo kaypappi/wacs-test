@@ -2,6 +2,7 @@
     <ul>
         <li @click="goTo('loan-request')" :class="{'active-loan-menu': currentRoute === '/loan-request'}">Loan Request</li>
         <li @click="goTo('loan-offers')" :class="{'active-loan-menu': currentRoute === '/loan-offers'}">Loan Offers</li>
+        <li @click="goTo('report')" :class="{'active-loan-menu': currentRoute === '/report'}">Reports</li>
     </ul>
 </template>
 

@@ -13,6 +13,8 @@ import LoanRequestDetails from "../views/LoanRequestDetails";
 import Home from "../views/Home";
 import Repayment from "../views/Repayment";
 import Schedule from "../views/Schedule"
+import IppisLoanRequest from "../views/Ippis/LoanRequest"
+import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails"
 import {beforeEach} from './beforeEach';
 
 Vue.use(VueRouter);
@@ -104,7 +106,7 @@ const routes = [
         component:Schedule,
         meta:{
           title: 'Schedule Details',
-          nameSpace:'report',
+          nameSpace:'loan',
           parents:['Report']
         }
       },
@@ -114,7 +116,26 @@ const routes = [
         component:Repayment,
         meta:{
           title:'Report',
-          nameSpace:'report'
+          nameSpace:'loan'
+        }
+      },
+      {
+        path:'/ippis',
+        name:'ippisLoanRequest',
+        component:IppisLoanRequest,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis'
+        }
+      },
+      {
+        path:'/ippis/:requestId',
+        name:'ippisLoanDetails',
+        component:IppisLoanRequestDetails,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis',
+          parents: ['Loan Request'],
         }
       },
       {

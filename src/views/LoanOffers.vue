@@ -4,17 +4,18 @@
             :show="toast.show"
             :title="toast.title"
             :successMessage="toast.message"
-            failureMessage="Invalid token"
+            :failureMessage="toast.message"
             :success="toast.success"
         />
     <div class="page-filters">
       <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
       <SearchFilterInput 
                 placeholder="Search by code,title"
-                v-model="searchTerm"
-                :onSearch="enterSearch"
+                :value="getSearchTerm()"
+          :onSearch="enterSearch"
+          @input="handleSearch($event)"
       />
-      <LoanOffersFilter :isLoading="fetchingOffers"></LoanOffersFilter>
+      <LoanOffersFilter :isLoading="isFetching"></LoanOffersFilter>
 
       <div class="cta-div">
         <Button v-b-modal.add-form-modal class="cta-button">
@@ -118,7 +119,7 @@
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
-      v-if="fetchingOffers"
+      v-if="isFetching"
       class="page-loader"
     />
     <template v-else>
@@ -160,7 +161,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import CustomModal from "../components/Modals/CustomModal";
 import LoanOffersTable from "../components/Table/LoanOffersTable";
 import TaggedInput from "../components/Inputs/TaggedInput";
@@ -172,7 +172,6 @@ import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
 import Toast from '../components/Toast'
 import NoData from "../components/NoData"
 import SearchFilterInput from "../components/Inputs/SearchFilterInput"
-import {LOANOFFERSAPI,baseUrl} from '../router/api_routes'
 import Pagination from "../components/Pagination/Pagination"
 export default {
   components: {
@@ -192,17 +191,9 @@ export default {
   data() {
     return {
       errors:{},
-      toast:{
-        show:false,
-        title:'',
-        message:"",
-        success:false
-      },
       searchTerm: "",
-      searchFound: true,
       creatingOffer: false,
       fetchingOffers: false,
-      loanOffers: {},
       addOffer: {
         moratorium_principal: 0,
         payback_period: 0
@@ -211,8 +202,14 @@ export default {
     };
   },
   methods: {
+    closeModal(){
+      this.$bvModal.hide("add-form-modal");
+    },
     onSubmit() {
-      const url=baseUrl+`creditor/offer/create`
+      const data=this.getSubmitData()
+      this.$store.dispatch("LoanOffers/createLoanOffer",{data,closeModal:this.closeModal})
+    },
+    getSubmitData(){
       const data={
         code_name:this.addOffer.code,
         title:this.addOffer.title,
@@ -224,6 +221,7 @@ export default {
         interest_rate_from:this.addOffer.interest_rate_from,
         moratorium_period:this.addOffer.moratorium_principal
       }
+<<<<<<< HEAD
       this.creatingOffer = true;
       axios
         .post(
@@ -239,14 +237,12 @@ export default {
         .catch(() => {
           this.creatingOffer = false;
         });
+=======
+      return data
+>>>>>>> 7c988e81e5abf91710800316b776f86f3fcefff8
     },
     handleText(event,type){
          this.addOffer[type]=event
-    },
-    fileChange(file) {
-      const formData = new FormData();
-      formData.append("image_banner", file);
-      this.formValues = formData;
     },
     onHide() {
       this.addOffer = {};
@@ -267,6 +263,7 @@ export default {
       }
       return str.join("&");
     },
+<<<<<<< HEAD
     fetchLoanOffers(query) {
       this.fetchingOffers = true;
       axios
@@ -284,59 +281,64 @@ export default {
         .catch(() => {
           this.fetchingOffers = false;
         });
+=======
+    handleSearch(event){
+     return this.$store.dispatch("LoanOffers/updateSearchTerm",event)
+>>>>>>> 7c988e81e5abf91710800316b776f86f3fcefff8
     },
-    filterLoanOffers(data){
-      this.loanOffers=data
+    fetchLoanOffers(query) {
+      this.$store.dispatch("LoanOffers/fetchLoanOffers",this.serialize(query))
     },
     updateLoanOffers(newRow){
-      const index=this.loanOffers.data.findIndex(x=>x.id===newRow.id)
-      this.loanOffers.data.splice(index,1,newRow)
+      this.$store.dispatch("LoanOffers/updateLoanOffers",newRow)
     },
     deleteLoanOffersRow(row){
-      const index=this.loanOffers.data.findIndex(x=>x.id===row)
-      this.loanOffers.data.splice(index,1)
+      this.$store.dispatch("LoanOffers/deleteLoanOfferRow",row)
     },
     enterSearch(){
-      if(this.searchTerm){
-        this.$router.push({name:'loanOffers',query:{search:this.searchTerm}})
+      if(this.getSearchTerm()){
+        this.$router.push({name:'loanOffers',query:{search:this.getSearchTerm()}})
       }
       else{
-        this.searchFound=true
+        this.$store.dispatch("LoanOffers/updateSearchFound",true)
       }
     },
-    searchLoanOffer(){
-      if (this.searchTerm) {
-        const URL = baseUrl + `creditor/offer/search/${this.searchTerm}`;
-        this.fetchingOffers = true;
-        axios.get(URL).then(response => {
-          this.fetchingOffers = false;
-          if (response.data.data.length === 0) {
-            this.searchFound = false;
-          } else {
-            this.loanOffers = { ...response.data };
-            this.searchTerm = "";
-            this.searchFound = true;
-          }
-        });
-      } else {
-        this.searchFound = true;
+    searchLoanOffer(query){
+      if(this.getSearchTerm()){
+        return this.$store.dispatch("LoanOffers/searchOffers",query)
+      }
+      else{
+        this.$store.dispatch("LoanOffers/updateSearchFound",true)
       }
     },
-    toggleSearchFound(state) {
-      this.searchFound = state;
-    }
+    getSearchTerm(){
+      return this.$store.state.LoanOffers.searchTerm
+    },
   },
   computed:{
     offers(){
-      let loanOffers=this.loanOffers.data
-      if(this.searchTerm && loanOffers) {
+      let loanOffers=this.$store.state.LoanOffers.loanOffers.data
+      if(this.getSearchTerm() && loanOffers) {
                     loanOffers = loanOffers.filter((row) => {
                         return Object.keys(row).some((key) => {
-                            return String(row[key]).toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
+                            return String(row[key]).toLowerCase().indexOf(this.getSearchTerm().toLowerCase()) > -1
                         })
                     })
                 }
         return loanOffers
+    },
+    loanOffers(){
+      return this.$store.state.LoanOffers.loanOffers
+    },
+    searchFound(){
+      return this.$store.state.LoanOffers.searchFound
+    },
+    isFetching(){
+      return this.$store.state.LoanOffers.fetchingOffers
+    },
+    
+    toast(){
+      return this.$store.state.LoanOffers.toast
     }
   },
   mounted() {
