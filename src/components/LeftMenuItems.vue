@@ -36,14 +36,6 @@
                         permission: ["create", "user"],
                         nameSpace: 'users',
                     },
-                    {
-                        name: "Report",
-                        iconPath: "/assets/images/Chart-bar.svg",
-                        altText: "chart",
-                        to: "/report",
-                        permission: ["manage", "loan"],
-                        nameSpace: 'report',
-                    }
                 ],
             }
         },

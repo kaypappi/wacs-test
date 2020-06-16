@@ -12,14 +12,22 @@
         <template v-if="offer.csv_repayment.length>0">
           <table class="table personal-info-table table-borderless no-border-table">
             <template v-for="(item,index) in offer.csv_repayment">
-              <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
+              <NoBorderTableRow
+                :key="index"
+                :keys="Math.random()*10"
+                :data="getUnequalSchedule(item,index)"
+              />
             </template>
           </table>
         </template>
         <template v-else>
           <table class="table personal-info-table table-borderless no-border-table">
             <template v-for="(item,index) in offer.unequal_repayment">
-              <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
+              <NoBorderTableRow
+                :key="index"
+                :keys="Math.random()*10"
+                :data="getUnequalSchedule(item,index)"
+              />
             </template>
           </table>
         </template>
@@ -27,7 +35,11 @@
       <template v-else>
         <table class="table personal-info-table table-borderless no-border-table">
           <template v-for="(item,index) in equalRepaymentData">
-            <NoBorderTableRow :key="index" :keys="Math.random()*10" :data="getUnequalSchedule(item,index)" />
+            <NoBorderTableRow
+              :key="index"
+              :keys="Math.random()*10"
+              :data="getUnequalSchedule(item,index)"
+            />
           </template>
         </table>
       </template>
@@ -86,10 +98,10 @@ export default {
         { name: index === 0 ? "No." : "", value: item.no },
         {
           name: index === 0 ? "Month" : "",
-          value: this.months[parseInt(item.month)-1]
+          value: this.months[parseInt(item.month) - 1]
         },
         { name: index === 0 ? "Year" : "", value: item.year },
-        { name: index === 0 ? "Amount" : "", value: item.amount }
+        { name: index === 0 ? "Amount" : "", value: this.formatNumber(item.amount) }
       );
       return data;
     },
@@ -130,6 +142,9 @@ export default {
       months -= d1.getMonth();
       months += d2.getMonth();
       return months <= 0 ? 0 : months;
+    },
+    formatNumber(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
   },
   computed: {

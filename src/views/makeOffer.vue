@@ -1,11 +1,11 @@
 <template>
     <div>
         <Toast 
-            :show="toast.show"
-            :title="toast.title"
-            :successMessage="toast.message"
-            failureMessage="Invalid token"
-            :success="toast.success"
+            :show="getToast.show"
+            :title="getToast.title"
+            :successMessage="getToast.message"
+            :failureMessage="getToast.message"
+            :success="getToast.success"
         />
         <div class="section-header">
             <MakeOfferSectionTitle :section="1" title="Basic Info" :steps="steps"/>
@@ -202,7 +202,7 @@
                             <div class="schedule-wrapper" :key="index" v-for="(n,index) in (offer.unequal_repayment)">
                                 <div class="text-input">
                                     <label for="">{{index==0?'No.':''}}</label>
-                                    <input placeholder="No" v-model="offer.unequal_repayment[index].no" type="text">
+                                    <input placeholder="No" :disabled="true" v-model="offer.unequal_repayment[index].no" type="text">
                                 </div>
                                 <div class="text-input">
                                     <label for="repayment-month">{{index==0?'Months':''}}</label>
@@ -210,6 +210,7 @@
                                         name="repayment-month"
                                         id="repayment-month"
                                         class="form-modal-inputs "
+                                        :disabled="index==0?false:true"
                                         v-model="offer.unequal_repayment[index].month"
                                         required
                                         
@@ -225,6 +226,7 @@
                                         name="repayment-year"
                                         id="repayment-year"
                                         class="form-modal-inputs "
+                                        :disabled="index==0?false:true"
                                         v-model="offer.unequal_repayment[index].year"
                                         required
                                         
@@ -270,12 +272,16 @@
                             <p>Preview your entries to complete your offer.</p>
                             </div>
                         <MakeOfferSummary :equalRepayment="equalRepayment" :offer="offer"/>
+                        <div class="summary-total">
+                            <p>Total</p>
+                            <p>{{formatNumber(summaryTotal)}}</p>
+                        </div>
                         <div class="summary-nav-buttons">
                                     <button @click="goToPrev" class="previous-btn" type="button">
                                     <span><BIconArrowLeft/></span>
                                     Back
                                 </button>
-                                <button @click="submitWizard"><img :style="{height:'100%',width:'auto'}" v-show="isLoading" src="/assets/images/button-ring-loader.svg"/><span v-show="!isLoading">Submit</span></button>
+                                <button @click="submitWizard"><img :style="{height:'100%',width:'auto'}" v-if="isMakingOffer" src="/assets/images/button-ring-loader.svg"/><span v-if="!isMakingOffer">Submit</span></button>
                                 </div>
                     </template>
                    
@@ -319,7 +325,6 @@
                         "October",
                         "November",
                         "December"],
-                isLoading:false,
                 equalRepayment: true,
                 steps:1,
                 offerId:'',
@@ -335,12 +340,6 @@
                         unequal:''
                     }
                 },
-                toast:{
-                    show:false,
-                    title:'',
-                    message:"",
-                    success:false
-                },
                 offer: { 
                     repayment_period:0,
                     moratorium:0,
@@ -349,7 +348,7 @@
                     last_repayment_month:0,
                     first_repayment_year:0,
                     last_repayment_year:0,
-                    unequal_repayment:[{month:0,year:0}]
+                    unequal_repayment:[{month:0,year:0,no:1,amount:""}]
                 },
             }
         },
@@ -373,15 +372,16 @@
             })},
             addMonth() {
                 if(this.offer.unequal_repayment.length<this.offer.repayment_period){
-                    this.offer.unequal_repayment=[...this.offer.unequal_repayment,{month:0,year:0}]
+                    const unequal_repayment_length=this.offer.unequal_repayment.length
+                    const month=this.offer.unequal_repayment[unequal_repayment_length-1].month==12 ? 1 : this.offer.unequal_repayment[unequal_repayment_length-1].month +1
+                    const year=this.offer.unequal_repayment[unequal_repayment_length-1].month==12? this.offer.unequal_repayment[unequal_repayment_length-1].year +1: this.offer.unequal_repayment[unequal_repayment_length-1].year
+                    const no=parseInt(this.offer.unequal_repayment[unequal_repayment_length-1].no) +1
+                    this.offer.unequal_repayment=[...this.offer.unequal_repayment,{month,year,no,amount:""}]
                 }
             },
             checkProperties(obj) {
-                for (var key in obj) {
-                    if (obj[key] !== null && obj[key] != ""&& obj[key]!==0)
-                        return true;
-                }
-                return false;
+                const valid=!Object.values(obj).filter(item=> item===null || item==="" || item===0).length>0
+                return valid
             },
             validateStepOne(){
                 if(this.offer.repayment_period==0 || this.offer.moratorium==0){
@@ -406,7 +406,7 @@
                 else{
                     let valid=true
                     this.offer.unequal_repayment.map(obj=>{
-                        return valid=this.checkProperties(obj)
+                         valid=this.checkProperties(obj)
                     })
 
                     if(!valid){
@@ -462,66 +462,120 @@
                             this.toast.show=false
                         },2000)
             },
+            
+            getTotalEqualRepaymentAmount(){
+                 const months_diff = this.monthDiff(
+                    new Date(
+                    this.offer.first_repayment_year,
+                    this.offer.first_repayment_month,
+                    1
+                    ),
+                    new Date(
+                    this.offer.last_repayment_year,
+                    this.offer.last_repayment_month,
+                    1
+                    )
+                );
+                return this.offer.repayment_amount * months_diff
+            },
+            getTotalCsvRepaymentAmount(){
+               return this.offer.csv_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
+            },
+            getTotalUnequalRepaymentAmount(){
+                return this.offer.unequal_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
+            },
+            monthDiff(d1, d2) {
+                var months;
+                months = (d2.getFullYear() - d1.getFullYear()) * 12;
+                months -= d1.getMonth();
+                months += d2.getMonth();
+                return months <= 0 ? 0 : months;
+                },
+                formatNumber(num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                },
             submitWizard(){
+                const data=this.getSubmitData
+                const formData=new FormData()
+                for ( var key in data ) {
+                    formData.append(key, data[key]);
+                }                
+                if(this.equalRepayment){
+                    const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
+                    const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
+                    const amount=this.offer.repayment_amount
+                    formData.append("plan_type", "equal");
+                    formData.append("plan",JSON.stringify({first,last,amount}))
+                }
+                else{
+                    if(this.offer.csv_repayment.length>0){
+                        formData.append("plan_type", "unequal");
+                        formData.append("csvUpload",this.formValues);
+                    }
+                    else{
+                        formData.append("plan_type", "unequal");
+                    formData.append("plan",JSON.stringify([...this.offer.unequal_repayment]))
+                    }
+                }
+
+                this.$store.dispatch("LoanRequest/makeOffer",formData)
+                
+            },
+            fetchLoanDetails(requestId){
+                return this.$store.dispatch("LoanRequest/fetchLoanRequestsDetials",requestId)
+            },
+            getDefaultValues(data){
+                //this.fetchLoanDetails(requestId)
+                if (data.amount){
+                    this.offer.loan_amount=data.amount
+                    this.offer.repayment_period=data.offer.payback_period
+                    this.offer.interest=data.offer.interest_rate
+                    this.offer.moratorium=data.offer.moratorium_period
+                }
+
+            },
+            
+        },
+        computed: {
+            summaryTotal(){
+                let total=""
+                if(this.equalRepayment){
+                    total=this.getTotalEqualRepaymentAmount()
+                }
+                else{
+                    if(this.offer.csv_repayment.length>0){
+                        total=this.getTotalCsvRepaymentAmount()
+                    }
+                    else{
+                        total=this.getTotalUnequalRepaymentAmount()
+                    }
+                }
+
+                return total
+            },
+            isMakingOffer(){
+                return this.$store.state.LoanRequest.Loading
+            },
+            getSubmitData(){
                 const data={}
-                this.isLoading=true
-                const URL=baseUrl+'creditor/repayments'
                 data.loan_amount=this.offer.loan_amount
                 data.repayment_period=this.offer.repayment_period
                 data.interest_rate=this.offer.interest
                 data.offer_id=this.offerId
                 data.moratorium_period=this.offer.moratorium
                 data.loan_request_id=this.loan_request_id
-                if(this.equalRepayment){
-                    const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
-                    const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
-                    const amount=this.offer.repayment_amount
-                    data.plan_type='equal'
-                    data.plan=JSON.stringify({first,last,amount})
-                }
-                else{
-                    if(this.offer.csv_repayment.length>0){
-                        this.formData.append("loan_amount",this.offer.loan_amount);
-                        this.formData.append("offer_id",this.offerId );
-                        this.formData.append("repayment_period", this.offer.repayment_period);
-                        this.formData.append("interest_rate", this.offer.interest)
-                        this.formData.append("moratorium_period", this.offer.moratorium);
-                        this.formData.append("plan_type", "unequal");
-                        this.formData.append("csvUpload",this.formValues);
-                        this.formData.append("loan_request_id",this.loan_request_id)
-                    }
-                    else{
-                        data.plan_type='unequal'
-                        data.plan=JSON.stringify([...this.offer.unequal_repayment])
-                    }
-                }
-
-                axios.post(URL,this.offer.csv_repayment.length>0 ? this.formData:data).then(response=>{
-                    if(response.statusText==="Created"){
-                        this.isLoading=false
-                        this.showToast('Successful','Successfully made offer',true)
-                        setTimeout(()=>{
-                            this.$router.push({name:'loanRequest'})
-                        },2000)
-                    }
-                }).catch(err=>{
-                    this.isLoading=false
-                    this.showToast('Error!',err.message,false)
-                })
-
-                
-            },
-        },
-        computed: {
-            payBackDuration() {
-                return this.offer.paybackPeriod;
-            },
-            moratoriumPeriod() {
-                return this.offer.moratorium;
+                return data
             },
             getYear(){
                 const date=new Date()
                 return date.getFullYear() -1
+            },
+            isFetching(){
+                return this.$store.state.LoanRequest.isFetchingLoanDetails
+            },
+            
+            getToast(){
+                return this.$store.state.LoanRequest.toast
             }
         },
         watch: {
@@ -535,6 +589,8 @@
         mounted() {
             this.offerId=this.$route.params.offerId
             this.loan_request_id=this.$route.params.loan_request_id
+            this.getDefaultValues(this.$route.params.loanDetails)
+
         },
     }
 </script>
@@ -630,6 +686,10 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     margin-top: 10px;
+}
+.summary-total{
+    display: flex;
+    justify-content: space-between;
 }
 .summary-nav-buttons{
     display: flex;

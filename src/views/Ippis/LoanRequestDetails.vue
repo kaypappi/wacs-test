@@ -1,11 +1,11 @@
 <template>
   <div class="full-user-details">
     <Toast
-      :show="toast.show"
-      :title="toast.title"
-      :successMessage="toast.message"
-      failureMessage="Invalid token"
-      :success="toast.success"
+      :show="getToast.show"
+      :title="getToast.title"
+      :successMessage="getToast.message"
+      :failureMessage="getToast.message"
+      :success="getToast.success"
     />
     <img
       src="/assets/images/page-ring-loader.svg"
@@ -16,14 +16,14 @@
     <template v-else>
       <div  class="details-top">
         <h3>{{splitDetails.customerName}}</h3>
-        <template v-if="loanDetails.status=='Pending'">
+        <template v-if="loanDetails.status!=='Running'">
             <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
           <img src="/assets/images/cancel.svg" alt="Plus sign" />
           Decline
         </Button>
-        <Button class="cta-button margin-left-30" @click="makeOffer">
+        <Button class="cta-button margin-left-30" @click="approveOffer">
           <img src="/assets/images/Double-check.svg" alt="Plus sign" />
-          Make Offer
+          Approve
         </Button>
         </template>
       </div>
@@ -33,7 +33,10 @@
         <NoBorderTableRow :data="splitDetails.thirdRowBio" />
       </table>
 
-      <h5>Loan Details</h5>
+      <div class="loan-details-header">
+        <h5>Loan Details</h5>
+        <p>View Repayment Schedule</p>
+      </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
       </table>
@@ -62,10 +65,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import NoBorderTableRow from "../components/Table/NoBorderTableRow";
-import { baseUrl } from "../router/api_routes";
-import Toast from "../components/Toast";
+import NoBorderTableRow from "../../components/Table/NoBorderTableRow";
+import Toast from "../../components/Toast";
 export default {
   components: {
     NoBorderTableRow,
@@ -97,7 +98,6 @@ export default {
         "LoanRequest/fetchLoanRequestsDetials",
         this.requestId
       );
-      //return this.splitDetails(this.loanDetails());
     },
     showToast(title, message, success) {
       this.toast = { show: true, title, message, success };
@@ -106,21 +106,15 @@ export default {
       }, 2000);
     },
     declineRequest() {
-      const URL = baseUrl + `creditor/request/decline`;
-      const data = { id: this.offerId };
-      axios.post(URL, data).then(Response => {
-        this.showToast("Successful", Response.message, true);
+      this.$store.dispatch("LoanRequest/declineLoanRequest",this.offerId)
         setTimeout(() => {
           this.$router.push({ name: "loanRequest" });
         }, 2000);
-      });
     },
-    makeOffer() {
-      this.$router.push({
-        name: "makeOffer",
-        params: { offerId: this.loanDetails.offer.id, loan_request_id: this.loanDetails.id, loanDetails:{...this.loanDetails} }
-      });
-    },
+    approveOffer(){
+        const id=this.requestId
+        this.$store.dispatch("LoanRequest/ippisApproveRequest",id)
+    }
     
   },
   computed: {
@@ -134,6 +128,9 @@ export default {
     loanDetails() {
       return this.$store.state.LoanRequest.loanDetails;
     },
+    getToast(){
+        return this.$store.state.LoanRequest.toast
+    }
   },
   mounted() {
     this.fetchLoanDetails();
@@ -142,4 +139,15 @@ export default {
 </script>
 
 <style>
+.loan-details-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.loan-details-header p{
+  color: #009831;
+  margin-bottom: 0;
+  font-size: 14px;
+}
 </style>

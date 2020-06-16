@@ -107,7 +107,7 @@
       :items="offers"
       :fields="fields"
       @row-selected="onRowSelected"
-      responsive="sm"
+      responsive
     >
       <template v-slot:cell(Status)="data">
         <span v-if="data.item.status === 'Active'" class="status-oval active-status">Active</span>
@@ -160,7 +160,7 @@
         {{data.item.title}}
       </template>
       <template v-slot:cell(Amount)="data">
-        {{data.item.amount_from}} to {{data.item.amount_to}}
+        {{formatNumber(data.item.amount_from)}} to {{formatNumber(data.item.amount_to)}}
       </template>
       <template v-slot:cell(Interest)="data">
         {{data.item.interest_rate}}%
@@ -180,8 +180,7 @@ import TextArea from "../Inputs/TextArea"
 import TaggedInput from "../Inputs/TaggedInput"
 import SubmitButton from "../Buttons/SubmitButton"
 import Toast from "../Toast"
-import axios from "axios"
-import {LOANOFFERSAPI,baseUrl} from "../../router/api_routes"
+import {baseUrl} from "../../router/api_routes"
 export default {
   components: {
     Dropdown,
@@ -201,12 +200,6 @@ export default {
     return {
       addOffer:{},
       creatingOffer: false,
-      toast:{
-        show:false,
-        title:'',
-        message:"",
-        success:false
-      },
       modes: "multi",
       checked: "",
       allRowsSelected: false,
@@ -282,26 +275,11 @@ export default {
       else{
         url=baseUrl+`creditor/offer/${this.addOffer.id}/activate`
       }
-
-      axios.get(url)
-        .then(response=>{
-          this.updateItems(response.data.data)
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+      this.$store.dispatch("LoanOffers/changeStatus",url)
     },
     Delete() {
       let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
-      axios.get(url)
-      .then(response=>{
-        this.showToast("Successful",response.data.message,true)
-        this.deleteRow(this.addOffer.id)
-      })
-      .catch(err=>{
-        console.log(err)
-        this.showToast("Error",err.response.data.message,false)
-      })
+      this.$store.dispatch("LoanOffers/deleteLoanOffer",url,this.addOffer.id)
     },
     onRowSelected(items) {
       this.selected = items;
@@ -309,8 +287,18 @@ export default {
     handleText(event,type){
          this.addOffer[type]=event
     },
+    closeModal(){
+      this.$bvModal.hide("edit-form-modal");
+    },
+    formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+},
     onSubmit() {
-      let data={
+     const data= this.getEditedData()
+     this.$store.dispatch("LoanOffers/editLoanOffer",{data,closeModal:this.closeModal})
+    },
+    getEditedData(){
+       let data={
         id:this.addOffer.id,
         code_name:this.addOffer.code_name,
         title:this.addOffer.title,
@@ -322,22 +310,7 @@ export default {
         interest_rate_from:this.addOffer.interest_rate_from,
         moratorium_period:this.addOffer.moratorium_period
       }
-      axios
-        .post(
-          LOANOFFERSAPI.update,
-          data,
-        )
-        .then((response) => {
-          this.creatingOffer = false;
-          this.updateItems(response.data.data)
-          this.$bvModal.hide('edit-form-modal')
-          this.showToast('Successful',response.data.message,true)
-        })
-        .catch(err => {
-          console.log("err", err.response.data);
-          this.showToast("Error",err.response.data.message,false)
-          this.creatingOffer = false;
-        });
+      return data
     },
     showToast(title,message,success){
       this.toast={show:true,title,message,success}
@@ -385,7 +358,11 @@ export default {
         return newItem
       })
       return offers
+    },
+    toast(){
+      return this.$store.state.LoanOffers.toast
     }
+    
   },
   mounted(){
   }
