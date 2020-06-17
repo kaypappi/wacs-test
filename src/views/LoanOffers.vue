@@ -221,25 +221,7 @@ export default {
         interest_rate_from:this.addOffer.interest_rate_from,
         moratorium_period:this.addOffer.moratorium_principal
       }
-<<<<<<< HEAD
-      this.creatingOffer = true;
-      axios
-        .post(
-          url,
-          data,
-        )
-        .then(() => {
-          this.creatingOffer = false;
-          this.toast={show:true,title:'Successful!',message:"You created a loan offer",success:true}
-          this.$bvModal.hide('add-form-modal')
-          this.fetchLoanOffers()
-        })
-        .catch(() => {
-          this.creatingOffer = false;
-        });
-=======
       return data
->>>>>>> 7c988e81e5abf91710800316b776f86f3fcefff8
     },
     handleText(event,type){
          this.addOffer[type]=event
@@ -263,28 +245,8 @@ export default {
       }
       return str.join("&");
     },
-<<<<<<< HEAD
-    fetchLoanOffers(query) {
-      this.fetchingOffers = true;
-      axios
-        .get(LOANOFFERSAPI.view + '?'+ this.serialize(query))
-        .then(response => {
-           this.fetchingOffers = false;
-          if (response.data.data.length === 0) {
-            this.searchFound = false;
-          } else {
-            this.loanOffers = { ...response.data };
-            this.searchTerm = "";
-            this.searchFound = true;
-          }
-        })
-        .catch(() => {
-          this.fetchingOffers = false;
-        });
-=======
     handleSearch(event){
      return this.$store.dispatch("LoanOffers/updateSearchTerm",event)
->>>>>>> 7c988e81e5abf91710800316b776f86f3fcefff8
     },
     fetchLoanOffers(query) {
       this.$store.dispatch("LoanOffers/fetchLoanOffers",this.serialize(query))
