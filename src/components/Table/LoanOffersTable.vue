@@ -287,6 +287,9 @@ export default {
     handleText(event,type){
          this.addOffer[type]=event
     },
+    toggleDetails(){
+      
+    },
     closeModal(){
       this.$bvModal.hide("edit-form-modal");
     },
