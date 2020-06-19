@@ -50,8 +50,8 @@
             :id="loanRequest.id"
             :date="loanRequest.date"
             :name="loanRequest.user.full_name"
-            :ippissNo="loanRequest.user.ippis_number"
-            :salary="formatNumber(loanRequest.user.monthly_salary)"
+            :ippissNo="loanRequest.user.user_name"
+            :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
             :loanRequest="formatNumber(loanRequest.amount)"
             :status="loanRequest.status"
           />
@@ -187,6 +187,7 @@ export default {
   },
   computed: {
     requests() {
+      console.log(this.$store.state.LoanRequest.loanRequests.data)
       let requests = this.$store.state.LoanRequest.loanRequests.data;
       if (this.getSearchTerm() && requests) {
         requests = requests.filter(row => {

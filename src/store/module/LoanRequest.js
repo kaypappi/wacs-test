@@ -83,22 +83,22 @@ export default {
       state.splitDetails.offerId = loanData.offer.id;
       //const userData=state.$route.params.userData
       state.splitDetails.firstRowBio = [
-        { name: "Ippiss Number", value: loanData.user.ippis_number },
-        { name: "Phone Number", value: loanData.user.mobile_number },
-        { name: "Marital Status", value: loanData.user.marital_status },
-        { name: "Monthly Salary", value: loanData.user.monthly_salary },
+        { name: "Ippiss Number", value: loanData.user.user_name },
+        { name: "Phone Number", value: loanData.user.profile.mobile_number },
+        { name: "Marital Status", value: loanData.user.profile.marital_status },
+        { name: "Monthly Salary", value: loanData.user.profile.monthly_salary },
       ];
       state.splitDetails.secondRowBio = [
-        { name: "MDA", value: loanData.user.mda },
-        { name: "Gender", value: loanData.user.gender },
-        { name: "BVN", value: loanData.user.bvn },
+        { name: "MDA", value: loanData.user.profile.mda },
+        { name: "Gender", value: loanData.user.profile.gender },
+        { name: "BVN", value: loanData.user.profile.bvn },
         { name: "Email", value: loanData.user.email },
       ];
       state.splitDetails.thirdRowBio = [
-        { name: "Religion", value: loanData.user.religion },
-        { name: "State Of Origin", value: loanData.user.state },
-        { name: "Nationality", value: loanData.user.nationality },
-        { name: "Address", value: loanData.user.address },
+        { name: "Religion", value: loanData.user.profile.religion },
+        { name: "State Of Origin", value: loanData.user.profile.state },
+        { name: "Nationality", value: loanData.user.profile.nationality },
+        { name: "Address", value: loanData.user.profile.address },
       ];
       state.splitDetails.loanDetailsRowOne = [
         { name: "Date Requested", value: loanData.date },
