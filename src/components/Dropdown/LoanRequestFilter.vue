@@ -41,6 +41,11 @@
                   @changed="handleInput($event,'status','Running')"
                   title="Running"
                 />
+                <Checkbox
+                  :value="filters.statusValue.Processing"
+                  @changed="handleInput($event,'status','Processing')"
+                  title="Processing"
+                />
               </div>
               <div>
                 <Checkbox
@@ -114,7 +119,8 @@ export default {
           Pending:false,
           Running:false,
           Approved:false,
-          Rejected:false
+          Rejected:false,
+          Processing:false
         }
       }
     };
