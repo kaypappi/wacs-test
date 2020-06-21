@@ -52,12 +52,13 @@
           name="amount"
           labelClass="form-modal-label"
           placeholder="e.g 200,000"
-          type="number"
+          type="text"
           :tagLeft="true"
           :required="true"
           :tagRight="false"
           leftImage="naira.svg"
-          v-model.number="addOffer.amount_from"
+          @input="formatNumberField($event,'amount_from')"
+          v-model="addOffer.amount_from"
         />
         <div class="double-input-range-text">To</div>
         <TaggedInput
@@ -68,6 +69,7 @@
           :min="this.addOffer.amount_from"
           placeholder="e.g 500,000"
           leftImage="naira.svg"
+           @input="formatNumberField($event,'amount_to')"
           v-model.number="addOffer.amount_to"
         />
         <div class="short-dropdown-box">
@@ -215,8 +217,8 @@ export default {
         title:this.addOffer.title,
         description:this.addOffer.description,
         interest_rate:this.addOffer.interest_rate,
-        amount_from:this.addOffer.amount_from,
-        amount_to:this.addOffer.amount_to,
+        amount_from:parseInt(this.stripString(this.addOffer.amount_from)),
+        amount_to:parseInt(this.stripString(this.addOffer.amount_to)),
         payback_period:this.addOffer.payback_period,
         interest_rate_from:this.addOffer.interest_rate_from,
         moratorium_period:this.addOffer.moratorium_principal
@@ -276,6 +278,13 @@ export default {
     getSearchTerm(){
       return this.$store.state.LoanOffers.searchTerm
     },
+    formatNumberField(num,position) {
+      num=this.stripString(num)
+      this.addOffer[position]= Number(num).toLocaleString() 
+    },
+    stripString(data){
+      return data.toString().replace(/,/g,"")
+    }
   },
   computed:{
     offers(){
@@ -301,6 +310,28 @@ export default {
     
     toast(){
       return this.$store.state.LoanOffers.toast
+    },
+    fValue: {
+      // getter
+      get: function(position) {
+        return this.addOffer[position];
+      },
+      // setter
+      set: function(newValue,position) {
+        newValue=newValue.replace(",","")
+        this.addOffer[position]=newValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        /* if (newValue.length > 3) {
+          newValue = newValue.replace(",", "");
+          this.value =
+            newValue.substr(0, newValue.length - 2) +
+            "." +
+            newValue.substr(newValue.length - 2);
+
+          // add thousend separator formatting here
+        } else {
+          this.value = newValue;
+        } */
+      }
     }
   },
   mounted() {

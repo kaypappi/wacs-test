@@ -42,9 +42,6 @@ export default {
     },
     SHOW_TOAST(state, title, message, success) {
       state.toast = { show: true, title, message, success };
-      setTimeout(() => {
-        state.toast.show = false;
-      }, 2000);
     },
     CREATING_OFFER(state, status) {
       state.creatingOffer = status;
@@ -53,9 +50,11 @@ export default {
       const index = state.loanOffers.data.findIndex((x) => x.id === row);
       state.loanOffers.data.splice(index, 1);
     },
-    UPDATE_LOAN_OFFER(state, newRow) {
+    UPDATE_LOAN_OFFER(state, newRow,title,message,success) {
       const index = state.loanOffers.data.findIndex((x) => x.id === newRow.id);
       state.loanOffers.data.splice(index, 1, newRow);
+      state.toast = { show: true, title, message, success };
+      
     },
   },
   actions: {
@@ -92,7 +91,7 @@ export default {
       axios
         .post(`creditor/offer/create`, data)
         .then((response) => {
-            console.log(response)
+            response
           commit("CREATING_OFFER", false);
           commit("SHOW_TOAST", "Successful!", "You created a loan offer", true);
           closeModal()
@@ -107,7 +106,7 @@ export default {
       axios
         .post("creditor/offer/update", data)
         .then((response) => {
-          commit("UPDATE_LOAN_OFFER", response.data.data);
+          commit("UPDATE_LOAN_OFFER", response.data.data, "Successful", response.data.message, true);
           closeModal()
           commit("SHOW_TOAST", "Successful", response.data.message, true);
           dispatch("fetchLoanOffers");

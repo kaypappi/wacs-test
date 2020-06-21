@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default {
   namespaced: true,
+  errors:{},
   state: {
     isFetchingLoanRequests: false,
     isFetchingLoanDetails: false,
@@ -53,7 +54,6 @@ export default {
     },
     FETCH_ADMIN_NOTFOUND(state) {
       state.searchFound = false;
-  
     },
     UPDATE_SEARCH_TERM(state, searchTerm) {
       state.searchTerm = searchTerm;
@@ -73,9 +73,11 @@ export default {
     },
     SHOW_TOAST(state, title, message, success) {
       state.toast = { show: true, title, message, success };
+    },
+    REDIRECT(state,name,time=0){
       setTimeout(() => {
-        state.toast.show = false;
-      }, 2000);
+        this.$router.push({ name });
+      }, time);
     },
     SPILT_DETAILS(state) {
       const loanData = state.loanDetails;
@@ -135,9 +137,15 @@ export default {
     },
     declineLoanRequest({ commit }, id) {
       const data = { id };
-      axios.post(`/creditor/request/ippis/decline`, data).then((Response) => {
-        commit("SHOW_TOAST", "Successful", Response.message, true);
-      });
+      axios
+        .post(`/creditor/request/decline`, data)
+        .then((response) => {
+          commit("SHOW_TOAST", "Successful", response.message, true);
+          commit("REDIRECT","loanRequest",2000)
+        })
+        .catch((err) => {
+          commit("SHOW_TOAST", "Successful", err.response.data.message, false);
+        });
     },
     fetchIppissLoanRequests({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
@@ -198,31 +206,34 @@ export default {
           commit("SHOW_TOAST", "Error", err.response.data.message, false);
         });
     },
-    ippisSearchLoanRequest({commit},query){
+    ippisSearchLoanRequest({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
-      axios.get(`creditor/request/ippis/search/${query.search}`).then((response) => {
-        commit("IS_FETCHING_LOANREQUEST", false);
-        if (response.data.data.length === 0) {
-          commit("SEARCH_REQUESTS_NOTFOUND");
-        } else {
-          commit("SEARCH_REQUESTS_FOUND", response.data);
-        }
-      });
+      axios
+        .get(`creditor/request/ippis/search/${query.search}`)
+        .then((response) => {
+          commit("IS_FETCHING_LOANREQUEST", false);
+          if (response.data.data.length === 0) {
+            commit("SEARCH_REQUESTS_NOTFOUND");
+          } else {
+            commit("SEARCH_REQUESTS_FOUND", response.data);
+          }
+        });
     },
     makeOffer({ commit }, data) {
       commit("IS_MAKING_OFFER", true);
-      axios.post("creditor/repayments", data).then((response) => {
-        if (response.statusText === "Created") {
+      axios
+        .post("creditor/repayments", data)
+        .then((response) => {
+          if (response.statusText === "Created") {
+            commit("IS_MAKING_OFFER", false);
+            commit("SHOW_TOAST", "Successful", "Successfully made offer", true);
+            commit("REDIRECT","loanRequest",2000)
+          }
+        })
+        .catch((err) => {
           commit("IS_MAKING_OFFER", false);
-          commit("SHOW_TOAST", "Successful", "Successfully made offer", true);
-          setTimeout(() => {
-            this.$router.push({ name: "loanRequest" });
-          }, 2000);
-        }
-      }).catch(err=>{
-        commit("IS_MAKING_OFFER", false);
-        commit("SHOW_TOAST", "Error", err.response.statusText, false);
-      })
+          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+        });
     },
 
     updateSearchTerm({ commit }, searchTerm) {

@@ -98,7 +98,7 @@ export default {
         { name: index === 0 ? "No." : "", value: item.no },
         {
           name: index === 0 ? "Month" : "",
-          value: this.months[parseInt(item.month) - 1]
+          value: this.months[parseInt(item.month)]
         },
         { name: index === 0 ? "Year" : "", value: item.year },
         { name: index === 0 ? "Amount" : "", value: this.formatNumber(item.amount) }
