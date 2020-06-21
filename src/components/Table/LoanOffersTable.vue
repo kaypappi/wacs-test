@@ -35,13 +35,13 @@
           name="amount"
           labelClass="form-modal-label"
           placeholder="e.g 200,000"
-          type="number"
-          :max="this.addOffer.amount_to"
+          type="text"
           :tagLeft="true"
           :required="true"
           :tagRight="false"
           leftImage="naira.svg"
-          v-model.number="addOffer.amount_from"
+          @input="formatNumberField($event,'amount_from')"
+          v-model="addOffer.amount_from"
         />
         <div class="double-input-range-text">To</div>
         <TaggedInput
@@ -52,6 +52,7 @@
           :min="this.addOffer.amount_from"
           placeholder="e.g 500,000"
           leftImage="naira.svg"
+           @input="formatNumberField($event,'amount_to')"
           v-model.number="addOffer.amount_to"
         />
         <div class="short-dropdown-box">
@@ -307,8 +308,8 @@ export default {
         title:this.addOffer.title,
         description:this.addOffer.description,
         interest_rate:this.addOffer.interest_rate,
-        amount_from:this.addOffer.amount_from,
-        amount_to:this.addOffer.amount_to,
+        amount_from:this.stripString(this.addOffer.amount_from),
+        amount_to:this.stripString(this.addOffer.amount_to),
         payback_period:this.addOffer.payback_period,
         interest_rate_from:this.addOffer.interest_rate_from,
         moratorium_period:this.addOffer.moratorium_period
@@ -337,6 +338,13 @@ export default {
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
     },
+    formatNumberField(num,position) {
+      num=this.stripString(num)
+      this.addOffer[position]= Number(num).toLocaleString() 
+    },
+    stripString(data){
+      return data.toString().replace(/,/g,"")
+    }
   },
   computed:{
     offers: function(){

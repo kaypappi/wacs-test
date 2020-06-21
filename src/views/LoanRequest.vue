@@ -187,7 +187,6 @@ export default {
   },
   computed: {
     requests() {
-      console.log(this.$store.state.LoanRequest.loanRequests.data)
       let requests = this.$store.state.LoanRequest.loanRequests.data;
       if (this.getSearchTerm() && requests) {
         requests = requests.filter(row => {

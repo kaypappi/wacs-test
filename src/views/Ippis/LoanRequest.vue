@@ -61,10 +61,10 @@
             :id="loanRequest.loan_request_id"
             :date="loanRequest.date"
             :name="loanRequest.user.full_name"
-            :ippissNo="loanRequest.user.ippis_number"
-            :mda="loanRequest.user.mda"
+            :ippissNo="loanRequest.user.user_name"
+            :mda="loanRequest.user.profile.mda"
             :creditAdmin="loanRequest.credit_admin"
-            :salary="formatNumber(loanRequest.user.monthly_salary)"
+            :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
             :loanRequest="formatNumber(loanRequest.loan_repayment_details[0].amount)"
             :status="loanRequest.ippis_status"
           />
@@ -136,12 +136,6 @@ export default {
     },
     handleText(event, position) {
       this.filters[position] = event;
-      /* const data={}
-      if(this.filters.from&&this.filters.to){
-        data.date=`${this.filters.from}.${this.filters.to}`
-        this.$router.push({name:'ippisLoanRequest',query:{...data}})
-      }
-      ]*/
     },
     applyFilter() {
       const data = {};
