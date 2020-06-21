@@ -93,7 +93,6 @@ export default {
   },
   methods: {
     getUnequalSchedule(item, index) {
-      console.log(item.month)
       const data = [];
       data.push(
         { name: index === 0 ? "No." : "", value: item.no },

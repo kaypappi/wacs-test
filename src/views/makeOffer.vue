@@ -33,11 +33,12 @@
                             labelClass="form-modal-label"
                             placeholder="e.g 200,000"
                             length="long"
+                            type="text"
                             :required="true"
                             :tagLeft="true"
                             :tagRight="false"
                             leftImage="naira.svg"
-                            v-model.number="offer.loan_amount"
+                            v-model="offer.loan_amount"
                         />
                         <div class="first-repayment">
                             <div class="">
@@ -108,12 +109,12 @@
                                     labelClass="form-modal-label"
                                     placeholder="e.g 200,000"
                                     length="long"
-                                    type="number"
+                                    type="text"
                                     :max="offer.loan_amount"
                                     :tagLeft="true"
                                     :tagRight="false"
                                     leftImage="naira.svg"
-                                    v-model.number="offer.repayment_amount"
+                                    v-model="offer.repayment_amount"
                                 />
 
                                 <div>
@@ -247,7 +248,7 @@
                                         :placeholder="n <= offer.moratorium ? 'moratorium' : 'e.g 200,000'"
                                         :tagLeft="true"
                                         :max="offer.loan_amount"
-                                        type="number"
+                                        type="text"
                                         :tagRight="false"
                                         leftImage="naira.svg"
                                         v-model="offer.unequal_repayment[index].amount"
@@ -503,7 +504,7 @@
                 if(this.equalRepayment){
                     const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
                     const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
-                    const amount=this.offer.repayment_amount
+                    const amount=parseInt(this.stripString(this.offer.repayment_amount))
                     formData.append("plan_type", "equal");
                     formData.append("plan",JSON.stringify({first,last,amount}))
                 }
@@ -527,13 +528,20 @@
             getDefaultValues(data){
                 //this.fetchLoanDetails(requestId)
                 if (data.amount){
-                    this.offer.loan_amount=data.amount
+                    this.offer.loan_amount=this.formatNumber(data.amount)
                     this.offer.repayment_period=data.offer.payback_period
                     this.offer.interest=data.offer.interest_rate
                     this.offer.moratorium=data.offer.moratorium_period
                 }
 
             },
+            formatNumberField(num,position) {
+            num=this.stripString(num)
+            this.offer[position]= Number(num).toLocaleString() 
+            },
+            stripString(data){
+            return data.toString().replace(/,/g,"")
+            }
             
         },
         computed: {
@@ -558,7 +566,7 @@
             },
             getSubmitData(){
                 const data={}
-                data.loan_amount=this.offer.loan_amount
+                data.loan_amount=parseInt(this.stripString(this.offer.loan_amount))
                 data.repayment_period=this.offer.repayment_period
                 data.interest_rate=this.offer.interest
                 data.offer_id=this.offerId
@@ -714,7 +722,7 @@
 
 .schedule-wrapper {
     display: grid;
-    grid-template-columns: 50px 1fr 1fr 1fr;
+    grid-template-columns: 50px 1fr 1fr 1.5fr;
     grid-gap: 10px;
     align-items: center;
 }

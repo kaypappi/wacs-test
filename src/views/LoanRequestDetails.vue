@@ -62,9 +62,7 @@
 </template>
 
 <script>
-import axios from "axios";
 import NoBorderTableRow from "../components/Table/NoBorderTableRow";
-import { baseUrl } from "../router/api_routes";
 import Toast from "../components/Toast";
 export default {
   components: {
@@ -106,14 +104,7 @@ export default {
       }, 2000);
     },
     declineRequest() {
-      const URL = baseUrl + `creditor/request/decline`;
-      const data = { id: this.offerId };
-      axios.post(URL, data).then(Response => {
-        this.showToast("Successful", Response.message, true);
-        setTimeout(() => {
-          this.$router.push({ name: "loanRequest" });
-        }, 2000);
-      });
+      this.$store.dispatch("LoanRequest/declineLoanRequest",this.loanDetails.offer.id)
     },
     makeOffer() {
       this.$router.push({
