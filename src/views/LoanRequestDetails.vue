@@ -104,7 +104,7 @@ export default {
       }, 2000);
     },
     declineRequest() {
-      this.$store.dispatch("LoanRequest/declineLoanRequest",this.loanDetails.offer.id)
+      this.$store.dispatch("LoanRequest/declineLoanRequest",this.loanDetails.id)
     },
     makeOffer() {
       this.$router.push({

@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router/index"
 
 export default {
   namespaced: true,
@@ -6,10 +7,17 @@ export default {
   state: {
     isFetchingLoanRequests: false,
     isFetchingLoanDetails: false,
+    fetchingSummary:false,
     Loading: false,
     searchFound: true,
     loanRequests: [],
     loanDetails: {},
+    requestsSummary:{
+      total:'',
+      pending:'',
+      approved:'',
+      rejected:''
+    },
     toast: {
       show: false,
       title: "",
@@ -76,7 +84,7 @@ export default {
     },
     REDIRECT(state,name,time=0){
       setTimeout(() => {
-        this.$router.push({ name });
+        router.push({ name });
       }, time);
     },
     SPILT_DETAILS(state) {
@@ -122,6 +130,12 @@ export default {
     APPROVE_REQUEST_ERROR(state, err) {
       state.aprrove_err = err;
     },
+    FETCHING_SUMMARY(state,status){
+      state.fetchingSummary=status
+    },
+    FETCH_REQUEST_SUMMARY_SUCCESS(state,data){
+      state.requestsSummary={...data}
+    }
   },
   actions: {
     fetchLoanRequests({ commit }, query) {
@@ -241,6 +255,13 @@ export default {
     },
     updateSearchFound({ commit }, status) {
       commit("UPDATE_SEARCH_FOUND", status);
+    },
+    requestsSummary({commit}){
+      commit("FETCHING_SUMMARY",true)
+      axios.get("creditor/request/totals").then(response=>{
+        commit("FETCHING_SUMMARY",false)
+        commit("FETCH_REQUEST_SUMMARY_SUCCESS",response.data)
+      })
     },
   },
 };

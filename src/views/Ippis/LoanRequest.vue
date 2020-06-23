@@ -255,7 +255,7 @@ export default {
 }
 
 .date-separator {
-  margin: 0 30px;
+  margin: 0 15px;
 }
 
 .loan-request-wrapper .page-filters .start-date {
