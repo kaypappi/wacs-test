@@ -93,23 +93,13 @@ export default {
   },
   methods: {
     fetchLoanDetails() {
-      this.requestId = this.$route.params.requestId;
       this.$store.dispatch(
         "LoanRequest/fetchLoanRequestsDetials",
         this.requestId
       );
     },
-    showToast(title, message, success) {
-      this.toast = { show: true, title, message, success };
-      setTimeout(() => {
-        this.toast.show = false;
-      }, 2000);
-    },
     declineRequest() {
-      this.$store.dispatch("LoanRequest/declineLoanRequest",this.offerId)
-        setTimeout(() => {
-          this.$router.push({ name: "loanRequest" });
-        }, 2000);
+      this.$store.dispatch("LoanRequest/declineLoanRequest",this.requestId)
     },
     approveOffer(){
         const id=this.requestId
@@ -133,6 +123,7 @@ export default {
     }
   },
   mounted() {
+     this.requestId = this.$route.params.requestId;
     this.fetchLoanDetails();
   }
 };

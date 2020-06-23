@@ -7,6 +7,7 @@ export default {
   state: {
     isFetchingLoanRequests: false,
     isFetchingLoanDetails: false,
+    fetchingSummary:false,
     Loading: false,
     searchFound: true,
     loanRequests: [],
@@ -256,11 +257,9 @@ export default {
       commit("UPDATE_SEARCH_FOUND", status);
     },
     requestsSummary({commit}){
-      console.log('fetching summary')
       commit("FETCHING_SUMMARY",true)
       axios.get("creditor/request/totals").then(response=>{
         commit("FETCHING_SUMMARY",false)
-        console.log(response)
         commit("FETCH_REQUEST_SUMMARY_SUCCESS",response.data)
       })
     },

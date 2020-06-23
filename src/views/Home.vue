@@ -13,24 +13,43 @@
         <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
       </div>
       <div class="recent-request-table">
-        <Table
-          :tableHeaders="['Date', 'Name', 'Ippiss No.', 'Mont. Salary', 'Loan Request', 'Status']"
-        >
-          <template>
-            <LoanRequestTableRow
-              v-for="loanRequest in loanRequests.data"
-              :userData="loanRequest"
-              :key="loanRequest.id"
-              :id="loanRequest.id"
-              :date="loanRequest.date"
-              :name="loanRequest.user.full_name"
-              :ippissNo="loanRequest.user.user_name"
-              :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-              :loanRequest="formatNumber(loanRequest.amount)"
-              :status="loanRequest.status"
-            />
+        <img
+          src="/assets/images/page-ring-loader.svg"
+          alt="loader"
+          v-if="isFetchingRequests"
+          class="page-loader"
+        />
+        <template v-else>
+          <Table
+            v-if="loanRequests"
+            :tableHeaders="['Date', 'Name', 'Ippiss No.', 'Mont. Salary', 'Loan Request', 'Status']"
+          >
+            <template>
+              <LoanRequestTableRow
+                v-for="loanRequest in loanRequests.data"
+                :userData="loanRequest"
+                :key="loanRequest.id"
+                :id="loanRequest.id"
+                :date="loanRequest.date"
+                :name="loanRequest.user.full_name"
+                :ippissNo="loanRequest.user.user_name"
+                :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
+                :loanRequest="formatNumber(loanRequest.amount)"
+                :status="loanRequest.status"
+              />
+            </template>
+          </Table>
+          <template v-else>
+            <NoData>
+              <template v-slot:title>
+                <h4>No Loan Requests</h4>
+              </template>
+              <template v-slot:subtitle>
+                <p>There are no loan requests currently available.</p>
+              </template>
+            </NoData>
           </template>
-        </Table>
+        </template>
       </div>
     </div>
   </div>
@@ -54,8 +73,8 @@ export default {
       query = this.serialize(query);
       this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
     },
-    fetchRequestsSummary(){
-      this.$store.dispatch("LoanRequest/requestsSummary")
+    fetchRequestsSummary() {
+      this.$store.dispatch("LoanRequest/requestsSummary");
     },
     serialize(obj, prefix) {
       var str = [],
@@ -81,13 +100,19 @@ export default {
     loanRequests() {
       return this.$store.state.LoanRequest.loanRequests;
     },
-    requestsSummary(){
-      return this.$store.state.LoanRequest.requestsSummary
+    requestsSummary() {
+      return this.$store.state.LoanRequest.requestsSummary;
+    },
+    isFetchingRequests() {
+      return this.$store.state.LoanRequest.isFetchingLoanRequests;
+    },
+    isFetchingSummary() {
+      return this.$store.state.LoanRequest.fetchingSummary;
     }
   },
   mounted() {
     this.fetchLoanRequests(this.$router.history.current.query);
-    this.fetchRequestsSummary()
+    this.fetchRequestsSummary();
   }
 };
 </script>
@@ -110,15 +135,14 @@ export default {
   border-radius: 5px;
 }
 
-.home-wrapper .recent-requests-top{
+.home-wrapper .recent-requests-top {
   display: flex;
   justify-content: space-between;
   font-size: 16px;
   font-weight: 500;
 }
 
-
-.recent-requests-top .view-all{
+.recent-requests-top .view-all {
   color: #27be58;
   cursor: pointer;
 }
