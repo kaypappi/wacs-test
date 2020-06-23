@@ -67,15 +67,16 @@
           </template>
         </NoData>
       </template>
-    </template>
-    <Pagination
-          v-if="!getSearchTerm && loanRequests.meta && searchFound"
+      <Pagination
+          v-if="loanRequests.meta && searchFound"
           :total="loanRequests.meta.total"
           :currentPage="loanRequests.meta.current_page"
           :lastPage="loanRequests.meta.last_page"
           :from="loanRequests.meta.from"
           :to="loanRequests.meta.to"
         />
+    </template>
+    
   </div>
 </template>
 

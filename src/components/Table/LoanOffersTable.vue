@@ -40,7 +40,6 @@
           :required="true"
           :tagRight="false"
           leftImage="naira.svg"
-          @input="formatNumberField($event,'amount_from')"
           v-model="addOffer.amount_from"
         />
         <div class="double-input-range-text">To</div>
@@ -52,7 +51,6 @@
           :min="this.addOffer.amount_from"
           placeholder="e.g 500,000"
           leftImage="naira.svg"
-           @input="formatNumberField($event,'amount_to')"
           v-model.number="addOffer.amount_to"
         />
         <div class="short-dropdown-box">
