@@ -1,19 +1,125 @@
 <template>
-  <div>
-    this is the home 
+  <div class="home-wrapper">
+    <div class="statscard-section">
+      <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
+      <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
+      <StatsCard title="Approved Requests" textColor="green" :value="requestsSummary.approved" />
+      <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
+    </div>
+
+    <div class="recent-requests">
+      <div class="recent-requests-top">
+        <p>Recent Loan Requests</p>
+        <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
+      </div>
+      <div class="recent-request-table">
+        <Table
+          :tableHeaders="['Date', 'Name', 'Ippiss No.', 'Mont. Salary', 'Loan Request', 'Status']"
+        >
+          <template>
+            <LoanRequestTableRow
+              v-for="loanRequest in loanRequests.data"
+              :userData="loanRequest"
+              :key="loanRequest.id"
+              :id="loanRequest.id"
+              :date="loanRequest.date"
+              :name="loanRequest.user.full_name"
+              :ippissNo="loanRequest.user.user_name"
+              :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
+              :loanRequest="formatNumber(loanRequest.amount)"
+              :status="loanRequest.status"
+            />
+          </template>
+        </Table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-// import AppButton from "../components/Buttons/AppButton";
+import StatsCard from "../components/StatsCard";
+import Table from "../components/Table/Table";
+import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    // HelloWorld,
-    // AppButton
+    StatsCard,
+    Table,
+    LoanRequestTableRow
+  },
+  methods: {
+    fetchLoanRequests(query) {
+      query = this.serialize(query);
+      this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
+    },
+    fetchRequestsSummary(){
+      this.$store.dispatch("LoanRequest/requestsSummary")
+    },
+    serialize(obj, prefix) {
+      var str = [],
+        p;
+      for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          var k = prefix ? prefix + "[" + p + "]" : p,
+            v = obj[p];
+          str.push(
+            v !== null && typeof v === "object"
+              ? this.serialize(v, k)
+              : k + "=" + v
+          );
+        }
+      }
+      return str.join("&");
+    },
+    formatNumber(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    }
+  },
+  computed: {
+    loanRequests() {
+      return this.$store.state.LoanRequest.loanRequests;
+    },
+    requestsSummary(){
+      return this.$store.state.LoanRequest.requestsSummary
+    }
+  },
+  mounted() {
+    this.fetchLoanRequests(this.$router.history.current.query);
+    this.fetchRequestsSummary()
   }
-}
+};
 </script>
+
+<style scoped>
+.statscard-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  margin-bottom: 40px;
+}
+.home-wrapper {
+  padding: 20px;
+}
+
+.home-wrapper .recent-requests {
+  box-shadow: -6px 4px 7px -1px rgba(0, 0, 0, 0.4);
+  padding: 10px 20px;
+  border: 1px solid #e8e7e794;
+  border-radius: 5px;
+}
+
+.home-wrapper .recent-requests-top{
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+.recent-requests-top .view-all{
+  color: #27be58;
+  cursor: pointer;
+}
+</style>
