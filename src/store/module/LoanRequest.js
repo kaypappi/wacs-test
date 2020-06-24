@@ -8,15 +8,16 @@ export default {
     isFetchingLoanRequests: false,
     isFetchingLoanDetails: false,
     fetchingSummary:false,
+    isFetchingLoanHistory:false,
     Loading: false,
     searchFound: true,
     loanRequests: [],
     loanDetails: {},
     requestsSummary:{
-      total:'',
-      pending:'',
-      approved:'',
-      rejected:''
+      total:0,
+      pending:0,
+      approved:0,
+      rejected:0
     },
     toast: {
       show: false,
@@ -52,6 +53,9 @@ export default {
     },
     IS_FETCHING_LOANDETAILS(state, status) {
       state.isFetchingLoanDetails = status;
+    },
+    IS_FETCHING_LOANHISTORY(state,status){
+      state.isFetchingLoanHistory=status
     },
     IS_MAKING_OFFER(state, status) {
       state.Loading = status;
@@ -185,11 +189,25 @@ export default {
     },
     fetchLoanRequestsDetials({ commit }, requestId) {
       commit("IS_FETCHING_LOANDETAILS", true);
-      axios.get(`creditor/request/view/${requestId}`).then((res) => {
-        commit("IS_FETCHING_LOANDETAILS", false);
-        commit("FETCH_LOANDETAILS_SUCCESS", res.data.data[0]);
-        commit("SPILT_DETAILS");
-      });
+      return new Promise((resolve, reject) => {
+        axios.get(`creditor/request/view/${requestId}`).then((res) => {
+          commit("IS_FETCHING_LOANDETAILS", false);
+          commit("FETCH_LOANDETAILS_SUCCESS", res.data.data[0]);
+          commit("SPILT_DETAILS");
+          resolve()
+        }).catch(err=>{
+          err
+          reject()
+        })
+      })
+      
+    },
+    fetchLoanHistory({commit},requestId){
+      commit("IS_FETCHING_LOANHISTORY",false)
+      axios.get(`creditor/request/history/${requestId}`).then(response=>{
+        commit("IS_FETCHING_LOANHISTORY",false)
+    
+      })
     },
     splitDetails({ commit }) {
       commit("SPILT_DETAILS");
@@ -202,6 +220,7 @@ export default {
         .post(`creditor/request/ippis/approve`, data)
         .then((response) => {
           commit("SHOW_TOAST", "Successful", response.data.message, true);
+          commit("REDIRECT","ippisLoanRequest",2000)
         })
         .catch((err) => {
           commit("SHOW_TOAST", "Error", err.response.data.message, false);
@@ -215,6 +234,7 @@ export default {
         .post(`creditor/request/ippis/decline`, data)
         .then((response) => {
           commit("SHOW_TOAST", "Successful", response.data.message, true);
+          commit("REDIRECT","ippisLoanRequest",2000)
         })
         .catch((err) => {
           commit("SHOW_TOAST", "Error", err.response.data.message, false);
@@ -259,8 +279,8 @@ export default {
     requestsSummary({commit}){
       commit("FETCHING_SUMMARY",true)
       axios.get("creditor/request/totals").then(response=>{
-        commit("FETCHING_SUMMARY",false)
         commit("FETCH_REQUEST_SUMMARY_SUCCESS",response.data)
+        commit("FETCHING_SUMMARY",false)
       })
     },
   },
