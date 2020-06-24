@@ -90,7 +90,7 @@ const routes = [
         },
       },
       {
-        path: '/make-offer/:offerId',
+        path: '/make-offer/:loan_request_id',
         name: 'makeOffer',
         component: MakeOffer,
         props:true,

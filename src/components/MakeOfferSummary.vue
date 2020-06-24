@@ -50,6 +50,7 @@
 
 <script>
 import NoBorderTableRow from "./Table/NoBorderTableRow";
+import moment from "moment";
 export default {
   props: {
     offer: Object,
@@ -101,24 +102,26 @@ export default {
           value: this.months[parseInt(item.month)]
         },
         { name: index === 0 ? "Year" : "", value: item.year },
-        { name: index === 0 ? "Amount" : "", value: this.formatNumber(item.amount) }
+        {
+          name: index === 0 ? "Amount" : "",
+          value: this.formatNumber(item.amount)
+        }
       );
       return data;
     },
     getEqualSchedule() {
       let data = [];
-      const months_diff = this.monthDiff(
-        new Date(
-          this.offer.first_repayment_year,
-          this.offer.first_repayment_month,
-          1
-        ),
-        new Date(
-          this.offer.last_repayment_year,
-          this.offer.last_repayment_month,
-          1
-        )
-      );
+      const firstDate = [
+        this.offer.first_repayment_year,
+        this.offer.first_repayment_month,
+        1
+      ];
+      const secondDate = [
+        this.offer.last_repayment_year,
+        this.offer.last_repayment_month,
+        1
+      ];
+      const months_diff = this.monthDiff(secondDate, firstDate);
 
       for (let i = 0; i < months_diff; i++) {
         let month = (this.offer.first_repayment_month + i) % 12,
@@ -136,12 +139,10 @@ export default {
 
       return data;
     },
-    monthDiff(d1, d2) {
-      var months;
-      months = (d2.getFullYear() - d1.getFullYear()) * 12;
-      months -= d1.getMonth();
-      months += d2.getMonth();
-      return months <= 0 ? 0 : months;
+    monthDiff(firstDate, secondDate) {
+      firstDate = moment(firstDate);
+      secondDate = moment(secondDate);
+      return firstDate.diff(secondDate, "months");
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");

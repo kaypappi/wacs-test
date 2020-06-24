@@ -1,7 +1,7 @@
 <template>
      <div class="main">
         <div class="left">
-            <img src="/assets/images/WACS.png" class="logo" alt="WACS logo">
+            <img @click="$router.push({name:'home'})" src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <LeftMenuItems />
         </div>
         <div class="right">

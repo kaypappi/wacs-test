@@ -19,7 +19,13 @@
 
         <div class="form-wrapper">
                 <!-- <div v-if="serverResponse" class="error-div">{{serverResponse}}</div> -->
-                <form @submit.prevent="goToNext">
+                <img
+                    src="/assets/images/page-ring-loader.svg"
+                    alt="loader"
+                    v-if="isFetching"
+                    class="page-loader"
+                    />
+                <form v-else @submit.prevent="goToNext">
                     <template v-if="steps===1">
                          <div :style="{maxWidth:'400px',margin:'0 auto'}">
                              <div class="section-head">
@@ -302,6 +308,7 @@
     import {baseUrl} from '../router/api_routes'
     import Toast from '../components/Toast'
     import axios from "axios"
+    import moment from 'moment'
     export default {
         components: {
             TaggedInput,
@@ -393,8 +400,13 @@
                 return true
             },
             validateEqual(){
+
                 if(this.offer.first_repayment_month==0||this.offer.first_repayment_year==0||this.offer.last_repayment_month==0||this.offer.last_repayment_year==0){
                     this.errors.step2.equal='All fields are required'
+                    return false
+                }
+                if(this.getTotalEqualRepaymentAmount() <this.offer.loan_amount){
+                    this.errors.step2.equal='Total repayment amount cannot be less than loan amount'
                     return false
                 }
                 this.errors.step2.equal=''
@@ -402,7 +414,24 @@
             },
             validateUnequal(){
                 if(this.formValues){
-                    return true
+                    let valid=true
+                    this.offer.csv_repayment.map(obj=>{
+                         valid=this.checkProperties(obj)
+                    })
+
+                    if(!valid){
+                        this.errors.step2.unequal='All fields are required for manual schedule entry'
+                    }
+                    else if(this.getTotalCsvRepaymentAmount() < this.offer.loan_amount){
+                        valid=false
+                        this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
+                    }
+                    else{
+                        this.errors.step2.unequal=''
+                    }
+
+                    return valid
+                    //return true
                 }
                 else{
                     let valid=true
@@ -412,6 +441,10 @@
 
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
+                    }
+                    else if(this.getTotalUnequalRepaymentAmount() < this.offer.loan_amount){
+                        valid=false
+                        this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
                     }
                     else{
                         this.errors.step2.unequal=''
@@ -465,18 +498,13 @@
             },
             
             getTotalEqualRepaymentAmount(){
-                 const months_diff = this.monthDiff(
-                    new Date(
-                    this.offer.first_repayment_year,
+                    const firstDate=[this.offer.first_repayment_year,
                     this.offer.first_repayment_month,
-                    1
-                    ),
-                    new Date(
-                    this.offer.last_repayment_year,
+                    1]
+                    const secondDate=[this.offer.last_repayment_year,
                     this.offer.last_repayment_month,
-                    1
-                    )
-                );
+                    1 ]
+                 const months_diff = this.monthDiff(secondDate,firstDate)
                 return this.offer.repayment_amount * months_diff
             },
             getTotalCsvRepaymentAmount(){
@@ -485,12 +513,10 @@
             getTotalUnequalRepaymentAmount(){
                 return this.offer.unequal_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
             },
-            monthDiff(d1, d2) {
-                var months;
-                months = (d2.getFullYear() - d1.getFullYear()) * 12;
-                months -= d1.getMonth();
-                months += d2.getMonth();
-                return months <= 0 ? 0 : months;
+            monthDiff(firstDate, secondDate) {
+                firstDate=moment(firstDate)
+                secondDate=moment(secondDate)
+                return firstDate.diff(secondDate,'months')
                 },
                 formatNumber(num) {
                 return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -505,21 +531,24 @@
                     const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
                     const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
                     const amount=parseInt(this.stripString(this.offer.repayment_amount))
-                    formData.append("plan_type", "equal");
-                    formData.append("plan",JSON.stringify({first,last,amount}))
+                    data.plan_type="equal"
+                    data.plan={first,last,amount}
                 }
                 else{
                     if(this.offer.csv_repayment.length>0){
+                        data.plan_type="unequal"
                         formData.append("plan_type", "unequal");
                         formData.append("csvUpload",this.formValues);
                     }
                     else{
-                        formData.append("plan_type", "unequal");
-                    formData.append("plan",JSON.stringify([...this.offer.unequal_repayment]))
+                        data.plan_type="unequal"
+                        data.plan=[...this.offer.unequal_repayment]
+                        /* formData.append("plan_type", "unequal");
+                    formData.append("plan",JSON.stringify([...this.offer.unequal_repayment])) */
                     }
                 }
 
-                this.$store.dispatch("LoanRequest/makeOffer",formData)
+                this.$store.dispatch("LoanRequest/makeOffer",data)
                 
             },
             fetchLoanDetails(requestId){
@@ -528,12 +557,17 @@
             getDefaultValues(data){
                 //this.fetchLoanDetails(requestId)
                 if (data.amount){
-                    this.offer.loan_amount=this.formatNumber(data.amount)
+                    this.offer.loan_amount=data.amount
                     this.offer.repayment_period=data.offer.payback_period
                     this.offer.interest=data.offer.interest_rate
                     this.offer.moratorium=data.offer.moratorium_period
                 }
 
+            },
+            getDefaultData(){
+                const loanDetails=this.$store.state.LoanRequest.loanDetails
+                this.offerId=loanDetails.offer.id
+                return this.getDefaultValues(loanDetails)
             },
             formatNumberField(num,position) {
             num=this.stripString(num)
@@ -584,7 +618,7 @@
             
             getToast(){
                 return this.$store.state.LoanRequest.toast
-            }
+            },
         },
         watch: {
             payBackDuration() {
@@ -597,7 +631,11 @@
         mounted() {
             this.offerId=this.$route.params.offerId
             this.loan_request_id=this.$route.params.loan_request_id
-            this.getDefaultValues(this.$route.params.loanDetails)
+            this.fetchLoanDetails(this.loan_request_id).then(response=>{
+                response
+                this.getDefaultData()
+            })
+            
 
         },
     }

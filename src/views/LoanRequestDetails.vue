@@ -95,7 +95,12 @@ export default {
         "LoanRequest/fetchLoanRequestsDetials",
         this.requestId
       );
+      
       //return this.splitDetails(this.loanDetails());
+    },
+    fetchLoanHistory(){
+      this.requestId = this.$route.params.requestId;
+      this.$store.dispatch("LoanRequest/fetchLoanHistory",this.requestId)
     },
     showToast(title, message, success) {
       this.toast = { show: true, title, message, success };
@@ -128,6 +133,7 @@ export default {
   },
   mounted() {
     this.fetchLoanDetails();
+    this.fetchLoanHistory()
   }
 };
 </script>
