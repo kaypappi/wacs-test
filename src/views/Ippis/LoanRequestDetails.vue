@@ -99,7 +99,7 @@ export default {
       );
     },
     declineRequest() {
-      this.$store.dispatch("LoanRequest/declineLoanRequest",this.requestId)
+      this.$store.dispatch("LoanRequest/ippisDeclineRequest",this.requestId)
     },
     approveOffer(){
         const id=this.requestId

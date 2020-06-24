@@ -1,6 +1,12 @@
 <template>
   <div class="home-wrapper">
-    <div class="statscard-section">
+    <img
+      src="/assets/images/page-ring-loader.svg"
+      alt="loader"
+      v-if="isFetchingSummary"
+      class="page-loader"
+    />
+    <div v-else class="statscard-section">
       <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
       <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
       <StatsCard title="Approved Requests" textColor="green" :value="requestsSummary.approved" />
@@ -111,8 +117,8 @@ export default {
     }
   },
   mounted() {
-    this.fetchLoanRequests(this.$router.history.current.query);
-    this.fetchRequestsSummary();
+    this.fetchRequestsSummary()
+      this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
 </script>
