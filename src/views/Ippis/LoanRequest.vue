@@ -51,7 +51,7 @@
       </template>
       <Table
         v-else-if="loanRequests"
-        :tableHeaders="['Date', 'Name', 'Ippiss No.','MDA', 'Mont. Salary', 'Loan Request','Credit Admin', 'Status']"
+        :tableHeaders="['Date', 'Name', 'IPPIS No.','MDA', 'Monthly Salary', 'Loan Request','Bank', 'Status']"
       >
         <template>
           <LoanRequestTable

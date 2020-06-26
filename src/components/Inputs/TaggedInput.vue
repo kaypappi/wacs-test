@@ -18,7 +18,7 @@
                 :name="name" 
                 :placeholder="placeholder" 
                 :class="resolveClasses"
-                @keyup="keyupEven"
+                @keyup="keyupEvent($event.target.value)"
                 v-if="tagLeft || tagRight"
             >
             <div class="tag-box right-tag-box" v-if="tagRight">
