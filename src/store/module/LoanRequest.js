@@ -204,12 +204,7 @@ export default {
     },
     fetchLoanHistory({commit},requestId){
       commit("IS_FETCHING_LOANHISTORY",false)
-<<<<<<< HEAD
       axios.get(`creditor/request/history/${requestId}`).then(()=>{
-=======
-      axios.get(`creditor/request/history/${requestId}`).then(response=>{
-        response
->>>>>>> 88874e3eef62ddb7d2c74ec98c5d6b40e379ad74
         commit("IS_FETCHING_LOANHISTORY",false)
     
       })
