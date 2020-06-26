@@ -97,7 +97,7 @@ export default {
       state.splitDetails.offerId = loanData.offer.id;
       //const userData=state.$route.params.userData
       state.splitDetails.firstRowBio = [
-        { name: "Ippiss Number", value: loanData.user.user_name },
+        { name: "IPPIS Number", value: loanData.user.user_name },
         { name: "Phone Number", value: loanData.user.profile.mobile_number },
         { name: "Marital Status", value: loanData.user.profile.marital_status },
         { name: "Monthly Salary", value: loanData.user.profile.monthly_salary },
@@ -205,6 +205,7 @@ export default {
     fetchLoanHistory({commit},requestId){
       commit("IS_FETCHING_LOANHISTORY",false)
       axios.get(`creditor/request/history/${requestId}`).then(response=>{
+        response
         commit("IS_FETCHING_LOANHISTORY",false)
     
       })
