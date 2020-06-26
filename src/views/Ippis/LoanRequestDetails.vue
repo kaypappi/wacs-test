@@ -35,7 +35,7 @@
 
       <div class="loan-details-header">
         <h5>Loan Details</h5>
-        <p>View Repayment Schedule</p>
+        <p class="view-schedule" @click="$router.push({name:'repaymentsSchedule',params:{id:requestId}})">View Repayment Schedule</p>
       </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
@@ -139,6 +139,7 @@ export default {
 .loan-details-header p{
   color: #009831;
   margin-bottom: 0;
+  cursor: pointer;
   font-size: 14px;
 }
 </style>

@@ -139,6 +139,15 @@ const routes = [
         }
       },
       {
+        path:'/ippis/report/:id',
+        name:'ippisLoanReport',
+        component:Schedule,
+        meta:{
+          title:'Loan Report',
+          nameSpace:'ippis',
+        }
+      },
+      {
         path: '/change-password',
         name: 'changePassword',
         component: ResetPassword,

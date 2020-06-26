@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="schedule-table-wrapper">
-        <SingleScheduleTable v-if="schedule && !fetchingSchedule" :schedule="schedule.data[0].breakdown"/>
+        <SingleScheduleTable v-if="schedule && !fetchingSchedule && schedule.data.length>0" :schedule="schedule.data[0].breakdown"/>
         <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingSchedule" class="page-loader">
     </div>
   </div>

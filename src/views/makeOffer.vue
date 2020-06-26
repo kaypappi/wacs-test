@@ -126,7 +126,7 @@
                                     v-model="offer.repayment_amount"
                                 />
 
-                                <div>
+                                <!-- <div>
                                     <label class="form-modal-label">First Repayment</label>
                                 <div class="first-repayment">
                                     
@@ -154,8 +154,8 @@
                                     </select>
                                 </div>
 
-                                </div>
-                                <div>
+                                </div> -->
+                               <!--  <div>
                                     <label class="form-modal-label">Last Repayment</label>
                                 <div class="first-repayment">
                                     
@@ -183,7 +183,7 @@
                                     </select>
                                 </div>
                                 
-                                </div>
+                                </div> -->
                                  <p class="error-div" v-if="errors.step2.equal">{{errors.step2.equal}}</p>
                                 <div class="nav-buttons-wrapper">
                                     <button @click="goToPrev" class="previous-btn" type="button">
@@ -215,35 +215,13 @@
                                     <input placeholder="No" :disabled="true" v-model="offer.unequal_repayment[index].no" type="text">
                                 </div>
                                 <div class="text-input">
-                                    <label for="repayment-month">{{index==0?'Months':''}}</label>
-                                    <select
-                                        name="repayment-month"
-                                        id="repayment-month"
-                                        class="form-modal-inputs "
-                                        :disabled="index==0?false:true"
-                                        v-model="offer.unequal_repayment[index].month"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select Month</option>
-                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
-                                    </select>
+                                    <label :key="Math.random()*10+index" for="repayment-month">{{index==0?'Months':''}}</label>
+                                    <input :key="Math.random()*10+index" placeholder="No" :disabled="true" :value="months[offer.unequal_repayment[index].month]" type="text">
                                 </div>
     
                                 <div class="text-input">
                                     <label for="repayment-year">{{index==0?'Year':''}}</label>
-                                    <select
-                                        name="repayment-year"
-                                        id="repayment-year"
-                                        class="form-modal-inputs "
-                                        :disabled="index==0?false:true"
-                                        v-model="offer.unequal_repayment[index].year"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select</option>
-                                        <option v-for="n in 21" :value="n+getYear" :key="n">{{n + getYear}} </option>
-                                    </select>
+                                    <input :key="Math.random()*10+index" placeholder="No" :disabled="true" :value="offer.unequal_repayment[index].year" type="text">
                                 </div>
                                 
                             
@@ -410,11 +388,12 @@
             },
             validateEqual(){
 
-                if(this.offer.first_repayment_month==0||this.offer.first_repayment_year==0||this.offer.last_repayment_month==0||this.offer.last_repayment_year==0){
+                /* if(this.offer.first_repayment_month==0||this.offer.first_repayment_year==0||this.offer.last_repayment_month==0||this.offer.last_repayment_year==0){
                     this.errors.step2.equal='All fields are required'
                     return false
-                }
-                if(this.getTotalEqualRepaymentAmount() <this.offer.loan_amount){
+                } */
+                if(this.getTotalEqualRepaymentAmount() <this.stripString(this.offer.loan_amount)){
+                    console.log('hbbuy')
                     this.errors.step2.equal='Total repayment amount cannot be less than loan amount'
                     return false
                 }
@@ -431,7 +410,7 @@
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
-                    else if(this.getTotalCsvRepaymentAmount() < this.offer.loan_amount){
+                    else if(this.getTotalCsvRepaymentAmount() < this.stripString(this.offer.loan_amount)){
                         valid=false
                         this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
                     }
@@ -451,7 +430,7 @@
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
-                    else if(this.getTotalUnequalRepaymentAmount() < this.offer.loan_amount){
+                    else if(this.getTotalUnequalRepaymentAmount() < this.stripString(this.offer.loan_amount)){
                         valid=false
                         this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
                     }
@@ -507,14 +486,7 @@
             },
             
             getTotalEqualRepaymentAmount(){
-                    const firstDate=[this.offer.first_repayment_year,
-                    this.offer.first_repayment_month,
-                    1]
-                    const secondDate=[this.offer.last_repayment_year,
-                    this.offer.last_repayment_month,
-                    1 ]
-                 const months_diff = this.monthDiff(secondDate,firstDate)
-                return this.offer.repayment_amount * months_diff
+                return this.stripString(this.offer.repayment_amount) * this.offer.repayment_period
             },
             getTotalCsvRepaymentAmount(){
                return this.offer.csv_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
@@ -569,6 +541,7 @@
                     this.offer.repayment_period=data.offer.payback_period
                     this.offer.interest=data.offer.interest_rate
                     this.offer.moratorium=data.offer.moratorium_period
+                    //this.populateUnequalRepayment()
                 }
 
             },
@@ -590,6 +563,26 @@
             },
             tempDataPush(data,position){
                 this.tempData[position]=data
+            },
+            populateUnequalRepayment(){
+                const data = [];
+                const startDate=moment().add(this.offer.moratorium,'months');
+                let startMonth=startDate.month(),
+                startYear=startDate.year();
+                for(let index=0; index<this.offer.repayment_period; index++){
+                    let month = (startMonth + index) % 12,
+                        year =
+                        startYear +
+                            Math.floor((startMonth + index) / 12);
+                        const obj = {
+                        no: index + 1,
+                        month: month,
+                        year,
+                        amount: this.offer.repayment_amount
+                        };
+                    data[index]={...obj}
+                }
+                this.offer.unequal_repayment=[...data]
             }
             
         },
@@ -645,6 +638,12 @@
             'tempData.loan_amount' : function (){
                 this.formatNumberField(this.tempData.loan_amount,'loan_amount')
             },
+            'offer.repayment_period': function(){
+                this.populateUnequalRepayment()
+            },
+            'offer.moratorium': function(){
+                this.populateUnequalRepayment()
+            }
             
         },
         mounted() {

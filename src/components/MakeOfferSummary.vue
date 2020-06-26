@@ -62,20 +62,6 @@ export default {
   data() {
     return {
       equalRepaymentData: [],
-      months: [
-        "January",
-        "Febuary",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-      ],
       positons: [
         "First",
         "Second",
@@ -99,7 +85,7 @@ export default {
         { name: index === 0 ? "No." : "", value: item.no },
         {
           name: index === 0 ? "Month" : "",
-          value: this.months[parseInt(item.month)]
+          value: moment().month(item.month).format('MMMM')
         },
         { name: index === 0 ? "Year" : "", value: item.year },
         {
@@ -110,7 +96,12 @@ export default {
       return data;
     },
     getEqualSchedule() {
+      const startDate=moment().add(this.offer.moratorium,'months');
+      let startMonth=startDate.month(),
+      startYear=startDate.year();
       let data = [];
+
+      /* let data = [];
       const firstDate = [
         this.offer.first_repayment_year,
         this.offer.first_repayment_month,
@@ -121,13 +112,13 @@ export default {
         this.offer.last_repayment_month,
         1
       ];
-      const months_diff = this.monthDiff(secondDate, firstDate);
+      const months_diff = this.monthDiff(secondDate, firstDate); */
 
-      for (let i = 0; i < months_diff; i++) {
-        let month = (this.offer.first_repayment_month + i) % 12,
+      for (let i = 0; i < this.offer.repayment_period; i++) {
+        let month = (startMonth + i) % 12,
           year =
-            this.offer.first_repayment_year +
-            Math.floor((this.offer.first_repayment_month + i) / 12);
+           startYear +
+            Math.floor((startMonth + i) / 12);
         const obj = {
           no: i + 1,
           month: month,
