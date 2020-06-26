@@ -14,18 +14,35 @@
             <span class="arrow-separator">></span>
             <MakeOfferSectionTitle :section="3" title="Summary" :steps="steps"/>
         </div>
-        <div class="make-offer-div">
-        
-
-        <div class="form-wrapper">
-                <!-- <div v-if="serverResponse" class="error-div">{{serverResponse}}</div> -->
-                <img
+        <img
                     src="/assets/images/page-ring-loader.svg"
                     alt="loader"
                     v-if="isFetching"
                     class="page-loader"
                     />
-                <form v-else @submit.prevent="goToNext">
+        <div v-else class="make-offer-div">
+        
+        <transition name="fade">
+        <div v-if="steps==2" class="side-basic-info">
+            <div class="basic-info-content">
+                <div class="section-head">
+                Basic Info
+            </div>   
+            <h6>Loan Amount</h6>
+            <p>N{{offer.loan_amount}}</p>
+            <h6>Repayment Period</h6>
+            <p>{{offer.repayment_period}} Months</p>
+            <h6>Interest Rate</h6>
+            <p>{{offer.interest}}%</p>
+            <h6>Moratorium Period</h6>
+            <p>{{this.positons[this.offer.moratorium - 1] + " Month "}}</p>
+            </div>
+        </div>
+        </transition>
+        <div class="form-wrapper">
+                <!-- <div v-if="serverResponse" class="error-div">{{serverResponse}}</div> -->
+                
+                <form  @submit.prevent="goToNext">
                     <template v-if="steps===1">
                          <div :style="{maxWidth:'400px',margin:'0 auto'}">
                              <div class="section-head">
@@ -197,7 +214,7 @@
 
                         <div v-if="!equalRepayment" class="upload-schedule-div">
                             <form @submit.prevent="goToNext">
-                                <DragDropFileInput 
+                                <!-- <DragDropFileInput 
                                 :onfile="fileChange"
                                 :value="file"
                                 :isLoading="fileLoading"
@@ -207,7 +224,7 @@
                             />
                             <div class="separator">
                                 <hr><span>OR</span><hr>
-                            </div>
+                            </div> -->
                             <p class="form-modal-label"><img src="/assets/images/file.svg" alt="">Enter Repayment Schedule</p>
                             <div class="schedule-wrapper" :key="index" v-for="(n,index) in (offer.unequal_repayment)">
                                 <div class="text-input">
@@ -227,7 +244,6 @@
                             
                                     <TaggedInput
                                         :label="index==0 ? 'Amount' : ''"
-                                        id="amount"
                                         name="amount"
                                         length="long"
                                         labelClass="form-modal-label"
@@ -242,7 +258,6 @@
                                         v-model="offer.unequal_repayment[index].amount"
                                     />
                             </div>
-                            <img src="/assets/images/plus-icon.svg" alt="" class="add-sign" @click="addMonth">
                             <p class="error-div" v-show="errors.step2.unequal">{{errors.step2.unequal}}</p>
                             <div class="nav-buttons-wrapper">
                                     <button @click="goToPrev" class="previous-btn" type="button">
@@ -283,7 +298,7 @@
 <script>
     import TaggedInput from '../components/Inputs/TaggedInput';
    // import TextInput from '../components/Inputs/TextInput'
-    import DragDropFileInput from '../components/Inputs/DragDropFileInput';
+   // import DragDropFileInput from '../components/Inputs/DragDropFileInput';
     import MakeOfferSectionTitle from '../components/MakeOfferSectionsTitle'
     import MakeOfferSummary from '../components/MakeOfferSummary'
     import {BIconArrowLeft} from 'bootstrap-vue'
@@ -294,7 +309,7 @@
     export default {
         components: {
             TaggedInput,
-            DragDropFileInput,
+           // DragDropFileInput,
             MakeOfferSectionTitle,
             BIconArrowLeft,
             MakeOfferSummary,
@@ -315,6 +330,20 @@
                         "October",
                         "November",
                         "December"],
+                positons: [
+                    "First",
+                    "Second",
+                    "Third",
+                    "Fourth",
+                    "Fifth",
+                    "Sixth",
+                    "Seventh",
+                    "Eight",
+                    "Nineth",
+                    "Tenth",
+                    "Eleventh",
+                    "Twelveth"
+                ],
                 equalRepayment: true,
                 steps:1,
                 offerId:'',
@@ -393,7 +422,6 @@
                     return false
                 } */
                 if(this.getTotalEqualRepaymentAmount() <this.stripString(this.offer.loan_amount)){
-                    console.log('hbbuy')
                     this.errors.step2.equal='Total repayment amount cannot be less than loan amount'
                     return false
                 }
@@ -426,7 +454,7 @@
                     this.offer.unequal_repayment.map(obj=>{
                          valid=this.checkProperties(obj)
                     })
-
+                    console.log(this.getTotalUnequalRepaymentAmount())
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
@@ -489,10 +517,10 @@
                 return this.stripString(this.offer.repayment_amount) * this.offer.repayment_period
             },
             getTotalCsvRepaymentAmount(){
-               return this.offer.csv_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
+               return this.offer.csv_repayment.reduce((a, b) => ({amount: parseFloat(this.stripString(a.amount)) + parseFloat(this.stripString(b.amount))})).amount;
             },
             getTotalUnequalRepaymentAmount(){
-                return this.offer.unequal_repayment.reduce((a, b) => ({amount: parseFloat(a.amount) + parseFloat(b.amount)})).amount;
+                return this.offer.unequal_repayment.reduce((a, b) => ({amount: parseFloat(this.stripString(a.amount)) + parseFloat(this.stripString(b.amount))})).amount;
             },
             monthDiff(firstDate, secondDate) {
                 firstDate=moment(firstDate)
@@ -509,11 +537,12 @@
                     formData.append(key, data[key]);
                 }                
                 if(this.equalRepayment){
-                    const first=`${this.offer.first_repayment_year}-${this.offer.first_repayment_month}-01`
-                    const last=`${this.offer.last_repayment_year}-${this.offer.last_repayment_month}-01`
                     const amount=parseInt(this.stripString(this.offer.repayment_amount))
+                    const startDate=moment().add(this.offer.moratorium,'months');
+                    let month=startDate.month(),
+                    year=startDate.year();
                     data.plan_type="equal"
-                    data.plan={first,last,amount}
+                    data.plan={month,year,amount}
                 }
                 else{
                     if(this.offer.csv_repayment.length>0){
@@ -524,9 +553,13 @@
                     }
                     else{
                         data.plan_type="unequal"
-                        data.plan=[...this.offer.unequal_repayment]
+                        data.plan=this.offer.unequal_repayment.map(item=>{
+                            return {...item,amount:this.stripString(item.amount)}
+                        })
                     }
                 }
+
+                console.log(data)
 
                 this.$store.dispatch("LoanRequest/makeOffer",data)
                 
@@ -810,5 +843,22 @@
 .form-modal-label{
     display: flex;
 }
+
+.side-basic-info{
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    width: 200px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity  0.25s ease-in;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+
 
 </style>

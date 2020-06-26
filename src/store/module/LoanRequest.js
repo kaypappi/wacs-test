@@ -191,9 +191,10 @@ export default {
       commit("IS_FETCHING_LOANDETAILS", true);
       return new Promise((resolve, reject) => {
         axios.get(`creditor/request/view/${requestId}`).then((res) => {
+  
           commit("IS_FETCHING_LOANDETAILS", false);
-          commit("FETCH_LOANDETAILS_SUCCESS", res.data.data[0]);
-          commit("SPILT_DETAILS");
+          commit("FETCH_LOANDETAILS_SUCCESS", res.data.data);
+          commit("SPILT_DETAILS",res.data.data);
           resolve()
         }).catch(err=>{
           err
