@@ -44,6 +44,7 @@
                             :tagLeft="true"
                             :tagRight="false"
                             leftImage="naira.svg"
+                            @input="tempDataPush($event,'loan_amount')"
                             v-model="offer.loan_amount"
                         />
                         <div class="first-repayment">
@@ -116,10 +117,12 @@
                                     placeholder="e.g 200,000"
                                     length="long"
                                     type="text"
+                                    :keyupEvent="formatNumber"
                                     :max="offer.loan_amount"
                                     :tagLeft="true"
                                     :tagRight="false"
                                     leftImage="naira.svg"
+                                    @input="formatNumberField($event,'repayment_amount')"
                                     v-model="offer.repayment_amount"
                                 />
 
@@ -257,6 +260,7 @@
                                         type="text"
                                         :tagRight="false"
                                         leftImage="naira.svg"
+                                        @input="formatUnequalAmount($event,index)"
                                         v-model="offer.unequal_repayment[index].amount"
                                     />
                             </div>
@@ -348,9 +352,14 @@
                         unequal:''
                     }
                 },
+                tempData:{
+                    loan_amount:'',
+                    repayment_amount:''
+                },
                 offer: { 
                     repayment_period:0,
                     moratorium:0,
+                    loan_amount:"",
                     csv_repayment:[],
                     first_repayment_month:0,
                     last_repayment_month:0,
@@ -537,14 +546,13 @@
                 else{
                     if(this.offer.csv_repayment.length>0){
                         data.plan_type="unequal"
-                        formData.append("plan_type", "unequal");
-                        formData.append("csvUpload",this.formValues);
+                        data.plan=[...this.offer.csv_repayment]
+                        /* formData.append("plan_type", "unequal");
+                        formData.append("csvUpload",this.formValues); */
                     }
                     else{
                         data.plan_type="unequal"
                         data.plan=[...this.offer.unequal_repayment]
-                        /* formData.append("plan_type", "unequal");
-                    formData.append("plan",JSON.stringify([...this.offer.unequal_repayment])) */
                     }
                 }
 
@@ -557,7 +565,7 @@
             getDefaultValues(data){
                 //this.fetchLoanDetails(requestId)
                 if (data.amount){
-                    this.offer.loan_amount=data.amount
+                    this.offer.loan_amount=this.formatNumber(data.amount)
                     this.offer.repayment_period=data.offer.payback_period
                     this.offer.interest=data.offer.interest_rate
                     this.offer.moratorium=data.offer.moratorium_period
@@ -573,8 +581,15 @@
             num=this.stripString(num)
             this.offer[position]= Number(num).toLocaleString() 
             },
+            formatUnequalAmount(num,index){
+                num=this.stripString(num)
+                this.offer.unequal_repayment[index].amount=Number(num).toLocaleString() 
+            },
             stripString(data){
             return data.toString().replace(/,/g,"")
+            },
+            tempDataPush(data,position){
+                this.tempData[position]=data
             }
             
         },
@@ -626,7 +641,11 @@
             },
             moratoriumPeriod() {
                 this.monthCount = 0;
-            }
+            },
+            'tempData.loan_amount' : function (){
+                this.formatNumberField(this.tempData.loan_amount,'loan_amount')
+            },
+            
         },
         mounted() {
             this.offerId=this.$route.params.offerId
