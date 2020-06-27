@@ -3,6 +3,12 @@
       <template v-slot:cell(Date)="data">
           {{data.item.date}}
       </template>
+      <template v-slot:cell(Name)="data">
+          {{data.item.name}}
+      </template>
+      <template v-slot:cell(IPPIS_Number)="data">
+          {{data.item.ippis_number}}
+      </template>
       <template v-slot:cell(ScheduleNumber)="data">
           {{data.item.schedule_number}}
       </template>
@@ -25,7 +31,7 @@ export default {
     },
     data(){
         return{
-            fields:["Date","ScheduleNumber","Amount(N)","Schedule"]
+            fields:["Date","Name","IPPIS_Number","ScheduleNumber","Amount(N)","Schedule"]
         }
     },
     methods:{

@@ -407,7 +407,7 @@
                 let valid=true, EmptyItems=[]
 
                 obj.map(item=>{
-                    if(Object.values(item).filter(item=> item===null || item==="" || item===0 ||item===undefined).length>0){
+                    if(Object.values(item).filter(item=> item===null || item==="" ||item===undefined).length>0){
                         EmptyItems=[...EmptyItems,item]
                     }
                 })
@@ -439,10 +439,7 @@
             },
             validateUnequal(){
                 if(this.formValues){
-                    let valid=true
-                    this.offer.csv_repayment.map(obj=>{
-                         valid=this.checkProperties(obj)
-                    })
+                    let valid=this.checkProperties(this.offer.csv_repayment)
 
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
@@ -460,9 +457,6 @@
                 }
                 else{
                     let valid=this.checkProperties(this.offer.unequal_repayment)
-                    /* this.offer.unequal_repayment.map(obj=>{
-                         valid=this.checkProperties(obj)
-                    }) */
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
@@ -547,7 +541,7 @@
                 if(this.equalRepayment){
                     const amount=parseInt(this.stripString(this.offer.repayment_amount))
                     const startDate=moment().add(this.offer.moratorium,'months');
-                    let month=startDate.month(),
+                    let month=this.formatMonth(startDate.month()),
                     year=startDate.year();
                     data.plan_type="equal"
                     data.plan={month,year,amount}
@@ -562,15 +556,20 @@
                     else{
                         data.plan_type="unequal"
                         data.plan=this.offer.unequal_repayment.map(item=>{
-                            return {...item,amount:this.stripString(item.amount)}
+                            return {...item,amount:this.stripString(item.amount),month:moment().month(item.month).format("MMMM")}
                         })
                     }
                 }
 
-                console.log(data)
 
-                this.$store.dispatch("LoanRequest/makeOffer",data)
+               this.$store.dispatch("LoanRequest/makeOffer",data)
                 
+            },
+            formatMonth(month){
+                if(month<9){
+                    return `0${month+1}`
+                }
+                return `${month+1}`
             },
             fetchLoanDetails(requestId){
                 return this.$store.dispatch("LoanRequest/fetchLoanRequestsDetials",requestId)
