@@ -2,7 +2,7 @@
   <div class="loan-request-wrapper">
     <div class="page-filters">
       <SearchFilterInput
-        placeholder="Search by MDA, ippiss No"
+        placeholder="Search by MDA, IPPIS No."
         :value="getSearchTerm()"
         :onSearch="enterSearch"
         @input="handleSearch($event)"
@@ -51,7 +51,7 @@
       </template>
       <Table
         v-else-if="loanRequests"
-        :tableHeaders="['Date', 'Name', 'IPPIS No.','MDA', 'Monthly Salary', 'Loan Request','Bank', 'Status']"
+        :tableHeaders="['Date', 'Name', 'IPPIS Number','MDA', 'Monthly Salary', 'Loan Request','Bank', 'Status']"
       >
         <template>
           <LoanRequestTable

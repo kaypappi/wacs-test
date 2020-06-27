@@ -35,31 +35,39 @@
 
       <div class="loan-details-header">
         <h5>Loan Details</h5>
-        <p>View Repayment Schedule</p>
+        <p class="view-schedule" @click="$router.push({name:'ippisLoanReport',params:{id:loanDetails.repayment_details.id}})">View Repayment Schedule</p>
       </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
       </table>
 
-      <h5>Loan History</h5>
-      <table class="table personal-info-table border-table">
-        <tr class="t-head">
-          <td>Date</td>
-          <td>Loan Offer Collected</td>
-          <td>Credit Administrator</td>
-          <td>Loan Amount</td>
-          <td>Amount Paid</td>
-        </tr>
-        <template v-for="history in splitDetails.loanHistory">
-          <tr class="t-field" :key="history.date">
-            <td>{{history.date}}</td>
-            <td>{{history.title}}</td>
-            <td>{{history.description}}</td>
-            <td>{{history.amount_from}}</td>
-            <td>{{history.amount_from}}</td>
+      <img
+        src="/assets/images/page-ring-loader.svg"
+        alt="loader"
+        v-if="isFetchingLoanHistory"
+        class="page-loader"
+      />
+      <template v-if="!isFetchingLoanHistory && (loanHistory.data? loanHistory.data.length>0: true)">
+        <h5>Loan History</h5>
+        <table class="table personal-info-table border-table">
+          <tr class="t-head">
+            <td>Date</td>
+            <td>Loan Offer Collected</td>
+            <td>Credit Administrator</td>
+            <td>Loan Amount</td>
+            <td>Amount Paid</td>
           </tr>
-        </template>
-      </table>
+          <template v-for="history in loanHistory.data">
+            <tr class="t-field" :key="history.date">
+              <td>{{history.date}}</td>
+              <td>{{history.loan_offer_collected}}</td>
+              <td>{{history.credit_administrator}}</td>
+              <td>{{history.loan_amount}}</td>
+              <td>{{history.total_paid}}</td>
+            </tr>
+          </template>
+        </table>
+      </template>
     </template>
   </div>
 </template>
@@ -77,11 +85,6 @@ export default {
       customerName: "",
       offerId: "",
       fetchingRequests: true,
-      firstRowBio: [],
-      secondRowBio: [],
-      thirdRowBio: [],
-      loanDetailsRow: [],
-      loanHistory: [],
       requestId: "",
       toast: {
         show: false,
@@ -92,10 +95,19 @@ export default {
     };
   },
   methods: {
-    fetchLoanDetails() {
-      this.$store.dispatch(
+    async fetchLoanDetails() {
+      this.requestId = this.$route.params.requestId;
+     return await this.$store.dispatch(
         "LoanRequest/fetchLoanRequestsDetials",
         this.requestId
+      );
+    },
+    fetchLoanHistory() {
+      this.requestId = this.$route.params.requestId;
+      console.log(this.loanDetails.user.id)
+      this.$store.dispatch(
+        "LoanRequest/fetchLoanHistory",
+        this.loanDetails.user.id
       );
     },
     declineRequest() {
@@ -120,11 +132,19 @@ export default {
     },
     getToast(){
         return this.$store.state.LoanRequest.toast
+    },
+    isFetchingLoanHistory() {
+      return this.$store.state.LoanRequest.isFetchingLoanHistory;
+    },
+    loanHistory() {
+      console.log(this.$store.state.LoanRequest.loanHistory);
+      return this.$store.state.LoanRequest.loanHistory;
     }
   },
   mounted() {
-     this.requestId = this.$route.params.requestId;
-    this.fetchLoanDetails();
+    this.fetchLoanDetails().then(() => {
+      this.fetchLoanHistory();
+    });
   }
 };
 </script>
@@ -139,6 +159,7 @@ export default {
 .loan-details-header p{
   color: #009831;
   margin-bottom: 0;
+  cursor: pointer;
   font-size: 14px;
 }
 </style>
