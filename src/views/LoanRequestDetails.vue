@@ -149,7 +149,6 @@ export default {
       return this.$store.state.LoanRequest.isFetchingLoanHistory;
     },
     loanHistory() {
-      console.log(this.$store.state.LoanRequest.loanHistory);
       return this.$store.state.LoanRequest.loanHistory;
     }
   },
