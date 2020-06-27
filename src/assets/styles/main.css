@@ -1163,6 +1163,10 @@ td>.t-value {
     background-color: #F08C14;
 }
 
+.status-circle.bank_approved{
+    background-color: blue;
+}
+
 .status-circle.rejected{
     background-color: red;
 }

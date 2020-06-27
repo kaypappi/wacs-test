@@ -7,7 +7,7 @@
         <td>{{salary}}</td>
         <td>{{loanRequest}}</td>
         <td>{{creditAdmin}}</td>
-        <td><span :class="{'status-circle':true, pending:status==='Pending', rejected:status==='Rejected'}"></span>{{status}}</td>
+        <td><span :class="{'status-circle':true, pending:status==='Pending', rejected:status==='Declined'}"></span>{{status}}</td>
     </tr>
 </template>
 <script>

@@ -171,7 +171,7 @@ export default {
     },
     fetchIppissLoanRequests({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
-      axios.get(`creditor/request/ippis/view?${query}`).then((response) => {
+      axios.get(`ippis/requests/view?${query}`).then((response) => {
         commit("IS_FETCHING_LOANREQUEST", false);
         if (response.data.data.length === 0) {
           commit("FETCH_ADMIN_NOTFOUND");
@@ -222,7 +222,7 @@ export default {
         id: requestId,
       };
       axios
-        .post(`creditor/request/ippis/approve`, data)
+        .post(`request/ippis/approve`, data)
         .then((response) => {
           commit("SHOW_TOAST", "Successful", response.data.message, true);
           commit("REDIRECT","ippisLoanRequest",2000)
@@ -236,7 +236,7 @@ export default {
         id: requestId,
       };
       axios
-        .post(`creditor/request/ippis/decline`, data)
+        .post(`request/ippis/decline`, data)
         .then((response) => {
           commit("SHOW_TOAST", "Successful", response.data.message, true);
           commit("REDIRECT","ippisLoanRequest",2000)
@@ -248,7 +248,7 @@ export default {
     ippisSearchLoanRequest({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
       axios
-        .get(`creditor/request/ippis/search/${query.search}`)
+        .get(`request/ippis/search/${query.search}`)
         .then((response) => {
           commit("IS_FETCHING_LOANREQUEST", false);
           if (response.data.data.length === 0) {

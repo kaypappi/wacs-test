@@ -5,7 +5,7 @@
         <td>{{ippissNo}}</td>
         <td>{{salary}}</td>
         <td>{{loanRequest}}</td>
-        <td><span :class="{'status-circle':true, pending:status==='Pending', rejected:status==='Declined'}"></span>{{status}}</td>
+        <td><span :class="{'status-circle':true, pending:status==='Pending' || status==='Awaiting IPPIS Approval',bank_approved:status==='Bank Approved', rejected:status==='Declined'}"></span>{{status}}</td>
     </tr>
 </template>
 <script>
