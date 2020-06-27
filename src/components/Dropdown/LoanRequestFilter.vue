@@ -37,27 +37,26 @@
                   title="Pending"
                 />
                 <Checkbox
+                  :value="filters.statusValue.bank_approved"
+                  @changed="handleInput($event,'status','bank_approved')"
+                  title="Bank Approved"
+                />
+                <Checkbox
+                  :value="filters.statusValue.awaiting_ippis"
+                  @changed="handleInput($event,'status','awaiting_ippis')"
+                  title="Awaiting IPPIS Approval"
+                />
+              </div>
+              <div>
+                <Checkbox
                   :value="filters.statusValue.Running"
                   @changed="handleInput($event,'status','Running')"
                   title="Running"
                 />
                 <Checkbox
-                  :value="filters.statusValue.Processing"
-                  @changed="handleInput($event,'status','Processing')"
-                  title="Processing"
-                />
-              </div>
-              <div>
-                <Checkbox
-                  :value="filters.statusValue.Approved"
-                  @changed="handleInput($event,'status','Approved')"
-                  title="Ippis Approved"
-                />
-
-                <Checkbox
-                  :value="filters.statusValue.Rejected"
-                  @changed="handleInput($event,'status','Rejected')"
-                  title="User Declined"
+                  :value="filters.statusValue.declined"
+                  @changed="handleInput($event,'status','declined')"
+                  title="Declined"
                 />
               </div>
             </div>
@@ -118,9 +117,9 @@ export default {
         statusValue: {
           Pending:false,
           Running:false,
-          Approved:false,
-          Rejected:false,
-          Processing:false
+          awaiting_ippis:false,
+          declined:false,
+          bank_approved:false
         }
       }
     };
