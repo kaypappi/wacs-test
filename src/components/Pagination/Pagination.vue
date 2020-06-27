@@ -16,8 +16,6 @@
         },
         methods:{
             navigateTo(page){
-                //console.log(page);
-
                 if(page <= 0 || page > this.lastPage){
                     return
                 }

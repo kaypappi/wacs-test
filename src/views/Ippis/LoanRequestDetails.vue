@@ -104,7 +104,6 @@ export default {
     },
     fetchLoanHistory() {
       this.requestId = this.$route.params.requestId;
-      console.log(this.loanDetails.user.id)
       this.$store.dispatch(
         "LoanRequest/fetchLoanHistory",
         this.loanDetails.user.id
@@ -137,7 +136,6 @@ export default {
       return this.$store.state.LoanRequest.isFetchingLoanHistory;
     },
     loanHistory() {
-      console.log(this.$store.state.LoanRequest.loanHistory);
       return this.$store.state.LoanRequest.loanHistory;
     }
   },
