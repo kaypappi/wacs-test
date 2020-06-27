@@ -33,7 +33,10 @@
         <NoBorderTableRow :data="splitDetails.thirdRowBio" />
       </table>
 
-      <h5>Loan Details</h5>
+      <div class="loan-details-header">
+        <h5>Loan Details</h5>
+        <p v-if="loanDetails.repayment_details!==null" class="view-schedule" @click="$router.push({name:'repaymentsSchedule',params:{id:loanDetails.repayment_details.id}})">View Repayment Schedule</p>
+      </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
       </table>
@@ -161,4 +164,16 @@ export default {
 </script>
 
 <style>
+.loan-details-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.loan-details-header p{
+  color: #009831;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
 </style>
