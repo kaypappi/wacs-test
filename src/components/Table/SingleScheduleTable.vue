@@ -21,6 +21,9 @@ export default {
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
+  },
+  mounted(){
+    console.log(this.schedule)
   }
 };
 </script>

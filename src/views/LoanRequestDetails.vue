@@ -14,17 +14,17 @@
       class="page-loader"
     />
     <template v-else>
-      <div  class="details-top">
+      <div class="details-top">
         <h3>{{splitDetails.customerName}}</h3>
-        <template v-if="loanDetails.status=='Pending'">
-            <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
-          <img src="/assets/images/cancel.svg" alt="Plus sign" />
-          Decline
-        </Button>
-        <Button class="cta-button margin-left-30" @click="makeOffer">
-          <img src="/assets/images/Double-check.svg" alt="Plus sign" />
-          Make Offer
-        </Button>
+        <template v-if="loanDetails.status==='Pending'">
+          <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
+            <img src="/assets/images/cancel.svg" alt="Plus sign" />
+            Decline
+          </Button>
+          <Button class="cta-button margin-left-30" @click="makeOffer">
+            <img src="/assets/images/Double-check.svg" alt="Plus sign" />
+            Make Offer
+          </Button>
         </template>
       </div>
       <table class="table personal-info-table no-border-table">
@@ -38,25 +38,33 @@
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
       </table>
 
-      <h5>Loan History</h5>
-      <table class="table personal-info-table border-table">
-        <tr class="t-head">
-          <td>Date</td>
-          <td>Loan Offer Collected</td>
-          <td>Credit Administrator</td>
-          <td>Loan Amount</td>
-          <td>Amount Paid</td>
-        </tr>
-        <template v-for="history in splitDetails.loanHistory">
-          <tr class="t-field" :key="history.date">
-            <td>{{history.date}}</td>
-            <td>{{history.title}}</td>
-            <td>{{history.description}}</td>
-            <td>{{history.amount_from}}</td>
-            <td>{{history.amount_from}}</td>
+      <img
+        src="/assets/images/page-ring-loader.svg"
+        alt="loader"
+        v-if="isFetchingLoanHistory"
+        class="page-loader"
+      />
+      <template v-if="!isFetchingLoanHistory && (loanHistory.data? loanHistory.data.length>0: true)">
+        <h5>Loan History</h5>
+        <table class="table personal-info-table border-table">
+          <tr class="t-head">
+            <td>Date</td>
+            <td>Loan Offer Collected</td>
+            <td>Credit Administrator</td>
+            <td>Loan Amount</td>
+            <td>Amount Paid</td>
           </tr>
-        </template>
-      </table>
+          <template v-for="history in loanHistory.data">
+            <tr class="t-field" :key="history.date">
+              <td>{{history.date}}</td>
+              <td>{{history.loan_offer_collected}}</td>
+              <td>{{history.credit_administrator}}</td>
+              <td>{{history.loan_amount}}</td>
+              <td>{{history.total_paid}}</td>
+            </tr>
+          </template>
+        </table>
+      </template>
     </template>
   </div>
 </template>
@@ -78,7 +86,6 @@ export default {
       secondRowBio: [],
       thirdRowBio: [],
       loanDetailsRow: [],
-      loanHistory: [],
       requestId: "",
       toast: {
         show: false,
@@ -89,18 +96,21 @@ export default {
     };
   },
   methods: {
-    fetchLoanDetails() {
+    async fetchLoanDetails() {
       this.requestId = this.$route.params.requestId;
-      this.$store.dispatch(
+      return await this.$store.dispatch(
         "LoanRequest/fetchLoanRequestsDetials",
         this.requestId
       );
-      
+
       //return this.splitDetails(this.loanDetails());
     },
-    fetchLoanHistory(){
+    fetchLoanHistory() {
       this.requestId = this.$route.params.requestId;
-      this.$store.dispatch("LoanRequest/fetchLoanHistory",this.requestId)
+      this.$store.dispatch(
+        "LoanRequest/fetchLoanHistory",
+        this.loanDetails.user.id
+      );
     },
     showToast(title, message, success) {
       this.toast = { show: true, title, message, success };
@@ -109,18 +119,23 @@ export default {
       }, 2000);
     },
     declineRequest() {
-      this.$store.dispatch("LoanRequest/declineLoanRequest",this.loanDetails.id)
+      this.$store.dispatch(
+        "LoanRequest/declineLoanRequest",
+        this.loanDetails.id
+      );
     },
     makeOffer() {
       this.$router.push({
         name: "makeOffer",
-        params: { offerId: this.loanDetails.offer.id, loan_request_id: this.loanDetails.id, loanDetails:{...this.loanDetails} }
+        params: {
+          offerId: this.loanDetails.offer.id,
+          loan_request_id: this.loanDetails.id,
+          loanDetails: { ...this.loanDetails }
+        }
       });
-    },
-    
+    }
   },
   computed: {
-    
     isFetching() {
       return this.$store.state.LoanRequest.isFetchingLoanDetails;
     },
@@ -130,10 +145,18 @@ export default {
     loanDetails() {
       return this.$store.state.LoanRequest.loanDetails;
     },
+    isFetchingLoanHistory() {
+      return this.$store.state.LoanRequest.isFetchingLoanHistory;
+    },
+    loanHistory() {
+      console.log(this.$store.state.LoanRequest.loanHistory);
+      return this.$store.state.LoanRequest.loanHistory;
+    }
   },
   mounted() {
-    this.fetchLoanDetails();
-    this.fetchLoanHistory()
+    this.fetchLoanDetails().then(() => {
+      this.fetchLoanHistory();
+    });
   }
 };
 </script>

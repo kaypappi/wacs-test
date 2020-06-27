@@ -14,7 +14,7 @@
       <LoanRequestFilter :isLoading="isFetching"  />
       <div class="right-search">
         <SearchFilterInput
-          placeholder="Search by name, ippiss No"
+          placeholder="Search by name, IPPIS No"
           :value="getSearchTerm()"
           :onSearch="enterSearch"
           @input="handleSearch($event)"
