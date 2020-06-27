@@ -133,7 +133,7 @@ const routes = [
         name:'ippisLoanDetails',
         component:IppisLoanRequestDetails,
         meta:{
-          title:'Loan Request',
+          title:'Loan Details',
           nameSpace:'ippis',
           parents: ['Loan Request'],
         }
@@ -145,7 +145,8 @@ const routes = [
         meta:{
           title:'Loan Report',
           nameSpace:'ippis',
-        }
+        },
+        parents:["Loan Request","Loan Details"]
       },
       {
         path: '/change-password',

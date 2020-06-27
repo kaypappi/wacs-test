@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="schedule-table-wrapper">
-        <SingleScheduleTable v-if="schedule && !fetchingSchedule && schedule.data.length>0" :schedule="schedule.data[0].breakdown"/>
+        <SingleScheduleTable v-if=" !fetchingSchedule && schedule" :schedule="schedule.data.breakdown"/>
         <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingSchedule" class="page-loader">
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
         )}`;
       Axios.get(URL).then(response => {
         this.schedule = { ...response.data };
-        this.scheduleTitle = `Repayment Schedule Breakdown - ${this.schedule.data[0].schedule_number} - NGN ${this.schedule.data[0].amount}`;
+        this.scheduleTitle = `Repayment Schedule Breakdown - ${this.schedule.data.name} - ${this.schedule.data.ippis_number} - NGN ${this.schedule.data.amount}`;
         this.fetchingSchedule=false
       });
     },

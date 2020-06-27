@@ -13,6 +13,7 @@ export default {
     searchFound: true,
     loanRequests: [],
     loanDetails: {},
+    loanHistory:[],
     requestsSummary:{
       total:0,
       pending:0,
@@ -82,6 +83,9 @@ export default {
     },
     FETCH_LOANDETAILS_SUCCESS(state, data) {
       state.loanDetails = { ...data };
+    },
+    FETCH_LOANHISTORY_SUCCESS(state,data){
+      state.loanHistory=data
     },
     SHOW_TOAST(state, title, message, success) {
       state.toast = { show: true, title, message, success };
@@ -204,10 +208,11 @@ export default {
       
     },
     fetchLoanHistory({commit},requestId){
-      commit("IS_FETCHING_LOANHISTORY",false)
-      axios.get(`creditor/request/history/${requestId}`).then(()=>{
+      commit("IS_FETCHING_LOANHISTORY",true)
+      axios.get(`creditor/request/history/${requestId}`).then((response)=>{
         commit("IS_FETCHING_LOANHISTORY",false)
-    
+        console.log(response)
+        commit("FETCH_LOANHISTORY_SUCCESS",response.data)
       })
     },
     splitDetails({ commit }) {

@@ -404,7 +404,16 @@
                 }
             },
             checkProperties(obj) {
-                const valid=!Object.values(obj).filter(item=> item===null || item==="" || item===0).length>0
+                let valid=true, EmptyItems=[]
+
+                obj.map(item=>{
+                    if(Object.values(item).filter(item=> item===null || item==="" || item===0 ||item===undefined).length>0){
+                        EmptyItems=[...EmptyItems,item]
+                    }
+                })
+                if(EmptyItems.length>0){
+                    valid=false
+                }
                 return valid
             },
             validateStepOne(){
@@ -450,11 +459,10 @@
                     //return true
                 }
                 else{
-                    let valid=true
-                    this.offer.unequal_repayment.map(obj=>{
+                    let valid=this.checkProperties(this.offer.unequal_repayment)
+                    /* this.offer.unequal_repayment.map(obj=>{
                          valid=this.checkProperties(obj)
-                    })
-                    console.log(this.getTotalUnequalRepaymentAmount())
+                    }) */
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
