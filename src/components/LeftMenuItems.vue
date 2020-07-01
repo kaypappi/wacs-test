@@ -33,7 +33,7 @@
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
                         to: "/admin/loan-request",
-                        permission: [],
+                        permission: ["view", "loan"],
                         nameSpace: 'Admin',
                     },
                     {
