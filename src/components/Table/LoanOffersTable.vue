@@ -1,10 +1,10 @@
 <template>
   <div class="offers-table-wrapper">
     <Toast 
+    v-if="toast.show"
             :show="toast.show"
             :title="toast.title"
-            :successMessage="toast.message"
-            :failureMessage="toast.message"
+            :message="toast.message"
             :success="toast.success"
         />
     <CustomModal :onHide="onHide" id="edit-form-modal">
@@ -369,6 +369,7 @@ export default {
       return offers
     },
     toast(){
+      console.log(this.$store.state.LoanOffers.toast)
       return this.$store.state.LoanOffers.toast
     }
     

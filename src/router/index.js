@@ -13,9 +13,15 @@ import LoanRequestDetails from "../views/LoanRequestDetails";
 import Home from "../views/Home";
 import Repayment from "../views/Repayment";
 import Schedule from "../views/Schedule"
+import Notifications from "../views/Notifcations.vue"
 import IppisLoanRequest from "../views/Ippis/LoanRequest"
 import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails"
+import IppisLogin from "../views/Ippis/Auth/Login.vue"
 import {beforeEach} from './beforeEach';
+import IppisMain from '../components/Layout/IppisMain.vue'
+import AdminLogin from  "../views/Admin/Auth/AdminLogin.vue"
+import AdminMain from "../components/Layout/AdminMain.vue"
+import AdminDashboard from "../views/Admin/AdminDashboard.vue"
 
 Vue.use(VueRouter);
 
@@ -32,6 +38,97 @@ const routes = [
       }
       next()
     }
+  },
+  {
+    path:'/ippis',
+    name:'ippisLogin',
+    component:IppisLogin,
+    beforeEnter: (to, from, next) => {
+      if(store.getters['auth/authenticated']) {
+        return next({
+          name: 'ippisLoanRequest'
+        })
+      }
+      next()
+    }
+  },
+  {
+    path:'/ippis',
+    component:IppisMain,
+    children:[
+      {
+        path:'/ippis/dashboard',
+        name:'ippisLoanRequest',
+        component:IppisLoanRequest,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis'
+        }
+      },
+      {
+        path:'/ippis/notifications',
+        name:'ippisNotifications',
+        component:IppisLoanRequest,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis'
+        }
+      },
+      {
+        path:'/ippis/:requestId',
+        name:'ippisLoanDetails',
+        component:IppisLoanRequestDetails,
+        meta:{
+          title:'Loan Details',
+          nameSpace:'ippis',
+          parents: ['Loan Request'],
+        }
+      },
+      {
+        path:'/ippis/report/:id',
+        name:'ippisLoanReport',
+        component:Schedule,
+        meta:{
+          title:'Loan Report',
+          nameSpace:'ippis',
+        },
+        parents:["Loan Request","Loan Details"]
+      },
+    ]
+  },
+  {
+    path: '/admin',
+    name: 'Adminlogin',
+    component: AdminLogin,
+    beforeEnter: (to, from, next) => {
+      if(store.getters['auth/authenticated']) {
+        return next({
+          name: 'adminDashboard'
+        })
+      }
+      next()
+    }
+  },
+  {
+    path:'/admin',
+    component:AdminMain,
+    children:[
+      {
+        path:'/admin/dashboard',
+        name: 'adminDashboard',
+        component:AdminDashboard,
+        meta:{
+          title:"Admin Dashboard",
+          nameSpace:'Admin'
+        },
+        beforeEnter: (to, from, next) => {
+          if(!store.getters['auth/isParkwayAdmin']) {
+            return next('Adminlogin')
+          }
+          next()
+        }
+      }
+    ]
   },
   {
     path: '/',
@@ -58,6 +155,14 @@ const routes = [
         component: Home,
         meta: {
           title: 'WACS',
+        },
+      },
+      {
+        path: '/notifications',
+        name: 'notifications',
+        component: Notifications,
+        meta: {
+          title: 'Notifications',
         },
       },
       {
@@ -119,35 +224,7 @@ const routes = [
           nameSpace:'loan'
         }
       },
-      {
-        path:'/ippis',
-        name:'ippisLoanRequest',
-        component:IppisLoanRequest,
-        meta:{
-          title:'Loan Request',
-          nameSpace:'ippis'
-        }
-      },
-      {
-        path:'/ippis/:requestId',
-        name:'ippisLoanDetails',
-        component:IppisLoanRequestDetails,
-        meta:{
-          title:'Loan Details',
-          nameSpace:'ippis',
-          parents: ['Loan Request'],
-        }
-      },
-      {
-        path:'/ippis/report/:id',
-        name:'ippisLoanReport',
-        component:Schedule,
-        meta:{
-          title:'Loan Report',
-          nameSpace:'ippis',
-        },
-        parents:["Loan Request","Loan Details"]
-      },
+      
       {
         path: '/change-password',
         name: 'changePassword',

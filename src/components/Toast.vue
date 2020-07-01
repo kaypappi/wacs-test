@@ -6,8 +6,7 @@
                 <img src="/assets/images/Error.svg" class="logo" alt="WACS logo" v-else>
                 <div>
                     <h5>{{title}}</h5>
-                    <span v-if="success">{{successMessage}}</span>
-                    <span v-else>{{failureMessage}}</span>
+                    <span>{{message}}</span>
                 </div>
             </template>
         </b-toast>
@@ -17,8 +16,9 @@
 <script>
     export default {
        props: {
-           'successMessage': String,
-           'failureMessage': String,
+           'message':String,
+           /* 'successMessage': String,
+           'failureMessage': String, */
            'title': String,
            'success': Boolean,
            'show': Boolean,
@@ -27,6 +27,9 @@
            toastClass() {
                return !this.success ? 'error-toast' : 'success-toast';
            }
+       },
+       mounted(){
+           console.log(this.message)
        }
     }
 </script>

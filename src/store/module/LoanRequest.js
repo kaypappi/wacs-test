@@ -89,6 +89,9 @@ export default {
     },
     SHOW_TOAST(state, title, message, success) {
       state.toast = { show: true, title, message, success };
+      setTimeout(() => {
+        state.toast.show = false;
+      }, 2000);
     },
     REDIRECT(state,name,time=0){
       setTimeout(() => {
@@ -162,11 +165,11 @@ export default {
       axios
         .post(`/creditor/request/decline`, data)
         .then((response) => {
-          commit("SHOW_TOAST", "Successful", response.message, true);
+          commit("SHOW_TOAST", {title:"Successful",message: response.message,success: true});
           commit("REDIRECT","loanRequest",2000)
         })
         .catch((err) => {
-          commit("SHOW_TOAST", "Successful", err.response.data.message, false);
+          commit("SHOW_TOAST", {title:"Successful",message: err.response.data.message, success:false});
         });
     },
     fetchIppissLoanRequests({ commit }, query) {
@@ -224,11 +227,11 @@ export default {
       axios
         .post(`request/ippis/approve`, data)
         .then((response) => {
-          commit("SHOW_TOAST", "Successful", response.data.message, true);
+          commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
           commit("REDIRECT","ippisLoanRequest",2000)
         })
         .catch((err) => {
-          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+          commit("SHOW_TOAST", {title:"Error",message: err.response.data.message,success: false});
         });
     },
     ippisDeclineRequest({ commit }, requestId) {
@@ -238,11 +241,11 @@ export default {
       axios
         .post(`request/ippis/decline`, data)
         .then((response) => {
-          commit("SHOW_TOAST", "Successful", response.data.message, true);
+          commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
           commit("REDIRECT","ippisLoanRequest",2000)
         })
         .catch((err) => {
-          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+          commit("SHOW_TOAST",{title: "Error",message: err.response.data.message,success: false});
         });
     },
     ippisSearchLoanRequest({ commit }, query) {
@@ -265,13 +268,13 @@ export default {
         .then((response) => {
           if (response.statusText === "Created") {
             commit("IS_MAKING_OFFER", false);
-            commit("SHOW_TOAST", "Successful", "Successfully made offer", true);
+            commit("SHOW_TOAST",{title: "Successful",message: "Successfully made offer",success: true});
             commit("REDIRECT","loanRequest",2000)
           }
         })
         .catch((err) => {
           commit("IS_MAKING_OFFER", false);
-          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+          commit("SHOW_TOAST", {title:"Error",message: err.response.data.message,success: false});
         });
     },
 
