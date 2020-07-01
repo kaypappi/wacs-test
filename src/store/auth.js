@@ -16,6 +16,10 @@ export default ({
     isSuperAdmin(state){
       return state.user.data.roles[0].name === 'Super Admin';
     },
+    isParkwayAdmin(state){
+      return state.user.data.roles[0].name === 'Admin';
+    },
+  
     user(state){
       return state.user
     },
@@ -43,13 +47,15 @@ export default ({
   },
 
   actions: {
-    async signIn({ commit, dispatch }, credentials){
+    async signIn({ commit,dispatch }, {credentials,url,dashboard}){
       commit('SET_VALIDATION_ERROR', [], {root: true});
       commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
       try{
-        let response  = await axios.post('creditor/login', credentials);
-        return dispatch('attempt', response.data.data.access_token);
+        console.log(url,credentials)
+        let response  = await axios.post(url, credentials);
+        console.log(response,dashboard)
+        return dispatch('attempt', {access_token:response.data.data.access_token,dashboard});
       } catch(e){
         commit('SET_ERROR_MESSAGE', e.response.data.message);
         commit('IS_LOGGING_USER_IN', false);
@@ -57,7 +63,8 @@ export default ({
       }
     },
 
-    async attempt ({ commit, state }, access_token){
+    async attempt ({ commit, state }, {access_token,dashboard}){
+      console.log(access_token,dashboard)
       if(access_token){
         commit('SET_TOKEN', access_token);
       }
@@ -65,7 +72,8 @@ export default ({
         return
       }
       try {
-        let response = await axios.get('creditor/dashboard');
+        let response = await axios.get(dashboard);
+        console.log(response)
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){
@@ -73,6 +81,24 @@ export default ({
         commit('SET_USER', null);
       }
     },
+
+    /* async attemptIppis({commit,state},{access_token,url}){
+      if(access_token){
+        commit('SET_TOKEN', access_token);
+      }
+      if (!state.access_token){
+        return
+      }
+      try {
+        let response = await axios.get(url);
+        console.log(response)
+        commit('IS_LOGGING_USER_IN', false);
+        commit('SET_USER', response.data)
+      } catch(e){
+        commit('SET_TOKEN', null);
+        commit('SET_USER', null);
+      }
+    }, */
 
     clearOneError({commit}) {
       commit('IS_LOGGING_USER_IN', false);

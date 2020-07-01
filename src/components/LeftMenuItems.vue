@@ -29,6 +29,14 @@
                         nameSpace: 'loan',
                     },
                     {
+                        name: "Loan Management",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/admin/loan-request",
+                        permission: [],
+                        nameSpace: 'Admin',
+                    },
+                    {
                         name: "User Management",
                         iconPath: "/assets/images/User.svg",
                         altText: "money",
@@ -36,6 +44,7 @@
                         permission: ["create", "user"],
                         nameSpace: 'users',
                     },
+                    
                 ],
             }
         },
