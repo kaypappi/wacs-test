@@ -40,97 +40,6 @@ const routes = [
     }
   },
   {
-    path:'/ippis',
-    name:'ippisLogin',
-    component:IppisLogin,
-    beforeEnter: (to, from, next) => {
-      if(store.getters['auth/authenticated']) {
-        return next({
-          name: 'ippisLoanRequest'
-        })
-      }
-      next()
-    }
-  },
-  {
-    path:'/ippis',
-    component:IppisMain,
-    children:[
-      {
-        path:'/ippis/dashboard',
-        name:'ippisLoanRequest',
-        component:IppisLoanRequest,
-        meta:{
-          title:'Loan Request',
-          nameSpace:'ippis'
-        }
-      },
-      {
-        path:'/ippis/notifications',
-        name:'ippisNotifications',
-        component:IppisLoanRequest,
-        meta:{
-          title:'Loan Request',
-          nameSpace:'ippis'
-        }
-      },
-      {
-        path:'/ippis/:requestId',
-        name:'ippisLoanDetails',
-        component:IppisLoanRequestDetails,
-        meta:{
-          title:'Loan Details',
-          nameSpace:'ippis',
-          parents: ['Loan Request'],
-        }
-      },
-      {
-        path:'/ippis/report/:id',
-        name:'ippisLoanReport',
-        component:Schedule,
-        meta:{
-          title:'Loan Report',
-          nameSpace:'ippis',
-        },
-        parents:["Loan Request","Loan Details"]
-      },
-    ]
-  },
-  {
-    path: '/admin',
-    name: 'Adminlogin',
-    component: AdminLogin,
-    beforeEnter: (to, from, next) => {
-      if(store.getters['auth/authenticated']) {
-        return next({
-          name: 'adminDashboard'
-        })
-      }
-      next()
-    }
-  },
-  {
-    path:'/admin',
-    component:AdminMain,
-    children:[
-      {
-        path:'/admin/dashboard',
-        name: 'adminDashboard',
-        component:AdminDashboard,
-        meta:{
-          title:"Admin Dashboard",
-          nameSpace:'Admin'
-        },
-        beforeEnter: (to, from, next) => {
-          if(!store.getters['auth/isParkwayAdmin']) {
-            return next('Adminlogin')
-          }
-          next()
-        }
-      }
-    ]
-  },
-  {
     path: '/',
     component: Main,
     children: [
@@ -224,7 +133,7 @@ const routes = [
           nameSpace:'loan'
         }
       },
-      
+
       {
         path: '/change-password',
         name: 'changePassword',
@@ -255,6 +164,99 @@ const routes = [
       next()
     }
   },
+
+  {
+    path:'/ippis',
+    name:'ippisLogin',
+    component:IppisLogin,
+    beforeEnter: (to, from, next) => {
+      if(store.getters['auth/authenticated']) {
+        return next({
+          name: 'ippisLoanRequest'
+        })
+      }
+      next()
+    }
+  },
+  {
+    path:'/ippis',
+    component:IppisMain,
+    children:[
+      {
+        path:'/ippis/dashboard',
+        name:'ippisLoanRequest',
+        component:IppisLoanRequest,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis'
+        }
+      },
+      {
+        path:'/ippis/notifications',
+        name:'ippisNotifications',
+        component:IppisLoanRequest,
+        meta:{
+          title:'Loan Request',
+          nameSpace:'ippis'
+        }
+      },
+      {
+        path:'/ippis/:requestId',
+        name:'ippisLoanDetails',
+        component:IppisLoanRequestDetails,
+        meta:{
+          title:'Loan Details',
+          nameSpace:'ippis',
+          parents: ['Loan Request'],
+        }
+      },
+      {
+        path:'/ippis/report/:id',
+        name:'ippisLoanReport',
+        component:Schedule,
+        meta:{
+          title:'Loan Report',
+          nameSpace:'ippis',
+        },
+        parents:["Loan Request","Loan Details"]
+      },
+    ]
+  },
+  {
+    path: '/admin',
+    name: 'Adminlogin',
+    component: AdminLogin,
+    beforeEnter: (to, from, next) => {
+      if(store.getters['auth/authenticated']) {
+        return next({
+          name: 'adminDashboard'
+        })
+      }
+      next()
+    }
+  },
+  {
+    path:'/admin',
+    component:AdminMain,
+    children:[
+      {
+        path:'/dashboard',
+        name: 'adminDashboard',
+        component:AdminDashboard,
+        meta:{
+          title:"Admin Dashboard",
+          nameSpace:'Admin'
+        },
+        beforeEnter: (to, from, next) => {
+          if(!store.getters['auth/isParkwayAdmin']) {
+            return next('Adminlogin')
+          }
+          next()
+        }
+      }
+    ]
+  },
+
   {
     path: '/dashboard',
     name: 'dashboard',

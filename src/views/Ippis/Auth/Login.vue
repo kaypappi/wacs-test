@@ -73,9 +73,7 @@ export default {
       clearOneError: "clearOneValidationError"
     }),
     submit() {
-        const url=`ippis/login`
-        const dashboard=`ippis/requests/dashboard`
-      this.signIn({credentials:this.form,url,dashboard})
+      this.signIn({credentials:this.form, userType:'ippis'})
         .then(() => {
           this.$router.replace({
             name: "ippisLoanRequest"

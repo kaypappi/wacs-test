@@ -4,6 +4,7 @@ export default ({
 
   state: {
     access_token:'',
+    userType: '',
     user: {},
     isLoading: false,
     loginError: ''
@@ -32,8 +33,9 @@ export default ({
   },
 
   mutations: {
-    SET_TOKEN (state, access_token) {
+    SET_TOKEN (state, {access_token, userType}) {
       state.access_token = 'Bearer'+' '+access_token;
+      state.userType = userType;
     },
     SET_USER(state, data){
       state.user = data
@@ -47,15 +49,13 @@ export default ({
   },
 
   actions: {
-    async signIn({ commit,dispatch }, {credentials,url,dashboard}){
+    async signIn({ commit,dispatch }, {credentials,userType}){
       commit('SET_VALIDATION_ERROR', [], {root: true});
       commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
       try{
-        console.log(url,credentials)
-        let response  = await axios.post(url, credentials);
-        console.log(response,dashboard)
-        return dispatch('attempt', {access_token:response.data.data.access_token,dashboard});
+        let response  = await axios.post(`${userType}/login`, credentials);
+        return dispatch('attempt', {access_token:response.data.data.access_token, userType});
       } catch(e){
         commit('SET_ERROR_MESSAGE', e.response.data.message);
         commit('IS_LOGGING_USER_IN', false);
@@ -63,16 +63,16 @@ export default ({
       }
     },
 
-    async attempt ({ commit, state }, {access_token,dashboard}){
-      console.log(access_token,dashboard)
+    async attempt ({ commit, state }, {access_token, userType}){
+      console.log(userType)
       if(access_token){
-        commit('SET_TOKEN', access_token);
+        commit('SET_TOKEN', {access_token, userType});
       }
       if (!state.access_token){
         return
       }
       try {
-        let response = await axios.get(dashboard);
+        let response = await axios.get(`${userType}/dashboard`);
         console.log(response)
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)

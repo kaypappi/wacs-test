@@ -73,9 +73,7 @@ export default {
       clearOneError: "clearOneValidationError"
     }),
     submit() {
-      const url='creditor/login'
-      const dashboard=`creditor/dashboard`
-      this.signIn({credentials:this.form,url,dashboard})
+      this.signIn({credentials:this.form, userType:'creditor'})
         .then(() => {
           this.$router.replace({
             name: "home"
