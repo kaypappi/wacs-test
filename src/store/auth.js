@@ -66,7 +66,6 @@ export default ({
     },
 
     async attempt ({ commit, state }, {access_token, userType}){
-      console.log(userType)
       if(access_token){
         commit('SET_TOKEN', {access_token, userType});
       }
@@ -75,7 +74,6 @@ export default ({
       }
       try {
         let response = await axios.get(`${userType}/dashboard`);
-        console.log(response)
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){

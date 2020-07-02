@@ -85,7 +85,6 @@ export default {
     },
     downloadPdf() {
       let scheduleArray = [];
-      console.log(scheduleArray, this.schedule);
       this.schedule.data.breakdown.map(item => {
         scheduleArray.push(Object.values(item));
       });

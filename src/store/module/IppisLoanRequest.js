@@ -100,7 +100,6 @@ export default {
     },
     SPILT_DETAILS(state) {
       const loanData = state.loanDetails;
-      console.log(loanData)
       const format=(num)=>{
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
@@ -168,7 +167,6 @@ export default {
       commit("IS_FETCHING_LOANDETAILS", true);
       return new Promise((resolve, reject) => {
         axios.get(`ippis/${requestId}`).then((res) => {
-  console.log(res)
           commit("IS_FETCHING_LOANDETAILS", false);
           commit("FETCH_LOANDETAILS_SUCCESS", res.data.data);
           commit("SPILT_DETAILS",res.data.data);

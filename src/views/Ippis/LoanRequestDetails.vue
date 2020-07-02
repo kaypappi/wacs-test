@@ -127,7 +127,6 @@ export default {
       return this.$store.state.IppisLoanRequest.isFetchingLoanDetails;
     },
     splitDetails() {
-      console.log(this.$store.state.IppisLoanRequest.splitDetails)
       return this.$store.state.IppisLoanRequest.splitDetails;
     },
     loanDetails() {

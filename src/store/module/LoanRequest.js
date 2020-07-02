@@ -100,7 +100,6 @@ export default {
     },
     SPILT_DETAILS(state) {
       const loanData = state.loanDetails;
-      console.log(loanData)
       const format=(num)=>{
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
@@ -190,8 +189,7 @@ export default {
     fetchAdminLoanRequests({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
       axios.get(`admin/requests?${query}`).then((response) => {
-        commit("IS_FETCHING_LOANREQUEST", false);
-        console.log(response)
+        commit("IS_FETCHING_LOANREQUEST", false)
         if (response.data.data.length === 0) {
           commit("FETCH_ADMIN_NOTFOUND");
         } else {
@@ -230,7 +228,6 @@ export default {
       commit("IS_FETCHING_LOANDETAILS", true);
       return new Promise((resolve, reject) => {
         axios.get(`ippis/${requestId}`).then((res) => {
-  console.log(res)
           commit("IS_FETCHING_LOANDETAILS", false);
           commit("FETCH_LOANDETAILS_SUCCESS", res.data.data);
           commit("SPILT_DETAILS",res.data.data);
@@ -312,7 +309,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response)
           commit("IS_MAKING_OFFER", false);
           commit("SHOW_TOAST", {title:"Error", message: err.response.data.message, success: false});
         });

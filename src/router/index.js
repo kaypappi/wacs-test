@@ -224,9 +224,7 @@ const routes = [
       },
     ],
     beforeEnter: (to, from, next) => {
-      console.log(store.getters['auth/isIppisAdmin'])
       if(!store.getters['auth/isIppisAdmin']) {
-        console.log('next')
         return next({
           name: 'ippisLogin'
         })

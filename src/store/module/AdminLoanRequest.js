@@ -40,7 +40,6 @@ export default {
     requestsSummary({ commit }) {
       commit("FETCHING_SUMMARY", true);
       axios.get("admin/requests/counts").then((response) => {
-        console.log(response)
         commit("FETCH_REQUEST_SUMMARY_SUCCESS", response.data.count);
         commit("FETCHING_SUMMARY", false);
       });

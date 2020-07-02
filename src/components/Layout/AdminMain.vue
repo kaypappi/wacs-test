@@ -44,7 +44,6 @@
                 return '';
             },
             currentNameSpace() {
-                console.log(this.$route.meta.nameSpace)
                 return this.$route.meta.nameSpace;
             },
         },

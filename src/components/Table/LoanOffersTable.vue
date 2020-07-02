@@ -369,7 +369,6 @@ export default {
       return offers
     },
     toast(){
-      console.log(this.$store.state.LoanOffers.toast)
       return this.$store.state.LoanOffers.toast
     }
     

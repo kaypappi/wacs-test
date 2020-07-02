@@ -209,7 +209,6 @@ export default {
       return this.$store.state.LoanRequest.searchFound;
     },
     loanRequests() {
-        console.log(this.$store.state.AdminLoanRequest.loanRequests)
       return this.$store.state.AdminLoanRequest.loanRequests;
     },
     isFetching() {

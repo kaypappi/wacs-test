@@ -109,7 +109,6 @@ export default {
       return this.$store.state.LoanRequest.loanRequests;
     },
     requestsSummary() {
-      console.log(this.$store.state.LoanRequest.requestsSummary)
       return this.$store.state.LoanRequest.requestsSummary.count;
     },
     isFetchingRequests() {

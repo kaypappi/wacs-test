@@ -74,7 +74,6 @@ export default {
         )}`;
       Axios.get(URL).then(response => {
         this.schedule = { ...response.data };
-        console.log(response)
         this.scheduleTitle = `Repayment Schedule Breakdown - ${
           this.schedule.data.name
         } - ${this.schedule.data.ippis_number} - NGN ${this.formatNumber(
@@ -88,7 +87,6 @@ export default {
     },
     downloadPdf() {
       let scheduleArray = [];
-      console.log(scheduleArray, this.schedule);
       this.schedule.data.breakdown.map(item => {
         scheduleArray.push(Object.values(item));
       });
