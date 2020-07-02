@@ -7,7 +7,7 @@
                 :value="value" 
                 @input="$emit('input', $event.target.value)" 
             >
-            <img src="assets/images/search-icon.svg" alt="lens" @click="onSearch()">
+            <img src="/assets/images/search-icon.svg" alt="lens" @click="onSearch()">
         </form>
     </div>
 </template>

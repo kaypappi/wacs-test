@@ -22,7 +22,7 @@
 
 <script>
     import Header from '../Header';
-    import LeftMenuItems from '../LeftMenuItems';
+    import LeftMenuItems from '../Ipiss/IppisLeftMenuItems';
     import LoanManagementMenu from '../LoanManagementMenu';
     export default {
         components: {
@@ -39,7 +39,7 @@
             },
             companyName() {
                 if(this.$store.getters['auth/authenticated']) {
-                    return this.$store.state.auth.user.data.profile.company.name;
+                    return this.$store.state.auth.user.data.roles[0].name;
                 }
                 return '';
             },

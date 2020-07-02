@@ -24,17 +24,9 @@
                         name: "Loan Management",
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
-                        to: "/loan-request",
+                        to: "/ippis/dashboard",
                         permission: ["manage", "loan"],
                         nameSpace: 'loan',
-                    },
-                    {
-                        name: "User Management",
-                        iconPath: "/assets/images/User.svg",
-                        altText: "money",
-                        to: "/user-setup",
-                        permission: ["create", "user"],
-                        nameSpace: 'users',
                     },
                     
                 ],

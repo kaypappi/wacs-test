@@ -165,7 +165,7 @@
         {{data.item.interest_rate}}%
       </template>
       <template v-slot:cell(Duration)="data">
-        {{data.item.payback_period}}mnths
+        {{data.item.payback_period}} months
       </template>
     </b-table>
   </div>

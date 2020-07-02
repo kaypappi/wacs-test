@@ -9,9 +9,9 @@
     <div v-else class="statscard-section">
       <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
       <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
-      <StatsCard title="Approved Requests" textColor="green" :value="requestsSummary.running" />
-      <StatsCard title="Approved Requests" textColor="green" :value="requestsSummary.bank_approved" />
-      <StatsCard title="Approved Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
+      <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
+      <StatsCard title="Bank Approved Requests" textColor="green" :value="requestsSummary.bank_approved" />
+      <StatsCard title="Awaiting IPPIS Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
       <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
     </div>
 
@@ -109,7 +109,8 @@ export default {
       return this.$store.state.LoanRequest.loanRequests;
     },
     requestsSummary() {
-      return this.$store.state.LoanRequest.requestsSummary;
+      console.log(this.$store.state.LoanRequest.requestsSummary)
+      return this.$store.state.LoanRequest.requestsSummary.count;
     },
     isFetchingRequests() {
       return this.$store.state.LoanRequest.isFetchingLoanRequests;

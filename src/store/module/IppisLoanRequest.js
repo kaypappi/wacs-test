@@ -87,7 +87,7 @@ export default {
     FETCH_LOANHISTORY_SUCCESS(state,data){
       state.loanHistory=data
     },
-    SHOW_TOAST(state, {title, message, success}) {
+    SHOW_TOAST(state, title, message, success) {
       state.toast = { show: true, title, message, success };
       setTimeout(() => {
         state.toast.show = false;
@@ -128,7 +128,7 @@ export default {
       state.splitDetails.loanDetailsRowOne = [
         { name: "Date Requested", value: loanData.date },
         { name: "Loan Offer", value: loanData.offer.title },
-        { name: "Requested Amount", value: format(loanData.amount )},
+        { name: "Amount", value: format(loanData.loan_repayment_details.amount) },
         {
           name: "Repayment Period",
           value: loanData.offer.payback_period + " Months",
@@ -137,7 +137,7 @@ export default {
           name: "First Repayment Date",
           value: loanData.offer.moratorium_period + " months after",
         },
-        { name: "Interest Rate", value: `${loanData.offer.interest_rate}%`},
+        { name: "Interest Rate", value: `${loanData.offer.interest_rate}%` },
       ];
       state.splitDetails.loanDetailsRowTwo = [{}];
       state.splitDetails.loanHistory = loanData.user.loan_history;
@@ -153,29 +153,6 @@ export default {
     }
   },
   actions: {
-    fetchLoanRequests({ commit }, query) {
-      commit("IS_FETCHING_LOANREQUEST", true);
-      axios.get(`/creditor/request/view?${query}`).then((response) => {
-        commit("IS_FETCHING_LOANREQUEST", false);
-        if (response.data.data.length === 0) {
-          commit("FETCH_ADMIN_NOTFOUND");
-        } else {
-          commit("FETCH_ADMIN_FOUND", response.data);
-        }
-      });
-    },
-    declineLoanRequest({ commit }, id) {
-      const data = { id };
-      axios
-        .post(`/creditor/request/decline`, data)
-        .then((response) => {
-          commit("SHOW_TOAST", {title:"Successful",message: response.message,success: true});
-          commit("REDIRECT","loanRequest",2000)
-        })
-        .catch((err) => {
-          commit("SHOW_TOAST", {title:"Successful",message: err.response.data.message, success:false});
-        });
-    },
     fetchIppissLoanRequests({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
       axios.get(`ippis?${query}`).then((response) => {
@@ -186,45 +163,6 @@ export default {
           commit("FETCH_ADMIN_FOUND", response.data);
         }
       });
-    },
-    fetchAdminLoanRequests({ commit }, query) {
-      commit("IS_FETCHING_LOANREQUEST", true);
-      axios.get(`admin/requests?${query}`).then((response) => {
-        commit("IS_FETCHING_LOANREQUEST", false);
-        console.log(response)
-        if (response.data.data.length === 0) {
-          commit("FETCH_ADMIN_NOTFOUND");
-        } else {
-          commit("FETCH_ADMIN_FOUND", response.data);
-        }
-      });
-    },
-    searchRequest({ commit }, query) {
-      commit("IS_FETCHING_LOANREQUEST", true);
-      axios.get(`creditor/request/search/${query.search}`).then((response) => {
-        commit("IS_FETCHING_LOANREQUEST", false);
-        if (response.data.data.length === 0) {
-          commit("SEARCH_REQUESTS_NOTFOUND");
-        } else {
-          commit("SEARCH_REQUESTS_FOUND", response.data);
-        }
-      });
-    },
-    fetchLoanRequestsDetials({ commit }, requestId) {
-      commit("IS_FETCHING_LOANDETAILS", true);
-      return new Promise((resolve, reject) => {
-        axios.get(`creditor/request/view/${requestId}`).then((res) => {
-  
-          commit("IS_FETCHING_LOANDETAILS", false);
-          commit("FETCH_LOANDETAILS_SUCCESS", res.data.data);
-          commit("SPILT_DETAILS",res.data.data);
-          resolve()
-        }).catch(err=>{
-          err
-          reject()
-        })
-      })
-      
     },
     fetchIppisLoanRequestsDetials({ commit }, requestId) {
       commit("IS_FETCHING_LOANDETAILS", true);
@@ -242,16 +180,9 @@ export default {
       })
       
     },
-    fetchLoanHistory({commit},requestId){
+    fetchIppisLoanHistory({commit},requestId){
       commit("IS_FETCHING_LOANHISTORY",true)
-      axios.get(`creditor/request/history/${requestId}`).then((response)=>{
-        commit("IS_FETCHING_LOANHISTORY",false)
-        commit("FETCH_LOANHISTORY_SUCCESS",response.data)
-      })
-    },
-    fetchippisLoanHistory({commit},requestId){
-      commit("IS_FETCHING_LOANHISTORY",true)
-      axios.get(`creditor/request/history/${requestId}`).then((response)=>{
+      axios.get(`/ippis/history/${requestId}`).then((response)=>{
         commit("IS_FETCHING_LOANHISTORY",false)
         commit("FETCH_LOANHISTORY_SUCCESS",response.data)
       })
@@ -298,23 +229,6 @@ export default {
           } else {
             commit("SEARCH_REQUESTS_FOUND", response.data);
           }
-        });
-    },
-    makeOffer({ commit }, data) {
-      commit("IS_MAKING_OFFER", true);
-      axios
-        .post("creditor/repayments", data)
-        .then((response) => {
-          if (response.statusText === "Created") {
-            commit("IS_MAKING_OFFER", false);
-            commit("SHOW_TOAST",{title: "Successful",message: "Successfully made offer",success: true});
-            commit("REDIRECT","loanRequest",2000)
-          }
-        })
-        .catch((err) => {
-          console.log(err.response)
-          commit("IS_MAKING_OFFER", false);
-          commit("SHOW_TOAST", {title:"Error", message: err.response.data.message, success: false});
         });
     },
 

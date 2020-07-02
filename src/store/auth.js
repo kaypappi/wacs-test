@@ -20,7 +20,9 @@ export default ({
     isParkwayAdmin(state){
       return state.user.data.roles[0].name === 'Admin';
     },
-  
+    isIppisAdmin(state){
+      return state.user.data.roles[0].name === 'IPPIS';
+    },
     user(state){
       return state.user
     },
@@ -81,24 +83,6 @@ export default ({
         commit('SET_USER', null);
       }
     },
-
-    /* async attemptIppis({commit,state},{access_token,url}){
-      if(access_token){
-        commit('SET_TOKEN', access_token);
-      }
-      if (!state.access_token){
-        return
-      }
-      try {
-        let response = await axios.get(url);
-        console.log(response)
-        commit('IS_LOGGING_USER_IN', false);
-        commit('SET_USER', response.data)
-      } catch(e){
-        commit('SET_TOKEN', null);
-        commit('SET_USER', null);
-      }
-    }, */
 
     clearOneError({commit}) {
       commit('IS_LOGGING_USER_IN', false);

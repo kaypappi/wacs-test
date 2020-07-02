@@ -1,6 +1,6 @@
 <template>
   <div class="loan-request-wrapper">
-    <div class="page-filters">
+   <!--  <div class="page-filters">
       <SearchFilterInput
         placeholder="Search by MDA, IPPIS No."
         :value="getSearchTerm()"
@@ -31,7 +31,7 @@
           <Botton :onclick="clearFilters" type="button">Clear</Botton>
         </div>
       </div>
-    </div>
+    </div> -->
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
@@ -63,10 +63,10 @@
             :name="loanRequest.user.full_name"
             :ippissNo="loanRequest.user.user_name"
             :mda="loanRequest.user.profile.mda"
-            :creditAdmin="loanRequest.credit_admin"
+            :creditAdmin="loanRequest.offer.company.name"
             :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-            :loanRequest="formatNumber(loanRequest.loan_repayment_details.amount)"
-            :status="loanRequest.ippis_status"
+            :loanRequest="formatNumber(loanRequest.amount)"
+            :status="loanRequest.status"
           />
         </template>
       </Table>
@@ -93,20 +93,20 @@
 </template>
 
 <script>
-import DateField from "../../components/Inputs/DateField";
+/* import DateField from "../../components/Inputs/DateField";
 import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
 import Botton from "../../components/Buttons/Botton";
-import SubmitButton from "../../components/Buttons/SubmitButton";
+import SubmitButton from "../../components/Buttons/SubmitButton"; */
 import Table from "../../components/Table/Table";
 import Pagination from "../../components/Pagination/Pagination";
 import NoData from "../../components/NoData";
 import LoanRequestTable from "../../components/Table/ippiss/LoanRequestTable";
 export default {
   components: {
-    DateField,
+    /* DateField,
     SearchFilterInput,
     Botton,
-    SubmitButton,
+    SubmitButton, */
     Table,
     NoData,
     Pagination,
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     getSearchTerm() {
-      return this.$store.state.IppisLoanRequest.searchTerm;
+      return this.$store.state.LoanRequest.searchTerm;
     },
     enterSearch() {
       if (this.getSearchTerm()) {
@@ -149,20 +149,16 @@ export default {
         from: "",
         to: ""
       };
-      this.$router.push({
-          name: "ippisLoanRequest",
-          query: {}
-        });
     },
 
     searchRequests(query) {
       if (this.getSearchTerm()) {
         return this.$store.dispatch(
-          "IppisLoanRequest/ippisSearchLoanRequest",
+          "LoanRequest/ippisSearchLoanRequest",
           query
         );
       } else {
-        this.$store.dispatch("IppisLoanRequest/updateSearchFound", true);
+        this.$store.dispatch("LoanRequest/updateSearchFound", true);
       }
     },
     serialize(obj, prefix) {
@@ -182,11 +178,11 @@ export default {
       return str.join("&");
     },
     handleSearch(event) {
-      return this.$store.dispatch("IppisLoanRequest/updateSearchTerm", event);
+      return this.$store.dispatch("LoanRequest/updateSearchTerm", event);
     },
     fetchLoanRequests(query) {
       query = this.serialize(query);
-      this.$store.dispatch("IppisLoanRequest/fetchIppissLoanRequests", query);
+      this.$store.dispatch("AdminLoanRequest/fetchAdminLoanRequests", query);
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -194,7 +190,7 @@ export default {
   },
   computed: {
     requests() {
-      let requests = this.$store.state.IppisLoanRequest.loanRequests.data;
+      let requests = this.$store.state.AdminLoanRequest.loanRequests.data;
       if (this.getSearchTerm() && requests) {
         requests = requests.filter(row => {
           return Object.keys(row).some(key => {
@@ -210,13 +206,14 @@ export default {
     },
 
     searchFound() {
-      return this.$store.state.IppisLoanRequest.searchFound;
+      return this.$store.state.LoanRequest.searchFound;
     },
     loanRequests() {
-      return this.$store.state.IppisLoanRequest.loanRequests;
+        console.log(this.$store.state.AdminLoanRequest.loanRequests)
+      return this.$store.state.AdminLoanRequest.loanRequests;
     },
     isFetching() {
-      return this.$store.state.IppisLoanRequest.isFetchingLoanRequests;
+      return this.$store.state.LoanRequest.isFetchingLoanRequests;
     }
   },
   mounted() {

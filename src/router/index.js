@@ -17,11 +17,13 @@ import Notifications from "../views/Notifcations.vue"
 import IppisLoanRequest from "../views/Ippis/LoanRequest"
 import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails"
 import IppisLogin from "../views/Ippis/Auth/Login.vue"
+import IppisSchedule from "../views/Ippis/IppisSchedule.vue"
 import {beforeEach} from './beforeEach';
 import IppisMain from '../components/Layout/IppisMain.vue'
 import AdminLogin from  "../views/Admin/Auth/AdminLogin.vue"
 import AdminMain from "../components/Layout/AdminMain.vue"
 import AdminDashboard from "../views/Admin/AdminDashboard.vue"
+import AdminLoanRequest from "../views/Admin/AdminLoanRequest.vue"
 
 Vue.use(VueRouter);
 
@@ -63,7 +65,7 @@ const routes = [
         name: 'home',
         component: Home,
         meta: {
-          title: 'WACS',
+          title: 'Workers Aggregated Credit System',
         },
       },
       {
@@ -213,14 +215,24 @@ const routes = [
       {
         path:'/ippis/report/:id',
         name:'ippisLoanReport',
-        component:Schedule,
+        component:IppisSchedule,
         meta:{
           title:'Loan Report',
           nameSpace:'ippis',
         },
         parents:["Loan Request","Loan Details"]
       },
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      console.log(store.getters['auth/isIppisAdmin'])
+      if(!store.getters['auth/isIppisAdmin']) {
+        console.log('next')
+        return next({
+          name: 'ippisLogin'
+        })
+      }
+      next()
+    }
   },
   {
     path: '/admin',
@@ -240,9 +252,24 @@ const routes = [
     component:AdminMain,
     children:[
       {
-        path:'/dashboard',
+        path:'/admin/dashboard',
         name: 'adminDashboard',
         component:AdminDashboard,
+        meta:{
+          title:"Admin Dashboard",
+          nameSpace:'Admin'
+        },
+        beforeEnter: (to, from, next) => {
+          if(!store.getters['auth/isParkwayAdmin']) {
+            return next('Adminlogin')
+          }
+          next()
+        }
+      },
+      {
+        path:'/admin/loan-request',
+        name: 'adminLoanRequest',
+        component:AdminLoanRequest,
         meta:{
           title:"Admin Dashboard",
           nameSpace:'Admin'
