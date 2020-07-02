@@ -11,7 +11,7 @@
         </template>
       </div>
 
-      <LoanRequestFilter :isLoading="isFetching"  />
+      <LoanRequestFilter :isLoading="isFetching" />
       <div class="right-search">
         <SearchFilterInput
           placeholder="Search by name, IPPIS No"
@@ -40,7 +40,7 @@
       </template>
       <Table
         v-else-if="loanRequests"
-        :tableHeaders="['Date', 'Name', 'IPPIS No.', 'Monthly Salary', 'Loan Request', 'Status']"
+        :tableHeaders="['Date', 'Name', 'IPPIS Number', 'Monthly Salary', 'Loan Request', 'Status']"
       >
         <template>
           <LoanRequestTableRow
@@ -68,15 +68,14 @@
         </NoData>
       </template>
       <Pagination
-          v-if="loanRequests.meta && searchFound"
-          :total="loanRequests.meta.total"
-          :currentPage="loanRequests.meta.current_page"
-          :lastPage="loanRequests.meta.last_page"
-          :from="loanRequests.meta.from"
-          :to="loanRequests.meta.to"
-        />
+        v-if="loanRequests.meta && searchFound"
+        :total="loanRequests.meta.total"
+        :currentPage="loanRequests.meta.current_page"
+        :lastPage="loanRequests.meta.last_page"
+        :from="loanRequests.meta.from"
+        :to="loanRequests.meta.to"
+      />
     </template>
-    
   </div>
 </template>
 
@@ -89,7 +88,7 @@ import LoanRequestFilter from "../components/Dropdown/LoanRequestFilter";
 // import { baseUrl } from "../router/api_routes";
 import moment from "moment";
 import NoData from "../components/NoData";
-import Pagination from "../components/Pagination/Pagination"
+import Pagination from "../components/Pagination/Pagination";
 
 export default {
   components: {
@@ -110,8 +109,8 @@ export default {
   },
   methods: {
     fetchLoanRequests(query) {
-      query=this.serialize(query)
-      this.$store.dispatch('LoanRequest/fetchLoanRequests',query)
+      query = this.serialize(query);
+      this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
     },
     filterQuickDates(type) {
       this.activeOption === type
@@ -139,22 +138,22 @@ export default {
         this.$router.push({ name: "loanRequest", query: {} });
       }
     },
-    enterSearch(){
-      if(this.getSearchTerm()){
-        this.$router.push({ name: 'loanRequest', query: {search:this.getSearchTerm()} })
-      }
-      else{
-        this.$store.dispatch("LoanRequest/updateSearchFound",true)
+    enterSearch() {
+      if (this.getSearchTerm()) {
+        this.$router.push({
+          name: "loanRequest",
+          query: { search: this.getSearchTerm() }
+        });
+      } else {
+        this.$store.dispatch("LoanRequest/updateSearchFound", true);
       }
     },
-    
+
     searchRequests(query) {
       if (this.getSearchTerm()) {
-       return this.$store.dispatch("LoanRequest/searchRequest",query)
-          }
-        
-       else {
-        this.$store.dispatch("LoanRequest/updateSearchFound",true)
+        return this.$store.dispatch("LoanRequest/searchRequest", query);
+      } else {
+        this.$store.dispatch("LoanRequest/updateSearchFound", true);
       }
     },
     toggleSearchFound(state) {
@@ -176,15 +175,15 @@ export default {
       }
       return str.join("&");
     },
-    getSearchTerm(){
-      return this.$store.state.LoanRequest.searchTerm
+    getSearchTerm() {
+      return this.$store.state.LoanRequest.searchTerm;
     },
-    handleSearch(event){
-     return this.$store.dispatch("LoanRequest/updateSearchTerm",event)
+    handleSearch(event) {
+      return this.$store.dispatch("LoanRequest/updateSearchTerm", event);
     },
     formatNumber(num) {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-},
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    }
   },
   computed: {
     requests() {
@@ -202,18 +201,16 @@ export default {
       }
       return requests;
     },
-    
-    searchFound(){
-      return this.$store.state.LoanRequest.searchFound
-    },
-    loanRequests(){
-      return this.$store.state.LoanRequest.loanRequests
-    },
-    isFetching(){
-      return this.$store.state.LoanRequest.isFetchingLoanRequests
-    },
-    
 
+    searchFound() {
+      return this.$store.state.LoanRequest.searchFound;
+    },
+    loanRequests() {
+      return this.$store.state.LoanRequest.loanRequests;
+    },
+    isFetching() {
+      return this.$store.state.LoanRequest.isFetchingLoanRequests;
+    }
   },
   mounted() {
     this.fetchLoanRequests(this.$router.history.current.query);
@@ -221,12 +218,10 @@ export default {
   watch: {
     "$route.query": {
       handler(query) {
-        
-        if(query.search){
-          return this.searchRequests(query)
-        }
-        else{
-          this.fetchLoanRequests(query)
+        if (query.search) {
+          return this.searchRequests(query);
+        } else {
+          this.fetchLoanRequests(query);
         }
       },
       deep: true

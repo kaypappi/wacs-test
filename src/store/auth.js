@@ -4,6 +4,7 @@ export default ({
 
   state: {
     access_token:'',
+    userType: '',
     user: {},
     isLoading: false,
     loginError: ''
@@ -15,6 +16,12 @@ export default ({
     },
     isSuperAdmin(state){
       return state.user.data.roles[0].name === 'Super Admin';
+    },
+    isParkwayAdmin(state){
+      return state.user.data.roles[0].name === 'Admin';
+    },
+    isIppisAdmin(state){
+      return state.user.data.roles[0].name === 'IPPIS';
     },
     user(state){
       return state.user
@@ -28,8 +35,9 @@ export default ({
   },
 
   mutations: {
-    SET_TOKEN (state, access_token) {
+    SET_TOKEN (state, {access_token, userType}) {
       state.access_token = 'Bearer'+' '+access_token;
+      state.userType = userType;
     },
     SET_USER(state, data){
       state.user = data
@@ -43,13 +51,13 @@ export default ({
   },
 
   actions: {
-    async signIn({ commit, dispatch }, credentials){
+    async signIn({ commit,dispatch }, {credentials,userType}){
       commit('SET_VALIDATION_ERROR', [], {root: true});
       commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
       try{
-        let response  = await axios.post('creditor/login', credentials);
-        return dispatch('attempt', response.data.data.access_token);
+        let response  = await axios.post(`${userType}/login`, credentials);
+        return dispatch('attempt', {access_token:response.data.data.access_token, userType});
       } catch(e){
         commit('SET_ERROR_MESSAGE', e.response.data.message);
         commit('IS_LOGGING_USER_IN', false);
@@ -57,15 +65,15 @@ export default ({
       }
     },
 
-    async attempt ({ commit, state }, access_token){
+    async attempt ({ commit, state }, {access_token, userType}){
       if(access_token){
-        commit('SET_TOKEN', access_token);
+        commit('SET_TOKEN', {access_token, userType});
       }
       if (!state.access_token){
         return
       }
       try {
-        let response = await axios.get('creditor/dashboard');
+        let response = await axios.get(`${userType}/dashboard`);
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){

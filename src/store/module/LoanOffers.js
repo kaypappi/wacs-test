@@ -40,8 +40,11 @@ export default {
       (state.searchTerm = ""), (state.searchFound = true);
       state.loanOffers = { ...data };
     },
-    SHOW_TOAST(state, title, message, success) {
+    SHOW_TOAST(state, { title, message, success }) {
       state.toast = { show: true, title, message, success };
+      setTimeout(() => {
+        state.toast.show = false;
+      }, 2000);
     },
     CREATING_OFFER(state, status) {
       state.creatingOffer = status;
@@ -50,11 +53,9 @@ export default {
       const index = state.loanOffers.data.findIndex((x) => x.id === row);
       state.loanOffers.data.splice(index, 1);
     },
-    UPDATE_LOAN_OFFER(state, newRow,title,message,success) {
+    UPDATE_LOAN_OFFER(state, newRow) {
       const index = state.loanOffers.data.findIndex((x) => x.id === newRow.id);
       state.loanOffers.data.splice(index, 1, newRow);
-      state.toast = { show: true, title, message, success };
-      
     },
   },
   actions: {
@@ -86,33 +87,40 @@ export default {
     updateSearchFound({ commit }, status) {
       commit("UPDATE_SEARCH_FOUND", status);
     },
-    createLoanOffer({ commit, dispatch }, {data,closeModal}) {
+    createLoanOffer({ commit, dispatch }, { data, closeModal }) {
       commit("CREATING_OFFER", true);
       axios
         .post(`creditor/offer/create`, data)
         .then((response) => {
-            response
+          response;
           commit("CREATING_OFFER", false);
-          commit("SHOW_TOAST", "Successful!", "You created a loan offer", true);
-          closeModal()
+          commit("SHOW_TOAST", {title:"Successful!", message:"You created a loan offer", success:true});
+          closeModal();
           dispatch("fetchLoanOffers");
         })
         .catch((err) => {
           commit("CREATING_OFFER", false);
-          commit("SHOW_TOAST", "Successful!", err.response.data.message, false);
+          commit("SHOW_TOAST", {title:"Error!",message: err.response.data.message, success:false});
         });
     },
-    editLoanOffer({ commit ,dispatch}, {data,closeModal}) {
+    editLoanOffer({ commit}, { data, closeModal }) {
       axios
         .post("creditor/offer/update", data)
         .then((response) => {
-          commit("UPDATE_LOAN_OFFER", response.data.data, "Successful", response.data.message, true);
-          closeModal()
-          commit("SHOW_TOAST", "Successful", response.data.message, true);
-          dispatch("fetchLoanOffers");
+          commit(
+            "UPDATE_LOAN_OFFER",
+            response.data.data,
+          );
+          closeModal();
+          commit("SHOW_TOAST", {
+            title: "Successful",
+            message: response.data.message,
+            success: true,
+          });
+         // dispatch("fetchLoanOffers");
         })
         .catch((err) => {
-          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+          commit("SHOW_TOAST",{ title:"Error",message: err.response.data.message,success: false});
         });
     },
     updateLoanOffers({ commit }, newRow) {
@@ -123,18 +131,16 @@ export default {
         .get(url)
         .then((response) => {
           commit("DELETE_LOANOFFER_ROW", row);
-          commit("SHOW_TOAST", "Successful!", response.data.message, true);
+          commit("SHOW_TOAST",{ title:"Successful!",message: response.data.message,success: true});
         })
         .catch((err) => {
-          commit("SHOW_TOAST", "Error", err.response.data.message, false);
+          commit("SHOW_TOAST", {title:"Error",message: err.response.data.message,success: false});
         });
     },
     changeStatus({ commit }, url) {
-      axios
-        .get(url)
-        .then((response) => {
-          commit("UPDATE_LOAN_OFFER", response.data.data);
-        })
+      axios.get(url).then((response) => {
+        commit("UPDATE_LOAN_OFFER", response.data.data);
+      });
     },
   },
 };

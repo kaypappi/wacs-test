@@ -319,7 +319,7 @@
             return {
                 monthCount: 1,
                 months:["January",
-                        "Febuary",
+                        "February",
                         "March",
                         "April",
                         "May",

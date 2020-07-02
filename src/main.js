@@ -21,7 +21,7 @@ axios.defaults.baseURL = 'https://wacs2.herokuapp.com/api/v1';
 
 Vue.config.productionTip = false;
 
-store.dispatch('auth/attempt', localStorage.getItem('access_token')).then(() => {
+store.dispatch('auth/attempt', {access_token:localStorage.getItem('access_token'), userType:localStorage.getItem('userType')}).then(() => {
   require('@/services/roles');
   new Vue({
     router,

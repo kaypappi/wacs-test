@@ -11,11 +11,11 @@
       <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
       <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
       <StatsCard title="Bank Approved Requests" textColor="green" :value="requestsSummary.bank_approved" />
-      <StatsCard title="Awaiting IPPIS Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
+      <StatsCard title="Awaiting Ippis Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
       <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
     </div>
 
-    <div class="recent-requests">
+    <!-- <div class="recent-requests">
       <div class="recent-requests-top">
         <p>Recent Loan Requests</p>
         <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
@@ -59,30 +59,30 @@
           </template>
         </template>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import StatsCard from "../components/StatsCard";
-import Table from "../components/Table/Table";
-import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
+import StatsCard from "../../components/StatsCard";
+//import Table from "../components/Table/Table";
+//import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
 
 export default {
   name: "home",
   components: {
     StatsCard,
-    Table,
-    LoanRequestTableRow
+    //Table,
+    //LoanRequestTableRow
   },
   methods: {
-    fetchLoanRequests(query) {
+    /* fetchLoanRequests(query) {
       query = this.serialize(query);
       this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
-    },
+    }, */
     fetchRequestsSummary() {
-      this.$store.dispatch("LoanRequest/requestsSummary");
+      this.$store.dispatch("AdminLoanRequest/requestsSummary");
     },
     serialize(obj, prefix) {
       var str = [],
@@ -105,22 +105,22 @@ export default {
     }
   },
   computed: {
-    loanRequests() {
+    /* loanRequests() {
       return this.$store.state.LoanRequest.loanRequests;
-    },
+    }, */
     requestsSummary() {
-      return this.$store.state.LoanRequest.requestsSummary.count;
+      return this.$store.state.AdminLoanRequest.requestsSummary;
     },
-    isFetchingRequests() {
+    /* isFetchingRequests() {
       return this.$store.state.LoanRequest.isFetchingLoanRequests;
-    },
+    }, */
     isFetchingSummary() {
       return this.$store.state.LoanRequest.fetchingSummary;
     }
   },
   mounted() {
     this.fetchRequestsSummary()
-      this.fetchLoanRequests(this.$router.history.current.query);
+     // this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <div class="form-wrapper">
       <img src="/assets/images/WACS.png" class="logo" alt="WACS logo" />
       <div class="login-area">
-        <p>LOGIN</p>
+        <p>IPPIS LOGIN</p>
         <div v-if="loginError" class="error-div">{{loginError}}</div>
         <form @submit.prevent="submit">
           <TextInput
@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import TextInput from "../../components/Inputs/TextInput";
-import SubmitButton from "../../components/Buttons/SubmitButton";
+import TextInput from "../../../components/Inputs/TextInput";
+import SubmitButton from "../../../components/Buttons/SubmitButton";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -73,10 +73,10 @@ export default {
       clearOneError: "clearOneValidationError"
     }),
     submit() {
-      this.signIn({credentials:this.form, userType:'creditor'})
+      this.signIn({credentials:this.form, userType:'ippis'})
         .then(() => {
           this.$router.replace({
-            name: "home"
+            name: "ippisLoanRequest"
           });
         })
         .catch(() => {});
@@ -121,9 +121,8 @@ export default {
 }
 
 .form-wrapper .login-area > p {
-  margin: 0 138px 12px 138px;
+  text-align: center;
   height: 24px;
-  width: 62px;
   color: #333333;
   font-size: 20px;
   line-height: 24px;

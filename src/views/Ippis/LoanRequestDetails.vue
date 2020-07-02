@@ -35,7 +35,7 @@
 
       <div class="loan-details-header">
         <h5>Loan Details</h5>
-        <p class="view-schedule" @click="$router.push({name:'ippisLoanReport',params:{id:loanDetails.repayment_details.id}})">View Repayment Schedule</p>
+        <p class="view-schedule" @click="$router.push({name:'ippisLoanReport',params:{id:loanDetails.loan_repayment_details.id}})">View Repayment Schedule</p>
       </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
@@ -62,8 +62,8 @@
               <td>{{history.date}}</td>
               <td>{{history.loan_offer_collected}}</td>
               <td>{{history.credit_administrator}}</td>
-              <td>{{history.loan_amount}}</td>
-              <td>{{history.total_paid}}</td>
+              <td>{{formatNumber(history.loan_amount)}}</td>
+              <td>{{formatNumber(history.total_paid)}}</td>
             </tr>
           </template>
         </table>
@@ -98,45 +98,48 @@ export default {
     async fetchLoanDetails() {
       this.requestId = this.$route.params.requestId;
      return await this.$store.dispatch(
-        "LoanRequest/fetchLoanRequestsDetials",
+        "IppisLoanRequest/fetchIppisLoanRequestsDetials",
         this.requestId
       );
     },
     fetchLoanHistory() {
       this.requestId = this.$route.params.requestId;
       this.$store.dispatch(
-        "LoanRequest/fetchLoanHistory",
+        "IppisLoanRequest/fetchIppisLoanHistory",
         this.loanDetails.user.id
       );
     },
     declineRequest() {
-      this.$store.dispatch("LoanRequest/ippisDeclineRequest",this.requestId)
+      this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId)
     },
     approveOffer(){
         const id=this.requestId
-        this.$store.dispatch("LoanRequest/ippisApproveRequest",id)
+        this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id)
+    },
+    formatNumber(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
     
   },
   computed: {
     
     isFetching() {
-      return this.$store.state.LoanRequest.isFetchingLoanDetails;
+      return this.$store.state.IppisLoanRequest.isFetchingLoanDetails;
     },
     splitDetails() {
-      return this.$store.state.LoanRequest.splitDetails;
+      return this.$store.state.IppisLoanRequest.splitDetails;
     },
     loanDetails() {
-      return this.$store.state.LoanRequest.loanDetails;
+      return this.$store.state.IppisLoanRequest.loanDetails;
     },
     getToast(){
-        return this.$store.state.LoanRequest.toast
+        return this.$store.state.IppisLoanRequest.toast
     },
     isFetchingLoanHistory() {
-      return this.$store.state.LoanRequest.isFetchingLoanHistory;
+      return this.$store.state.IppisLoanRequest.isFetchingLoanHistory;
     },
     loanHistory() {
-      return this.$store.state.LoanRequest.loanHistory;
+      return this.$store.state.IppisLoanRequest.loanHistory;
     }
   },
   mounted() {

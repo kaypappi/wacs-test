@@ -1,10 +1,10 @@
 <template>
   <div class="offers-table-wrapper">
     <Toast 
+    v-if="toast.show"
             :show="toast.show"
             :title="toast.title"
-            :successMessage="toast.message"
-            :failureMessage="toast.message"
+            :message="toast.message"
             :success="toast.success"
         />
     <CustomModal :onHide="onHide" id="edit-form-modal">
@@ -165,7 +165,7 @@
         {{data.item.interest_rate}}%
       </template>
       <template v-slot:cell(Duration)="data">
-        {{data.item.payback_period}}mnths
+        {{data.item.payback_period}} months
       </template>
     </b-table>
   </div>

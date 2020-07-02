@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import SingleScheduleTable from "../components/Table/SingleScheduleTable";
-import { baseUrl } from "../router/api_routes";
+import SingleScheduleTable from "../../components/Table/SingleScheduleTable";
+import { baseUrl } from "../../router/api_routes";
 import Axios from "axios";
 import JsonExcel from 'vue-json-excel'
 import pdfMake from "pdfmake/build/pdfmake";
@@ -48,7 +48,7 @@ export default {
       fetchingSchedule: false,
       scheduleId: "",
       scheduleTitle: "",
-      json_fields: {
+      json_fields:{
             'No':'no',
             'Year':'year',
             'Month':'month',
@@ -69,9 +69,7 @@ export default {
       this.fetchingSchedule = true;
       const URL =
         baseUrl +
-        `creditor/repayments/reports/${this.scheduleId}?${this.serialize(
-          query
-        )}`;
+        `ippis/repayments/${this.scheduleId}?${this.serialize(query)}`;
       Axios.get(URL).then(response => {
         this.schedule = { ...response.data };
         this.scheduleTitle = `Repayment Schedule Breakdown - ${
@@ -93,8 +91,8 @@ export default {
       var dd = {
         content: [
           {
-            text: `${this.scheduleTitle}`,
-            margin: [0, 0, 0, 20]
+              text:`${this.scheduleTitle}`,
+              margin:[0,0,0,20]
           },
           {
             style: "tableExample",
