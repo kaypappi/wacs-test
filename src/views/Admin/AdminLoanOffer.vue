@@ -144,7 +144,7 @@ export default {
     enterSearch() {
       if (this.getSearchTerm()) {
         this.$router.push({
-          name: "loanOffers",
+          name: "AdminLoanOffers",
           query: { search: this.getSearchTerm() }
         });
       } else {

@@ -93,7 +93,7 @@ export default {
         state.toast.show = false;
       }, 2000);
     },
-    REDIRECT(state,name,time=0){
+    REDIRECT(state,{name,time=0}){
       setTimeout(() => {
         router.push({ name });
       }, time);
@@ -264,7 +264,7 @@ export default {
         .post(`/ippis/approve`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
-          commit("REDIRECT","ippisLoanRequest",2000)
+          commit("REDIRECT",{name:"ippisLoanRequest",time:2000})
         })
         .catch((err) => {
           commit("SHOW_TOAST", {title:"Error",message: err.response.data.message,success: false});
@@ -278,7 +278,7 @@ export default {
         .post(`/ippis/decline`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
-          commit("REDIRECT","ippisLoanRequest",2000)
+          commit("REDIRECT",{name:"ippisLoanRequest",time:2000})
         })
         .catch((err) => {
           commit("SHOW_TOAST",{title: "Error",message: err.response.data.message,success: false});
@@ -305,7 +305,7 @@ export default {
           if (response.statusText === "Created") {
             commit("IS_MAKING_OFFER", false);
             commit("SHOW_TOAST",{title: "Successful",message: "Successfully made offer",success: true});
-            commit("REDIRECT","loanRequest",2000)
+            commit("REDIRECT",{name:"loanRequest",time:3000})
           }
         })
         .catch((err) => {

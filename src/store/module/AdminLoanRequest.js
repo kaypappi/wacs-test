@@ -56,6 +56,25 @@ export default {
     FETCH_ADMIN_NOTFOUND(state) {
       state.searchFound = false;
     },
+    IS_FETCHING_LOANHISTORY(state,status){
+      state.isFetchingLoanHistory=status
+    },
+    FETCH_LOANHISTORY_SUCCESS(state,data){
+      state.loanHistory=data
+    },
+    SEARCH_REQUESTS_NOTFOUND(state) {
+      state.searchFound = false;
+    },
+    SEARCH_REQUESTS_FOUND(state, data) {
+      (state.searchTerm = ""), (state.searchFound = true);
+      state.loanRequests = { ...data };
+    },
+    UPDATE_SEARCH_TERM(state, searchTerm) {
+      state.searchTerm = searchTerm;
+    },
+    UPDATE_SEARCH_FOUND(state, status) {
+      state.searchFound = status;
+    },
     SPILT_DETAILS(state) {
       const loanData = state.loanDetails;
       const format=(num)=>{
@@ -133,6 +152,32 @@ export default {
         })
       })
       
+    },
+    fetchAdminLoanHistory({commit},requestId){
+      commit("IS_FETCHING_LOANHISTORY",true)
+      axios.get(`admin/requests/${requestId}/history`).then((response)=>{
+        commit("IS_FETCHING_LOANHISTORY",false)
+        commit("FETCH_LOANHISTORY_SUCCESS",response.data)
+      })
+    },
+    AdminSearchLoanRequest({ commit }, query) {
+      commit("IS_FETCHING_LOANREQUEST", true);
+      axios
+        .get(`admin/requests/${query.search}/search`)
+        .then((response) => {
+          commit("IS_FETCHING_LOANREQUEST", false);
+          if (response.data.data.length === 0) {
+            commit("SEARCH_REQUESTS_NOTFOUND");
+          } else {
+            commit("SEARCH_REQUESTS_FOUND", response.data);
+          }
+        });
+    },
+    updateSearchTerm({ commit }, searchTerm) {
+      commit("UPDATE_SEARCH_TERM", searchTerm);
+    },
+    updateSearchFound({ commit }, status) {
+      commit("UPDATE_SEARCH_FOUND", status);
     },
   },
 };
