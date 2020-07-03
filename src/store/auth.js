@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {getUrlPath} from "../helpers/getPath";
+
 export default ({
   namespaced:  true,
 
@@ -35,9 +37,8 @@ export default ({
   },
 
   mutations: {
-    SET_TOKEN (state, {access_token, userType}) {
+    SET_TOKEN (state, access_token) {
       state.access_token = 'Bearer'+' '+access_token;
-      state.userType = userType;
     },
     SET_USER(state, data){
       state.user = data
@@ -55,9 +56,10 @@ export default ({
       commit('SET_VALIDATION_ERROR', [], {root: true});
       commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
+      console.log(userType)
       try{
-        let response  = await axios.post(`${userType}/login`, credentials);
-        return dispatch('attempt', {access_token:response.data.data.access_token, userType});
+        let response  = await axios.post(`${getUrlPath()}/login`, credentials);
+        return dispatch('attempt', response.data.data.access_token);
       } catch(e){
         commit('SET_ERROR_MESSAGE', e.response.data.message);
         commit('IS_LOGGING_USER_IN', false);
@@ -65,15 +67,15 @@ export default ({
       }
     },
 
-    async attempt ({ commit, state }, {access_token, userType}){
+    async attempt ({ commit, state }, access_token){
       if(access_token){
-        commit('SET_TOKEN', {access_token, userType});
+        commit('SET_TOKEN', access_token);
       }
       if (!state.access_token){
         return
       }
       try {
-        let response = await axios.get(`${userType}/dashboard`);
+        let response = await axios.get(`${getUrlPath()}/dashboard`);
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){
