@@ -108,7 +108,7 @@
     import CustomModal from '../../components/Modals/CustomModal';
     import ConfirmModal from '../../components/Modals/ConfirmModal';
     import Table from '../../components/Table/Table';
-    import AdminUsersTableRow from '../../components/Table/AdminUsersTableRow';
+    import AdminUsersTableRow from '../../components/Admin/AdminUsersTableRow';
     import SubmitButton from '../../components/Buttons/SubmitButton';
     import Button from '../../components/Buttons/Botton';
     import TextInput from '../../components/Inputs/TextInput';
