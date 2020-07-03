@@ -194,7 +194,7 @@ const routes = [
         component:IppisLoanRequest,
         meta:{
           title:'Loan Request',
-          nameSpace:'ippis'
+          nameSpace:'loan'
         }
       },
       {

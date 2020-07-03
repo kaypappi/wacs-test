@@ -117,7 +117,6 @@ export default {
       this.addOffer = {};
     },
     formatNumber(num) {
-        console.log(num)
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
     serialize(obj, prefix) {
@@ -172,7 +171,6 @@ export default {
   },
   computed: {
     offers() {
-        console.log(this.$store.state.AdminLoanOffer.loanOffers.data)
       let loanOffers = this.$store.state.AdminLoanOffer.loanOffers.data;
       if (this.getSearchTerm() && loanOffers) {
         loanOffers = loanOffers.filter(row => {
@@ -194,7 +192,6 @@ export default {
       return this.$store.state.AdminLoanOffer.searchFound;
     },
     isFetching() {
-        console.log(this.$store.state.AdminLoanOffer.fetchingOffers)
       return this.$store.state.AdminLoanOffer.fetchingOffers;
     },
 

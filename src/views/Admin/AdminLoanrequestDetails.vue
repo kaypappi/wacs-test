@@ -101,7 +101,6 @@ export default {
       return this.$store.state.AdminLoanRequest.isFetchingLoanDetails;
     },
     splitDetails() {
-        console.log(this.$store.state.AdminLoanRequest.splitDetails)
       return this.$store.state.AdminLoanRequest.splitDetails;
     },
     loanDetails() {

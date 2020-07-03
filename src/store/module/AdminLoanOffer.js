@@ -62,7 +62,6 @@ export default {
     fetchLoanOffers({ commit }, query) {
       commit("IS_FETCHING_LOANOFFERS", true);
       axios.get(`admin/offers?${query}`).then((response) => {
-          console.log(response)
         commit("IS_FETCHING_LOANOFFERS", false);
         if (response.data.data.length === 0) {
           commit("FETCH_LOANOFFERS_NOTFOUND");

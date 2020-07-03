@@ -26,7 +26,6 @@
         },
         methods: {
             goToDetails(id) {
-                console.log('madness',)
                 this.$router.push(
                     {
                         name:'adminLoanDetails',params:{requestId:id}

@@ -6,13 +6,11 @@ store.subscribe((mutation) => {
 
         case 'auth/SET_TOKEN':
             if(mutation.payload){
-                 axios.defaults.headers.common['Authorization'] = `Bearer ${mutation.payload.access_token}`;
-                 localStorage.setItem('access_token', mutation.payload.access_token)
-                 localStorage.setItem('userType', mutation.payload.userType)
+                 axios.defaults.headers.common['Authorization'] = `Bearer ${mutation.payload}`;
+                 localStorage.setItem('access_token', mutation.payload)
             } else  {
                 axios.defaults.headers.common['Authorization'] = null;
                 localStorage.removeItem('access_token')
-                localStorage.removeItem('userType')
             }
         break;
         
