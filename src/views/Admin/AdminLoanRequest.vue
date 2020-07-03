@@ -122,16 +122,17 @@ export default {
   },
   methods: {
     getSearchTerm() {
-      return this.$store.state.LoanRequest.searchTerm;
+      return this.$store.state.AdminLoanRequest.searchTerm;
     },
     enterSearch() {
+      console.log(this.getSearchTerm)
       if (this.getSearchTerm()) {
         this.$router.push({
-          name: "ippisLoanRequest",
+          name: "adminLoanRequest",
           query: { search: this.getSearchTerm() }
         });
       } else {
-        this.$store.dispatch("LoanRequest/updateSearchFound", true);
+        this.$store.dispatch("AdminLoanRequest/updateSearchFound", true);
       }
     },
     handleText(event, position) {
@@ -154,11 +155,11 @@ export default {
     searchRequests(query) {
       if (this.getSearchTerm()) {
         return this.$store.dispatch(
-          "LoanRequest/ippisSearchLoanRequest",
+          "AdminLoanRequest/AdminSearchLoanRequest",
           query
         );
       } else {
-        this.$store.dispatch("LoanRequest/updateSearchFound", true);
+        this.$store.dispatch("AdminLoanRequest/updateSearchFound", true);
       }
     },
     serialize(obj, prefix) {
@@ -178,7 +179,7 @@ export default {
       return str.join("&");
     },
     handleSearch(event) {
-      return this.$store.dispatch("LoanRequest/updateSearchTerm", event);
+      return this.$store.dispatch("AdminLoanRequest/updateSearchTerm", event);
     },
     fetchLoanRequests(query) {
       query = this.serialize(query);

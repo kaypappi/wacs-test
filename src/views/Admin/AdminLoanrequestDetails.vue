@@ -86,7 +86,7 @@ export default {
     fetchLoanHistory() {
       this.requestId = this.$route.params.requestId;
       this.$store.dispatch(
-        "AdminLoanRequest/fetchIppisLoanHistory",
+        "AdminLoanRequest/fetchAdminLoanHistory",
         this.loanDetails.user.id
       );
     },
