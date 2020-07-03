@@ -11,7 +11,7 @@
               :userName="fullName"
             />
             <div class="main-body">
-                <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/>
+                <!-- <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/> -->
                 <div class="main-body-content">
                     <router-view />
                 </div>
@@ -23,12 +23,12 @@
 <script>
     import Header from '../Header';
     import LeftMenuItems from '../Ipiss/IppisLeftMenuItems';
-    import LoanManagementMenu from '../LoanManagementMenu';
+    //import LoanManagementMenu from '../LoanManagementMenu';
     export default {
         components: {
             Header,
             LeftMenuItems,
-            LoanManagementMenu,
+            //LoanManagementMenu,
         },
         computed: {
             fullName() {

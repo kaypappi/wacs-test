@@ -22,8 +22,8 @@
 
 <script>
     import Header from '../Header';
-    import LeftMenuItems from '../LeftMenuItems';
-    import LoanManagementMenu from '../LoanManagementMenu';
+    import LeftMenuItems from '../Admin/AdminLeftMenuItems';
+    import LoanManagementMenu from '../Admin/AdminLoanManagementMenu';
     export default {
         components: {
             Header,

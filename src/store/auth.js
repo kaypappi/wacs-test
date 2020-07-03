@@ -52,11 +52,11 @@ export default ({
   },
 
   actions: {
-    async signIn({ commit,dispatch }, {credentials,userType}){
+    async signIn({ commit,dispatch }, {credentials}){
       commit('SET_VALIDATION_ERROR', [], {root: true});
       commit('SET_ERROR_MESSAGE', null);
       commit('IS_LOGGING_USER_IN', true);
-      console.log(userType)
+
       try{
         let response  = await axios.post(`${getUrlPath()}/login`, credentials);
         return dispatch('attempt', response.data.data.access_token);

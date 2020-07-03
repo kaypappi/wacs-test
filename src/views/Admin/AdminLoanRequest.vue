@@ -1,6 +1,6 @@
 <template>
   <div class="loan-request-wrapper">
-   <!--  <div class="page-filters">
+    <div class="page-filters">
       <SearchFilterInput
         placeholder="Search by MDA, IPPIS No."
         :value="getSearchTerm()"
@@ -31,7 +31,7 @@
           <Botton :onclick="clearFilters" type="button">Clear</Botton>
         </div>
       </div>
-    </div> -->
+    </div>
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
@@ -58,7 +58,7 @@
             v-for="loanRequest in requests"
             :userData="loanRequest"
             :key="loanRequest.id"
-            :id="loanRequest.loan_request_id"
+            :id="loanRequest.id"
             :date="loanRequest.date"
             :name="loanRequest.user.full_name"
             :ippissNo="loanRequest.user.user_name"
@@ -93,20 +93,20 @@
 </template>
 
 <script>
-/* import DateField from "../../components/Inputs/DateField";
+import DateField from "../../components/Inputs/DateField";
 import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
 import Botton from "../../components/Buttons/Botton";
-import SubmitButton from "../../components/Buttons/SubmitButton"; */
+import SubmitButton from "../../components/Buttons/SubmitButton";
 import Table from "../../components/Table/Table";
 import Pagination from "../../components/Pagination/Pagination";
 import NoData from "../../components/NoData";
-import LoanRequestTable from "../../components/Table/ippiss/LoanRequestTable";
+import LoanRequestTable from "../../components/Admin/AdminLoanRequestTable";
 export default {
   components: {
-    /* DateField,
+    DateField,
     SearchFilterInput,
     Botton,
-    SubmitButton, */
+    SubmitButton,
     Table,
     NoData,
     Pagination,
@@ -141,7 +141,7 @@ export default {
       const data = {};
       if (this.filters.from && this.filters.to) {
         data.date = `${this.filters.from}.${this.filters.to}`;
-        this.$router.push({ name: "ippisLoanRequest", query: { ...data } });
+        this.$router.push({ name: "adminLoanRequest", query: { ...data } });
       }
     },
     clearFilters() {
@@ -206,13 +206,13 @@ export default {
     },
 
     searchFound() {
-      return this.$store.state.LoanRequest.searchFound;
+      return this.$store.state.AdminLoanRequest.searchFound;
     },
     loanRequests() {
       return this.$store.state.AdminLoanRequest.loanRequests;
     },
     isFetching() {
-      return this.$store.state.LoanRequest.isFetchingLoanRequests;
+      return this.$store.state.AdminLoanRequest.isFetchingLoanRequests;
     }
   },
   mounted() {

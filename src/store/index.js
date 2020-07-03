@@ -8,6 +8,7 @@ import LoanRequest from './module/LoanRequest'
 import LoanOffers from "./module/LoanOffers"
 import IppisLoanRequest from "./module/IppisLoanRequest"
 import AdminLoanRequest from "./module/AdminLoanRequest"
+import AdminLoanOffer from "./module/AdminLoanOffer"
 
 Vue.use(Vuex);
 
@@ -52,6 +53,7 @@ export default new Vuex.Store({
     LoanRequest,
     LoanOffers,
     IppisLoanRequest,
-    AdminLoanRequest
+    AdminLoanRequest,
+    AdminLoanOffer
   }
 })

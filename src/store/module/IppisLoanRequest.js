@@ -87,7 +87,7 @@ export default {
     FETCH_LOANHISTORY_SUCCESS(state,data){
       state.loanHistory=data
     },
-    SHOW_TOAST(state, title, message, success) {
+    SHOW_TOAST(state, {title, message, success}) {
       state.toast = { show: true, title, message, success };
       setTimeout(() => {
         state.toast.show = false;
