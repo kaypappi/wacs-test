@@ -10,15 +10,23 @@
       <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
       <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
       <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
-      <StatsCard title="Bank Approved Requests" textColor="green" :value="requestsSummary.bank_approved" />
-      <StatsCard title="Awaiting Ippis Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
+      <StatsCard
+        title="Bank Approved Requests"
+        textColor="green"
+        :value="requestsSummary.bank_approved"
+      />
+      <StatsCard
+        title="Awaiting Ippis Requests"
+        textColor="green"
+        :value="requestsSummary.awaiting_ippis"
+      />
       <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
     </div>
 
-    <!-- <div class="recent-requests">
+    <div class="recent-requests">
       <div class="recent-requests-top">
         <p>Recent Loan Requests</p>
-        <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
+        <p @click="$router.push({name:'adminLoanRequest'})" class="view-all">View All</p>
       </div>
       <div class="recent-request-table">
         <img
@@ -28,19 +36,31 @@
           class="page-loader"
         />
         <template v-else>
+          <template v-if="!searchFound">
+            <NoData>
+              <template v-slot:title>
+                <h4>Not Found</h4>
+              </template>
+              <template v-slot:subtitle>
+                <p>The data you are searching for could not be found</p>
+              </template>
+            </NoData>
+          </template>
           <Table
-            v-if="loanRequests"
-            :tableHeaders="['Date', 'Name', 'IPPIS Number', 'Monthly Salary', 'Loan Request', 'Status']"
+            v-else-if="loanRequests"
+            :tableHeaders="['Date', 'Name', 'IPPIS Number','MDA', 'Monthly Salary', 'Loan Request','Bank', 'Status']"
           >
             <template>
-              <LoanRequestTableRow
+              <LoanRequestTable
                 v-for="loanRequest in loanRequests.data"
                 :userData="loanRequest"
                 :key="loanRequest.id"
-                :id="loanRequest.id"
+                :id="loanRequest.loan_request_id"
                 :date="loanRequest.date"
                 :name="loanRequest.user.full_name"
                 :ippissNo="loanRequest.user.user_name"
+                :mda="loanRequest.user.profile.mda"
+                :creditAdmin="loanRequest.offer.company.name"
                 :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
                 :loanRequest="formatNumber(loanRequest.amount)"
                 :status="loanRequest.status"
@@ -59,28 +79,30 @@
           </template>
         </template>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import StatsCard from "../../components/StatsCard";
-//import Table from "../components/Table/Table";
-//import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
+import Table from "../../components/Table/Table";
+import NoData from "../../components/NoData"
+import LoanRequestTable from "../../components/Table/ippiss/LoanRequestTable";
 
 export default {
   name: "home",
   components: {
     StatsCard,
-    //Table,
-    //LoanRequestTableRow
+    Table,
+    NoData,
+    LoanRequestTable
   },
   methods: {
-    /* fetchLoanRequests(query) {
+    fetchLoanRequests(query) {
       query = this.serialize(query);
-      this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
-    }, */
+      this.$store.dispatch("AdminLoanRequest/fetchAdminLoanRequests", query);
+    },
     fetchRequestsSummary() {
       this.$store.dispatch("AdminLoanRequest/requestsSummary");
     },
@@ -105,22 +127,25 @@ export default {
     }
   },
   computed: {
-    /* loanRequests() {
-      return this.$store.state.LoanRequest.loanRequests;
-    }, */
+    loanRequests() {
+      return this.$store.state.AdminLoanRequest.loanRequests;
+    },
     requestsSummary() {
       return this.$store.state.AdminLoanRequest.requestsSummary;
     },
-    /* isFetchingRequests() {
-      return this.$store.state.LoanRequest.isFetchingLoanRequests;
-    }, */
+    isFetchingRequests() {
+      return this.$store.state.AdminLoanRequest.isFetchingLoanRequests;
+    },
     isFetchingSummary() {
-      return this.$store.state.LoanRequest.fetchingSummary;
+      return this.$store.state.AdminLoanRequest.fetchingSummary;
+    },
+    searchFound(){
+      return this.$store.state.AdminLoanRequest.searchFound
     }
   },
   mounted() {
-    this.fetchRequestsSummary()
-     // this.fetchLoanRequests(this.$router.history.current.query);
+    this.fetchRequestsSummary();
+    this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
 </script>

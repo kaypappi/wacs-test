@@ -199,7 +199,7 @@ export default {
       }
     
     
-    this.$router.push({name:'loanOffers',query})
+    this.$router.push({name:'AdminLoanOffers',query})
 },
     clearFilters(){
       const clearFilter={

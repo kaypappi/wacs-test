@@ -23,7 +23,7 @@
 <script>
     import Header from '../Header';
     import LeftMenuItems from '../Ipiss/IppisLeftMenuItems';
-    import LoanManagementMenu from '../LoanManagementMenu';
+    import LoanManagementMenu from '../../components/Ipiss/IppisLeftMenuItems';
     export default {
         components: {
             Header,

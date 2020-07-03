@@ -24,6 +24,10 @@ import AdminLogin from  "../views/Admin/Auth/AdminLogin.vue"
 import AdminMain from "../components/Layout/AdminMain.vue"
 import AdminDashboard from "../views/Admin/AdminDashboard.vue"
 import AdminLoanRequest from "../views/Admin/AdminLoanRequest.vue"
+import AdminLoanOffers from "../views/Admin/AdminLoanOffer.vue"
+import AdminReapayment from "../views/Admin/AdminRepayment.vue"
+import AdminSchedule from "../views/Admin/AdminSchedule.vue"
+import AdminLoanRequestDetails from "../views/Admin/AdminLoanrequestDetails.vue"
 
 Vue.use(VueRouter);
 
@@ -269,8 +273,8 @@ const routes = [
         name: 'adminLoanRequest',
         component:AdminLoanRequest,
         meta:{
-          title:"Admin Dashboard",
-          nameSpace:'Admin'
+          title:"Loan Management",
+          nameSpace:'loan'
         },
         beforeEnter: (to, from, next) => {
           if(!store.getters['auth/isParkwayAdmin']) {
@@ -278,7 +282,54 @@ const routes = [
           }
           next()
         }
-      }
+      },
+      {
+        path:'/admin/loan-request/:requestId',
+        name:'adminLoanDetails',
+        component:AdminLoanRequestDetails,
+        meta:{
+          title:'Loan Details',
+          nameSpace:'loan',
+          parents: ['Loan Request'],
+        }
+      },
+      {
+        path: '/admin/loan-offers',
+        name: 'AdminLoanOffers',
+        component: AdminLoanOffers,
+        meta: {
+          title: 'Loan Management',
+          nameSpace: 'loan',
+        },
+      },
+      {
+        path:'/admin/report/:id',
+        name:'adminrepaymentsSchedule',
+        component:AdminSchedule,
+        meta:{
+          title: 'Schedule Details',
+          nameSpace:'loan',
+          parents:['Report']
+        }
+      },
+      {
+        path:'/admin/report',
+        name:'adminrepayments',
+        component:AdminReapayment,
+        meta:{
+          title:'Report',
+          nameSpace:'loan'
+        }
+      },
+      {
+        path:'/admin/user',
+        name:'adminUsers',
+        component:AdminReapayment,
+        meta:{
+          title:'Report',
+          nameSpace:'loan'
+        }
+      },
     ]
   },
 

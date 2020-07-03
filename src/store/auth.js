@@ -74,6 +74,7 @@ export default ({
       }
       try {
         let response = await axios.get(`${userType}/dashboard`);
+        console.log(response)
         commit('IS_LOGGING_USER_IN', false);
         commit('SET_USER', response.data)
       } catch(e){
