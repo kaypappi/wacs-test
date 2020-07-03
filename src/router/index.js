@@ -14,6 +14,7 @@ import Home from "../views/Home";
 import Repayment from "../views/Repayment";
 import Schedule from "../views/Schedule"
 import Notifications from "../views/Notifcations.vue"
+import FrontPage from "../views/FrontPage.vue"
 import IppisLoanRequest from "../views/Ippis/LoanRequest"
 import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails"
 import IppisLogin from "../views/Ippis/Auth/Login.vue"
@@ -44,6 +45,11 @@ const routes = [
       }
       next()
     }
+  },
+  {
+    path: '/frontpage',
+    name: 'frontPage',
+    component: FrontPage,
   },
   {
     path: '/',
