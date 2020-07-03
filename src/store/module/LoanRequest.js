@@ -154,6 +154,7 @@ export default {
   actions: {
     fetchLoanRequests({ commit }, query) {
       commit("IS_FETCHING_LOANREQUEST", true);
+      console.log(query)
       axios.get(`/creditor/request/view?${query}`).then((response) => {
         commit("IS_FETCHING_LOANREQUEST", false);
         if (response.data.data.length === 0) {

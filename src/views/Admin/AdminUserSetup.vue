@@ -75,7 +75,7 @@
     </CustomModal>
     <ConfirmModal />
     <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="isGettingUsers" class="page-loader">
-    <template v-else>
+    <template v-else-if="users.length>0">
         <Table :tableHeaders="['', 'Name', 'Username', 'Email', 'Role', 'Status', '']">
             <AdminUsersTableRow
               v-for="user in users"
@@ -93,27 +93,27 @@
               :onChangeRole="changeUserRole"
             />
         </Table>
-        <Pagination
+        <!-- <Pagination
           v-if="!searchTerm"
           :total="paginationData.total"
           :currentPage="paginationData.current_page"
           :lastPage="paginationData.last_page"
           :from="paginationData.from"
           :to="paginationData.to"
-        />
+        /> -->
     </template>
 </div>
 </template>
 <script>
-    import CustomModal from '../components/Modals/CustomModal';
-    import ConfirmModal from '../components/Modals/ConfirmModal';
-    import Table from '../components/Table/Table';
-    import AdminUsersTableRow from '../components/Table/AdminUsersTableRow';
-    import SubmitButton from '../components/Buttons/SubmitButton';
-    import Button from '../components/Buttons/Botton';
-    import TextInput from '../components/Inputs/TextInput';
-    import Pagination from '../components/Pagination/Pagination';
-    import SearchFilterInput from '../components/Inputs/SearchFilterInput';
+    import CustomModal from '../../components/Modals/CustomModal';
+    import ConfirmModal from '../../components/Modals/ConfirmModal';
+    import Table from '../../components/Table/Table';
+    import AdminUsersTableRow from '../../components/Table/AdminUsersTableRow';
+    import SubmitButton from '../../components/Buttons/SubmitButton';
+    import Button from '../../components/Buttons/Botton';
+    import TextInput from '../../components/Inputs/TextInput';
+    //import Pagination from '../../components/Pagination/Pagination';
+    import SearchFilterInput from '../../components/Inputs/SearchFilterInput';
     import {EventBus} from '@/event.js';
     //import Fuse from 'fuse.js';
     export default {
@@ -125,7 +125,7 @@
             TextInput,
             CustomModal,
             ConfirmModal,
-            Pagination,
+            //Pagination,
             SearchFilterInput,
         },
         data() {
@@ -238,7 +238,7 @@
         computed: {
             users() {
                 let admins = this.$store.state.AdminUser.adminUsers;
-                
+                console.log(admins)
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
                         return Object.keys(row).some((key) => {

@@ -28,6 +28,7 @@ import AdminLoanOffers from "../views/Admin/AdminLoanOffer.vue"
 import AdminReapayment from "../views/Admin/AdminRepayment.vue"
 import AdminSchedule from "../views/Admin/AdminSchedule.vue"
 import AdminLoanRequestDetails from "../views/Admin/AdminLoanrequestDetails.vue"
+import AdminUserSetup from "../views/Admin/AdminUserSetup.vue"
 
 Vue.use(VueRouter);
 
@@ -322,12 +323,12 @@ const routes = [
         }
       },
       {
-        path:'/admin/user',
+        path:'/admin/users',
         name:'adminUsers',
-        component:AdminReapayment,
+        component:AdminUserSetup,
         meta:{
-          title:'Report',
-          nameSpace:'loan'
+          title:'Users',
+          nameSpace:'users'
         }
       },
     ]

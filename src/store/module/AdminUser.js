@@ -43,12 +43,13 @@ export default ({
         fetchAdmins({commit}, page, query) {
             //const link = page ? `creditor?page=${page}` : 'creditor';
             commit('IS_GETTING_ADMIN', true);
-            axios.get('/creditor', {
+            axios.get('/admin/users/ippis', {
                 params:{
                     page,
                     ...query
                 }
             }).then((res) => {
+                console.log(res)
                 commit('IS_GETTING_ADMIN', false);
                 commit('FETCH_ADMIN_SUCCESS', res.data);
             })
