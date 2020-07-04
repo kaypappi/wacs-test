@@ -75,7 +75,7 @@ const routes = [
         name: 'home',
         component: Home,
         meta: {
-          title: 'Workers Aggregated Credit System',
+          title: 'Workers Aggregated Credit Scheme',
         },
       },
       {

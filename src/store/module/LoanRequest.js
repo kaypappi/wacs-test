@@ -169,7 +169,7 @@ export default {
         .post(`/creditor/request/decline`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.message,success: true});
-          commit("REDIRECT","loanRequest",2000)
+          commit("REDIRECT",{name:"loanRequest",time:2000})
         })
         .catch((err) => {
           commit("SHOW_TOAST", {title:"Successful",message: err.response.data.message, success:false});
