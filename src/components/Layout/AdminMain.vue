@@ -12,6 +12,7 @@
             />
             <div class="main-body">
                 <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/>
+                <AdminUserManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'users'"/>
                 <div class="main-body-content">
                     <router-view />
                 </div>
@@ -24,11 +25,13 @@
     import Header from '../Header';
     import LeftMenuItems from '../Admin/AdminLeftMenuItems';
     import LoanManagementMenu from '../Admin/AdminLoanManagementMenu';
+    import AdminUserManagementMenu from '../Admin/AdminUserManagementMenu'
     export default {
         components: {
             Header,
             LeftMenuItems,
             LoanManagementMenu,
+            AdminUserManagementMenu
         },
         computed: {
             fullName() {

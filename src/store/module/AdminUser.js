@@ -40,10 +40,10 @@ export default ({
         }
     },
     actions : {
-        fetchAdmins({commit}, page, query) {
+        fetchAdmins({commit}, {page, query,userType}) {
             //const link = page ? `creditor?page=${page}` : 'creditor';
             commit('IS_GETTING_ADMIN', true);
-            axios.get('/admin/users/ippis', {
+            axios.get(`/admin/users/${userType}`, {
                 params:{
                     page,
                     ...query
@@ -54,9 +54,9 @@ export default ({
                 commit('FETCH_ADMIN_SUCCESS', res.data);
             })
         },
-        createAdmin({commit}, userData) {
+        createAdmin({commit}, {userData,userType}) {
             commit('IS_POSTING_ADMIN', true);
-            axios.post('creditor', userData)
+            axios.post(`admin/${userType}`, userData)
                 .then(function (res) {
                     commit('IS_POSTING_ADMIN', false);
                     commit('CREATE_ADMIN_SUCCESS', res.data.data);
@@ -65,9 +65,9 @@ export default ({
                     commit('IS_POSTING_ADMIN', false);
                 });
         },
-        editAdmin({commit}, userData) {
+        editAdmin({commit}, {userData,userType}) {
             commit('IS_POSTING_ADMIN', true);
-            axios.patch('creditor/' + userData.userId, userData)
+            axios.patch(`admin/${userType}/` + userData.userId, userData)
                 .then(function (res) {
                     commit('IS_POSTING_ADMIN', false);
                     commit('EDIT_ADMIN_SUCCESS', res.data.data);

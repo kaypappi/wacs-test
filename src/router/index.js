@@ -28,7 +28,8 @@ import AdminLoanOffers from "../views/Admin/AdminLoanOffer.vue"
 import AdminReapayment from "../views/Admin/AdminRepayment.vue"
 import AdminSchedule from "../views/Admin/AdminSchedule.vue"
 import AdminLoanRequestDetails from "../views/Admin/AdminLoanrequestDetails.vue"
-import AdminUserSetup from "../views/Admin/AdminUserSetup.vue"
+import IppisUserSetup from "../views/Admin/IppisUserSetup.vue"
+import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue"
 
 Vue.use(VueRouter);
 
@@ -323,11 +324,20 @@ const routes = [
         }
       },
       {
-        path:'/admin/users',
-        name:'adminUsers',
-        component:AdminUserSetup,
+        path:'/admin/ippis',
+        name:'IppisAdminUsers',
+        component:IppisUserSetup,
         meta:{
-          title:'Users',
+          title:'Ippis Users',
+          nameSpace:'users'
+        }
+      },
+      {
+        path:'/admin/creditors',
+        name:'CreditorAdminUsers',
+        component:CreditorUserSetup,
+        meta:{
+          title:'Creditors',
           nameSpace:'users'
         }
       },

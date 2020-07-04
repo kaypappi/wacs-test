@@ -8,7 +8,7 @@
         />        
         <div class="cta-div">
             <Button v-b-modal.add-user-form-modal class="cta-button">
-                <img src="assets/images/Plus.svg" alt="Plus sign">
+                <img src="/assets/images/Plus.svg" alt="Plus sign">
                 Add User
             </Button>
         </div>
@@ -163,16 +163,18 @@
                 }
             },
             changePage(page=this.$route.query.page, query=this.$route.query) {
-                this.$store.dispatch('AdminUser/fetchAdmins', page, query);
+                const userType='ippis'
+                this.$store.dispatch('AdminUser/fetchAdmins', {page, query,userType});
             },
             onSubmit() {
-                if(!this.$can('create', 'user') || !Object.keys(this.addUser).length){
+                console.log('submitting')
+                if(!this.$can('view', 'loan') || !Object.keys(this.addUser).length){
                     return;
                 }
                 if(this.edittingUser || this.changingUserRole) {
-                    this.$store.dispatch('AdminUser/editAdmin', this.compareDataOnEdit());
+                    this.$store.dispatch('AdminUser/editAdmin', {userData:{...this.addUser,userId: this.targetUserId},userType:'ippiss'});
                 } else{
-                    this.$store.dispatch('AdminUser/createAdmin', this.addUser);
+                    this.$store.dispatch('AdminUser/createAdmin', {userData:this.addUser,userType:'ippiss'});
                 }
             },
             compareDataOnEdit() {

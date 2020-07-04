@@ -32,7 +32,7 @@
                         name: "User Management",
                         iconPath: "/assets/images/User.svg",
                         altText: "money",
-                        to: "/admin/users",
+                        to: "/admin/ippis",
                         permission: ["view", "loan"],
                         nameSpace: 'users',
                     },
