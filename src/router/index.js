@@ -14,6 +14,7 @@ import Home from "../views/Home";
 import Repayment from "../views/Repayment";
 import Schedule from "../views/Schedule"
 import Notifications from "../views/Notifcations.vue"
+import FrontPage from "../views/FrontPage.vue"
 import IppisLoanRequest from "../views/Ippis/LoanRequest"
 import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails"
 import IppisLogin from "../views/Ippis/Auth/Login.vue"
@@ -46,6 +47,11 @@ const routes = [
     }
   },
   {
+    path: '/frontpage',
+    name: 'frontPage',
+    component: FrontPage,
+  },
+  {
     path: '/',
     component: Main,
     children: [
@@ -69,7 +75,7 @@ const routes = [
         name: 'home',
         component: Home,
         meta: {
-          title: 'Workers Aggregated Credit System',
+          title: 'Workers Aggregated Credit Scheme',
         },
       },
       {
