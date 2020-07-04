@@ -16,6 +16,8 @@
           <div class="left-content">
             <p class="bold-text">
               Easy Loan!
+            </p>
+            <p class="bold-text">
               Easy Life!
             </p>
             <p class="description">
@@ -31,7 +33,7 @@
           </div>
         </div>
         <div class="hero-right">
-          <img src="/assets/images/black-woman.png" alt />
+          <img src="/assets/images/WACS-Gif.gif" alt />
         </div>
       </div>
     </div>
@@ -150,21 +152,99 @@
           </div>
         </div>
       </div>
-      
     </div>
-    <div class="skewd-div">
-
+    <div class="skewd-div"></div>
+    <div class="section-4">
+      <p class="title">
+        Have questions about the loans?
+        Get your answers.
+      </p>
+      <div class="faq-wrapper">
+        <div class="faq-holder">
+          <p class="faq-text">Will I qualify for a loan?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
+        <div class="faq-holder">
+          <p class="faq-text">What makes me eligible?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
+        <div class="faq-holder">
+          <p class="faq-text">How much can I borrow?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
+        <div class="faq-holder">
+          <p class="faq-text">Can I extend my loan tenor?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
+        <div class="faq-holder">
+          <p class="faq-text">Can I have more than one loan running at the same time?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
+        <div class="faq-holder">
+          <p class="faq-text">Does WACS require a credit check?</p>
+          <span>
+            <b-icon-plus />
+          </span>
+        </div>
       </div>
+      <div class="button-wrapper">
+        <button>See More</button>
+      </div>
+    </div>
+    <div class="section-5">
+      <p class="top-text">Try the workers aggregated credit scheme now</p>
+      <p class="cta">Apply for a loan in 30 minutes</p>
+      <img src="/assets/images/googleplay.png" alt="logo" />
+    </div>
+    <div class="footer">
+      <div class="footer-column">
+        <p class="headings">About</p>
+        <p class="sub">WACS</p>
+        <p class="sub">Privacy & Terms</p>
+      </div>
+      <div class="footer-column">
+        <p class="headings">Socials</p>
+        <p class="sub">LinkedIn</p>
+        <p class="sub">Twitter</p>
+        <p class="sub">Instagram</p>
+      </div>
+      <div class="footer-column">
+        <p class="headings">Support</p>
+        <p class="sub">FAQs</p>
+        <p class="sub">Privacy & Terms</p>
+      </div>
+      <div class="footer-column">
+        <p class="headings">Contact</p>
+        <p class="sub">hello@wacs.com</p>
+        <p class="sub">+234 70563299</p>
+      </div>
+    </div>
+    <div class="copy-section">
+      <p>2020 © Workers Aggregated Credit Scheme</p>
+      <p>All Rights Reserved.</p>
+    </div>
+    <div class="bottom"></div>
   </div>
 </template>
 
 <script>
 //import Botton from "../components/Buttons/Botton";
-import { BIconArrowDownCircle } from "bootstrap-vue";
+import { BIconArrowDownCircle, BIconPlus } from "bootstrap-vue";
 export default {
   components: {
     //Botton,
-    BIconArrowDownCircle
+    BIconArrowDownCircle,
+    BIconPlus
   }
 };
 </script>
@@ -198,7 +278,7 @@ export default {
 }
 
 .top-menu {
-  max-width: 1133px;
+  max-width: 1300px;
   display: flex;
   position: absolute;
   top: 0;
@@ -224,11 +304,11 @@ export default {
   background-repeat: no-repeat;
 }
 .hero-content {
-  max-width: 1133px;
+  max-width: 1300px;
   margin: 10px auto 0 auto;
 
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 400px;
 }
 .hero-left {
   background: #feefe1;
@@ -238,6 +318,7 @@ export default {
   font-size: 100px;
   font-weight: bold;
   letter-spacing: 0;
+  margin-bottom: 5px;
   line-height: 130px;
 }
 .hero-left .description {
@@ -294,7 +375,7 @@ export default {
 }
 
 .section-2 {
-  max-width: 1133px;
+  max-width: 1300px;
   margin: 0 auto 280px;
 }
 
@@ -304,6 +385,7 @@ export default {
   margin: 0 auto;
   margin-bottom: 150px;
   font-size: 40px;
+  font-family: "Work Sans";
   font-weight: 600;
   letter-spacing: 0;
   line-height: 55px;
@@ -372,7 +454,7 @@ export default {
 .section-3 .steps-holder {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  max-width: 1133px;
+  max-width: 1300px;
   margin: 100px auto 0;
 }
 
@@ -420,8 +502,8 @@ export default {
   position: relative;
   z-index: 1;
 }
-.steps-holder .content .title{
-    margin-bottom: 0;
+.steps-holder .content .title {
+  margin-bottom: 0;
 }
 .step1 .content,
 .step3 .content {
@@ -451,11 +533,143 @@ export default {
   letter-spacing: 0;
   line-height: 35px;
 }
-.skewd-div{
-    width: 100%;
-    height: 200px;
-    margin-top: -100px;
-    background:#0a554c;
-    transform: skewY(5deg);
+.skewd-div {
+  width: 100%;
+  height: 200px;
+  margin-top: -100px;
+  background: #0a554c;
+  transform: skewY(5deg);
+}
+
+.section-4 {
+  max-width: 1300px;
+  margin: 200px auto 0;
+}
+.section-4 .title {
+  color: #656a72;
+  font-family: "Work Sans";
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 60px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.section-4 .faq-holder {
+  width: 100%;
+  border-top: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px 10px 40px;
+  font-size: 24px;
+  color: #656a72;
+}
+
+.faq-holder .faq-text {
+  margin: 0;
+  font-family: "Work Sans";
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: 55px;
+}
+
+.faq-holder span {
+  font-weight: 600;
+  font-size: 50px;
+}
+.section-4 button {
+  padding: 15px 80px;
+  border: 1.5px solid #27be58;
+  background: transparent;
+  color: #27be58;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.section-4 .button-wrapper {
+  text-align: center;
+  margin-top: 70px;
+}
+
+.section-5 {
+  max-width: 1300px;
+  margin: 220px auto 160px;
+  background: url("/assets/images/curves.PNG") right bottom, #0e655a;
+  background-size: 320px 90%;
+  background-repeat: no-repeat;
+  padding: 50px 90px;
+  border-radius: 5px;
+}
+
+.section-5 p.top-text {
+  color: #ffffff;
+  font-family: "Work Sans";
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 28px;
+}
+
+.section-5 .cta {
+  color: #ffffff;
+  font-family: "Work Sans";
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 57px;
+  margin-bottom: 30px;
+}
+
+.section-5 img {
+  height: 74px;
+  width: 252px;
+  border: 0.5px solid white;
+  border-radius: 10px;
+}
+
+.footer {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer .headings {
+  color: #656a72;
+  font-family: "Work Sans";
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 55px;
+}
+.footer .sub {
+  color: #656a72;
+  font-family: "Work Sans";
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 35px;
+  margin-bottom: 5px;
+}
+
+.copy-section {
+  text-align: center;
+}
+
+.copy-section p {
+  color: #656a72;
+  font-family: "Work Sans";
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 19px;
+  margin-bottom: 5px;
+}
+
+.frontpage-wrapper > .bottom {
+  height: 100px;
 }
 </style>
