@@ -1,7 +1,7 @@
 <template>
      <div class="main">
         <div class="left">
-            <img @click="$router.push({name:'home'})" src="/assets/images/WACS.png" class="logo" alt="WACS logo">
+            <img @click="$router.push({name:'adminDashboard'})" src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <LeftMenuItems />
         </div>
         <div class="right">
@@ -9,9 +9,12 @@
               :details="$route.meta"
               :entityName="companyName"
               :userName="fullName"
+              logoutRoute='Adminlogin'
+              notificationRoute='AdminNotifications'
             />
             <div class="main-body">
                 <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/>
+                <AdminUserManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'users'"/>
                 <div class="main-body-content">
                     <router-view />
                 </div>
@@ -24,11 +27,13 @@
     import Header from '../Header';
     import LeftMenuItems from '../Admin/AdminLeftMenuItems';
     import LoanManagementMenu from '../Admin/AdminLoanManagementMenu';
+    import AdminUserManagementMenu from '../Admin/AdminUserManagementMenu'
     export default {
         components: {
             Header,
             LeftMenuItems,
             LoanManagementMenu,
+            AdminUserManagementMenu
         },
         computed: {
             fullName() {

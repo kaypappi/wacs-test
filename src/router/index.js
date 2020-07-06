@@ -29,12 +29,15 @@ import AdminLoanOffers from "../views/Admin/AdminLoanOffer.vue"
 import AdminReapayment from "../views/Admin/AdminRepayment.vue"
 import AdminSchedule from "../views/Admin/AdminSchedule.vue"
 import AdminLoanRequestDetails from "../views/Admin/AdminLoanrequestDetails.vue"
+import AdminCompany from "../views/Admin/AdminCompany.vue"
+import IppisUserSetup from "../views/Admin/IppisUserSetup.vue"
+import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue"
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/creditor',
     name: 'login',
     component: Login,
     beforeEnter: (to, from, next) => {
@@ -47,16 +50,16 @@ const routes = [
     }
   },
   {
-    path: '/frontpage',
+    path: '/',
     name: 'frontPage',
     component: FrontPage,
   },
   {
-    path: '/',
+    path: '/creditor',
     component: Main,
     children: [
       {
-        path: 'user-setup',
+        path: '/creditor/user-setup',
         name: 'userManagement',
         component: UserSetup,
         meta: {
@@ -71,7 +74,7 @@ const routes = [
         }
       },
       {
-        path: '/home',
+        path: '/creditor/home',
         name: 'home',
         component: Home,
         meta: {
@@ -79,7 +82,7 @@ const routes = [
         },
       },
       {
-        path: '/notifications',
+        path: '/creditor/notifications',
         name: 'notifications',
         component: Notifications,
         meta: {
@@ -87,7 +90,7 @@ const routes = [
         },
       },
       {
-        path: '/loan-request',
+        path: '/creditor/loan-request',
         name: 'loanRequest',
         component: LoanRequest,
         meta: {
@@ -96,7 +99,7 @@ const routes = [
         },
       },
       {
-        path: '/loan-request/:requestId',
+        path: '/creditor/loan-request/:requestId',
         name: 'loanRequestDetails',
         component: LoanRequestDetails,
         props: true,
@@ -107,7 +110,7 @@ const routes = [
         },
       },
       {
-        path: '/loan-offers',
+        path: '/creditor/loan-offers',
         name: 'loanOffers',
         component: LoanOffers,
         meta: {
@@ -116,7 +119,7 @@ const routes = [
         },
       },
       {
-        path: '/make-offer/:loan_request_id',
+        path: '/creditor/make-offer/:loan_request_id',
         name: 'makeOffer',
         component: MakeOffer,
         props:true,
@@ -127,7 +130,7 @@ const routes = [
         },
       },
       {
-        path:'/report/:id',
+        path:'/creditor/report/:id',
         name:'repaymentsSchedule',
         component:Schedule,
         meta:{
@@ -137,7 +140,7 @@ const routes = [
         }
       },
       {
-        path:'/report',
+        path:'/creditor/report',
         name:'repayments',
         component:Repayment,
         meta:{
@@ -147,7 +150,7 @@ const routes = [
       },
 
       {
-        path: '/change-password',
+        path: '/creditor/change-password',
         name: 'changePassword',
         component: ResetPassword,
         meta: {
@@ -155,7 +158,7 @@ const routes = [
         },
       },
       {
-        path: '/password-reset/:token',
+        path: '/creditor/password-reset/:token',
         name: 'resetPassword',
         component: ResetPassword,
         meta: {
@@ -206,10 +209,9 @@ const routes = [
       {
         path:'/ippis/notifications',
         name:'ippisNotifications',
-        component:IppisLoanRequest,
+        component:Notifications,
         meta:{
-          title:'Loan Request',
-          nameSpace:'ippis'
+          title:'Ippis Notifications',
         }
       },
       {
@@ -275,6 +277,14 @@ const routes = [
         }
       },
       {
+        path: '/admin/notifications',
+        name: 'AdminNotifications',
+        component: Notifications,
+        meta: {
+          title: 'Loan Management',
+        },
+      },
+      {
         path:'/admin/loan-request',
         name: 'adminLoanRequest',
         component:AdminLoanRequest,
@@ -328,12 +338,30 @@ const routes = [
         }
       },
       {
-        path:'/admin/user',
-        name:'adminUsers',
-        component:AdminReapayment,
+        path:'/admin/ippis',
+        name:'IppisAdminUsers',
+        component:IppisUserSetup,
         meta:{
-          title:'Report',
-          nameSpace:'loan'
+          title:'Ippis Users',
+          nameSpace:'users'
+        }
+      },
+      {
+        path:'/admin/creditors',
+        name:'CreditorAdminUsers',
+        component:CreditorUserSetup,
+        meta:{
+          title:'Creditors',
+          nameSpace:'users'
+        }
+      },
+      {
+        path:'/admin/company',
+        name:'AdminCompany',
+        component:AdminCompany,
+        meta:{
+          title:'Company',
+          nameSpace:'users'
         }
       },
     ]

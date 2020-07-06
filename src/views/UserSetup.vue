@@ -8,7 +8,7 @@
         />        
         <div class="cta-div">
             <Button v-b-modal.add-user-form-modal class="cta-button">
-                <img src="assets/images/Plus.svg" alt="Plus sign">
+                <img src="/assets/images/Plus.svg" alt="Plus sign">
                 Add User
             </Button>
         </div>
@@ -163,16 +163,16 @@
                 }
             },
             changePage(page=this.$route.query.page, query=this.$route.query) {
-                this.$store.dispatch('AdminUser/fetchAdmins', page, query);
+                this.$store.dispatch('User/fetchAdmins', page, query);
             },
             onSubmit() {
                 if(!this.$can('create', 'user') || !Object.keys(this.addUser).length){
                     return;
                 }
                 if(this.edittingUser || this.changingUserRole) {
-                    this.$store.dispatch('AdminUser/editAdmin', this.compareDataOnEdit());
+                    this.$store.dispatch('User/editAdmin', this.compareDataOnEdit());
                 } else{
-                    this.$store.dispatch('AdminUser/createAdmin', this.addUser);
+                    this.$store.dispatch('User/createAdmin', this.addUser);
                 }
             },
             compareDataOnEdit() {
@@ -237,7 +237,7 @@
         },
         computed: {
             users() {
-                let admins = this.$store.state.AdminUser.adminUsers;
+                let admins = this.$store.state.User.adminUsers;
                 
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
@@ -249,19 +249,19 @@
                 return admins;
             },
             paginationData() {
-                return this.$store.state.AdminUser.paginationData;
+                return this.$store.state.User.paginationData;
             },
             postSuccess() {
-                return this.$store.state.AdminUser.postAdminSuccess;
+                return this.$store.state.User.postAdminSuccess;
             },
             error() {
                 return this.$store.state.validation;
             },
             isPosting() {
-                return this.$store.state.AdminUser.isPostingAdmin;
+                return this.$store.state.User.isPostingAdmin;
             },
             isGettingUsers() {
-                return this.$store.state.AdminUser.isGettingAdmins;
+                return this.$store.state.User.isGettingAdmins;
             },
         },
         mounted() {

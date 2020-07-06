@@ -1,7 +1,7 @@
 <template>
      <div class="main">
         <div class="left">
-            <img @click="$router.push({name:'ippis'})" src="/assets/images/WACS.png" class="logo" alt="WACS logo">
+            <img @click="$router.push({name:'ippisLoanRequest'})" src="/assets/images/WACS.png" class="logo" alt="WACS logo">
             <LeftMenuItems />
         </div>
         <div class="right">
@@ -9,6 +9,8 @@
               :details="$route.meta"
               :entityName="companyName"
               :userName="fullName"
+              logoutRoute='ippisLogin'
+              notificationRoute='ippisNotifications'
             />
             <div class="main-body">
                 <!-- <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/> -->

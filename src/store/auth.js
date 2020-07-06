@@ -74,6 +74,9 @@ export default ({
       if (!state.access_token){
         return
       }
+      if(!getUrlPath()){
+        return
+      }
       try {
         let response = await axios.get(`${getUrlPath()}/dashboard`);
         commit('IS_LOGGING_USER_IN', false);

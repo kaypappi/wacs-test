@@ -175,8 +175,9 @@ export default {
         statusValue: {
           Pending:false,
           Running:false,
-          Approved:false,
-          Rejected:false
+          awaiting_ippis:false,
+          declined:false,
+          bank_approved:false
         }
       };
       this.filters = { ...clearFilters };
@@ -202,7 +203,6 @@ export default {
       query.status=status
     }
 
-      
       this.$router.push({ name: "loanRequest", query })
     }
   }

@@ -8,7 +8,7 @@
         />        
         <div class="cta-div">
             <Button v-b-modal.add-user-form-modal class="cta-button">
-                <img src="assets/images/Plus.svg" alt="Plus sign">
+                <img src="/assets/images/Plus.svg" alt="Plus sign">
                 Add User
             </Button>
         </div>
@@ -59,12 +59,12 @@
                   v-model="addUser.email"
                   :keyupEvent="keyupEvent"
                 />
-                <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
+                <!-- <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
                 <select v-if="!edittingUser" name="role" id="role" class="form-modal-inputs" required v-model="addUser.role_id">
                     <template v-for="role in roles">
                         <option :value="role.id" :key="role.id">{{role.name}}</option>
                     </template>
-                </select>
+                </select> -->
                 <SubmitButton
                   buttonClass="form-modal-button"
                   :name="edittingUser || changingUserRole ? 'Save' : 'Create'"
@@ -75,7 +75,7 @@
     </CustomModal>
     <ConfirmModal />
     <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="isGettingUsers" class="page-loader">
-    <template v-else>
+    <template v-else-if="users.length>0">
         <Table :tableHeaders="['', 'Name', 'Username', 'Email', 'Role', 'Status', '']">
             <AdminUsersTableRow
               v-for="user in users"
@@ -93,27 +93,27 @@
               :onChangeRole="changeUserRole"
             />
         </Table>
-        <Pagination
+        <!-- <Pagination
           v-if="!searchTerm"
           :total="paginationData.total"
           :currentPage="paginationData.current_page"
           :lastPage="paginationData.last_page"
           :from="paginationData.from"
           :to="paginationData.to"
-        />
+        /> -->
     </template>
 </div>
 </template>
 <script>
-    import CustomModal from '../components/Modals/CustomModal';
-    import ConfirmModal from '../components/Modals/ConfirmModal';
-    import Table from '../components/Table/Table';
-    import AdminUsersTableRow from '../components/Table/AdminUsersTableRow';
-    import SubmitButton from '../components/Buttons/SubmitButton';
-    import Button from '../components/Buttons/Botton';
-    import TextInput from '../components/Inputs/TextInput';
-    import Pagination from '../components/Pagination/Pagination';
-    import SearchFilterInput from '../components/Inputs/SearchFilterInput';
+    import CustomModal from '../../components/Modals/CustomModal';
+    import ConfirmModal from '../../components/Modals/ConfirmModal';
+    import Table from '../../components/Table/Table';
+    import AdminUsersTableRow from '../../components/Admin/AdminUsersTableRow';
+    import SubmitButton from '../../components/Buttons/SubmitButton';
+    import Button from '../../components/Buttons/Botton';
+    import TextInput from '../../components/Inputs/TextInput';
+    //import Pagination from '../../components/Pagination/Pagination';
+    import SearchFilterInput from '../../components/Inputs/SearchFilterInput';
     import {EventBus} from '@/event.js';
     //import Fuse from 'fuse.js';
     export default {
@@ -125,7 +125,7 @@
             TextInput,
             CustomModal,
             ConfirmModal,
-            Pagination,
+            //Pagination,
             SearchFilterInput,
         },
         data() {
@@ -163,16 +163,17 @@
                 }
             },
             changePage(page=this.$route.query.page, query=this.$route.query) {
-                this.$store.dispatch('AdminUser/fetchAdmins', page, query);
+                const userType='ippis'
+                this.$store.dispatch('AdminUser/fetchAdmins', {page, query,userType});
             },
             onSubmit() {
-                if(!this.$can('create', 'user') || !Object.keys(this.addUser).length){
+                if(!this.$can('view', 'loan') || !Object.keys(this.addUser).length){
                     return;
                 }
                 if(this.edittingUser || this.changingUserRole) {
-                    this.$store.dispatch('AdminUser/editAdmin', this.compareDataOnEdit());
+                    this.$store.dispatch('AdminUser/editAdmin', {userData:{...this.addUser,userId: this.targetUserId},userType:'ippiss'});
                 } else{
-                    this.$store.dispatch('AdminUser/createAdmin', this.addUser);
+                    this.$store.dispatch('AdminUser/createAdmin', {userData:this.addUser,userType:'ippiss'});
                 }
             },
             compareDataOnEdit() {
@@ -238,7 +239,6 @@
         computed: {
             users() {
                 let admins = this.$store.state.AdminUser.adminUsers;
-                
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
                         return Object.keys(row).some((key) => {
