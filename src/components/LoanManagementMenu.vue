@@ -1,8 +1,8 @@
 <template>
     <ul>
-        <li @click="goTo('loan-request')" :class="{'active-loan-menu': currentRoute === '/loan-request'}">Loan Request</li>
-        <li @click="goTo('loan-offers')" :class="{'active-loan-menu': currentRoute === '/loan-offers'}">Loan Offers</li>
-        <li @click="goTo('report')" :class="{'active-loan-menu': currentRoute === '/report'}">Reports</li>
+        <li @click="goTo('/creditor/loan-request')" :class="{'active-loan-menu': currentRoute === '/creditor/loan-request'}">Loan Request</li>
+        <li @click="goTo('/creditor/loan-offers')" :class="{'active-loan-menu': currentRoute === '/creditor/loan-offers'}">Loan Offers</li>
+        <li @click="goTo('/creditor/report')" :class="{'active-loan-menu': currentRoute === '/creditor/report'}">Reports</li>
     </ul>
 </template>
 

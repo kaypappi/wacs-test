@@ -1,21 +1,22 @@
 <template>
   <div>
     <div class="page-filters">
-      <SearchFilterInput
+      <!-- <SearchFilterInput
         placeholder="Search by name, role, status"
         v-model="searchTerm"
         :onSearch="searchAdmin"
-      />
+      /> -->
       <div class="cta-div">
-        <Button :onclick="showModal" class="cta-button">
+        <Button v-b-modal.add-user-form-modal class="cta-button">
           <img src="/assets/images/Plus.svg" alt="Plus sign" />
-          Add User
+          Create Company
         </Button>
       </div>
     </div>
     <CustomModal :onHide="onHide" id="add-user-form-modal">
-      <div v-if="postSuccess">
-        <p class="modal-success-message" v-if="edittingUser">Edit Successful</p>
+      <div v-if="postCompany">
+          <p class="modal-success-message" v-if="edittingUser">Successful Created Company</p>
+        <p class="modal-success-message" v-else-if="edittingUser">Edit Successful</p>
         <p
           class="modal-success-message"
           v-else-if="changingUserRole"
@@ -34,67 +35,94 @@
         <form @submit.prevent="onSubmit">
           <TextInput
             v-if="!changingUserRole"
-            label="Full Name"
+            label="Name"
             id="name"
-            name="full_name"
-            :error="error.full_name"
+            name="name"
+            :error="error.name"
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
-            v-model="addUser.full_name"
+            v-model="addUser.name"
             :keyupEvent="keyupEvent"
           />
-          <TextInput
-            v-if="!changingUserRole"
-            label="Username"
-            id="username"
-            name="user_name"
-            :error="error.user_name"
-            inputClass="form-modal-inputs"
-            labelClass="form-modal-label"
-            v-model="addUser.user_name"
-            :keyupEvent="keyupEvent"
-          />
+          
           <TextInput
             v-if="!changingUserRole"
             type="email"
             label="Email"
-            id="email"
-            name="email"
-            :error="error.email"
+            id="email_address"
+            name="email_address"
+            :error="error.email_address"
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
-            v-model="addUser.email"
+            v-model="addUser.email_address"
             :keyupEvent="keyupEvent"
           />
           <TextInput
             v-if="!changingUserRole"
-            label="Phone Number"
-            id="phone_number"
-            name="phone_number"
-            :error="error.phone_number"
+            label="Address"
+            id="address"
+            name="address"
+            :disabled="edittingUser"
+            :error="error.address"
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
-            v-model="addUser.phone_number"
+            v-model="addUser.address"
             :keyupEvent="keyupEvent"
           />
-          <label
-            v-if="!edittingUser || changingUserRole"
-            for="role"
-            class="form-modal-label"
-          >Select Bank</label>
-          <select
-            v-if="!edittingUser"
-            name="role"
-            id="role"
-            class="form-modal-inputs"
-            required
-            :disabled="isGettingCompany"
-            v-model="addUser.company_id"
-          >
-            <template v-for="company in companies ">
-              <option :value="company.id" :key="company.id">{{company.name}}</option>
-            </template>
-          </select>
+          <TextInput
+            v-if="!changingUserRole"
+            label="Number"
+            id="mobile_number"
+            name="mobile_number"
+            :disabled="edittingUser"
+            :error="error.mobile_number"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.mobile_number"
+            :keyupEvent="keyupEvent"
+          />
+          <TextInput
+            v-if="!changingUserRole"
+            label="Background Color"
+            id="bg_color"
+            name="bg_color"
+            :disabled="edittingUser"
+            :error="error.bg_color"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.bg_color"
+            :keyupEvent="keyupEvent"
+          />
+          <TextInput
+            v-if="!changingUserRole"
+            label="Button Color"
+            id="btn_color"
+            name="btn_color"
+            :disabled="edittingUser"
+            :error="error.btn_color"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.btn_color"
+            :keyupEvent="keyupEvent"
+          />
+          <TextInput
+            v-if="!changingUserRole"
+            label="Logo Link"
+            id="logo"
+            name="logo"
+            :disabled="edittingUser"
+            :error="error.logo"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.logo"
+            :keyupEvent="keyupEvent"
+          />
+          <!-- <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
+                <select v-if="!edittingUser" name="role" id="role" class="form-modal-inputs" required v-model="addUser.role_id">
+                    <template v-for="role in roles">
+                        <option :value="role.id" :key="role.id">{{role.name}}</option>
+                    </template>
+          </select>-->
           <SubmitButton
             buttonClass="form-modal-button"
             :name="edittingUser || changingUserRole ? 'Save' : 'Create'"
@@ -107,22 +135,18 @@
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
-      v-if="isGettingUsers"
+      v-if="isGettingCompany"
       class="page-loader"
     />
-    <template v-else-if="users.length>0">
-      <Table :tableHeaders="['', 'Name', 'Username', 'Email', 'Role', 'Status', '']">
-        <AdminUsersTableRow
-          v-for="user in users"
+    <template v-else-if="companies.length>0">
+      <Table :tableHeaders="['Name','Email','Address']">
+        <AdminCompanyTableRow
+          v-for="user in companies"
           :id="user.id"
-          :fullName="user.full_name"
-          :userName="user.user_name"
-          :isActive="user.status"
-          :email="user.email"
-          :phone_number="user.profile.phone_number"
+          :name="user.name"
+          :email="user.email_address"
+          :address="user.address"
           :key="user.id"
-          :role="user.roles[0].name"
-          :roleId="user.roles[0].id"
           :onEdit="editUser"
           :onResetPassword="confirmResetPassword"
           :onToggleStatus="toggleUserStatus"
@@ -130,12 +154,12 @@
         />
       </Table>
       <Pagination
-        v-if="!searchTerm && Object.values(paginationData).length>0"
-        :total="paginationData.total"
-        :currentPage="paginationData.current_page"
-        :lastPage="paginationData.last_page"
-        :from="paginationData.from"
-        :to="paginationData.to"
+          v-if="!searchTerm"
+          :total="paginationData.total"
+          :currentPage="paginationData.current_page"
+          :lastPage="paginationData.last_page"
+          :from="paginationData.from"
+          :to="paginationData.to"
       />
     </template>
   </div>
@@ -144,30 +168,29 @@
 import CustomModal from "../../components/Modals/CustomModal";
 import ConfirmModal from "../../components/Modals/ConfirmModal";
 import Table from "../../components/Table/Table";
-import AdminUsersTableRow from "../../components/Admin/AdminUsersTableRow";
+import AdminCompanyTableRow from "../../components/Admin/AdminCompanyTableRow";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import Button from "../../components/Buttons/Botton";
 import TextInput from "../../components/Inputs/TextInput";
-import Pagination from "../../components/Pagination/Pagination";
-import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
+import Pagination from '../../components/Pagination/Pagination';
+//import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
 import { EventBus } from "@/event.js";
 //import Fuse from 'fuse.js';
 export default {
   components: {
     Table,
-    AdminUsersTableRow,
+    AdminCompanyTableRow,
     SubmitButton,
     Button,
     TextInput,
     CustomModal,
     ConfirmModal,
     Pagination,
-    SearchFilterInput
+    //SearchFilterInput
   },
   data() {
     return {
-      addUser: {
-      },
+      addUser: {},
       editUserIntialData: {},
       edittingUser: false,
       changingUserRole: false,
@@ -194,18 +217,13 @@ export default {
     }
   },
   methods: {
-    showModal() {
-      this.$bvModal.show("add-user-form-modal");
-      this.$store.dispatch("AdminUser/fetchCompanies", { page: {}, query: {} });
-    },
     searchAdmin() {
       if (this.searchTerm) {
         alert("searching for " + this.searchTerm);
       }
     },
     changePage(page = this.$route.query.page, query = this.$route.query) {
-      const userType = "creditor";
-      this.$store.dispatch("AdminUser/fetchAdmins", { page, query, userType });
+      this.$store.dispatch("AdminUser/fetchCompanies", { page, query });
     },
     onSubmit() {
       if (!this.$can("view", "loan") || !Object.keys(this.addUser).length) {
@@ -214,13 +232,10 @@ export default {
       if (this.edittingUser || this.changingUserRole) {
         this.$store.dispatch("AdminUser/editAdmin", {
           userData: { ...this.addUser, userId: this.targetUserId },
-          userType: "creditors"
+          userType: "ippiss"
         });
       } else {
-        this.$store.dispatch("AdminUser/createAdmin", {
-          userData: this.addUser,
-          userType: "creditors"
-        });
+        this.$store.dispatch("AdminUser/createCompany", this.addUser);
       }
     },
     compareDataOnEdit() {
@@ -290,8 +305,8 @@ export default {
     }
   },
   computed: {
-    users() {
-      let admins = this.$store.state.AdminUser.adminUsers;
+    companies() {
+      let admins = this.$store.state.AdminUser.companies;
       if (this.searchTerm && admins) {
         admins = admins.filter(row => {
           return Object.keys(row).some(key => {
@@ -306,22 +321,19 @@ export default {
       return admins;
     },
     paginationData() {
-      return this.$store.state.AdminUser.paginationData;
+      return this.$store.state.AdminUser.companiesPaginationData;
     },
     postSuccess() {
       return this.$store.state.AdminUser.postAdminSuccess;
+    },
+    postCompany(){
+        return this.$store.state.AdminUser.postCompanySuccess;
     },
     error() {
       return this.$store.state.validation;
     },
     isPosting() {
       return this.$store.state.AdminUser.isPostingAdmin;
-    },
-    isGettingUsers() {
-      return this.$store.state.AdminUser.isGettingAdmins;
-    },
-    companies() {
-      return this.$store.state.AdminUser.companies;
     },
     isGettingCompany() {
       return this.$store.state.AdminUser.fetchingCompanies;

@@ -9,6 +9,8 @@
               :details="$route.meta"
               :entityName="companyName"
               :userName="fullName"
+              logoutRoute="login"
+              notificationRoute='notifications'
             />
             <div class="main-body">
                 <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'"/>

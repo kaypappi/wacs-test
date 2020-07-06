@@ -8,18 +8,17 @@
           CREDIT SCHEME
         </p>
       </div>
-      <button>Download App</button>
+      <a href="https://expo.io/@infinitypaul/wacs-app" target="_blank">
+        <button>Download App</button>
+      </a>
+      <!-- <button>Download App</button> -->
     </div>
     <div class="hero">
       <div class="hero-content">
         <div class="hero-left">
           <div class="left-content">
-            <p class="bold-text">
-              Easy Loan!
-            </p>
-            <p class="bold-text">
-              Easy Life!
-            </p>
+            <p class="bold-text">Easy Loan!</p>
+            <p class="bold-text">Easy Life!</p>
             <p class="description">
               Workers Aggregated Credit Scheme is an initiative of the
               Federal Government of Nigeria aimed at enabling Federal
@@ -27,7 +26,10 @@
               quick and easy access to credit from their mobile phones.
             </p>
             <div class="hero-buttons">
-              <img src="/assets/images/googleplay.png" alt="logo" />
+              <a href="https://expo.io/@infinitypaul/wacs-app" target="_blank">
+                <img src="/assets/images/googleplay.png" alt="logo" />
+              </a>
+
               <button>Learn More</button>
             </div>
           </div>
@@ -204,7 +206,9 @@
     <div class="section-5">
       <p class="top-text">Try the workers aggregated credit scheme now</p>
       <p class="cta">Apply for a loan in 30 minutes</p>
-      <img src="/assets/images/googleplay.png" alt="logo" />
+      <a href="https://expo.io/@infinitypaul/wacs-app" target="_blank">
+        <img src="/assets/images/googleplay.png" alt="logo" />
+      </a>
     </div>
     <div class="footer">
       <div class="footer-column">
@@ -658,6 +662,7 @@ export default {
 
 .copy-section {
   text-align: center;
+  margin-top: 100px;
 }
 
 .copy-section p {

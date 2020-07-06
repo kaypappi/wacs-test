@@ -43,17 +43,20 @@
            'details': Object,
            'entityName': String,
            'userName': String,
+           'logoutRoute':String,
+           'notificationRoute':String
         },
         methods: {
             logout() {
                 this.$store.dispatch('auth/logout').then(() => {
                     this.$router.push({
-                        name: 'login',
+                        name: this.logoutRoute,
                     }).catch(()=>{})
                 });
             },
             goToNotifications(){
-                this.$router.push({name:'notifications'})
+                
+                this.$router.push({name:this.notificationRoute})
             },
             changePassword() {
                 this.$router.push({

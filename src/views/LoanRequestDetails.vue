@@ -62,8 +62,8 @@
               <td>{{history.date}}</td>
               <td>{{history.loan_offer_collected}}</td>
               <td>{{history.credit_administrator}}</td>
-              <td>{{history.loan_amount}}</td>
-              <td>{{history.total_paid}}</td>
+              <td>{{formatNumber(history.loan_amount)}}</td>
+              <td>{{formatNumber(history.total_paid)}}</td>
             </tr>
           </template>
         </table>
@@ -99,6 +99,9 @@ export default {
     };
   },
   methods: {
+    formatNumber(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    },
     async fetchLoanDetails() {
       this.requestId = this.$route.params.requestId;
       return await this.$store.dispatch(

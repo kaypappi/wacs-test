@@ -59,12 +59,12 @@
                   v-model="addUser.email"
                   :keyupEvent="keyupEvent"
                 />
-                <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
+                <!-- <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
                 <select v-if="!edittingUser" name="role" id="role" class="form-modal-inputs" required v-model="addUser.role_id">
                     <template v-for="role in roles">
                         <option :value="role.id" :key="role.id">{{role.name}}</option>
                     </template>
-                </select>
+                </select> -->
                 <SubmitButton
                   buttonClass="form-modal-button"
                   :name="edittingUser || changingUserRole ? 'Save' : 'Create'"
@@ -167,7 +167,6 @@
                 this.$store.dispatch('AdminUser/fetchAdmins', {page, query,userType});
             },
             onSubmit() {
-                console.log('submitting')
                 if(!this.$can('view', 'loan') || !Object.keys(this.addUser).length){
                     return;
                 }
@@ -240,7 +239,6 @@
         computed: {
             users() {
                 let admins = this.$store.state.AdminUser.adminUsers;
-                console.log(admins)
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
                         return Object.keys(row).some((key) => {

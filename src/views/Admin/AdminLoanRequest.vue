@@ -125,7 +125,6 @@ export default {
       return this.$store.state.AdminLoanRequest.searchTerm;
     },
     enterSearch() {
-      console.log(this.getSearchTerm)
       if (this.getSearchTerm()) {
         this.$router.push({
           name: "adminLoanRequest",
