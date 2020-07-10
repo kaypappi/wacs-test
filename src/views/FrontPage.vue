@@ -30,7 +30,7 @@
                 <img src="/assets/images/googleplay.png" alt="logo" />
               </a>
 
-              <button>Learn More</button>
+              <!-- <button>Learn More</button> -->
             </div>
           </div>
         </div>
@@ -49,7 +49,9 @@
       </p>
       <div class="content">
         <div class="content-left">
-          <img src="/assets/images/phone.png" alt />
+          <div class="img-wrapper">
+            <img src="/assets/images/phone.png" alt />
+          </div>
         </div>
         <div class="content-right">
           <div class="info-wrapper">
@@ -162,42 +164,78 @@
         Get your answers.
       </p>
       <div class="faq-wrapper">
-        <div class="faq-holder">
-          <p class="faq-text">Will I qualify for a loan?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
-        <div class="faq-holder">
-          <p class="faq-text">What makes me eligible?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
-        <div class="faq-holder">
-          <p class="faq-text">How much can I borrow?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
-        <div class="faq-holder">
-          <p class="faq-text">Can I extend my loan tenor?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
-        <div class="faq-holder">
-          <p class="faq-text">Can I have more than one loan running at the same time?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
-        <div class="faq-holder">
-          <p class="faq-text">Does WACS require a credit check?</p>
-          <span>
-            <b-icon-plus />
-          </span>
-        </div>
+        <Faqcard>
+          <template v-slot:question>What makes me eligible?</template>
+          <template v-slot:answer>
+            <p>You must be registered on IPPIS to be eligible for a loan</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>Will I qualify for a loan?</template>
+          <template v-slot:answer>
+            <p>There some basic criteria which you’ll have to satisfy before your application can be considered. You must:</p>
+            <ul>
+              <li>Be a civil servant (federal government civil servant)</li>
+              <li>Be registered on IPPIS</li>
+            </ul>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>How much can I borrow?</template>
+          <template v-slot:answer>
+            <p>You can borrow up to 6.5% of your net annual salary</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>Can I extend my loan tenor?</template>
+          <template v-slot:answer>
+            <p>No, you cannot extend your loan tenor.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>Can I have more than one loan running at the same time?</template>
+          <template v-slot:answer>
+            <p>Yes, you can once you have not exceeded 6.5% of your net annual salary.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>Does WACS require a credit check?</template>
+          <template v-slot:answer>
+            <p>We will require a credit check before your loan can be approved.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>Do I need to visit a bank branch to access my loan?</template>
+          <template v-slot:answer>
+            <p>No, your loan will be automatically paid into your salary account.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>How will I know if it has been approved or rejected?</template>
+          <template v-slot:answer>
+            <p>You will be sent a notification via your registered phone number to know the status of your application. The notification tab is also available on the mobile app.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>How do I make repayments on my loan?</template>
+          <template v-slot:answer>
+            <p>Based on the repayment schedule offered by the bank, deductions will be made from your salary up until the loan has been fully paid.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template v-slot:question>When will the repayment be due?</template>
+          <template v-slot:answer>
+            <p>Based on the repayment schedule offered by the bank, deductions will be made from your salary up until the loan has been fully paidRepayment is due based on the timeframe of your loan.</p>
+          </template>
+        </Faqcard>
+        <Faqcard>
+          <template
+            v-slot:question
+          >How long do I have to wait after repaying a loan in full before I can reapply for a new one?</template>
+          <template v-slot:answer>
+            <p>You can reapply for a new long once you haven’t exceeded the 6.5% limit of your net annual salary.</p>
+          </template>
+        </Faqcard>
       </div>
       <div class="button-wrapper">
         <button>See More</button>
@@ -243,19 +281,19 @@
 
 <script>
 //import Botton from "../components/Buttons/Botton";
-import { BIconArrowDownCircle, BIconPlus } from "bootstrap-vue";
+import { BIconArrowDownCircle } from "bootstrap-vue";
+import Faqcard from "../components/Cards/FaqCard";
 export default {
   components: {
     //Botton,
     BIconArrowDownCircle,
-    BIconPlus
+    Faqcard
   }
 };
 </script>
 
 <style>
 .frontpage-wrapper {
-  padding: 0 100px;
   background: white;
   position: relative;
 }
@@ -283,6 +321,7 @@ export default {
 
 .top-menu {
   max-width: 1300px;
+  padding: 0 40px;
   display: flex;
   position: absolute;
   top: 0;
@@ -309,6 +348,7 @@ export default {
 }
 .hero-content {
   max-width: 1300px;
+  padding: 0 40px;
   margin: 10px auto 0 auto;
 
   display: grid;
@@ -319,17 +359,17 @@ export default {
 }
 .hero-left .bold-text {
   color: #656a72;
-  font-size: 100px;
+  font-size: 95px;
   font-weight: bold;
   letter-spacing: 0;
   margin-bottom: 5px;
   line-height: 130px;
 }
 .hero-left .description {
-  max-width: 670px;
+  max-width: 85%;
   color: #656a72;
   font-family: "Work Sans";
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 35px;
@@ -356,8 +396,8 @@ export default {
   margin-top: 46px;
 }
 .hero-buttons img {
-  width: 250px;
-  height: 75px;
+  width: 190px;
+  height: 55px;
   border-radius: 5px;
 }
 .hero-buttons button {
@@ -380,6 +420,7 @@ export default {
 
 .section-2 {
   max-width: 1300px;
+  padding: 0 40px;
   margin: 0 auto 280px;
 }
 
@@ -388,7 +429,7 @@ export default {
   max-width: 630px;
   margin: 0 auto;
   margin-bottom: 150px;
-  font-size: 40px;
+  font-size: 36px;
   font-family: "Work Sans";
   font-weight: 600;
   letter-spacing: 0;
@@ -403,9 +444,12 @@ export default {
 }
 
 .section-2 .content-left {
+}
+
+.section-2 .content-left .img-wrapper {
+  background-color: #303030;
   padding: 20px;
   border-radius: 4px;
-  background-color: #303030;
 }
 
 .content .info-wrapper {
@@ -417,7 +461,7 @@ export default {
 
 .info-wrapper .info-title {
   color: #656a72;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 55px;
@@ -426,7 +470,7 @@ export default {
 
 .info-wrapper .info-body {
   color: #656a72;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 0;
   line-height: 35px;
   margin-bottom: 5px;
@@ -449,7 +493,7 @@ export default {
   margin: 0 auto;
   color: #ffffff;
   font-family: "Work Sans";
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 55px;
@@ -459,6 +503,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   max-width: 1300px;
+  padding: 0 40px;
   margin: 100px auto 0;
 }
 
@@ -508,6 +553,7 @@ export default {
 }
 .steps-holder .content .title {
   margin-bottom: 0;
+  font-size: 24px;
 }
 .step1 .content,
 .step3 .content {
@@ -532,7 +578,7 @@ export default {
 .steps-holder .body {
   color: #ffffff;
   font-family: "Work Sans";
-  font-size: 20px;
+  font-size: 18px;
   max-width: 400px;
   letter-spacing: 0;
   line-height: 35px;
@@ -547,12 +593,13 @@ export default {
 
 .section-4 {
   max-width: 1300px;
+  padding: 0 40px;
   margin: 200px auto 0;
 }
 .section-4 .title {
   color: #656a72;
   font-family: "Work Sans";
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 60px;
@@ -562,30 +609,6 @@ export default {
   text-align: center;
 }
 
-.section-4 .faq-holder {
-  width: 100%;
-  border-top: 1px solid #d0d0d0;
-  border-bottom: 1px solid #d0d0d0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 10px 10px 40px;
-  font-size: 24px;
-  color: #656a72;
-}
-
-.faq-holder .faq-text {
-  margin: 0;
-  font-family: "Work Sans";
-  font-size: 24px;
-  letter-spacing: 0;
-  line-height: 55px;
-}
-
-.faq-holder span {
-  font-weight: 600;
-  font-size: 50px;
-}
 .section-4 button {
   padding: 15px 80px;
   border: 1.5px solid #27be58;
@@ -598,10 +621,12 @@ export default {
 .section-4 .button-wrapper {
   text-align: center;
   margin-top: 70px;
+
 }
 
 .section-5 {
   max-width: 1300px;
+  padding: 0 40px;
   margin: 220px auto 160px;
   background: url("/assets/images/curves.PNG") right bottom, #0e655a;
   background-size: 320px 90%;
@@ -613,7 +638,7 @@ export default {
 .section-5 p.top-text {
   color: #ffffff;
   font-family: "Work Sans";
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 28px;
@@ -622,7 +647,7 @@ export default {
 .section-5 .cta {
   color: #ffffff;
   font-family: "Work Sans";
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 57px;
@@ -630,14 +655,15 @@ export default {
 }
 
 .section-5 img {
-  height: 74px;
-  width: 252px;
+  height: 65px;
+  width: 225px;
   border: 0.5px solid white;
   border-radius: 10px;
 }
 
 .footer {
   max-width: 1300px;
+  padding: 0 40px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -676,5 +702,120 @@ export default {
 
 .frontpage-wrapper > .bottom {
   height: 100px;
+}
+
+@media screen and (max-width: 1200px) {
+  .frontpage-wrapper {
+    width: fit-content;
+  }
+  .hero {
+    background: none;
+  }
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+    margin-bottom: 170px;
+  }
+  .hero-left {
+    padding: 0 40px 100px;
+  }
+  .hero-left .bold-text{
+    font-size: 72px;
+    line-height: 94px;
+  }
+  .hero-left .description{
+    font-size: 22px;
+    line-height: 40px;
+    max-width: 100%;
+  }
+  .hero-buttons img{
+    height: 72px;
+    width: 245px;
+  }
+  .hero-right {
+    padding: 0 40px;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    margin-top: -100px;
+    position: relative;
+    left: 0;
+    margin-left: 0px;
+  }
+  .frontpage-wrapper .drag-divider {
+    display: none;
+  }
+
+  .section-2 .title{
+    font-size: 30px;
+    line-height: 50px;
+  }
+  .section-2 .content {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .section-2 .content-left .img-wrapper {
+    width: max-content;
+    margin: 0 auto;
+  }
+  .content .info-wrapper {
+    width: fit-content;
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
+  .info-wrapper .info-body{
+    font-size: 20px;
+  }
+  .steps-holder .content .title{
+    font-size: 30px;
+  }
+  .steps-holder .body{
+    font-size: 20px;
+  }
+  .section-2 .content-left {
+    order: 2;
+  }
+  .section-2 .content-right {
+    order: 1;
+  }
+  .section-3 .steps-holder {
+    grid-template-columns: 1fr;
+  }
+  .steps-holder .step1,
+  .steps-holder .step2,
+  .steps-holder .step3,
+  .steps-holder .step4 {
+    border: none;
+  }
+  .step2 .background,
+  .step4 .background {
+    left: 0;
+  }
+  .step2 .content,
+  .step4 .content {
+    margin-left: 120px;
+  }
+  .section-5 p.top-text {
+    font-size: 18px;  
+
+}
+.section-4 .title{
+  margin-bottom: 70px;
+}
+.section-5 .cta {
+    font-size: 30px;
+}
+.section-5{
+  margin: 220px 40px 160px;
+}
+.footer{
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+  grid-gap: 100px;
+}
 }
 </style>
