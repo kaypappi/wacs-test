@@ -225,7 +225,7 @@
         <Faqcard>
           <template v-slot:question>When will the repayment be due?</template>
           <template v-slot:answer>
-            <p>Based on the repayment schedule offered by the bank, deductions will be made from your salary up until the loan has been fully paidRepayment is due based on the timeframe of your loan.</p>
+            <p>Repayment is due based on the timeframe of your loan. </p>
           </template>
         </Faqcard>
         <Faqcard>

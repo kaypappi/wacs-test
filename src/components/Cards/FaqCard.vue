@@ -63,6 +63,7 @@ export default {
 .faq-holder span {
   font-weight: 600;
   font-size: 50px;
+  cursor: pointer;
 }
 
 .faq-holder .faq-answer {
