@@ -130,7 +130,6 @@ export default {
       return this.$store.state.IppisLoanRequest.splitDetails;
     },
     loanDetails() {
-      console.log(this.$store.state.IppisLoanRequest.loanDetails)
       return this.$store.state.IppisLoanRequest.loanDetails;
     },
     getToast(){
