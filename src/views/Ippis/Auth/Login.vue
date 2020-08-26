@@ -75,11 +75,11 @@ export default {
     submit() {
       this.signIn({credentials:this.form, userType:'ippis'})
         .then(() => {
-          this.$router.replace({
+          this.$router.push({
             name: "ippisLoanRequest"
           });
         })
-        .catch(() => {});
+        .catch((err) => {console.log(err)});
     },
     keyupEvent(name) {
       if (this.validation[name]) {

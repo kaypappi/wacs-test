@@ -123,7 +123,7 @@ export default {
     requestsSummary({ commit }) {
       commit("FETCHING_SUMMARY", true);
       axios.get("admin/requests/counts").then((response) => {
-        commit("FETCH_REQUEST_SUMMARY_SUCCESS", response.data.count);
+        commit("FETCH_REQUEST_SUMMARY_SUCCESS", response.data);
         commit("FETCHING_SUMMARY", false);
       });
     },

@@ -235,14 +235,14 @@ const routes = [
         parents:["Loan Request","Loan Details"]
       },
     ],
-    beforeEnter: (to, from, next) => {
+    /* beforeEnter: (to, from, next) => {
       if(!store.getters['auth/isIppisAdmin']) {
         return next({
           name: 'ippisLogin'
         })
       }
       next()
-    }
+    } */
   },
   {
     path: '/admin',

@@ -109,7 +109,7 @@ export default {
       return this.$store.state.LoanRequest.loanRequests;
     },
     requestsSummary() {
-      return this.$store.state.LoanRequest.requestsSummary.count;
+      return this.$store.state.LoanRequest.requestsSummary;
     },
     isFetchingRequests() {
       return this.$store.state.LoanRequest.isFetchingLoanRequests;

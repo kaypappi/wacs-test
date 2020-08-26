@@ -166,7 +166,7 @@ export default {
     declineLoanRequest({ commit }, id) {
       const data = { id };
       axios
-        .post(`/creditor/request/decline`, data)
+        .post(`/creditor/request/decline/${id}`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.message,success: true});
           commit("REDIRECT",{name:"loanRequest",time:2000})

@@ -61,7 +61,7 @@
                 />
                 <label v-if="!edittingUser || changingUserRole" for="role" class="form-modal-label">User Role</label>
                 <select v-if="!edittingUser" name="role" id="role" class="form-modal-inputs" required v-model="addUser.role_id">
-                    <template v-for="role in roles">
+                    <template v-for="role in adminRoles">
                         <option :value="role.id" :key="role.id">{{role.name}}</option>
                     </template>
                 </select>
@@ -157,6 +157,9 @@
           }
         },
         methods: {
+            fetchAdminRoles(){
+                this.$store.dispatch("User/fetchAdminRoles")
+            },
             searchAdmin() {
                 if(this.searchTerm){
                     alert('searching for ' + this.searchTerm);
@@ -263,10 +266,14 @@
             isGettingUsers() {
                 return this.$store.state.User.isGettingAdmins;
             },
+            adminRoles(){
+                return this.$store.state.User.adminRoles
+            }
         },
         mounted() {
             //this.$store.dispatch('AdminUser/fetchAdmins');
             this.changePage();
+            this.fetchAdminRoles()
         },
     }
 </script>

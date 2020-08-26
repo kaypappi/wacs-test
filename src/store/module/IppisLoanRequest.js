@@ -193,7 +193,7 @@ export default {
         id: requestId,
       };
       axios
-        .post(`/ippis/approve`, data)
+        .post(`/ippis/${requestId}/approve`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
           commit("REDIRECT",{name:"ippisLoanRequest",time:2000})
@@ -207,7 +207,7 @@ export default {
         id: requestId,
       };
       axios
-        .post(`/ippis/decline`, data)
+        .post(`/ippis/${requestId}/decline`, data)
         .then((response) => {
           commit("SHOW_TOAST", {title:"Successful",message: response.data.message,success: true});
           commit("REDIRECT",{name:"ippisLoanRequest",time:2000})

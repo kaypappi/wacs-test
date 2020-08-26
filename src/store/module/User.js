@@ -8,6 +8,7 @@ export default ({
         isGettingAdmins: false,
         isPostingAdmin: false,
         postAdminSuccess: false,
+        adminRoles:[]
     },
     mutations : {
         FETCH_ADMIN_SUCCESS(state, adminData) {
@@ -37,6 +38,9 @@ export default ({
         UPDATE_USER_STATUS(state, data) {
             const targetIdex = state.adminUsers.findIndex(user => user.id === data.userId);
             state.adminUsers[targetIdex].status = data.newStatus;
+        },
+        UPDATE_ADMIN_ROLES(state,data){
+            state.adminRoles=data
         }
     },
     actions : {
@@ -80,6 +84,11 @@ export default ({
         },
         updateUserStatus({commit}, data) {
             commit('UPDATE_USER_STATUS', {userId: data.id, newStatus: data.newStatus});
+        },
+        fetchAdminRoles({commit}){
+            axios.get('/admin/roles').then((response)=>{
+                commit("UPDATE_ADMIN_ROLES",response.data)
+            })
         }
     }
 });

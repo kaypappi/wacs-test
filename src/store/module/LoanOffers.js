@@ -105,7 +105,7 @@ export default {
     },
     editLoanOffer({ commit}, { data, closeModal }) {
       axios
-        .post("creditor/offer/update", data)
+        .post(`creditor/offer/update/${data.id}`, data)
         .then((response) => {
           commit(
             "UPDATE_LOAN_OFFER",
