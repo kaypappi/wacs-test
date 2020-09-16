@@ -110,7 +110,7 @@ export default {
   methods: {
     fetchLoanRequests(query) {
       query = this.serialize(query);
-      this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
+      this.$store.dispatch("CreditorLoanRequest/fetchLoanRequests", query);
     },
     filterQuickDates(type) {
       this.activeOption === type
@@ -145,15 +145,15 @@ export default {
           query: { search: this.getSearchTerm() }
         });
       } else {
-        this.$store.dispatch("LoanRequest/updateSearchFound", true);
+        this.$store.dispatch("CreditorLoanRequest/updateSearchFound", true);
       }
     },
 
     searchRequests(query) {
       if (this.getSearchTerm()) {
-        return this.$store.dispatch("LoanRequest/searchRequest", query);
+        return this.$store.dispatch("CreditorLoanRequest/searchRequest", query);
       } else {
-        this.$store.dispatch("LoanRequest/updateSearchFound", true);
+        this.$store.dispatch("CreditorLoanRequest/updateSearchFound", true);
       }
     },
     toggleSearchFound(state) {
@@ -176,10 +176,10 @@ export default {
       return str.join("&");
     },
     getSearchTerm() {
-      return this.$store.state.LoanRequest.searchTerm;
+      return this.$store.state.CreditorLoanRequest.searchTerm;
     },
     handleSearch(event) {
-      return this.$store.dispatch("LoanRequest/updateSearchTerm", event);
+      return this.$store.dispatch("CreditorLoanRequest/updateSearchTerm", event);
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -187,7 +187,7 @@ export default {
   },
   computed: {
     requests() {
-      let requests = this.$store.state.LoanRequest.loanRequests.data;
+      let requests = this.$store.state.CreditorLoanRequest.loanRequests.data;
       if (this.getSearchTerm() && requests) {
         requests = requests.filter(row => {
           return Object.keys(row).some(key => {
@@ -203,13 +203,13 @@ export default {
     },
 
     searchFound() {
-      return this.$store.state.LoanRequest.searchFound;
+      return this.$store.state.CreditorLoanRequest.searchFound;
     },
     loanRequests() {
-      return this.$store.state.LoanRequest.loanRequests;
+      return this.$store.state.CreditorLoanRequest.loanRequests;
     },
     isFetching() {
-      return this.$store.state.LoanRequest.isFetchingLoanRequests;
+      return this.$store.state.CreditorLoanRequest.isFetchingLoanRequests;
     }
   },
   mounted() {

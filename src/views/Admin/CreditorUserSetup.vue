@@ -321,7 +321,6 @@ export default {
       return this.$store.state.AdminUser.isGettingAdmins;
     },
     companies() {
-      console.log(this.$store.state.AdminUser.companies)
       return this.$store.state.AdminUser.companies;
     },
     isGettingCompany() {

@@ -369,7 +369,7 @@ export default {
       return offers
     },
     toast(){
-      return this.$store.state.LoanOffers.toast
+      return this.$store.state.CreditorLoanOffer.toast
     }
     
   },

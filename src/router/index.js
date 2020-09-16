@@ -67,7 +67,7 @@ const routes = [
           nameSpace: 'users',
         },
         beforeEnter: (to, from, next) => {
-          if(!store.getters['auth/isSuperAdmin']) {
+          if(!store.getters['Auth/isSuperAdmin']) {
             return next('home')
           }
           next()
@@ -171,7 +171,7 @@ const routes = [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated'] && to.name != 'resetPassword') {
+      if(!store.getters['Auth/authenticated'] && to.name != 'resetPassword') {
         return next({
           name: 'login'
         })
@@ -185,7 +185,7 @@ const routes = [
     name:'ippisLogin',
     component:IppisLogin,
     beforeEnter: (to, from, next) => {
-      if(store.getters['auth/authenticated']) {
+      if(store.getters['Auth/authenticated']) {
         return next({
           name: 'ippisLoanRequest'
         })
@@ -249,7 +249,7 @@ const routes = [
     name: 'Adminlogin',
     component: AdminLogin,
     beforeEnter: (to, from, next) => {
-      if(store.getters['auth/authenticated']) {
+      if(store.getters['Auth/authenticated']) {
         return next({
           name: 'adminDashboard'
         })
@@ -270,7 +270,7 @@ const routes = [
           nameSpace:'Admin'
         },
         beforeEnter: (to, from, next) => {
-          if(!store.getters['auth/isParkwayAdmin']) {
+          if(!store.getters['Auth/isParkwayAdmin']) {
             return next('Adminlogin')
           }
           next()
@@ -293,7 +293,7 @@ const routes = [
           nameSpace:'loan'
         },
         beforeEnter: (to, from, next) => {
-          if(!store.getters['auth/isParkwayAdmin']) {
+          if(!store.getters['Auth/isParkwayAdmin']) {
             return next('Adminlogin')
           }
           next()
@@ -372,7 +372,7 @@ const routes = [
     name: 'dashboard',
     component: Dashboard,
     beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated']) {
+      if(!store.getters['Auth/authenticated']) {
         return next({
           name: 'login'
         })

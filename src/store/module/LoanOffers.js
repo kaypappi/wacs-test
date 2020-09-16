@@ -1,4 +1,4 @@
-import axios from "axios";
+import creditor from "../Api/creditor";
 
 export default {
   namespaced: true,
@@ -61,7 +61,7 @@ export default {
   actions: {
     fetchLoanOffers({ commit }, query) {
       commit("IS_FETCHING_LOANOFFERS", true);
-      axios.get(`creditor/offer/view?${query}`).then((response) => {
+      creditor.fetchLoanOffers(query).then((response) => {
         commit("IS_FETCHING_LOANOFFERS", false);
         if (response.data.data.length === 0) {
           commit("FETCH_LOANOFFERS_NOTFOUND");
@@ -72,7 +72,7 @@ export default {
     },
     searchOffers({ commit }, query) {
       commit("IS_FETCHING_LOANOFFERS", true);
-      axios.get(`creditor/offer/search/${query.search}`).then((response) => {
+      creditor.searchOffers(query).then((response) => {
         commit("IS_FETCHING_LOANOFFERS", false);
         if (response.data.data.length === 0) {
           commit("SEARCH_LOANOFFERS_NOTFOUND");
@@ -89,56 +89,72 @@ export default {
     },
     createLoanOffer({ commit, dispatch }, { data, closeModal }) {
       commit("CREATING_OFFER", true);
-      axios
-        .post(`creditor/offer/create`, data)
+      creditor
+        .createLoanOffer(data)
         .then((response) => {
           response;
           commit("CREATING_OFFER", false);
-          commit("SHOW_TOAST", {title:"Successful!", message:"You created a loan offer", success:true});
+          commit("SHOW_TOAST", {
+            title: "Successful!",
+            message: "You created a loan offer",
+            success: true,
+          });
           closeModal();
           dispatch("fetchLoanOffers");
         })
         .catch((err) => {
           commit("CREATING_OFFER", false);
-          commit("SHOW_TOAST", {title:"Error!",message: err.response.data.message, success:false});
+          commit("SHOW_TOAST", {
+            title: "Error!",
+            message: err.response.data.message,
+            success: false,
+          });
         });
     },
-    editLoanOffer({ commit}, { data, closeModal }) {
-      axios
-        .post(`creditor/offer/update/${data.id}`, data)
+    editLoanOffer({ commit }, { data, closeModal }) {
+      creditor
+        .editLoanOffer(data)
         .then((response) => {
-          commit(
-            "UPDATE_LOAN_OFFER",
-            response.data.data,
-          );
+          commit("UPDATE_LOAN_OFFER", response.data.data);
           closeModal();
           commit("SHOW_TOAST", {
             title: "Successful",
             message: response.data.message,
             success: true,
           });
-         // dispatch("fetchLoanOffers");
+          // dispatch("fetchLoanOffers");
         })
         .catch((err) => {
-          commit("SHOW_TOAST",{ title:"Error",message: err.response.data.message,success: false});
+          commit("SHOW_TOAST", {
+            title: "Error",
+            message: err.response.data.message,
+            success: false,
+          });
         });
     },
     updateLoanOffers({ commit }, newRow) {
       commit("UPDATE_LOAN_OFFER", newRow);
     },
     deleteLoanOffer({ commit }, url, row) {
-      axios
-        .get(url)
+      creditor.deleteLoanOffer(url)
         .then((response) => {
           commit("DELETE_LOANOFFER_ROW", row);
-          commit("SHOW_TOAST",{ title:"Successful!",message: response.data.message,success: true});
+          commit("SHOW_TOAST", {
+            title: "Successful!",
+            message: response.data.message,
+            success: true,
+          });
         })
         .catch((err) => {
-          commit("SHOW_TOAST", {title:"Error",message: err.response.data.message,success: false});
+          commit("SHOW_TOAST", {
+            title: "Error",
+            message: err.response.data.message,
+            success: false,
+          });
         });
     },
     changeStatus({ commit }, url) {
-      axios.get(url).then((response) => {
+      creditor.changeStatus(url).then((response) => {
         commit("UPDATE_LOAN_OFFER", response.data.data);
       });
     },

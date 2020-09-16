@@ -72,7 +72,7 @@
           @input="formatNumberField($event,'amount_to')"
           v-model.number="addOffer.amount_to"
         />
-        <div class="short-dropdown-box">
+        <!-- <div class="short-dropdown-box">
           <label for="payback-period" class="form-modal-label">Payback Period</label>
           <select
             name="payback-period"
@@ -84,7 +84,8 @@
             <option value="0" hidden>Select</option>
             <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
           </select>
-        </div>
+        </div> -->
+        <TextInput :required="true" type="number" @input="handleText($event,'payback_period')" placeholder="In Months"  inputClass="inputClasses" length="short" label="Payback Period"></TextInput>
         <div class="double-input-range-text"></div>
         <TaggedInput
           label="Interest Rate"
@@ -248,35 +249,35 @@ export default {
       return str.join("&");
     },
     handleSearch(event){
-     return this.$store.dispatch("LoanOffers/updateSearchTerm",event)
+     return this.$store.dispatch("CreditorLoanOffer/updateSearchTerm",event)
     },
     fetchLoanOffers(query) {
-      this.$store.dispatch("LoanOffers/fetchLoanOffers",this.serialize(query))
+      this.$store.dispatch("CreditorLoanOffer/fetchLoanOffers",this.serialize(query))
     },
     updateLoanOffers(newRow){
-      this.$store.dispatch("LoanOffers/updateLoanOffers",newRow)
+      this.$store.dispatch("CreditorLoanOffer/updateLoanOffers",newRow)
     },
     deleteLoanOffersRow(row){
-      this.$store.dispatch("LoanOffers/deleteLoanOfferRow",row)
+      this.$store.dispatch("CreditorLoanOffer/deleteLoanOfferRow",row)
     },
     enterSearch(){
       if(this.getSearchTerm()){
         this.$router.push({name:'loanOffers',query:{search:this.getSearchTerm()}})
       }
       else{
-        this.$store.dispatch("LoanOffers/updateSearchFound",true)
+        this.$store.dispatch("CreditorLoanOffer/updateSearchFound",true)
       }
     },
     searchLoanOffer(query){
       if(this.getSearchTerm()){
-        return this.$store.dispatch("LoanOffers/searchOffers",query)
+        return this.$store.dispatch("CreditorLoanOffer/searchOffers",query)
       }
       else{
-        this.$store.dispatch("LoanOffers/updateSearchFound",true)
+        this.$store.dispatch("CreditorLoanOffer/updateSearchFound",true)
       }
     },
     getSearchTerm(){
-      return this.$store.state.LoanOffers.searchTerm
+      return this.$store.state.CreditorLoanOffer.searchTerm
     },
     formatNumberField(num,position) {
       num=this.stripString(num)
@@ -288,7 +289,7 @@ export default {
   },
   computed:{
     offers(){
-      let loanOffers=this.$store.state.LoanOffers.loanOffers.data
+      let loanOffers=this.$store.state.CreditorLoanOffer.loanOffers.data
       if(this.getSearchTerm() && loanOffers) {
                     loanOffers = loanOffers.filter((row) => {
                         return Object.keys(row).some((key) => {
@@ -299,17 +300,17 @@ export default {
         return loanOffers
     },
     loanOffers(){
-      return this.$store.state.LoanOffers.loanOffers
+      return this.$store.state.CreditorLoanOffer.loanOffers
     },
     searchFound(){
-      return this.$store.state.LoanOffers.searchFound
+      return this.$store.state.CreditorLoanOffer.searchFound
     },
     isFetching(){
-      return this.$store.state.LoanOffers.fetchingOffers
+      return this.$store.state.CreditorLoanOffer.fetchingOffers
     },
     
     toast(){
-      return this.$store.state.LoanOffers.toast
+      return this.$store.state.CreditorLoanOffer.toast
     },
     fValue: {
       // getter
@@ -320,17 +321,6 @@ export default {
       set: function(newValue,position) {
         newValue=newValue.replace(",","")
         this.addOffer[position]=newValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-        /* if (newValue.length > 3) {
-          newValue = newValue.replace(",", "");
-          this.value =
-            newValue.substr(0, newValue.length - 2) +
-            "." +
-            newValue.substr(newValue.length - 2);
-
-          // add thousend separator formatting here
-        } else {
-          this.value = newValue;
-        } */
       }
     }
   },

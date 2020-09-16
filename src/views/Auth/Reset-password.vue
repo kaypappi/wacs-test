@@ -86,22 +86,22 @@
                 return this.$store.state.validation;
             },
             isLoading() {
-                return this.$store.state.ResetPassword.isLoading;
+                return this.$store.state.PasswordReset.isLoading;
             },
             isInvalidToken() {
-                return this.$store.state.ResetPassword.tokenIsInvalid;
+                return this.$store.state.PasswordReset.tokenIsInvalid;
             },
             isValidToken() {
-                return this.$store.state.ResetPassword.tokenIsValid;
+                return this.$store.state.PasswordReset.tokenIsValid;
             },
             resetSuccess() {
-                return this.$store.state.ResetPassword.resetSuccess;
+                return this.$store.state.PasswordReset.resetSuccess;
             },
             isActiveUser() {
                 return this.$route.name === "changePassword";
             },
             serverResponse() {
-                return this.$store.state.ResetPassword.error;
+                return this.$store.state.PasswordReset.error;
             }
         },
         methods:{
@@ -116,11 +116,11 @@
                     return;
                 }
                 if(this.isActiveUser) {
-                    this.$store.dispatch('ResetPassword/changePassword', this.formData);
+                    this.$store.dispatch('PasswordReset/changePassword', this.formData);
                     return;
                 }
                 this.formData.token = this.$route.params.token;
-                this.$store.dispatch('ResetPassword/resetPassword', this.formData);
+                this.$store.dispatch('PasswordReset/resetPassword', this.formData);
             },
             keyupEvent(name) {
                 if(this.error[name]) {
@@ -130,7 +130,7 @@
         },
         mounted() { 
             this.$root.$on('bv::toast:hidden', () => { 
-                this.$store.dispatch('ResetPassword/resetPasswordSuccess');
+                this.$store.dispatch('PasswordReset/resetPasswordSuccess');
                 this.$router.replace({
                     name: 'login'
                 }); 

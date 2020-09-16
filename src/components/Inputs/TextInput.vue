@@ -56,7 +56,7 @@
            'id': String,
            'name': String,
            'placeholder': String,
-           'value': String,
+           'value': [String,Number],
        },
        methods: {
            keyupEven() {

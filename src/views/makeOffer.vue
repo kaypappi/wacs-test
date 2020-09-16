@@ -67,10 +67,11 @@
                         <div class="first-repayment">
                             <div class="">
                             <label for="payback-period" class="form-modal-label">Repayment Period</label>
-                            <select name="payback-period" id="payback-period" class="form-modal-inputs " required v-model="offer.repayment_period">
+                            <!-- <select name="payback-period" id="payback-period" class="form-modal-inputs " required v-model="offer.repayment_period">
                                 <option value="0" >Select Month</option>
                                 <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
-                            </select>
+                            </select> -->
+                            <TextInput v-model.number="offer.repayment_period" :required="true" type="number" placeholder="In Months"  inputClass="inputClasses" length="short"  />
                         </div>
                         <TaggedInput
                             label="Interest Rate"
@@ -143,64 +144,7 @@
                                     v-model="offer.repayment_amount"
                                 />
 
-                                <!-- <div>
-                                    <label class="form-modal-label">First Repayment</label>
-                                <div class="first-repayment">
-                                    
-                                    <select
-                                        name="first-repayment-month"
-                                        id="first-repayment-month"
-                                        class="form-modal-inputs "
-                                        v-model="offer.first_repayment_month"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select Month</option>
-                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
-                                    </select>
-                                    <select
-                                        name="first-repayment-year"
-                                        id="first-repayment-year"
-                                        class="form-modal-inputs "
-                                        v-model="offer.first_repayment_year"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select Year</option>
-                                        <option v-for="n in 21" :value="n+getYear" :key="n">{{n + getYear}} </option>
-                                    </select>
-                                </div>
-
-                                </div> -->
-                               <!--  <div>
-                                    <label class="form-modal-label">Last Repayment</label>
-                                <div class="first-repayment">
-                                    
-                                    <select
-                                        name="last-repayment-month"
-                                        id="last-repayment-month"
-                                        class="form-modal-inputs "
-                                        v-model="offer.last_repayment_month"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select Month</option>
-                                        <option v-for="n in 12" :value="n" :key="n">{{months[n-1]}}</option>
-                                    </select>
-                                    <select
-                                        name="last-repayment-year"
-                                        id="last-repayment-year"
-                                        class="form-modal-inputs "
-                                        v-model="offer.last_repayment_year"
-                                        required
-                                        
-                                >
-                                        <option value="0" hidden>Select Year</option>
-                                        <option v-for="n in 21" :value="n+getYear" :key="n">{{n + getYear}} </option>
-                                    </select>
-                                </div>
                                 
-                                </div> -->
                                  <p class="error-div" v-if="errors.step2.equal">{{errors.step2.equal}}</p>
                                 <div class="nav-buttons-wrapper">
                                     <button @click="goToPrev" class="previous-btn" type="button">
@@ -214,17 +158,6 @@
 
                         <div v-if="!equalRepayment" class="upload-schedule-div">
                             <form @submit.prevent="goToNext">
-                                <!-- <DragDropFileInput 
-                                :onfile="fileChange"
-                                :value="file"
-                                :isLoading="fileLoading"
-                                @changed="fileChange($event)"
-                                label="Upload Payment Schedule"
-                                fileTypes="xls, csv up to 5MB"
-                            />
-                            <div class="separator">
-                                <hr><span>OR</span><hr>
-                            </div> -->
                             <p class="form-modal-label"><img src="/assets/images/file.svg" alt="">Enter Repayment Schedule</p>
                             <div class="schedule-wrapper" :key="index" v-for="(n,index) in (offer.unequal_repayment)">
                                 <div class="text-input">
@@ -297,7 +230,7 @@
 
 <script>
     import TaggedInput from '../components/Inputs/TaggedInput';
-   // import TextInput from '../components/Inputs/TextInput'
+    import TextInput from '../components/Inputs/TextInput'
    // import DragDropFileInput from '../components/Inputs/DragDropFileInput';
     import MakeOfferSectionTitle from '../components/MakeOfferSectionsTitle'
     import MakeOfferSummary from '../components/MakeOfferSummary'
@@ -314,6 +247,7 @@
             BIconArrowLeft,
             MakeOfferSummary,
             Toast,
+            TextInput
         },
         data() {
             return {
@@ -561,8 +495,7 @@
                     }
                 }
 
-
-               this.$store.dispatch("LoanRequest/makeOffer",data)
+               this.$store.dispatch("CreditorLoanRequest/makeOffer",data)
                 
             },
             formatMonth(month){
@@ -572,7 +505,7 @@
                 return `${month+1}`
             },
             fetchLoanDetails(requestId){
-                return this.$store.dispatch("LoanRequest/fetchLoanRequestsDetials",requestId)
+                return this.$store.dispatch("CreditorLoanRequest/fetchLoanRequestsDetials",requestId)
             },
             getDefaultValues(data){
                 //this.fetchLoanDetails(requestId)
@@ -586,7 +519,7 @@
 
             },
             getDefaultData(){
-                const loanDetails=this.$store.state.LoanRequest.loanDetails
+                const loanDetails=this.$store.state.CreditorLoanRequest.loanDetails
                 this.offerId=loanDetails.offer.id
                 return this.getDefaultValues(loanDetails)
             },
@@ -644,7 +577,7 @@
                 return total
             },
             isMakingOffer(){
-                return this.$store.state.LoanRequest.Loading
+                return this.$store.state.CreditorLoanRequest.Loading
             },
             getSubmitData(){
                 const data={}
@@ -661,11 +594,11 @@
                 return date.getFullYear() -1
             },
             isFetching(){
-                return this.$store.state.LoanRequest.isFetchingLoanDetails
+                return this.$store.state.CreditorLoanRequest.isFetchingLoanDetails
             },
             
             getToast(){
-                return this.$store.state.LoanRequest.toast
+                return this.$store.state.CreditorLoanRequest.toast
             },
         },
         watch: {

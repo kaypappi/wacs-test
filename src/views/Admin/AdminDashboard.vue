@@ -131,7 +131,6 @@ export default {
       return this.$store.state.AdminLoanRequest.loanRequests;
     },
     requestsSummary() {
-      console.log(this.$store.state.AdminLoanRequest.requestsSummary)
       return this.$store.state.AdminLoanRequest.requestsSummary;
     },
     isFetchingRequests() {

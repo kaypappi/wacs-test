@@ -60,16 +60,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      authenticated: "auth/authenticated",
-      user: "auth/user",
-      isLoading: "auth/isLoading",
+      authenticated: "Auth/authenticated",
+      user: "Auth/user",
+      isLoading: "Auth/isLoading",
       validation: "getValidationError",
-      loginError: "auth/loginError"
+      loginError: "Auth/loginError"
     })
   },
   methods: {
     ...mapActions({
-      signIn: "auth/signIn",
+      signIn: "Auth/signIn",
       clearOneError: "clearOneValidationError"
     }),
     submit() {
@@ -79,7 +79,6 @@ export default {
             name: "ippisLoanRequest"
           });
         })
-        .catch((err) => {console.log(err)});
     },
     keyupEvent(name) {
       if (this.validation[name]) {

@@ -105,7 +105,7 @@ export default {
     async fetchLoanDetails() {
       this.requestId = this.$route.params.requestId;
       return await this.$store.dispatch(
-        "LoanRequest/fetchLoanRequestsDetials",
+        "CreditorLoanRequest/fetchLoanRequestsDetials",
         this.requestId
       );
 
@@ -114,7 +114,7 @@ export default {
     fetchLoanHistory() {
       this.requestId = this.$route.params.requestId;
       this.$store.dispatch(
-        "LoanRequest/fetchLoanHistory",
+        "CreditorLoanRequest/fetchLoanHistory",
         this.loanDetails.user.id
       );
     },
@@ -126,7 +126,7 @@ export default {
     },
     declineRequest() {
       this.$store.dispatch(
-        "LoanRequest/declineLoanRequest",
+        "CreditorLoanRequest/declineLoanRequest",
         this.loanDetails.id
       );
     },
@@ -143,19 +143,19 @@ export default {
   },
   computed: {
     isFetching() {
-      return this.$store.state.LoanRequest.isFetchingLoanDetails;
+      return this.$store.state.CreditorLoanRequest.isFetchingLoanDetails;
     },
     splitDetails() {
-      return this.$store.state.LoanRequest.splitDetails;
+      return this.$store.state.CreditorLoanRequest.splitDetails;
     },
     loanDetails() {
-      return this.$store.state.LoanRequest.loanDetails;
+      return this.$store.state.CreditorLoanRequest.loanDetails;
     },
     isFetchingLoanHistory() {
-      return this.$store.state.LoanRequest.isFetchingLoanHistory;
+      return this.$store.state.CreditorLoanRequest.isFetchingLoanHistory;
     },
     loanHistory() {
-      return this.$store.state.LoanRequest.loanHistory;
+      return this.$store.state.CreditorLoanRequest.loanHistory;
     }
   },
   mounted() {

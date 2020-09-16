@@ -131,7 +131,7 @@ export default {
           query: { search: this.getSearchTerm() }
         });
       } else {
-        this.$store.dispatch("LoanRequest/updateSearchFound", true);
+        this.$store.dispatch("IppisLoanRequest/updateSearchFound", true);
       }
     },
     handleText(event, position) {

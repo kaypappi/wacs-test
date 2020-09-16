@@ -1,4 +1,5 @@
-import axios from "axios";
+
+import admin from "../Api/admin";
 import Vue from "vue";
 export default {
   namespaced: true,
@@ -11,7 +12,7 @@ export default {
     fetchingCompanies: false,
     companies: {},
     companiesPaginationData: {},
-    postCompanySuccess:false,
+    postCompanySuccess: false,
   },
   mutations: {
     FETCH_ADMIN_SUCCESS(state, adminData) {
@@ -53,34 +54,29 @@ export default {
       state.companies = companies.data;
       state.companiesPaginationData = companies.meta;
     },
-    CREATING_COMPANY(state,status){
-        state.creatingCompany=status
+    CREATING_COMPANY(state, status) {
+      state.creatingCompany = status;
     },
-    CREATE_COMPANY_SUCCESS(state,newCompany){
-        state.companies.push(newCompany)
-        state.postCompanySuccess=true
-    }
+    CREATE_COMPANY_SUCCESS(state, newCompany) {
+      state.companies.push(newCompany);
+      state.postCompanySuccess = true;
+    },
   },
   actions: {
     fetchAdmins({ commit }, { page, query, userType }) {
       //const link = page ? `creditor?page=${page}` : 'creditor';
       commit("IS_GETTING_ADMIN", true);
-      axios
-        .get(`/admin/users/${userType}`, {
-          params: {
-            page,
-            ...query,
-          },
-        })
-        .then((res) => {
-          commit("IS_GETTING_ADMIN", false);
-          commit("FETCH_ADMIN_SUCCESS", res.data);
-        });
+
+      admin.fetchAdmins({ page, query, userType }).then((res) => {
+        commit("IS_GETTING_ADMIN", false);
+        commit("FETCH_ADMIN_SUCCESS", res.data);
+      });
     },
     createAdmin({ commit }, { userData, userType }) {
       commit("IS_POSTING_ADMIN", true);
-      axios
-        .post(`admin/${userType}`, userData)
+
+      admin
+        .createAdmin({ userData, userType })
         .then(function(res) {
           commit("IS_POSTING_ADMIN", false);
           commit("CREATE_ADMIN_SUCCESS", res.data.data);
@@ -91,8 +87,9 @@ export default {
     },
     editAdmin({ commit }, { userData, userType }) {
       commit("IS_POSTING_ADMIN", true);
-      axios
-        .patch(`admin/${userType}/` + userData.userId, userData)
+
+      admin
+        .editAdmin({ userData, userType })
         .then(function(res) {
           commit("IS_POSTING_ADMIN", false);
           commit("EDIT_ADMIN_SUCCESS", res.data.data);
@@ -103,22 +100,16 @@ export default {
     },
     fetchCompanies({ commit }, { page, query }) {
       commit("FETCHING_COMPANIES", true);
-      axios
-        .get("admin/companies", {
-          params: {
-            page,
-            ...query,
-          },
-        })
-        .then((response) => {
-          commit("FETCH_COMPANIES_SUCCESS", response.data);
-          commit("FETCHING_COMPANIES", false);
-        });
+
+      admin.fetchCompanies({ page, query }).then((response) => {
+        commit("FETCH_COMPANIES_SUCCESS", response.data);
+        commit("FETCHING_COMPANIES", false);
+      });
     },
     createCompany({ commit }, userData) {
       commit("CREATING_COMPANY", true);
-      axios.post("admin/companies", userData).then((response) => {
-        commit("CREATE_COMPANY_SUCCESS",response.data.data)
+      admin.createAdmin(userData).then((response) => {
+        commit("CREATE_COMPANY_SUCCESS", response.data.data);
         commit("CREATING_COMPANY", false);
       });
     },

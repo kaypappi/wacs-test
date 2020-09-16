@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { EventBus } from '@/event.js';
+import creditor from '../Api/creditor';
 
 export default ({
   namespaced:  true,
@@ -16,7 +16,7 @@ export default ({
 
    actions : {
     toggleUserStatus({commit, dispatch}, id) {
-      axios.post('creditor/isactive/'+id).then((data) => {
+      creditor.toggleUserStatus(id).then((data) => {
         const newStatus = data.data.data.status;
         commit('SET_TOGGLE_SUCCESS', true);
         EventBus.$emit('success', true);

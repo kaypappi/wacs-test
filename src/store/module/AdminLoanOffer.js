@@ -1,4 +1,4 @@
-import axios from "axios";
+import admin from "../Api/admin";
 
 export default {
   namespaced: true,
@@ -46,22 +46,11 @@ export default {
         state.toast.show = false;
       }, 2000);
     },
-    CREATING_OFFER(state, status) {
-      state.creatingOffer = status;
-    },
-    DELETE_LOANOFFER_ROW(state, row) {
-      const index = state.loanOffers.data.findIndex((x) => x.id === row);
-      state.loanOffers.data.splice(index, 1);
-    },
-    UPDATE_LOAN_OFFER(state, newRow) {
-      const index = state.loanOffers.data.findIndex((x) => x.id === newRow.id);
-      state.loanOffers.data.splice(index, 1, newRow);
-    },
   },
   actions: {
     fetchLoanOffers({ commit }, query) {
       commit("IS_FETCHING_LOANOFFERS", true);
-      axios.get(`admin/offers?${query}`).then((response) => {
+      admin.fetchLoanOffers(query).then((response) => {
         commit("IS_FETCHING_LOANOFFERS", false);
         if (response.data.data.length === 0) {
           commit("FETCH_LOANOFFERS_NOTFOUND");
@@ -72,7 +61,7 @@ export default {
     },
     searchOffers({ commit }, query) {
       commit("IS_FETCHING_LOANOFFERS", true);
-      axios.get(`admin/offers/${query.search}/search`).then((response) => {
+      admin.searchOffers(query).then((response) => {
         commit("IS_FETCHING_LOANOFFERS", false);
         if (response.data.data.length === 0) {
           commit("SEARCH_LOANOFFERS_NOTFOUND");
@@ -87,7 +76,7 @@ export default {
     updateSearchFound({ commit }, status) {
       commit("UPDATE_SEARCH_FOUND", status);
     },
-    
+
     updateLoanOffers({ commit }, newRow) {
       commit("UPDATE_LOAN_OFFER", newRow);
     },

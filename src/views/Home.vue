@@ -79,10 +79,10 @@ export default {
   methods: {
     fetchLoanRequests(query) {
       query = this.serialize(query);
-      this.$store.dispatch("LoanRequest/fetchLoanRequests", query);
+      this.$store.dispatch("CreditorLoanRequest/fetchLoanRequests", query);
     },
     fetchRequestsSummary() {
-      this.$store.dispatch("LoanRequest/requestsSummary");
+      this.$store.dispatch("CreditorLoanRequest/requestsSummary");
     },
     serialize(obj, prefix) {
       var str = [],
@@ -106,16 +106,16 @@ export default {
   },
   computed: {
     loanRequests() {
-      return this.$store.state.LoanRequest.loanRequests;
+      return this.$store.state.CreditorLoanRequest.loanRequests;
     },
     requestsSummary() {
-      return this.$store.state.LoanRequest.requestsSummary;
+      return this.$store.state.CreditorLoanRequest.requestsSummary;
     },
     isFetchingRequests() {
-      return this.$store.state.LoanRequest.isFetchingLoanRequests;
+      return this.$store.state.CreditorLoanRequest.isFetchingLoanRequests;
     },
     isFetchingSummary() {
-      return this.$store.state.LoanRequest.fetchingSummary;
+      return this.$store.state.CreditorLoanRequest.fetchingSummary;
     }
   },
   mounted() {

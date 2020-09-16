@@ -158,7 +158,7 @@
         },
         methods: {
             fetchAdminRoles(){
-                this.$store.dispatch("User/fetchAdminRoles")
+                this.$store.dispatch("CreditorUser/fetchAdminRoles")
             },
             searchAdmin() {
                 if(this.searchTerm){
@@ -166,16 +166,16 @@
                 }
             },
             changePage(page=this.$route.query.page, query=this.$route.query) {
-                this.$store.dispatch('User/fetchAdmins', page, query);
+                this.$store.dispatch('CreditorUser/fetchAdmins', page, query);
             },
             onSubmit() {
                 if(!this.$can('create', 'user') || !Object.keys(this.addUser).length){
                     return;
                 }
                 if(this.edittingUser || this.changingUserRole) {
-                    this.$store.dispatch('User/editAdmin', this.compareDataOnEdit());
+                    this.$store.dispatch('CreditorUser/editAdmin', this.compareDataOnEdit());
                 } else{
-                    this.$store.dispatch('User/createAdmin', this.addUser);
+                    this.$store.dispatch('CreditorUser/createAdmin', this.addUser);
                 }
             },
             compareDataOnEdit() {
@@ -225,10 +225,10 @@
                 EventBus.$emit('custom', modalDetails);
             },
             resetPassword() {
-                this.$store.dispatch('ResetPassword/sendPasswordResetLink', {email: this.confirmModal.resetPasswordTargetEmail});
+                this.$store.dispatch('Auth/sendPasswordResetLink', {email: this.confirmModal.resetPasswordTargetEmail});
             },
             toggleStatus() {
-                this.$store.dispatch('UserStatus/toggleUserStatus', this.confirmModal.targetUserId);
+                this.$store.dispatch('CreditorUser/toggleUserStatus', this.confirmModal.targetUserId);
             },
             onHide() {
                 this.addUser = {};
@@ -240,7 +240,7 @@
         },
         computed: {
             users() {
-                let admins = this.$store.state.User.adminUsers;
+                let admins = this.$store.state.CreditorUser.adminUsers;
                 
                 if(this.searchTerm && admins) {
                     admins = admins.filter((row) => {
@@ -252,22 +252,22 @@
                 return admins;
             },
             paginationData() {
-                return this.$store.state.User.paginationData;
+                return this.$store.state.CreditorUser.paginationData;
             },
             postSuccess() {
-                return this.$store.state.User.postAdminSuccess;
+                return this.$store.state.CreditorUser.postAdminSuccess;
             },
             error() {
                 return this.$store.state.validation;
             },
             isPosting() {
-                return this.$store.state.User.isPostingAdmin;
+                return this.$store.state.CreditorUser.isPostingAdmin;
             },
             isGettingUsers() {
-                return this.$store.state.User.isGettingAdmins;
+                return this.$store.state.CreditorUser.isGettingAdmins;
             },
             adminRoles(){
-                return this.$store.state.User.adminRoles
+                return this.$store.state.CreditorUser.adminRoles
             }
         },
         mounted() {
