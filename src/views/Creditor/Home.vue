@@ -10,8 +10,16 @@
       <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
       <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
       <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
-      <StatsCard title="Bank Approved Requests" textColor="green" :value="requestsSummary.bank_approved" />
-      <StatsCard title="Awaiting IPPIS Requests" textColor="green" :value="requestsSummary.awaiting_ippis" />
+      <StatsCard
+        title="Bank Approved Requests"
+        textColor="green"
+        :value="requestsSummary.bank_approved"
+      />
+      <StatsCard
+        title="Awaiting IPPIS Requests"
+        textColor="green"
+        :value="requestsSummary.awaiting_ippis"
+      />
       <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
     </div>
 
@@ -65,9 +73,9 @@
 
 <script>
 // @ is an alias to /src
-import StatsCard from "../components/StatsCard";
-import Table from "../components/Table/Table";
-import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
+import StatsCard from "../../components/StatsCard";
+import Table from "../../components/Table/Table";
+import LoanRequestTableRow from "../../components/Table/LoanRequestTableRow";
 
 export default {
   name: "home",
@@ -119,8 +127,8 @@ export default {
     }
   },
   mounted() {
-    this.fetchRequestsSummary()
-      this.fetchLoanRequests(this.$router.history.current.query);
+    this.fetchRequestsSummary();
+    this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
 </script>

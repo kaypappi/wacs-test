@@ -81,14 +81,14 @@
 
 <script>
 //import axios from "axios";
-import SearchFilterInput from "../components/Inputs/SearchFilterInput";
-import Table from "../components/Table/Table";
-import LoanRequestTableRow from "../components/Table/LoanRequestTableRow";
-import LoanRequestFilter from "../components/Dropdown/LoanRequestFilter";
+import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
+import Table from "../../components/Table/Table";
+import LoanRequestTableRow from "../../components/Table/LoanRequestTableRow";
+import LoanRequestFilter from "../../components/Dropdown/LoanRequestFilter";
 // import { baseUrl } from "../router/api_routes";
 import moment from "moment";
-import NoData from "../components/NoData";
-import Pagination from "../components/Pagination/Pagination";
+import NoData from "../../components/NoData";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default {
   components: {
@@ -179,7 +179,10 @@ export default {
       return this.$store.state.CreditorLoanRequest.searchTerm;
     },
     handleSearch(event) {
-      return this.$store.dispatch("CreditorLoanRequest/updateSearchTerm", event);
+      return this.$store.dispatch(
+        "CreditorLoanRequest/updateSearchTerm",
+        event
+      );
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");

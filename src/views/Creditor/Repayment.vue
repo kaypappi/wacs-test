@@ -19,26 +19,31 @@
     </div>
     <template v-if="!fetchingRepayments">
       <div class="schedule-wrapper">
-      <RepaymentScheduleTable :repayments="repayments.data" />
-    </div>
-    <Pagination
-          v-if="repayments.meta"
-          :total="repayments.meta.total"
-          :currentPage="repayments.meta.current_page"
-          :lastPage="repayments.meta.last_page"
-          :from="repayments.meta.from"
-          :to="repayments.meta.to"
-        />
+        <RepaymentScheduleTable :repayments="repayments.data" />
+      </div>
+      <Pagination
+        v-if="repayments.meta"
+        :total="repayments.meta.total"
+        :currentPage="repayments.meta.current_page"
+        :lastPage="repayments.meta.last_page"
+        :from="repayments.meta.from"
+        :to="repayments.meta.to"
+      />
     </template>
-    <img src="/assets/images/page-ring-loader.svg" alt="loader" v-if="fetchingRepayments" class="page-loader">
+    <img
+      src="/assets/images/page-ring-loader.svg"
+      alt="loader"
+      v-if="fetchingRepayments"
+      class="page-loader"
+    />
   </div>
 </template>
 
 <script>
-import DateField from "../components/Inputs/DateField";
-import RepaymentScheduleTable from "../components/Table/RepaymentScheduleTable";
-import Pagination from "../components/Pagination/Pagination"
-import { baseUrl } from "../router/api_routes";
+import DateField from "../../components/Inputs/DateField";
+import RepaymentScheduleTable from "../../components/Table/RepaymentScheduleTable";
+import Pagination from "../../components/Pagination/Pagination";
+import { baseUrl } from "../../router/api_routes";
 import axios from "axios";
 export default {
   components: {
@@ -51,8 +56,8 @@ export default {
       fetchingRepayments: false,
       repayments: {},
       filters: {
-        from:'',
-        to:''
+        from: "",
+        to: ""
       }
     };
   },
@@ -62,21 +67,19 @@ export default {
       const URL =
         baseUrl + `creditor/repayments/reports?${this.serialize(query)}`;
       axios.get(URL).then(response => {
-        this.repayments = {...response.data};
-        this.fetchingRepayments=false
+        this.repayments = { ...response.data };
+        this.fetchingRepayments = false;
       });
     },
-    handleText(event,position){
-      this.filters[position]=event
-      const data={}
-      if(this.filters.from&&this.filters.to){
-        data.date=`${this.filters.from}.${this.filters.to}`
-        this.$router.push({name:'repayments',query:{...data}})
+    handleText(event, position) {
+      this.filters[position] = event;
+      const data = {};
+      if (this.filters.from && this.filters.to) {
+        data.date = `${this.filters.from}.${this.filters.to}`;
+        this.$router.push({ name: "repayments", query: { ...data } });
+      } else {
+        this.$router.push({ name: "repayments", query: {} });
       }
-      else{
-        this.$router.push({name:'repayments',query:{}})
-      }
-      
     },
     serialize(obj, prefix) {
       var str = [],
@@ -110,16 +113,15 @@ export default {
 </script>
 
 <style >
-.repayments-wrapper .page-filters{
-  padding: 3px 30px ;
+.repayments-wrapper .page-filters {
+  padding: 3px 30px;
 }
-.page-filters .start-date{
+.page-filters .start-date {
   margin-right: 30px;
   display: flex;
-    align-items: center;
+  align-items: center;
 }
 .date-separator {
   margin: 0 30px;
 }
-
 </style>

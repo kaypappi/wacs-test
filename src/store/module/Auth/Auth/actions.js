@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getUrlPath } from "../../../../helpers/getPath";
 
-
 export const signIn = async ({ commit, dispatch }, { credentials }) => {
   commit("SET_VALIDATION_ERROR", [], { root: true });
   commit("SET_ERROR_MESSAGE", null);
@@ -47,4 +46,3 @@ export const logout = async ({ commit }) => {
   commit("SET_USER", null);
   return response;
 };
-

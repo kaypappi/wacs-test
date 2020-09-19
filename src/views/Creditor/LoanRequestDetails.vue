@@ -35,7 +35,11 @@
 
       <div class="loan-details-header">
         <h5>Loan Details</h5>
-        <p v-if="loanDetails.repayment_details!==null" class="view-schedule" @click="$router.push({name:'repaymentsSchedule',params:{id:loanDetails.repayment_details.id}})">View Repayment Schedule</p>
+        <p
+          v-if="loanDetails.repayment_details!==null"
+          class="view-schedule"
+          @click="$router.push({name:'repaymentsSchedule',params:{id:loanDetails.repayment_details.id}})"
+        >View Repayment Schedule</p>
       </div>
       <table class="table personal-info-table no-border-table">
         <NoBorderTableRow :data=" splitDetails.loanDetailsRowOne" />
@@ -47,7 +51,9 @@
         v-if="isFetchingLoanHistory"
         class="page-loader"
       />
-      <template v-if="!isFetchingLoanHistory && (loanHistory.data? loanHistory.data.length>0: true)">
+      <template
+        v-if="!isFetchingLoanHistory && (loanHistory.data? loanHistory.data.length>0: true)"
+      >
         <h5>Loan History</h5>
         <table class="table personal-info-table border-table">
           <tr class="t-head">
@@ -73,8 +79,8 @@
 </template>
 
 <script>
-import NoBorderTableRow from "../components/Table/NoBorderTableRow";
-import Toast from "../components/Toast";
+import NoBorderTableRow from "../../components/Table/NoBorderTableRow";
+import Toast from "../../components/Toast";
 export default {
   components: {
     NoBorderTableRow,
@@ -167,13 +173,13 @@ export default {
 </script>
 
 <style>
-.loan-details-header{
+.loan-details-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 }
 
-.loan-details-header p{
+.loan-details-header p {
   color: #009831;
   margin-bottom: 0;
   cursor: pointer;

@@ -1,19 +1,19 @@
 <template>
-  <div class='loan-offers-wrapper'>
-    <Toast 
-            :show="toast.show"
-            :title="toast.title"
-            :successMessage="toast.message"
-            :failureMessage="toast.message"
-            :success="toast.success"
-        />
+  <div class="loan-offers-wrapper">
+    <Toast
+      :show="toast.show"
+      :title="toast.title"
+      :successMessage="toast.message"
+      :failureMessage="toast.message"
+      :success="toast.success"
+    />
     <div class="page-filters">
       <!-- <div class="requests-no"><span v-if="loanOffers.meta">{{loanOffers.meta.total}}</span> Loan Offers</div> -->
-      <SearchFilterInput 
-                placeholder="Search by code,title"
-                :value="getSearchTerm()"
-          :onSearch="enterSearch"
-          @input="handleSearch($event)"
+      <SearchFilterInput
+        placeholder="Search by code,title"
+        :value="getSearchTerm()"
+        :onSearch="enterSearch"
+        @input="handleSearch($event)"
       />
       <LoanOffersFilter :isLoading="isFetching"></LoanOffersFilter>
 
@@ -34,17 +34,23 @@
           fileTypes="PNG, JPG up to 5MB"
         />-->
         <div class="cot">
-            
-            <div class="cot-code">
-                <TextInput :required="true" type="text" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
-            </div>
-            <div class="double-input-range-text"></div>
-            <div class="cot-title">
-                <TextInput :required="true" @input="handleText($event,'title')" placeholder="Enter Title"  inputClass="inputClasses" length="short" label="Title"></TextInput>
-            </div>
+          <div class="cot-code">
+            <TextInput></TextInput>
+          </div>
+          <div class="double-input-range-text"></div>
+          <div class="cot-title">
+            <TextInput></TextInput>
+          </div>
         </div>
         <div class="description">
-          <TextArea row="2" :required="true" @changes="handleText($event,'description')" label='Description' inputClass="inputClasses" placeholder="Enter Description"/>
+          <TextArea
+            row="2"
+            :required="true"
+            @changes="handleText($event,'description')"
+            label="Description"
+            inputClass="inputClasses"
+            placeholder="Enter Description"
+          />
         </div>
         <TaggedInput
           label="Amount"
@@ -84,8 +90,8 @@
             <option value="0" hidden>Select</option>
             <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
           </select>
-        </div> -->
-        <TextInput :required="true" type="number" @input="handleText($event,'payback_period')" placeholder="In Months"  inputClass="inputClasses" length="short" label="Payback Period"></TextInput>
+        </div>-->
+        <TextInput></TextInput>
         <div class="double-input-range-text"></div>
         <TaggedInput
           label="Interest Rate"
@@ -137,7 +143,11 @@
         </NoData>
       </template>
       <template v-else-if="loanOffers.data">
-        <LoanOffersTable :items="offers" :updateItems="updateLoanOffers" :deleteRow="deleteLoanOffersRow" />
+        <LoanOffersTable
+          :items="offers"
+          :updateItems="updateLoanOffers"
+          :deleteRow="deleteLoanOffersRow"
+        />
       </template>
       <template v-else>
         <NoData>
@@ -149,33 +159,31 @@
           </template>
         </NoData>
       </template>
-      
-      
     </template>
     <Pagination
-          v-if="!searchTerm && loanOffers.meta && searchFound"
-          :total="loanOffers.meta.total"
-          :currentPage="loanOffers.meta.current_page"
-          :lastPage="loanOffers.meta.last_page"
-          :from="loanOffers.meta.from"
-          :to="loanOffers.meta.to"
-        />
+      v-if="!searchTerm && loanOffers.meta && searchFound"
+      :total="loanOffers.meta.total"
+      :currentPage="loanOffers.meta.current_page"
+      :lastPage="loanOffers.meta.last_page"
+      :from="loanOffers.meta.from"
+      :to="loanOffers.meta.to"
+    />
   </div>
 </template>
 
 <script>
-import CustomModal from "../components/Modals/CustomModal";
-import LoanOffersTable from "../components/Table/LoanOffersTable";
-import TaggedInput from "../components/Inputs/TaggedInput";
-import TextInput from "../components/Inputs/TextInput";
-import TextArea from "../components/Inputs/TextArea"
-import SubmitButton from "../components/Buttons/SubmitButton";
-import Button from "../components/Buttons/Botton";
-import LoanOffersFilter from "../components/Dropdown/LoanOffersFilter";
-import Toast from '../components/Toast'
-import NoData from "../components/NoData"
-import SearchFilterInput from "../components/Inputs/SearchFilterInput"
-import Pagination from "../components/Pagination/Pagination"
+import CustomModal from "../../components/Modals/CustomModal";
+import LoanOffersTable from "../../components/Table/LoanOffersTable";
+import TaggedInput from "../../components/Inputs/TaggedInput";
+import TextInput from "../../components/Inputs/TextInput";
+import TextArea from "../../components/Inputs/TextArea";
+import SubmitButton from "../../components/Buttons/SubmitButton";
+import Button from "../../components/Buttons/Botton";
+import LoanOffersFilter from "../../components/Dropdown/LoanOffersFilter";
+import Toast from "../../components/Toast";
+import NoData from "../../components/NoData";
+import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
+import Pagination from "../../components/Pagination/Pagination";
 export default {
   components: {
     CustomModal,
@@ -193,7 +201,7 @@ export default {
   },
   data() {
     return {
-      errors:{},
+      errors: {},
       searchTerm: "",
       creatingOffer: false,
       fetchingOffers: false,
@@ -205,29 +213,32 @@ export default {
     };
   },
   methods: {
-    closeModal(){
+    closeModal() {
       this.$bvModal.hide("add-form-modal");
     },
     onSubmit() {
-      const data=this.getSubmitData()
-      this.$store.dispatch("LoanOffers/createLoanOffer",{data,closeModal:this.closeModal})
+      const data = this.getSubmitData();
+      this.$store.dispatch("LoanOffers/createLoanOffer", {
+        data,
+        closeModal: this.closeModal
+      });
     },
-    getSubmitData(){
-      const data={
-        code_name:this.addOffer.code,
-        title:this.addOffer.title,
-        description:this.addOffer.description,
-        interest_rate:this.addOffer.interest_rate,
-        amount_from:parseInt(this.stripString(this.addOffer.amount_from)),
-        amount_to:parseInt(this.stripString(this.addOffer.amount_to)),
-        payback_period:this.addOffer.payback_period,
-        interest_rate_from:this.addOffer.interest_rate_from,
-        moratorium_period:this.addOffer.moratorium_principal
-      }
-      return data
+    getSubmitData() {
+      const data = {
+        code_name: this.addOffer.code,
+        title: this.addOffer.title,
+        description: this.addOffer.description,
+        interest_rate: this.addOffer.interest_rate,
+        amount_from: parseInt(this.stripString(this.addOffer.amount_from)),
+        amount_to: parseInt(this.stripString(this.addOffer.amount_to)),
+        payback_period: this.addOffer.payback_period,
+        interest_rate_from: this.addOffer.interest_rate_from,
+        moratorium_period: this.addOffer.moratorium_principal
+      };
+      return data;
     },
-    handleText(event,type){
-         this.addOffer[type]=event
+    handleText(event, type) {
+      this.addOffer[type] = event;
     },
     onHide() {
       this.addOffer = {};
@@ -248,69 +259,77 @@ export default {
       }
       return str.join("&");
     },
-    handleSearch(event){
-     return this.$store.dispatch("CreditorLoanOffer/updateSearchTerm",event)
+    handleSearch(event) {
+      return this.$store.dispatch("CreditorLoanOffer/updateSearchTerm", event);
     },
     fetchLoanOffers(query) {
-      this.$store.dispatch("CreditorLoanOffer/fetchLoanOffers",this.serialize(query))
+      this.$store.dispatch(
+        "CreditorLoanOffer/fetchLoanOffers",
+        this.serialize(query)
+      );
     },
-    updateLoanOffers(newRow){
-      this.$store.dispatch("CreditorLoanOffer/updateLoanOffers",newRow)
+    updateLoanOffers(newRow) {
+      this.$store.dispatch("CreditorLoanOffer/updateLoanOffers", newRow);
     },
-    deleteLoanOffersRow(row){
-      this.$store.dispatch("CreditorLoanOffer/deleteLoanOfferRow",row)
+    deleteLoanOffersRow(row) {
+      this.$store.dispatch("CreditorLoanOffer/deleteLoanOfferRow", row);
     },
-    enterSearch(){
-      if(this.getSearchTerm()){
-        this.$router.push({name:'loanOffers',query:{search:this.getSearchTerm()}})
-      }
-      else{
-        this.$store.dispatch("CreditorLoanOffer/updateSearchFound",true)
-      }
-    },
-    searchLoanOffer(query){
-      if(this.getSearchTerm()){
-        return this.$store.dispatch("CreditorLoanOffer/searchOffers",query)
-      }
-      else{
-        this.$store.dispatch("CreditorLoanOffer/updateSearchFound",true)
+    enterSearch() {
+      if (this.getSearchTerm()) {
+        this.$router.push({
+          name: "loanOffers",
+          query: { search: this.getSearchTerm() }
+        });
+      } else {
+        this.$store.dispatch("CreditorLoanOffer/updateSearchFound", true);
       }
     },
-    getSearchTerm(){
-      return this.$store.state.CreditorLoanOffer.searchTerm
+    searchLoanOffer(query) {
+      if (this.getSearchTerm()) {
+        return this.$store.dispatch("CreditorLoanOffer/searchOffers", query);
+      } else {
+        this.$store.dispatch("CreditorLoanOffer/updateSearchFound", true);
+      }
     },
-    formatNumberField(num,position) {
-      num=this.stripString(num)
-      this.addOffer[position]= Number(num).toLocaleString() 
+    getSearchTerm() {
+      return this.$store.state.CreditorLoanOffer.searchTerm;
     },
-    stripString(data){
-      return data.toString().replace(/,/g,"")
+    formatNumberField(num, position) {
+      num = this.stripString(num);
+      this.addOffer[position] = Number(num).toLocaleString();
+    },
+    stripString(data) {
+      return data.toString().replace(/,/g, "");
     }
   },
-  computed:{
-    offers(){
-      let loanOffers=this.$store.state.CreditorLoanOffer.loanOffers.data
-      if(this.getSearchTerm() && loanOffers) {
-                    loanOffers = loanOffers.filter((row) => {
-                        return Object.keys(row).some((key) => {
-                            return String(row[key]).toLowerCase().indexOf(this.getSearchTerm().toLowerCase()) > -1
-                        })
-                    })
-                }
-        return loanOffers
+  computed: {
+    offers() {
+      let loanOffers = this.$store.state.CreditorLoanOffer.loanOffers.data;
+      if (this.getSearchTerm() && loanOffers) {
+        loanOffers = loanOffers.filter(row => {
+          return Object.keys(row).some(key => {
+            return (
+              String(row[key])
+                .toLowerCase()
+                .indexOf(this.getSearchTerm().toLowerCase()) > -1
+            );
+          });
+        });
+      }
+      return loanOffers;
     },
-    loanOffers(){
-      return this.$store.state.CreditorLoanOffer.loanOffers
+    loanOffers() {
+      return this.$store.state.CreditorLoanOffer.loanOffers;
     },
-    searchFound(){
-      return this.$store.state.CreditorLoanOffer.searchFound
+    searchFound() {
+      return this.$store.state.CreditorLoanOffer.searchFound;
     },
-    isFetching(){
-      return this.$store.state.CreditorLoanOffer.fetchingOffers
+    isFetching() {
+      return this.$store.state.CreditorLoanOffer.fetchingOffers;
     },
-    
-    toast(){
-      return this.$store.state.CreditorLoanOffer.toast
+
+    toast() {
+      return this.$store.state.CreditorLoanOffer.toast;
     },
     fValue: {
       // getter
@@ -318,9 +337,11 @@ export default {
         return this.addOffer[position];
       },
       // setter
-      set: function(newValue,position) {
-        newValue=newValue.replace(",","")
-        this.addOffer[position]=newValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      set: function(newValue, position) {
+        newValue = newValue.replace(",", "");
+        this.addOffer[position] = newValue
+          .toString()
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     }
   },
@@ -330,11 +351,10 @@ export default {
   watch: {
     "$route.query": {
       handler(query) {
-        if(query.search){
-         this.searchLoanOffer(query)
-        }
-        else{
-          this.fetchLoanOffers(query)
+        if (query.search) {
+          this.searchLoanOffer(query);
+        } else {
+          this.fetchLoanOffers(query);
         }
       },
       deep: true
@@ -352,21 +372,21 @@ export default {
 }
 
 .inputClasses {
-    width: inherit;
-    background: #f8f8f8;
-    background-color: #f8f8f8 !important;
-    border: 1px solid #CCCCCC;
-    padding: 10px;
+  width: inherit;
+  background: #f8f8f8;
+  background-color: #f8f8f8 !important;
+  border: 1px solid #cccccc;
+  padding: 10px;
 }
 
-.description{
+.description {
   margin-top: 15px;
 }
 
-.cot{
-    display: flex;
-    justify-content: space-between;
-    padding: 0;
+.cot {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
 }
 
 .filter-by {
@@ -376,14 +396,14 @@ export default {
   padding: 3px 0px 3px 3px;
   border-left: 0px;
 }
-.no-offers{
+.no-offers {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 100px;
 }
 
-.no-offers img{
+.no-offers img {
   margin-bottom: 20px;
 }
 </style>
