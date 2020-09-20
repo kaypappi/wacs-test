@@ -18,7 +18,7 @@
         <p class="well-done h3">Well Done!</p>
         <p class="info-content">You have successfully created a WACS account</p>
       </div>
-      <div class="finish-btn-holder" @click="created_account=true">
+      <div @click="goToDashboard" class="finish-btn-holder">
         <SubmitButton name="Create Account" buttonClass="finish-btn" />
       </div>
     </template>
@@ -49,6 +49,11 @@ export default {
       },
       created_account: false
     };
+  },
+  methods: {
+    goToDashboard() {
+      this.$router.push({ name: "staffDashboard" });
+    }
   }
 };
 </script>
