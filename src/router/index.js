@@ -38,6 +38,7 @@ import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue";
 
 import StaffMainAuth from "../views/Staff/Auth/Main.vue";
 import StaffDashboard from "../views/Staff/Dashboard.vue";
+import StaffMain from "../components/Layout/StaffMain.vue"
 
 Vue.use(VueRouter);
 
@@ -401,10 +402,10 @@ const routes = [
   },
   {
     path: "/user",
-    component: StaffDashboard,
+    component: StaffMain,
     children: [
       {
-        path: "/user/dashboard",
+        path: "/user",
         name: "staffDashboard",
         component: StaffDashboard,
         /* meta: {
