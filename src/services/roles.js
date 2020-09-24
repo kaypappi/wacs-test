@@ -8,8 +8,8 @@ import store from '@/store'
 export const defineAbilities = () => {
     function defineAbilitiesFor() {
         const { rules, can } = AbilityBuilder.extract();
-        if(store.getters['auth/authenticated']){
-            store.getters['auth/user'].data.permissions.forEach((permission)=>{
+        if(store.getters['Auth/authenticated']){
+            store.getters['Auth/user'].data.permissions.forEach((permission)=>{
                 can(...permission)
             })
         }

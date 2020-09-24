@@ -48,7 +48,7 @@
         },
         methods: {
             logout() {
-                this.$store.dispatch('auth/logout').then(() => {
+                this.$store.dispatch('Auth/logout').then(() => {
                     this.$router.push({
                         name: this.logoutRoute,
                     }).catch(()=>{})

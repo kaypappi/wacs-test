@@ -1,9 +1,9 @@
 <template>
   <div class="verify-wrapper">
-    <template v-if="!is_verifying">
+    <template v-if="!validatingCode">
       <div class="top-text h3">Verify Your Phone Number</div>
       <p class="info-text">Please enter the OTP (One Time Password) sent to</p>
-      <p class="phone-number">0803 ***** 56</p>
+      <p class="phone-number">{{userShortData.mobile_number}}</p>
       <div class="otp-code">
         <div style="display: flex; flex-direction: row;">
           <OtpInput
@@ -37,6 +37,7 @@
 <script>
 //import TextInput from "../../../../components/Inputs/TextInput";
 import OtpInput from "@bachdgvn/vue-otp-input";
+import {  mapGetters,mapActions } from "vuex";
 export default {
   props: {
     next: Function
@@ -54,12 +55,18 @@ export default {
     };
   },
   methods: {
-    handleOnComplete(value) {
+      ...mapActions({
+          validateCode:"UserAuth/ValidateCode"
+      }),
+  async  handleOnComplete(value) {
       this.form.mobile_code = value;
-      this.is_verifying = true;
+      this.form.ippis_number=this.userShortData.ippis_number
+      await this.validateCode(this.form)
+      this.next()
+      /* this.is_verifying = true;
       setTimeout(() => {
         (this.is_verifying = false), this.next();
-      }, 6000);
+      }, 6000); */
     },
     handleOnChange(value) {
       this.form.mobile_code = value;
@@ -67,7 +74,14 @@ export default {
     handleClearInput() {
       this.$refs.otpInput.clearInput();
     }
-  }
+  },
+  computed: {
+    ...mapGetters({
+      userShortData:"UserAuth/userShortData",
+      userFullData:"UserAuth/userFullData",
+      validatingCode:"UserAuth/validatingCode"
+    })
+  },
 };
 </script>
 

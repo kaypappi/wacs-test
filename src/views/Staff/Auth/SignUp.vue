@@ -18,13 +18,14 @@ export default {
   },
   data() {
     return {
-      steps: 1
+      steps: 1,
+      userData:null
     };
   },
   methods: {
     nextStep() {
       this.steps = this.steps + 1;
-    }
+    },
   }
 };
 </script>

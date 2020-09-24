@@ -2,13 +2,13 @@
   <div class="complete-creation-wrapper">
     <template v-if="!created_account">
       <div class="top-text h3 text-center">Your Details</div>
-      <template v-for="(item, key, index) in user_info">
+      <template v-for="(item, key, index) in userFullData">
         <div :key="index" class="info-tile d-flex">
-          <span class="info-title mr-auto">{{key.replace(/_/g," ")}}</span>
+          <span class="info-title mr-auto">{{formatLabel(key)}}</span>
           <span class="info-content ml-auto">{{item}}</span>
         </div>
       </template>
-      <div @click="created_account=true">
+      <div @click="submit">
         <SubmitButton name="Create Account" buttonClass="submit-btn" />
       </div>
     </template>
@@ -27,6 +27,7 @@
 
 <script>
 import SubmitButton from "../../../../components/Buttons/SubmitButton";
+import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     SubmitButton
@@ -51,9 +52,33 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      completeAccountCreation: "UserAuth/CompleteAccountCreation"
+    }),
     goToDashboard() {
       this.$router.push({ name: "staffDashboard" });
+    },
+    async submit() {
+      const form = {
+        ippis_number: this.userShortData.ippis_number,
+        password:this.userShortData.password
+      };
+      await this.completeAccountCreation(form);
+      this.created_account=true
+    },
+    formatLabel(sentence) {
+      const newSentence = sentence
+        .replace(/_/g, " ")
+        .replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+
+      return newSentence;
     }
+  },
+  computed: {
+    ...mapGetters({
+      userFullData: "UserAuth/userFullData",
+      userShortData: "UserAuth/userShortData"
+    })
   }
 };
 </script>

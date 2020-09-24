@@ -216,7 +216,7 @@ export default {
 
   fetchAdminRoles(){
     return new Promise((resolve, reject) => {
-        axios.get("/admin/roles")
+        axios.get("/creditor/roles")
           .then((response) => {
             resolve(response);
           })

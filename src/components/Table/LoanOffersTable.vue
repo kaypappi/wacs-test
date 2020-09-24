@@ -274,11 +274,11 @@ export default {
       else{
         url=baseUrl+`creditor/offer/${this.addOffer.id}/activate`
       }
-      this.$store.dispatch("LoanOffers/changeStatus",url)
+      this.$store.dispatch("CreditorLoanOffer/changeStatus",url)
     },
     Delete() {
       let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
-      this.$store.dispatch("LoanOffers/deleteLoanOffer",url,this.addOffer.id)
+      this.$store.dispatch("CreditorLoanOffer/deleteLoanOffer",url,this.addOffer.id)
     },
     onRowSelected(items) {
       this.selected = items;
@@ -297,7 +297,7 @@ export default {
 },
     onSubmit() {
      const data= this.getEditedData()
-     this.$store.dispatch("LoanOffers/editLoanOffer",{data,closeModal:this.closeModal})
+     this.$store.dispatch("CreditorLoanOffer/editLoanOffer",{data,closeModal:this.closeModal})
     },
     getEditedData(){
        let data={

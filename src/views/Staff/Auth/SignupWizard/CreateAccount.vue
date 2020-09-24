@@ -13,7 +13,6 @@
         v-model="form.ippis_number"
         :error="validation.ippis_number"
         :keyupEvent="keyupEvent"
-        :required="false"
       />
       <TextInput
         type="number"
@@ -25,7 +24,6 @@
         v-model="form.bvn"
         :error="validation.bvn"
         :keyupEvent="keyupEvent"
-        :required="false"
       />
       <TextInput
         type="email"
@@ -37,7 +35,6 @@
         v-model="form.email"
         :error="validation.email"
         :keyupEvent="keyupEvent"
-        :required="false"
       />
       <TextInput
         type="password"
@@ -49,9 +46,8 @@
         placeholder="Enter Password"
         v-model="form.password"
         :keyupEvent="keyupEvent"
-        :required="false"
       />
-      <SubmitButton :isLoading="isLoading" name="Next" buttonClass="submit-btn" />
+      <SubmitButton :isLoading="creatingUser" name="Next" buttonClass="submit-btn" />
     </form>
   </div>
 </template>
@@ -78,27 +74,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      authenticated: "Auth/authenticated",
-      user: "Auth/user",
-      isLoading: "Auth/isLoading",
+      creatingUser: "UserAuth/creatingUser",
       validation: "getValidationError",
       loginError: "Auth/loginError"
     })
   },
   methods: {
     ...mapActions({
-      signIn: "Auth/signIn",
+      CreateUserAccount: "UserAuth/CreateUserAccount",
       clearOneError: "clearOneValidationError"
     }),
-    submit() {
+    async submit() {
+     await this.CreateUserAccount(this.form);
       this.next();
-      /* this.signIn({ credentials: this.form, userType: "user" })
-        .then(() => {
-          this.$router.replace({
-            name: "staffDashboard"
-          });
-        })
-        .catch(() => {}); */
     },
     keyupEvent(name) {
       if (this.validation[name]) {
