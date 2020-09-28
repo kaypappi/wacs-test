@@ -44,6 +44,7 @@
           </div>
           <div v-if="authType==='changePassword'" class="sendEmail">
             <div class="top-text h3">Reseet Your Password Below</div>
+             <div v-if="confirmPasswordError" class="error-div">{{confirmPasswordError}}</div>
             <form @submit.prevent="resetPassword">
               <TextInput
                 type="email"
@@ -98,7 +99,7 @@ export default {
   data() {
     return {
       authType: "",
-      token: null,
+      confirmPasswordError:"",
       emailForm: {
         email: ""
       },
@@ -122,6 +123,10 @@ export default {
       sendresetPassword: "Auth/resetPassword"
     }),
     async sendEmail() {
+      if(this.resetPasswordForm.password!==this.resetPasswordForm.confirmPassword){
+        this.confirmPasswordError="Both Password Fields Don't match"
+        return
+      }
       const response = await this.sendResetPasswordEmail(this.emailForm);
       this.showToast("Info", response.data.message, true);
     },
@@ -139,6 +144,9 @@ export default {
     keyupEvent(name) {
       if (this.validation[name]) {
         this.clearOneError(name);
+      }
+      if(this.confirmPasswordError){
+        this.confirmPasswordError=""
       }
     }
   },
