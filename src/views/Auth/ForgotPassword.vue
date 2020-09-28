@@ -42,7 +42,7 @@
               <SubmitButton name="Submit" buttonClass="submit-btn" />
             </form>
           </div>
-          <div v-if="authType==='chnagePassword'" class="sendEmail">
+          <div v-if="authType==='changePassword'" class="sendEmail">
             <div class="top-text h3">Reseet Your Password Below</div>
             <form @submit.prevent="resetPassword">
               <TextInput
