@@ -46,3 +46,11 @@ export const IS_LOGGING_USER_IN = (state, bool) => {
 export const SET_ERROR_MESSAGE = (state, error) => {
   state.loginError = error;
 };
+
+export const SENDING_PASSWORD_RESET_EMAIL=(state,status)=>{
+  state.sendingPasswordResetEmail=status
+}
+
+export const RESETTING_PASSWORD=(state,status)=>{
+  state.resettingPassword=status
+}

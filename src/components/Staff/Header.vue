@@ -1,7 +1,7 @@
 <template>
   <div class="Staff-Header d-flex">
     <div class="page-title h3 mr-auto">Home</div>
-    <div class="logout ml-auto">
+    <div @click="logout" class="logout ml-auto">
       <span>Logout</span>
       <span class="ml-2">
         <BIconBoxArrowRight />
@@ -15,6 +15,17 @@ import { BIconBoxArrowRight } from "bootstrap-vue";
 export default {
   components: {
     BIconBoxArrowRight
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("Auth/logout").then(() => {
+        this.$router
+          .push({
+            name: "StaffLogin"
+          })
+          .catch(() => {});
+      });
+    }
   }
 };
 </script>
@@ -25,10 +36,11 @@ export default {
   height: 130px;
   padding: 0 35px;
 }
-.page-title{
-    color: #738191;
+.page-title {
+  color: #738191;
 }
-.logout{
-    color: #697686;
+.logout {
+  color: #697686;
+  cursor: pointer;
 }
 </style>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Auth/Login.vue";
 import ResetPassword from "../views/Auth/Reset-password.vue";
+import ForgotPassword from "../views/Auth/ForgotPassword.vue"
 import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
 import Main from "../components/Layout/Main";
@@ -422,6 +423,16 @@ const routes = [
       }
       next()
     } */
+  },
+  {
+    path:"/password-reset",
+    component:ForgotPassword,
+    name:"forgotPassword"
+  },
+  {
+    path:"/password-reset/:token/:email",
+    component:ForgotPassword,
+    name:"changePassword"
   },
 
   {

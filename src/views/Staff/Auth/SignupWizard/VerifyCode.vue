@@ -1,5 +1,12 @@
 <template>
   <div class="verify-wrapper">
+    <Toast
+      :show="toast.show"
+      :title="toast.title"
+      :message="toast.message"
+      :success="toast.success"
+      v-if="toast.show"
+    />
     <template v-if="!validatingCode">
       <div class="top-text h3">Verify Your Phone Number</div>
       <p class="info-text">Please enter the OTP (One Time Password) sent to</p>
@@ -21,7 +28,7 @@
       </div>
       <p class="resend-otp">
         Don’t receive the OTP?
-        <span class="green-text">Resend OTP</span>
+        <span @click="resetToken" class="green-text">Resend OTP</span>
       </p>
     </template>
     <template v-else>
@@ -37,51 +44,80 @@
 <script>
 //import TextInput from "../../../../components/Inputs/TextInput";
 import OtpInput from "@bachdgvn/vue-otp-input";
-import {  mapGetters,mapActions } from "vuex";
+import Toast from "../../../../components/Toast";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     next: Function
   },
   components: {
     //TextInput,
-    OtpInput
+    OtpInput,
+    Toast
   },
   data() {
     return {
       form: {
         mobile_code: ""
       },
+      toast: {
+        show: false,
+        title: "",
+        message: "",
+        success: true
+      },
       is_verifying: false
     };
   },
   methods: {
-      ...mapActions({
-          validateCode:"UserAuth/ValidateCode"
-      }),
-  async  handleOnComplete(value) {
+    ...mapActions({
+      validateCode: "UserAuth/ValidateCode",
+      resendToken: "UserAuth/ResendToken"
+    }),
+    handleOnComplete(value) {
       this.form.mobile_code = value;
-      this.form.ippis_number=this.userShortData.ippis_number
-      await this.validateCode(this.form)
-      this.next()
-      /* this.is_verifying = true;
-      setTimeout(() => {
-        (this.is_verifying = false), this.next();
-      }, 6000); */
+      this.form.ippis_number = this.userShortData.ippis_number;
+      this.validateCode(this.form).then(() => {
+        this.next();
+      }).catch(()=>{
+          this.showToast("Error",this.validation.mobile_code[0],false)
+      })
     },
     handleOnChange(value) {
       this.form.mobile_code = value;
     },
     handleClearInput() {
       this.$refs.otpInput.clearInput();
+    },
+    showToast(title, message, success) {
+      this.toast = { show: true, title, message, success };
+      setTimeout(() => {
+        this.toast.show = false;
+      }, 3000);
+    },
+    resetToken() {
+      const form = { ippis_number: this.userShortData.ippis_number };
+      this.resendToken(form)
+        .then(() => {
+          this.showToast(
+            "Success",
+            "A new token has been sent to your mobile number",
+            true
+          );
+        })
+        .catch(e => {
+          this.showToast("Error", e, false);
+        });
     }
   },
   computed: {
     ...mapGetters({
-      userShortData:"UserAuth/userShortData",
-      userFullData:"UserAuth/userFullData",
-      validatingCode:"UserAuth/validatingCode"
+      userShortData: "UserAuth/userShortData",
+      userFullData: "UserAuth/userFullData",
+      validatingCode: "UserAuth/validatingCode",
+      validation: "getValidationError",
     })
-  },
+  }
 };
 </script>
 
@@ -125,6 +161,7 @@ p.info-text {
 
 span.green-text {
   color: #27be58;
+  cursor: pointer;
 }
 .top-text {
   color: #8598a6;

@@ -4,5 +4,6 @@ export default {
   userFullData: null,
   validatingCode: false,
   signupError: null,
-  completingAccountCreation:false
+  completingAccountCreation:false,
+  tokenResent:false,
 };

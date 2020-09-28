@@ -19,3 +19,11 @@ export const isLoading = (state) => {
 export const loginError = (state) => {
   return state.loginError;
 };
+
+export const sendingPasswordResetEmail = (state) => {
+  return state.sendingPasswordResetEmail;
+};
+
+export const resettingPassword = (state) => {
+  return state.resettingPassword;
+};

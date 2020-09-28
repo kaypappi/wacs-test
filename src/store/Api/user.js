@@ -39,4 +39,15 @@ export default {
         });
     });
   },
+
+  resendToken(form) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("user/resendcode",form)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => [reject(err)]);
+    });
+  },
 };

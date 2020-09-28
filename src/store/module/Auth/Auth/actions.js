@@ -40,9 +40,30 @@ export const clearOneError = ({ commit }) => {
   commit("IS_LOGGING_USER_IN", false);
 };
 
+export const sendResetPasswordEmail = async ({ commit }, form) => {
+  commit("SENDING_PASSWORD_RESET_EMAIL", true);
+  let response = await axios.post("user/password/forgot", form);
+  commit("SENDING_PASSWORD_RESET_EMAIL", false);
+  return response;
+};
+
+export const resetPassword = async ({ commit }, form) => {
+  commit("RESETTING_PASSWORD", true);
+  try {
+    const response = await axios.post("user/password/resetPassword", form);
+    commit("RESETTING_PASSWORD", false);
+    return response;
+  } catch (e) {
+    commit("RESETTING_PASSWORD", false);
+    return Promise.reject(e);
+  }
+};
+
 export const logout = async ({ commit }) => {
   let response = await axios.post("user/logout");
   commit("SET_TOKEN", null);
   commit("SET_USER", null);
   return response;
 };
+
+

@@ -116,6 +116,7 @@ export default {
   color: white;
   width: 100%;
   padding: 10px;
+  height: 50px;
   margin-top: 20px;
 }
 

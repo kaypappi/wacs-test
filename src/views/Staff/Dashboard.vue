@@ -4,7 +4,7 @@
       <p class="title">Eligibility Credit Amount</p>
       <div class="h1">
         <span class="h5">₦</span>
-        <span>378,789.00</span>
+        <span>{{user.data.eligibility}}</span>
       </div>
     </div>
     <div class="content">
@@ -18,7 +18,14 @@
 </template>
 
 <script>
-export default {};
+import {mapGetters} from "vuex"
+export default {
+computed:{
+    ...mapGetters({
+        user:"Auth/user"
+    })
+}
+};
 </script>
 
 <style scoped>

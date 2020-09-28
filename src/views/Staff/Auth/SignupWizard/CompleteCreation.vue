@@ -9,7 +9,11 @@
         </div>
       </template>
       <div @click="submit">
-        <SubmitButton name="Create Account" buttonClass="submit-btn" />
+        <SubmitButton
+          :isLoading="completingAccountCreation"
+          name="Create Account"
+          buttonClass="submit-btn"
+        />
       </div>
     </template>
     <template v-else>
@@ -17,10 +21,11 @@
         <img src="/assets/images/create-account-success.png" alt class="success-img" />
         <p class="well-done h3">Well Done!</p>
         <p class="info-content">You have successfully created a WACS account</p>
+        <p class="info-content">You will be redirected in <span class="green-text">{{counter}}</span> seconds</p>
       </div>
-      <div @click="goToDashboard" class="finish-btn-holder">
+      <!-- <div @click="goToDashboard" class="finish-btn-holder">
         <SubmitButton name="Create Account" buttonClass="finish-btn" />
-      </div>
+      </div>-->
     </template>
   </div>
 </template>
@@ -48,7 +53,8 @@ export default {
         Nationality: "Nigerian",
         Address: "3, Ogunshipe Crescent,Obalende,Lagos"
       },
-      created_account: false
+      created_account: false,
+      counter:0
     };
   },
   methods: {
@@ -61,10 +67,23 @@ export default {
     async submit() {
       const form = {
         ippis_number: this.userShortData.ippis_number,
-        password:this.userShortData.password
+        password: this.userShortData.password
       };
       await this.completeAccountCreation(form);
-      this.created_account=true
+      this.created_account = true;
+      this.startCountdown(10)
+    },
+    startCountdown(seconds) {
+      this.counter = seconds;
+
+      const interval = setInterval(() => {
+        this.counter--;
+
+        if (this.counter === 0) {
+          clearInterval(interval);
+          this.goToDashboard()
+        }
+      }, 1000);
     },
     formatLabel(sentence) {
       const newSentence = sentence
@@ -77,7 +96,8 @@ export default {
   computed: {
     ...mapGetters({
       userFullData: "UserAuth/userFullData",
-      userShortData: "UserAuth/userShortData"
+      userShortData: "UserAuth/userShortData",
+      completingAccountCreation: "UserAuth/completingAccountCreation"
     })
   }
 };
@@ -120,6 +140,7 @@ export default {
   background: #27be58;
   color: white;
   width: 100%;
+  height: 50px;
   margin: 0 auto;
   padding: 10px;
   margin-top: 30px;
@@ -134,5 +155,10 @@ export default {
 .well-done {
   color: #606a7a;
   margin-top: 24px;
+}
+
+.green-text{
+    color: #27be58;
+    font-size: 16px;
 }
 </style>

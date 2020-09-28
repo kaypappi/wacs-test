@@ -21,3 +21,7 @@ export const COMPLETING_ACCOUNT_CREATION=(state,status)=>{
 export const SET_ERROR_MESSAGE = (state, error) => {
   state.signupError = error;
 };
+
+export const RESET_TOKEN_SUCCESS=(state)=>{
+    state.tokenResent=true
+}
