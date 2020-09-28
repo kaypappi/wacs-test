@@ -48,7 +48,6 @@ export const ResendToken = async ({ commit }, form) => {
     commit("RESET_TOKEN_SUCCESS");
     return response;
   }catch(e){
-    console.log(e.response)
     return Promise.reject(e.response.data.message);
   }
 };

@@ -34,9 +34,6 @@ export default {
       return !this.success ? "error-toast" : "success-toast";
     }
   },
-  mounted() {
-    console.log(this.title, this.message, this.success);
-  }
 };
 </script>
 <style >
