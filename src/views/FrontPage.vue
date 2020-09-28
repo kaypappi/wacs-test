@@ -8,8 +8,8 @@
           CREDIT SCHEME
         </p>
       </div>
-      <a href="https://expo.io/@infinitypaul/wacs-app" target="_blank">
-        <button class="download-btn">Download App</button>
+      <a href="/user/login" target="_blank">
+        <button class="download-btn">Login</button>
       </a>
       <!-- <button>Download App</button> -->
     </div>

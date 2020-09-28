@@ -27,7 +27,7 @@
         :keyupEvent="keyupEvent"
       />
       <SubmitButton :isLoading="isLoading" name="Login" buttonClass="submit-btn" />
-      <p class="forgot-password">Forgot Password</p>
+      <p @click="goTo" class="forgot-password ">Forgot Password</p>
     </form>
   </div>
 </template>
@@ -73,6 +73,9 @@ export default {
         })
         .catch(() => {});
     },
+    goTo() {
+      this.$router.push({ name: "forgotPassword" });
+    },
     keyupEvent(name) {
       if (this.validation[name]) {
         this.clearOneError(name);
@@ -101,6 +104,7 @@ export default {
   color: white;
   width: 100%;
   padding: 10px;
+  height: 50px;
   margin-top: 20px;
 }
 
@@ -109,6 +113,7 @@ export default {
   color: #27be58;
   font-weight: 500;
   margin: 10px 0;
+  cursor: pointer;
 }
 .top-text {
   margin-bottom: 50px;
