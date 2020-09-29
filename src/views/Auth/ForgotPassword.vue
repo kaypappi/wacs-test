@@ -43,7 +43,7 @@
             </form>
           </div>
           <div v-if="authType==='changePassword'" class="sendEmail">
-            <div class="top-text h3">Reseet Your Password Below</div>
+            <div class="top-text h3">Reset Your Password Below</div>
              <div v-if="confirmPasswordError" class="error-div">{{confirmPasswordError}}</div>
             <form @submit.prevent="resetPassword">
               <TextInput
@@ -68,11 +68,11 @@
               />
               <TextInput
                 type="password"
-                label="Password"
-                id="password"
-                name="password"
+                label="Confirm Password"
+                id="confirm-password"
+                name="confirm-password"
                 inputClass="input-field"
-                placeholder="Enter Password"
+                placeholder="Enter Password Again"
                 v-model="resetPasswordForm.confirmPassword"
                 :keyupEvent="keyupEvent"
               />
