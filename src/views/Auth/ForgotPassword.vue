@@ -76,7 +76,7 @@
                 v-model="resetPasswordForm.confirmPassword"
                 :keyupEvent="keyupEvent"
               />
-              <SubmitButton name="Next" buttonClass="submit-btn" />
+              <SubmitButton :isLoading="resettingPassword" name="Next" buttonClass="submit-btn" />
             </form>
           </div>
         </div>
@@ -154,6 +154,7 @@ export default {
     ...mapGetters({
       sendingPasswordResetEmail: "Auth/sendingPasswordResetEmail",
        validation: "getValidationError",
+       resettingPassword:"Auth/resettingPassword"
     })
   },
   watch: {
@@ -243,5 +244,16 @@ export default {
 .top-text {
   margin-bottom: 50px;
   color: #8598a6;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

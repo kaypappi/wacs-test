@@ -343,7 +343,7 @@ export default {
 }
 .hero {
   background: url("/assets/images/peach.png");
-  background-size: 500px 100%;
+  background-size: 50% 100%;
   background-repeat: no-repeat;
 }
 .hero-content {
@@ -588,7 +588,7 @@ export default {
   height: 200px;
   margin-top: -100px;
   background: #0a554c;
-  transform: skewY(5deg);
+  transform: skewY(4deg);
 }
 
 .section-4 {

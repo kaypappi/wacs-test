@@ -102,4 +102,15 @@ export default {
   color: #697686;
   font-size: 14px;
 }
+
+.main-auth-wrapper >>> input::-webkit-outer-spin-button,
+.main-auth-wrapper >>> input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.main-auth-wrapper >>> input[type=number] {
+  -moz-appearance: textfield;
+}
 </style>

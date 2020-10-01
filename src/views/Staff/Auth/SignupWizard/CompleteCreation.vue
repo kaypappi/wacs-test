@@ -21,7 +21,10 @@
         <img src="/assets/images/create-account-success.png" alt class="success-img" />
         <p class="well-done h3">Well Done!</p>
         <p class="info-content">You have successfully created a WACS account</p>
-        <p class="info-content">You will be redirected in <span class="green-text">{{counter}}</span> seconds</p>
+        <p class="info-content">
+          You will be redirected in
+          <span class="green-text">{{counter}}</span> seconds
+        </p>
       </div>
       <!-- <div @click="goToDashboard" class="finish-btn-holder">
         <SubmitButton name="Create Account" buttonClass="finish-btn" />
@@ -54,7 +57,7 @@ export default {
         Address: "3, Ogunshipe Crescent,Obalende,Lagos"
       },
       created_account: false,
-      counter:0
+      counter: 0
     };
   },
   methods: {
@@ -71,7 +74,7 @@ export default {
       };
       await this.completeAccountCreation(form);
       this.created_account = true;
-      this.startCountdown(10)
+      this.startCountdown(10);
     },
     startCountdown(seconds) {
       this.counter = seconds;
@@ -81,7 +84,7 @@ export default {
 
         if (this.counter === 0) {
           clearInterval(interval);
-          this.goToDashboard()
+          this.goToDashboard();
         }
       }, 1000);
     },
@@ -128,7 +131,8 @@ export default {
   color: white;
   width: 100%;
   padding: 10px;
-  margin-top: 55px;
+  height: 50px;
+  margin-top: 20px;
 }
 .finish-btn-holder {
   max-width: 350px;
@@ -157,8 +161,8 @@ export default {
   margin-top: 24px;
 }
 
-.green-text{
-    color: #27be58;
-    font-size: 16px;
+.green-text {
+  color: #27be58;
+  font-size: 16px;
 }
 </style>
