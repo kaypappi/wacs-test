@@ -39,7 +39,7 @@
                 v-model="emailForm.email"
                 :keyupEvent="keyupEvent"
               />
-              <SubmitButton name="Submit" buttonClass="submit-btn" />
+              <SubmitButton :isLoading="sendingPasswordResetEmail" name="Submit" buttonClass="submit-btn" />
             </form>
           </div>
           <div v-if="authType==='changePassword'" class="sendEmail">
@@ -76,7 +76,7 @@
                 v-model="resetPasswordForm.confirmPassword"
                 :keyupEvent="keyupEvent"
               />
-              <SubmitButton :isLoading="resettingPassword" name="Next" buttonClass="submit-btn" />
+              <SubmitButton :isLoading="resettingPassword" name="Submit" buttonClass="submit-btn" />
             </form>
           </div>
         </div>
