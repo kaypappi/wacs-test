@@ -39,12 +39,17 @@
                 v-model="emailForm.email"
                 :keyupEvent="keyupEvent"
               />
-              <SubmitButton :isLoading="sendingPasswordResetEmail" name="Submit" buttonClass="submit-btn" />
+              <SubmitButton
+                :isLoading="sendingPasswordResetEmail"
+                name="Submit"
+                buttonClass="submit-btn"
+              />
             </form>
           </div>
           <div v-if="authType==='changePassword'" class="sendEmail">
             <div class="top-text h3">Reset Your Password Below</div>
-             <div v-if="confirmPasswordError" class="error-div">{{confirmPasswordError}}</div>
+            <div v-if="confirmPasswordError" class="error-div">{{confirmPasswordError}}</div>
+            <div v-if="tokenError" class="error-div">{{tokenError}}</div>
             <form @submit.prevent="resetPassword">
               <TextInput
                 type="email"
@@ -76,7 +81,7 @@
                 v-model="resetPasswordForm.confirmPassword"
                 :keyupEvent="keyupEvent"
               />
-              <SubmitButton :isLoading="resettingPassword" name="Submit" buttonClass="submit-btn" />
+              <SubmitButton :disabled="tokenError?true:false" :isLoading="resettingPassword" name="Submit" buttonClass="submit-btn" />
             </form>
           </div>
         </div>
@@ -99,7 +104,8 @@ export default {
   data() {
     return {
       authType: "",
-      confirmPasswordError:"",
+      confirmPasswordError: "",
+      tokenError: "",
       emailForm: {
         email: ""
       },
@@ -120,20 +126,28 @@ export default {
   methods: {
     ...mapActions({
       sendResetPasswordEmail: "Auth/sendResetPasswordEmail",
-      sendresetPassword: "Auth/resetPassword"
+      sendresetPassword: "Auth/resetPassword",
+      validateToken: "Auth/validateToken"
     }),
     async sendEmail() {
-      if(this.resetPasswordForm.password!==this.resetPasswordForm.confirmPassword){
-        this.confirmPasswordError="Both Password Fields Don't match"
-        return
+      if (
+        this.resetPasswordForm.password !==
+        this.resetPasswordForm.confirmPassword
+      ) {
+        this.confirmPasswordError = "Both Password Fields Don't match";
+        return;
       }
       const response = await this.sendResetPasswordEmail(this.emailForm);
       this.showToast("Info", response.data.message, true);
     },
     resetPassword() {
-      this.sendresetPassword(this.resetPasswordForm).then(response => {
-        this.showToast("Success", response.data.message, true);
-      });
+      this.sendresetPassword(this.resetPasswordForm)
+        .then(response => {
+          this.showToast("Success", response.data.message, true);
+        })
+        .catch(e => {
+          this.showToast("Error", e.response.data.message, false);
+        });
     },
     showToast(title, message, success) {
       this.toast = { show: true, title, message, success };
@@ -145,16 +159,16 @@ export default {
       if (this.validation[name]) {
         this.clearOneError(name);
       }
-      if(this.confirmPasswordError){
-        this.confirmPasswordError=""
+      if (this.confirmPasswordError) {
+        this.confirmPasswordError = "";
       }
     }
   },
   computed: {
     ...mapGetters({
       sendingPasswordResetEmail: "Auth/sendingPasswordResetEmail",
-       validation: "getValidationError",
-       resettingPassword:"Auth/resettingPassword"
+      validation: "getValidationError",
+      resettingPassword: "Auth/resettingPassword"
     })
   },
   watch: {
@@ -162,8 +176,19 @@ export default {
       handler: function(params) {
         if (params.token && params.email) {
           this.authType = "changePassword";
-          this.resetPasswordForm.token = params.token;
-          this.resetPasswordForm.email = params.email;
+          this.validateToken(this.resetPasswordForm.token)
+            .then(response => {
+              if (response.data.valid) {
+                this.resetPasswordForm.token = response.data.token;
+                this.resetPasswordForm.email = response.data.email;
+              }
+              else{
+                this.tokenError="Current token has expired. please restart process to get a new token"
+              }
+            })
+            .catch(e => {
+              this.tokenError = e.response.data.message;
+            });
           return;
         }
         return (this.authType = "forgotPassword");
@@ -253,7 +278,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>

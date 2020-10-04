@@ -59,11 +59,19 @@ export const resetPassword = async ({ commit }, form) => {
   }
 };
 
+export const validateToken = async ({ commit }, token) => {
+  commit("")
+  try {
+    const response = await axios.get(`user/tokens/${token}`);
+    return response
+  }catch(e){
+    return Promise.reject(e)
+  }
+};
+
 export const logout = async ({ commit }) => {
   let response = await axios.post("user/logout");
   commit("SET_TOKEN", null);
   commit("SET_USER", null);
   return response;
 };
-
-
