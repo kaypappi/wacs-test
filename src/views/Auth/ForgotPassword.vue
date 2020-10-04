@@ -174,7 +174,7 @@ export default {
   watch: {
     "$route.params": {
       handler: function(params) {
-        if (params.token && params.email) {
+        if (params.token) {
           this.authType = "changePassword";
           this.validateToken(this.resetPasswordForm.token)
             .then(response => {
