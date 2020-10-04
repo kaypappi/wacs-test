@@ -176,7 +176,7 @@ export default {
       handler: function(params) {
         if (params.token) {
           this.authType = "changePassword";
-          this.validateToken(this.resetPasswordForm.token)
+          this.validateToken(params.token)
             .then(response => {
               if (response.data.valid) {
                 this.resetPasswordForm.token = response.data.token;
