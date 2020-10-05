@@ -144,6 +144,7 @@ export default {
       this.sendresetPassword(this.resetPasswordForm)
         .then(response => {
           this.showToast("Success", response.data.message, true);
+          this.router.push({name:"StaffLogin"})
         })
         .catch(e => {
           this.showToast("Error", e.response.data.message, false);
