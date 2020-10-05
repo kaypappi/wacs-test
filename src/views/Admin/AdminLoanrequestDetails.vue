@@ -38,15 +38,15 @@
             <td>Loan Offer Collected</td>
             <td>Credit Administrator</td>
             <td>Loan Amount</td>
-            <td>Amount Paid</td>
+           <!--  <td>Amount Paid</td> -->
           </tr>
           <template v-for="history in loanHistory.data">
             <tr class="t-field" :key="history.date">
               <td>{{history.date}}</td>
-              <td>{{history.loan_offer_collected}}</td>
-              <td>{{history.credit_administrator}}</td>
-              <td>{{formatNumber(history.loan_amount)}}</td>
-              <td>{{formatNumber(history.total_paid)}}</td>
+              <td>{{history.offer.title}}</td>
+              <td>{{history.offer.company.name}}</td>
+              <td>{{formatNumber(history.amount)}}</td>
+              <!-- <td>{{formatNumber(history.total_paid)}}</td> -->
             </tr>
           </template>
         </table>
