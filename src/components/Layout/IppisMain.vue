@@ -34,13 +34,13 @@
         },
         computed: {
             fullName() {
-                if(this.$store.getters['auth/authenticated']) {
+                if(this.$store.getters['Auth/authenticated']) {
                     return this.$store.state.auth.user.data.full_name;
                 }
                 return '';
             },
             companyName() {
-                if(this.$store.getters['auth/authenticated']) {
+                if(this.$store.getters['Auth/authenticated']) {
                     return this.$store.state.auth.user.data.roles[0].name;
                 }
                 return '';

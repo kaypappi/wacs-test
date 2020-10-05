@@ -147,7 +147,7 @@ export default {
   makeOffer(data) {
     return new Promise((resolve, reject) => {
       axios
-        .post("creditor/repayments", data)
+        .post(`creditor/repayments/${data.loan_request_id}`, data)
         .then((response) => {
           resolve(response);
         })

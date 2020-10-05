@@ -38,7 +38,6 @@
 import DateField from "../../components/Inputs/DateField";
 import RepaymentScheduleTable from "../../components/Admin/AdminRepaymentTable";
 import Pagination from "../../components/Pagination/Pagination"
-import { baseUrl } from "../../router/api_routes";
 import axios from "axios";
 export default {
   components: {
@@ -59,9 +58,7 @@ export default {
   methods: {
     fetchRepayments(query) {
       this.fetchingRepayments = true;
-      const URL =
-        baseUrl + `admin/repayments?${this.serialize(query)}`;
-      axios.get(URL).then(response => {
+      axios.get(`admin/repayments`,{params:query}).then(response => {
         this.repayments = {...response.data};
         this.fetchingRepayments=false
       });

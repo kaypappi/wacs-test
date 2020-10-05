@@ -43,7 +43,6 @@
 import DateField from "../../components/Inputs/DateField";
 import RepaymentScheduleTable from "../../components/Table/RepaymentScheduleTable";
 import Pagination from "../../components/Pagination/Pagination";
-import { baseUrl } from "../../router/api_routes";
 import axios from "axios";
 export default {
   components: {
@@ -64,9 +63,7 @@ export default {
   methods: {
     fetchRepayments(query) {
       this.fetchingRepayments = true;
-      const URL =
-        baseUrl + `creditor/repayments/reports?${this.serialize(query)}`;
-      axios.get(URL).then(response => {
+      axios.get(`creditor/repayments/reports`,{params:query}).then(response => {
         this.repayments = { ...response.data };
         this.fetchingRepayments = false;
       });

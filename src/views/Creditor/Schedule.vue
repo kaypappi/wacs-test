@@ -33,7 +33,6 @@
 
 <script>
 import SingleScheduleTable from "../../components/Table/SingleScheduleTable";
-import { baseUrl } from "../../router/api_routes";
 import Axios from "axios";
 import JsonExcel from "vue-json-excel";
 import pdfMake from "pdfmake/build/pdfmake";
@@ -69,12 +68,7 @@ export default {
   methods: {
     getSchedule(query) {
       this.fetchingSchedule = true;
-      const URL =
-        baseUrl +
-        `creditor/repayments/reports/${this.scheduleId}?${this.serialize(
-          query
-        )}`;
-      Axios.get(URL).then(response => {
+      Axios.get(`creditor/repayments/reports/${this.scheduleId}`, { params: query }).then(response => {
         this.schedule = { ...response.data };
         this.scheduleTitle = `Repayment Schedule Breakdown - ${
           this.schedule.data.name
