@@ -16,7 +16,7 @@
     <template v-else>
       <div  class="details-top">
         <h3>{{splitDetails.customerName}}</h3>
-        <template v-if="loanDetails.status!=='Running'">
+        <template v-if="loanDetails.status==='Pending'">
             <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
           <img src="/assets/images/cancel.svg" alt="Plus sign" />
           Decline
