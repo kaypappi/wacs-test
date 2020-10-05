@@ -179,7 +179,6 @@ import TextArea from "../Inputs/TextArea"
 import TaggedInput from "../Inputs/TaggedInput"
 import SubmitButton from "../Buttons/SubmitButton"
 import Toast from "../Toast"
-import {baseUrl} from "../../router/api_routes"
 export default {
   components: {
     Dropdown,
@@ -269,15 +268,15 @@ export default {
     changeStatus() {
       let url=''
       if(this.addOffer.status==="Active"){
-        url=baseUrl+`creditor/offer/${this.addOffer.id}/deactivate`
+        url=`creditor/offer/${this.addOffer.id}/deactivate`
       }
       else{
-        url=baseUrl+`creditor/offer/${this.addOffer.id}/activate`
+        url=`creditor/offer/${this.addOffer.id}/activate`
       }
       this.$store.dispatch("CreditorLoanOffer/changeStatus",url)
     },
     Delete() {
-      let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
+      let url=`creditor/offer/${this.addOffer.id}/delete`
       this.$store.dispatch("CreditorLoanOffer/deleteLoanOffer",url,this.addOffer.id)
     },
     onRowSelected(items) {
