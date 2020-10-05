@@ -97,7 +97,6 @@ export const makeOffer = ({ commit }, data) => {
       }
     })
     .catch((err) => {
-      console.log(err)
       commit("IS_MAKING_OFFER", false);
       commit("SHOW_TOAST", {
         title: "Error",
