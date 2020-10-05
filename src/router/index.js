@@ -49,7 +49,7 @@ const routes = [
     name: "login",
     component: Login,
     beforeEnter: (to, from, next) => {
-      if (store.getters["auth/authenticated"]) {
+      if (store.getters["Auth/authenticated"]) {
         return next({
           name: "home",
         });
