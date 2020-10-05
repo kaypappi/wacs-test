@@ -179,8 +179,8 @@ export default {
           this.validateToken(params.token)
             .then(response => {
               if (response.data.data.valid) {
-                this.resetPasswordForm.token = response.data.token;
-                this.resetPasswordForm.email = response.data.email;
+                this.resetPasswordForm.token = response.data.data.token;
+                this.resetPasswordForm.email = response.data.data.email;
               }
               else{
                 this.tokenError="Current token has expired. please restart process to get a new token"
