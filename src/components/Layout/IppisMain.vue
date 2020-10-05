@@ -35,13 +35,13 @@
         computed: {
             fullName() {
                 if(this.$store.getters['Auth/authenticated']) {
-                    return this.$store.state.auth.user.data.full_name;
+                    return this.$store.state.Auth.user.data.full_name;
                 }
                 return '';
             },
             companyName() {
                 if(this.$store.getters['Auth/authenticated']) {
-                    return this.$store.state.auth.user.data.roles[0].name;
+                    return this.$store.state.Auth.user.data.roles[0].name;
                 }
                 return '';
             },
