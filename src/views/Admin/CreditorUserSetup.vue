@@ -324,6 +324,7 @@ export default {
       return this.$store.state.AdminUser.companies;
     },
     isGettingCompany() {
+      
       return this.$store.state.AdminUser.fetchingCompanies;
     }
   },

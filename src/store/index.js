@@ -1,61 +1,48 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import auth from "./auth";
-import AdminUser from './module/AdminUser';
-import ResetPassword from './module/PasswordReset';
-import UserStatus from './module/UserStatus';
-import User from "./module/User"
-import LoanRequest from './module/LoanRequest'
-import LoanOffers from "./module/LoanOffers"
-import IppisLoanRequest from "./module/IppisLoanRequest"
-import AdminLoanRequest from "./module/AdminLoanRequest"
-import AdminLoanOffer from "./module/AdminLoanOffer"
 
 Vue.use(Vuex);
 
+import * as mutations from "./mutations"
+import * as getters from "./getters"
+import * as actions from "./actions"
+import state from "./state"
+
+import AdminLoanOffer from "./module/Admin/LoanOffer"
+import AdminLoanRequest from "./module/Admin/LoanRequest"
+import AdminUser from "./module/Admin/User"
+
+import CreditorLoanOffer from "./module/Creditor/LoanOffer"
+import CreditorLoanRequest from "./module/Creditor/LoanRequest"
+import CreditorUser from "./module/Creditor/User"
+
+import IppisLoanRequest from "./module/Ippis/LoanRequest"
+
+import Auth from "./module/Auth/Auth"
+import PasswordReset from "./module/Auth/PasswordReset"
+
+import UserAuth from "./module/User/Auth"
+
+
+
 export default new Vuex.Store({
-  state: {
-    validation: []
-  },
-
-  mutations: {
-    SET_VALIDATION_ERROR (state, errors) {
-      state.validation = errors;
-    },
-    CLEAR_ONE_VALIDATION_ERROR (state, field) {
-      delete state.validation[field];
-    },
-  },
-
-  getters :{
-    getValidationError(state){
-      return state.validation
-    },
-  },
-
-  actions: {
-    setValidationErrors({ commit }, errors){
-      commit('SET_VALIDATION_ERROR', errors.errors);
-    },
-
-    clearAllValidationErrors({ commit },){
-      commit('SET_VALIDATION_ERROR', [])
-    },
-    clearOneValidationError({ commit }, field){
-      commit('CLEAR_ONE_VALIDATION_ERROR', field)
-    }
-  },
+  
+  state,
+  getters,
+  mutations,
+  actions,
+  
 
   modules: {
-    auth,
-    AdminUser,
-    ResetPassword,
-    User,
-    UserStatus,
-    LoanRequest,
-    LoanOffers,
-    IppisLoanRequest,
+    AdminLoanOffer,
     AdminLoanRequest,
-    AdminLoanOffer
+    AdminUser,
+    CreditorLoanOffer,
+    CreditorLoanRequest,
+    CreditorUser,
+    IppisLoanRequest,
+    Auth,
+    PasswordReset,
+    UserAuth
   }
 })

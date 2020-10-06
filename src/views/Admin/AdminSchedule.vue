@@ -6,13 +6,15 @@
         <span>Export as</span>
         <img @click="downloadPdf" src="/assets/images/pdf.svg" alt="pdf" />
         <download-excel
-        v-if="schedule"
+          v-if="schedule"
           class="btn btn-default"
           :data="schedule.data.breakdown"
           :fields="json_fields"
           worksheet="My Worksheet"
           :name="scheduleTitle+'.xls'"
-        > <img src="/assets/images/xls.svg" alt="pdf" /></download-excel>
+        >
+          <img src="/assets/images/xls.svg" alt="pdf" />
+        </download-excel>
       </div>
     </div>
     <div class="schedule-table-wrapper">
@@ -32,16 +34,15 @@
 
 <script>
 import SingleScheduleTable from "../../components/Table/SingleScheduleTable";
-import { baseUrl } from "../../router/api_routes";
 import Axios from "axios";
-import JsonExcel from 'vue-json-excel'
+import JsonExcel from "vue-json-excel";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   components: {
     SingleScheduleTable,
-    'downloadExcel':JsonExcel,
+    downloadExcel: JsonExcel
   },
   data() {
     return {
@@ -50,38 +51,35 @@ export default {
       scheduleId: "",
       scheduleTitle: "",
       json_fields: {
-            'No':'no',
-            'Year':'year',
-            'Month':'month',
-            'Amount':'amount'
-        },
-        json_meta: [
-            [
-                {
-                    'key': 'charset',
-                    'value': 'utf-8'
-                }
-            ]
-        ],
+        No: "no",
+        Year: "year",
+        Month: "month",
+        Amount: "amount"
+      },
+      json_meta: [
+        [
+          {
+            key: "charset",
+            value: "utf-8"
+          }
+        ]
+      ]
     };
   },
   methods: {
     getSchedule(query) {
       this.fetchingSchedule = true;
-      const URL =
-        baseUrl +
-        `admin/repayments/${this.scheduleId}?${this.serialize(
-          query
-        )}`;
-      Axios.get(URL).then(response => {
-        this.schedule = { ...response.data };
-        this.scheduleTitle = `Repayment Schedule Breakdown - ${
-          this.schedule.data.name
-        } - ${this.schedule.data.ippis_number} - NGN ${this.formatNumber(
-          this.schedule.data.amount
-        )}`;
-        this.fetchingSchedule = false;
-      });
+      Axios.get(`admin/repayments/${this.scheduleId}`, { params: query }).then(
+        response => {
+          this.schedule = { ...response.data };
+          this.scheduleTitle = `Repayment Schedule Breakdown - ${
+            this.schedule.data.name
+          } - ${this.schedule.data.ippis_number} - NGN ${this.formatNumber(
+            this.schedule.data.amount
+          )}`;
+          this.fetchingSchedule = false;
+        }
+      );
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");

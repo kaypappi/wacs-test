@@ -60,26 +60,25 @@ export default {
   },
   computed: {
     ...mapGetters({
-      authenticated: "auth/authenticated",
-      user: "auth/user",
-      isLoading: "auth/isLoading",
+      authenticated: "Auth/authenticated",
+      user: "Auth/user",
+      isLoading: "Auth/isLoading",
       validation: "getValidationError",
-      loginError: "auth/loginError"
+      loginError: "Auth/loginError"
     })
   },
   methods: {
     ...mapActions({
-      signIn: "auth/signIn",
+      signIn: "Auth/signIn",
       clearOneError: "clearOneValidationError"
     }),
     submit() {
       this.signIn({credentials:this.form, userType:'ippis'})
         .then(() => {
-          this.$router.replace({
+          this.$router.push({
             name: "ippisLoanRequest"
           });
         })
-        .catch(() => {});
     },
     keyupEvent(name) {
       if (this.validation[name]) {

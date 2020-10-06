@@ -179,7 +179,6 @@ import TextArea from "../Inputs/TextArea"
 import TaggedInput from "../Inputs/TaggedInput"
 import SubmitButton from "../Buttons/SubmitButton"
 import Toast from "../Toast"
-import {baseUrl} from "../../router/api_routes"
 export default {
   components: {
     Dropdown,
@@ -269,16 +268,16 @@ export default {
     changeStatus() {
       let url=''
       if(this.addOffer.status==="Active"){
-        url=baseUrl+`creditor/offer/${this.addOffer.id}/deactivate`
+        url=`creditor/offer/${this.addOffer.id}/deactivate`
       }
       else{
-        url=baseUrl+`creditor/offer/${this.addOffer.id}/activate`
+        url=`creditor/offer/${this.addOffer.id}/activate`
       }
-      this.$store.dispatch("LoanOffers/changeStatus",url)
+      this.$store.dispatch("CreditorLoanOffer/changeStatus",url)
     },
     Delete() {
-      let url=baseUrl+`creditor/offer/${this.addOffer.id}/delete`
-      this.$store.dispatch("LoanOffers/deleteLoanOffer",url,this.addOffer.id)
+      let url=`creditor/offer/${this.addOffer.id}/delete`
+      this.$store.dispatch("CreditorLoanOffer/deleteLoanOffer",url,this.addOffer.id)
     },
     onRowSelected(items) {
       this.selected = items;
@@ -297,7 +296,7 @@ export default {
 },
     onSubmit() {
      const data= this.getEditedData()
-     this.$store.dispatch("LoanOffers/editLoanOffer",{data,closeModal:this.closeModal})
+     this.$store.dispatch("CreditorLoanOffer/editLoanOffer",{data,closeModal:this.closeModal})
     },
     getEditedData(){
        let data={
@@ -369,7 +368,7 @@ export default {
       return offers
     },
     toast(){
-      return this.$store.state.LoanOffers.toast
+      return this.$store.state.CreditorLoanOffer.toast
     }
     
   },

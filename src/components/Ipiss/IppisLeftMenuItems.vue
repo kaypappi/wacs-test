@@ -25,7 +25,7 @@
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
                         to: "/ippis/dashboard",
-                        permission: ["read", "loan"],
+                        permission: ["manage", "repayment"],
                         nameSpace: 'loan',
                     },
                     

@@ -1,5 +1,5 @@
 <template>
-    <button type="submit" :class="buttonClass">
+    <button :disabled="disabled" type="submit" :class="buttonClass">
         <img src="/assets/images/button-ring-loader.svg" alt="loader" v-show="isLoading" class="button-loader">
         <span v-show="!isLoading">{{name}}</span>
     </button>
@@ -19,7 +19,12 @@
            'isLoading': {
                type: Boolean,
                default: false,
+           },
+           disabled:{
+               type:Boolean,
+               default:false
            }
        },
     }
 </script>
+

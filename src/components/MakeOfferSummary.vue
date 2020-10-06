@@ -101,19 +101,6 @@ export default {
       startYear=startDate.year();
       let data = [];
 
-      /* let data = [];
-      const firstDate = [
-        this.offer.first_repayment_year,
-        this.offer.first_repayment_month,
-        1
-      ];
-      const secondDate = [
-        this.offer.last_repayment_year,
-        this.offer.last_repayment_month,
-        1
-      ];
-      const months_diff = this.monthDiff(secondDate, firstDate); */
-
       for (let i = 0; i < this.offer.repayment_period; i++) {
         let month = (startMonth + i) % 12,
           year =

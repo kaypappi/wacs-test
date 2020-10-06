@@ -8,8 +8,8 @@
           CREDIT SCHEME
         </p>
       </div>
-      <a href="https://expo.io/@infinitypaul/wacs-app" target="_blank">
-        <button>Download App</button>
+      <a href="/user/login" target="_blank">
+        <button class="download-btn">Login</button>
       </a>
       <!-- <button>Download App</button> -->
     </div>
@@ -333,7 +333,7 @@ export default {
   align-items: center;
 }
 
-.top-menu button {
+.top-menu .download-btn {
   background-color: #27be58;
   color: white;
   padding: 10px 30px;
@@ -343,7 +343,7 @@ export default {
 }
 .hero {
   background: url("/assets/images/peach.png");
-  background-size: 500px 100%;
+  background-size: 50% 100%;
   background-repeat: no-repeat;
 }
 .hero-content {
@@ -588,7 +588,7 @@ export default {
   height: 200px;
   margin-top: -100px;
   background: #0a554c;
-  transform: skewY(5deg);
+  transform: skewY(4deg);
 }
 
 .section-4 {
@@ -621,7 +621,6 @@ export default {
 .section-4 .button-wrapper {
   text-align: center;
   margin-top: 70px;
-
 }
 
 .section-5 {
@@ -720,16 +719,16 @@ export default {
   .hero-left {
     padding: 0 40px 100px;
   }
-  .hero-left .bold-text{
+  .hero-left .bold-text {
     font-size: 72px;
     line-height: 94px;
   }
-  .hero-left .description{
+  .hero-left .description {
     font-size: 22px;
     line-height: 40px;
     max-width: 100%;
   }
-  .hero-buttons img{
+  .hero-buttons img {
     height: 72px;
     width: 245px;
   }
@@ -750,7 +749,7 @@ export default {
     display: none;
   }
 
-  .section-2 .title{
+  .section-2 .title {
     font-size: 30px;
     line-height: 50px;
   }
@@ -767,13 +766,13 @@ export default {
     margin: 0 auto;
     margin-bottom: 40px;
   }
-  .info-wrapper .info-body{
+  .info-wrapper .info-body {
     font-size: 20px;
   }
-  .steps-holder .content .title{
+  .steps-holder .content .title {
     font-size: 30px;
   }
-  .steps-holder .body{
+  .steps-holder .body {
     font-size: 20px;
   }
   .section-2 .content-left {
@@ -800,22 +799,21 @@ export default {
     margin-left: 120px;
   }
   .section-5 p.top-text {
-    font-size: 18px;  
-
-}
-.section-4 .title{
-  margin-bottom: 70px;
-}
-.section-5 .cta {
+    font-size: 18px;
+  }
+  .section-4 .title {
+    margin-bottom: 70px;
+  }
+  .section-5 .cta {
     font-size: 30px;
-}
-.section-5{
-  margin: 220px 40px 160px;
-}
-.footer{
-  display: grid;
-  grid-template-columns: 1fr 1fr ;
-  grid-gap: 100px;
-}
+  }
+  .section-5 {
+    margin: 220px 40px 160px;
+  }
+  .footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 100px;
+  }
 }
 </style>

@@ -16,7 +16,7 @@
     <template v-else>
       <div  class="details-top">
         <h3>{{splitDetails.customerName}}</h3>
-        <template v-if="loanDetails.status!=='Running'">
+        <template v-if="loanDetails.status==='Pending'">
             <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
           <img src="/assets/images/cancel.svg" alt="Plus sign" />
           Decline
@@ -55,15 +55,15 @@
             <td>Loan Offer Collected</td>
             <td>Credit Administrator</td>
             <td>Loan Amount</td>
-            <td>Amount Paid</td>
+            <!-- <td>Amount Paid</td> -->
           </tr>
           <template v-for="history in loanHistory.data">
             <tr class="t-field" :key="history.date">
               <td>{{history.date}}</td>
-              <td>{{history.loan_offer_collected}}</td>
-              <td>{{history.credit_administrator}}</td>
-              <td>{{formatNumber(history.loan_amount)}}</td>
-              <td>{{formatNumber(history.total_paid)}}</td>
+              <td>{{history.offer.title}}</td>
+              <td>{{history.offer.company.name}}</td>
+              <td>{{formatNumber(history.amount)}}</td>
+              <!-- <td>{{formatNumber(history.total_paid)}}</td> -->
             </tr>
           </template>
         </table>
@@ -110,11 +110,15 @@ export default {
       );
     },
     declineRequest() {
-      this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId)
+      this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId).then(()=>{
+          setTimeout(()=>{this.$router.push({name:"ippisLoanRequest"})},3000)
+        })
     },
     approveOffer(){
         const id=this.requestId
-        this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id)
+        this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id).then(()=>{
+          setTimeout(()=>{this.$router.push({name:"ippisLoanRequest"})},3000)
+        })
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");

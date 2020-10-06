@@ -34,14 +34,14 @@
         },
         computed: {
             fullName() {
-                if(this.$store.getters['auth/authenticated']) {
-                    return this.$store.state.auth.user.data.full_name;
+                if(this.$store.getters['Auth/authenticated']) {
+                    return this.$store.state.Auth.user.data.full_name;
                 }
                 return '';
             },
             companyName() {
-                if(this.$store.getters['auth/authenticated']) {
-                    return this.$store.state.auth.user.data.roles[0].name;
+                if(this.$store.getters['Auth/authenticated']) {
+                    return this.$store.state.Auth.user.data.roles[0].name;
                 }
                 return '';
             },
