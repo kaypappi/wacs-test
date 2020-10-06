@@ -134,7 +134,7 @@ export default {
       this.$store
         .dispatch("CreditorLoanRequest/declineLoanRequest", this.loanDetails.id)
         .then(() => {
-          this.$router.push({ name: "loanRequest" });
+          setTimeout(()=>{this.$router.push({name:"loanRequest"})},3000)
         });
     },
     makeOffer() {

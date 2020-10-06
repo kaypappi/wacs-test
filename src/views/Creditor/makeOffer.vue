@@ -496,7 +496,7 @@
                 }
 
                this.$store.dispatch("CreditorLoanRequest/makeOffer",data).then(()=>{
-                   this.$router.push({name:"loanRequest"})
+                   setTimeout(()=>{this.$router.push({name:"loanRequest"})},3000)
                })
                 
             },

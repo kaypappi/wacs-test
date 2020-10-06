@@ -111,13 +111,13 @@ export default {
     },
     declineRequest() {
       this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId).then(()=>{
-          this.$router.push({name:"ippisLoanRequest"})
+          setTimeout(()=>{this.$router.push({name:"ippisLoanRequest"})},3000)
         })
     },
     approveOffer(){
         const id=this.requestId
         this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id).then(()=>{
-          this.$router.push({name:"ippisLoanRequest"})
+          setTimeout(()=>{this.$router.push({name:"ippisLoanRequest"})},3000)
         })
     },
     formatNumber(num) {
