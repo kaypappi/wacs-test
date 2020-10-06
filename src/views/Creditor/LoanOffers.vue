@@ -19,7 +19,7 @@
 
       <div class="cta-div">
         <Button v-b-modal.add-form-modal class="cta-button">
-          <img src="assets/images/Plus.svg" alt="Plus sign" />
+          <img src="/assets/images/Plus.svg" alt="Plus sign" />
           Create New Offer
         </Button>
       </div>
@@ -35,12 +35,12 @@
         />-->
         <div class="cot">
           <div class="cot-code">
-            <TextInput></TextInput>
-          </div>
-          <div class="double-input-range-text"></div>
-          <div class="cot-title">
-            <TextInput></TextInput>
-          </div>
+                <TextInput :required="true" type="text" @input="handleText($event,'code')" placeholder="Enter Code"  inputClass="inputClasses" length="short" label="Code"></TextInput>
+            </div>
+            <div class="double-input-range-text"></div>
+            <div class="cot-title">
+                <TextInput :required="true" @input="handleText($event,'title')" placeholder="Enter Title"  inputClass="inputClasses" length="short" label="Title"></TextInput>
+            </div>
         </div>
         <div class="description">
           <TextArea
@@ -91,7 +91,8 @@
             <option v-for="n in 12" :value="n" :key="n">{{n}} {{n == 1 ? 'Month' : 'Months'}}</option>
           </select>
         </div>-->
-        <TextInput></TextInput>
+        
+        <TextInput :required="true" @input="handleText($event,'payback_period')" type="number" placeholder="In Months"  inputClass="inputClasses" length="short" label="Payback Period"></TextInput>
         <div class="double-input-range-text"></div>
         <TaggedInput
           label="Interest Rate"
@@ -203,7 +204,6 @@ export default {
     return {
       errors: {},
       searchTerm: "",
-      creatingOffer: false,
       fetchingOffers: false,
       addOffer: {
         moratorium_principal: 0,
@@ -218,7 +218,7 @@ export default {
     },
     onSubmit() {
       const data = this.getSubmitData();
-      this.$store.dispatch("LoanOffers/createLoanOffer", {
+      this.$store.dispatch("CreditorLoanOffer/createLoanOffer", {
         data,
         closeModal: this.closeModal
       });
@@ -326,6 +326,9 @@ export default {
     },
     isFetching() {
       return this.$store.state.CreditorLoanOffer.fetchingOffers;
+    },
+    creatingOffer(){
+      return this.$store.state.CreditorLoanOffer.creatingOffer
     },
 
     toast() {
