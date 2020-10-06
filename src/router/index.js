@@ -415,14 +415,7 @@ const routes = [
         }, */
       },
     ],
-    beforeEnter: (to, from, next) => {
-      if(!store.getters['Auth/isIppisAdmin']) {
-        return next({
-          name: 'ippisLogin'
-        })
-      }
-      next()
-    }
+
   },
   {
     path:"/password-reset",
