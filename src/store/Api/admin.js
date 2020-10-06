@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export default {
   fetchLoanOffers(query) {
     return new Promise((resolve, reject) => {

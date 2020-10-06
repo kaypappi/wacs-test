@@ -55,7 +55,7 @@
                 v-for="loanRequest in loanRequests.data"
                 :userData="loanRequest"
                 :key="loanRequest.id"
-                :id="loanRequest.loan_request_id"
+                :id="loanRequest.id"
                 :date="loanRequest.date"
                 :name="loanRequest.user.full_name"
                 :ippissNo="loanRequest.user.user_name"

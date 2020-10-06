@@ -45,7 +45,7 @@ export const fetchAdmins=({ commit }, { page, query, userType })=> {
   }
   export const createCompany=({ commit }, userData) =>{
     commit("CREATING_COMPANY", true);
-    admin.createAdmin(userData).then((response) => {
+    admin.createCompany(userData).then((response) => {
       commit("CREATE_COMPANY_SUCCESS", response.data.data);
       commit("CREATING_COMPANY", false);
     });
