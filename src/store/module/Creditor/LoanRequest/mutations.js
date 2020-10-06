@@ -101,3 +101,11 @@
   export const FETCH_REQUEST_SUMMARY_SUCCESS=(state, data)=> {
     state.requestsSummary = { ...data };
   }
+
+  export const FETCH_REPAYMENTS_SUCCESS=(state,data)=>{
+    state.allRepayments=data
+  }
+
+  export const FETCH_SCHEDULE_SUCCESS=(state,data)=>{
+    state.schedule=data
+  }

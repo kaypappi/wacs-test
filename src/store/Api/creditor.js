@@ -214,27 +214,49 @@ export default {
     });
   },
 
-  fetchAdminRoles(){
+  fetchAdminRoles() {
     return new Promise((resolve, reject) => {
-        axios.get("/creditor/roles")
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+      axios
+        .get("/creditor/roles")
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
-  toggleUserStatus(id){
+  toggleUserStatus(id) {
     return new Promise((resolve, reject) => {
-        axios.post('creditor/isactive/'+id)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
-  }
+      axios
+        .post("creditor/isactive/" + id)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getAllRepayments(query) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/repayments/reports`, { params: query })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  getSchedule(query, scheduleId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/repayments/reports/${scheduleId}`, {
+          params: query,
+        })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
 };

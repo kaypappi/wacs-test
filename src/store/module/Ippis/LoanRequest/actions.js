@@ -38,7 +38,7 @@
  export const  splitDetails=({ commit })=> {
     commit("SPILT_DETAILS");
   }
- export const  ippisApproveRequest=({ commit }, requestId)=> {
+ export const  ippisApproveRequest=async({ commit }, requestId)=> {
     const data = {
       id: requestId,
     };
@@ -50,7 +50,7 @@
           message: response.data.message,
           success: true,
         });
-        commit("REDIRECT", { name: "ippisLoanRequest", time: 2000 });
+       return response
       })
       .catch((err) => {
         commit("SHOW_TOAST", {
@@ -72,7 +72,7 @@
           message: response.data.message,
           success: true,
         });
-        commit("REDIRECT", { name: "ippisLoanRequest", time: 2000 });
+        return response
       })
       .catch((err) => {
         commit("SHOW_TOAST", {

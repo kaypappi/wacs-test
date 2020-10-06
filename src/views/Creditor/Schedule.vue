@@ -2,7 +2,7 @@
   <div class="schedule-wrapper">
     <div class="page-filters">
       <div class="schedule-title">{{scheduleTitle}}</div>
-      <div class="export-section">
+      <div  v-if="schedule" class="export-section">
         <span>Export as</span>
         <img @click="downloadPdf" src="/assets/images/pdf.svg" alt="pdf" />
         <download-excel
@@ -33,7 +33,6 @@
 
 <script>
 import SingleScheduleTable from "../../components/Table/SingleScheduleTable";
-import Axios from "axios";
 import JsonExcel from "vue-json-excel";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -68,7 +67,7 @@ export default {
   methods: {
     getSchedule(query) {
       this.fetchingSchedule = true;
-      Axios.get(`creditor/repayments/reports/${this.scheduleId}`, { params: query }).then(response => {
+      this.$store.dispatch("CreditorLoanRequest/getSchedule",{query,scheduleId:this.scheduleId}).then(response => {
         this.schedule = { ...response.data };
         this.scheduleTitle = `Repayment Schedule Breakdown - ${
           this.schedule.data.name
@@ -103,23 +102,12 @@ export default {
       };
       pdfMake.createPdf(dd).download(`${this.scheduleTitle}`);
     },
-    serialize(obj, prefix) {
-      var str = [],
-        p;
-      for (p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          var k = prefix ? prefix + "[" + p + "]" : p,
-            v = obj[p];
-          str.push(
-            v !== null && typeof v === "object"
-              ? this.serialize(v, k)
-              : k + "=" + v
-          );
-        }
-      }
-      return str.join("&");
-    }
   },
+computed:{
+  scheduleData(){
+    return this.$store.state.CreditorLoanRequest.schedule
+  }
+},
 
   mounted() {
     this.scheduleId = this.$route.params.id;

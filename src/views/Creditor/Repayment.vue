@@ -19,15 +19,15 @@
     </div>
     <template v-if="!fetchingRepayments">
       <div class="schedule-wrapper">
-        <RepaymentScheduleTable :repayments="repayments.data" />
+        <RepaymentScheduleTable v-if="allRepayments" :repayments="allRepayments.data" />
       </div>
       <Pagination
-        v-if="repayments.meta"
-        :total="repayments.meta.total"
-        :currentPage="repayments.meta.current_page"
-        :lastPage="repayments.meta.last_page"
-        :from="repayments.meta.from"
-        :to="repayments.meta.to"
+        v-if="allRepayments"
+        :total="allRepayments.meta.total"
+        :currentPage="allRepayments.meta.current_page"
+        :lastPage="allRepayments.meta.last_page"
+        :from="allRepayments.meta.from"
+        :to="allRepayments.meta.to"
       />
     </template>
     <img
@@ -43,7 +43,6 @@
 import DateField from "../../components/Inputs/DateField";
 import RepaymentScheduleTable from "../../components/Table/RepaymentScheduleTable";
 import Pagination from "../../components/Pagination/Pagination";
-import axios from "axios";
 export default {
   components: {
     DateField,
@@ -61,12 +60,11 @@ export default {
     };
   },
   methods: {
-    fetchRepayments(query) {
+    async fetchRepayments(query) {
       this.fetchingRepayments = true;
-      axios.get(`creditor/repayments/reports`,{params:query}).then(response => {
-        this.repayments = { ...response.data };
-        this.fetchingRepayments = false;
-      });
+      const response = await this.$store.dispatch("CreditorLoanRequest/getAllRepayments", query);
+      this.fetchingRepayments = false;
+      return response;
     },
     handleText(event, position) {
       this.filters[position] = event;
@@ -77,26 +75,15 @@ export default {
       } else {
         this.$router.push({ name: "repayments", query: {} });
       }
-    },
-    serialize(obj, prefix) {
-      var str = [],
-        p;
-      for (p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          var k = prefix ? prefix + "[" + p + "]" : p,
-            v = obj[p];
-          str.push(
-            v !== null && typeof v === "object"
-              ? this.serialize(v, k)
-              : k + "=" + v
-          );
-        }
-      }
-      return str.join("&");
     }
   },
   mounted() {
     this.fetchRepayments(this.$router.history.current.query);
+  },
+  computed: {
+    allRepayments() {
+      return this.$store.state.CreditorLoanRequest.allRepayments;
+    }
   },
   watch: {
     "$route.query": {

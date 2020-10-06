@@ -61,7 +61,7 @@
             <td>Loan Offer Collected</td>
             <td>Credit Administrator</td>
             <td>Loan Amount</td>
-           <!--  <td>Amount Paid</td> -->
+            <!--  <td>Amount Paid</td> -->
           </tr>
           <template v-for="history in loanHistory.data">
             <tr class="t-field" :key="history.date">
@@ -131,10 +131,11 @@ export default {
       }, 2000);
     },
     declineRequest() {
-      this.$store.dispatch(
-        "CreditorLoanRequest/declineLoanRequest",
-        this.loanDetails.id
-      );
+      this.$store
+        .dispatch("CreditorLoanRequest/declineLoanRequest", this.loanDetails.id)
+        .then(() => {
+          this.$router.push({ name: "loanRequest" });
+        });
     },
     makeOffer() {
       this.$router.push({
@@ -161,7 +162,6 @@ export default {
       return this.$store.state.CreditorLoanRequest.isFetchingLoanHistory;
     },
     loanHistory() {
-      console.log(this.$store.state.CreditorLoanRequest.loanHistory)
       return this.$store.state.CreditorLoanRequest.loanHistory;
     }
   },

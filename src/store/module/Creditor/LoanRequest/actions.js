@@ -12,7 +12,7 @@ export const fetchLoanRequests = ({ commit }, query) => {
     }
   });
 };
-export const declineLoanRequest = ({ commit }, id) => {
+export const declineLoanRequest = async ({ commit }, id) => {
   const data = { id };
   creditor
     .declineLoanRequest(data)
@@ -22,7 +22,7 @@ export const declineLoanRequest = ({ commit }, id) => {
         message: response.message,
         success: true,
       });
-      commit("REDIRECT", { name: "loanRequest", time: 2000 });
+      return response
     })
     .catch((err) => {
       commit("SHOW_TOAST", {
@@ -81,7 +81,7 @@ export const fetchLoanHistory = ({ commit }, requestId) => {
 export const splitDetails = ({ commit }) => {
   commit("SPILT_DETAILS");
 };
-export const makeOffer = ({ commit }, data) => {
+export const makeOffer = async({ commit }, data) => {
   commit("IS_MAKING_OFFER", true);
   creditor
     .makeOffer(data)
@@ -93,7 +93,7 @@ export const makeOffer = ({ commit }, data) => {
           message: "Successfully made offer",
           success: true,
         });
-        commit("REDIRECT", { name: "loanRequest", time: 3000 });
+       return response
       }
     })
     .catch((err) => {
@@ -105,6 +105,22 @@ export const makeOffer = ({ commit }, data) => {
       });
     });
 };
+
+export const getAllRepayments=({commit},query)=>{
+  creditor.getAllRepayments(query).then(response=>{
+    commit("FETCH_REPAYMENTS_SUCCESS",response.data)
+  })
+}
+
+export const getSchedule= async({commit},{query,scheduleId})=>{
+  try{
+    const response = await creditor.getSchedule(query, scheduleId);
+    commit("FETCH_SCHEDULE_SUCCESS", response.data);
+    return response
+  }catch(e){
+   return Promise.reject(e)
+  }
+}
 
 export const updateSearchTerm = ({ commit }, searchTerm) => {
   commit("UPDATE_SEARCH_TERM", searchTerm);

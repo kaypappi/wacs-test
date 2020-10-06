@@ -10,6 +10,9 @@ export const isParkwayAdmin = (state) => {
 export const isIppisAdmin = (state) => {
   return state.user.data.roles[0].name === "IPPIS";
 };
+export const isStaff = (state) => {
+  return state.user.data.roles[0].name === "USER";
+};
 export const user = (state) => {
   return state.user;
 };

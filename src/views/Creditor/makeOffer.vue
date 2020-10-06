@@ -495,7 +495,9 @@
                     }
                 }
 
-               this.$store.dispatch("CreditorLoanRequest/makeOffer",data)
+               this.$store.dispatch("CreditorLoanRequest/makeOffer",data).then(()=>{
+                   this.$router.push({name:"loanRequest"})
+               })
                 
             },
             formatMonth(month){

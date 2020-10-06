@@ -110,11 +110,15 @@ export default {
       );
     },
     declineRequest() {
-      this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId)
+      this.$store.dispatch("IppisLoanRequest/ippisDeclineRequest",this.requestId).then(()=>{
+          this.$router.push({name:"ippisLoanRequest"})
+        })
     },
     approveOffer(){
         const id=this.requestId
-        this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id)
+        this.$store.dispatch("IppisLoanRequest/ippisApproveRequest",id).then(()=>{
+          this.$router.push({name:"ippisLoanRequest"})
+        })
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
