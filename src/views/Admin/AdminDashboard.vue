@@ -88,7 +88,7 @@
 import StatsCard from "../../components/StatsCard";
 import Table from "../../components/Table/Table";
 import NoData from "../../components/NoData"
-import LoanRequestTable from "../../components/Table/ippiss/LoanRequestTable";
+import LoanRequestTable from "../../components/Admin/AdminLoanRequestTable";
 
 export default {
   name: "home",
