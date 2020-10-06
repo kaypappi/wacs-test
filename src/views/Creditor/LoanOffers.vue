@@ -204,7 +204,6 @@ export default {
     return {
       errors: {},
       searchTerm: "",
-      creatingOffer: false,
       fetchingOffers: false,
       addOffer: {
         moratorium_principal: 0,
@@ -219,7 +218,7 @@ export default {
     },
     onSubmit() {
       const data = this.getSubmitData();
-      this.$store.dispatch("LoanOffers/createLoanOffer", {
+      this.$store.dispatch("CreditorLoanOffer/createLoanOffer", {
         data,
         closeModal: this.closeModal
       });
@@ -327,6 +326,9 @@ export default {
     },
     isFetching() {
       return this.$store.state.CreditorLoanOffer.fetchingOffers;
+    },
+    creatingOffer(){
+      return this.$store.state.CreditorLoanOffer.creatingOffer
     },
 
     toast() {
