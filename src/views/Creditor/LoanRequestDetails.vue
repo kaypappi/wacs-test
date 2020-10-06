@@ -38,7 +38,7 @@
         <p
           v-if="loanDetails.repayment_details!==null"
           class="view-schedule"
-          @click="$router.push({name:'repaymentsSchedule',params:{id:loanDetails.repayment_details.id}})"
+          @click="$router.push({name:'repaymentsSchedule',params:{id:loanDetails.repayment.id}})"
         >View Repayment Schedule</p>
       </div>
       <table class="table personal-info-table no-border-table">
@@ -156,6 +156,7 @@ export default {
       return this.$store.state.CreditorLoanRequest.splitDetails;
     },
     loanDetails() {
+      console.log(this.$store.state.CreditorLoanRequest)
       return this.$store.state.CreditorLoanRequest.loanDetails;
     },
     isFetchingLoanHistory() {

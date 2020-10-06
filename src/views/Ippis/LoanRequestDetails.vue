@@ -16,7 +16,7 @@
     <template v-else>
       <div  class="details-top">
         <h3>{{splitDetails.customerName}}</h3>
-        <template v-if="loanDetails.status==='Pending'">
+        <template v-if="loanDetails.ippis_status==='Pending'">
             <Button class="cta-button decline-btn margin-left-auto" @click="declineRequest">
           <img src="/assets/images/cancel.svg" alt="Plus sign" />
           Decline
@@ -134,6 +134,7 @@ export default {
       return this.$store.state.IppisLoanRequest.splitDetails;
     },
     loanDetails() {
+      console.log(this.$store.state.IppisLoanRequest.loanDetails)
       return this.$store.state.IppisLoanRequest.loanDetails;
     },
     getToast(){
