@@ -156,7 +156,6 @@ export default {
       return this.$store.state.CreditorLoanRequest.splitDetails;
     },
     loanDetails() {
-      console.log(this.$store.state.CreditorLoanRequest)
       return this.$store.state.CreditorLoanRequest.loanDetails;
     },
     isFetchingLoanHistory() {
