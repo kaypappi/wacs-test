@@ -8,9 +8,9 @@
           CREDIT SCHEME
         </p>
       </div>
-      <a href="/user/login" target="_blank">
-        <button class="download-btn">Login</button>
-      </a>
+      
+        <button @click="$router.push('/user/login')" class="download-btn">Login</button>
+  
       <!-- <button>Download App</button> -->
     </div>
     <div class="hero">

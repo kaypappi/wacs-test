@@ -418,7 +418,7 @@ const routes = [
 
   },
   {
-    path:"/password-reset",
+    path:"/password",
     component:ForgotPassword,
     name:"forgotPassword"
   },

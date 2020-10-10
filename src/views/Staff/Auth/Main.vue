@@ -2,7 +2,7 @@
   <div class="main-auth-wrapper">
     <div class="top-menu">
       <div class="top-menu-right">
-        <img src="/assets/images/WACS.png" alt="logo" />
+        <img @click="$router.push('/')" src="/assets/images/WACS.png" alt="logo" />
         <p>
           WORKERS AGGREGATED
           CREDIT SCHEME
