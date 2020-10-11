@@ -58,6 +58,18 @@ const routes = [
     },
   },
   {
+    path: "/creditor/password-reset/:token",
+    name: "resetPassword",
+    component: ResetPassword,
+    meta: {
+      title: "Reset Password",
+    },
+    beforeEnter: (to, from, next) => {
+      store.dispatch("ResetPassword/confirmToken", to.params.token);
+      next();
+    },
+  },
+  {
     path: "/",
     name: "frontPage",
     component: FrontPage,
@@ -415,17 +427,16 @@ const routes = [
         }, */
       },
     ],
-
   },
   {
-    path:"/password",
-    component:ForgotPassword,
-    name:"forgotPassword"
+    path: "/password",
+    component: ForgotPassword,
+    name: "forgotPassword",
   },
   {
-    path:"/password-reset/:token/",
-    component:ForgotPassword,
-    name:"userChangePassword"
+    path: "/password/:token/",
+    component: ForgotPassword,
+    name: "userChangePassword",
   },
 
   {
