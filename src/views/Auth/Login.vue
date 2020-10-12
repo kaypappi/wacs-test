@@ -80,6 +80,7 @@ export default {
           });
         })
         .catch(() => {
+          
         });
     },
     keyupEvent(name) {
