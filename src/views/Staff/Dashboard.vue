@@ -8,18 +8,25 @@
       </div>
     </div>
     <div class="content">
-      <img src="/assets/images/nodata.png" alt class="nodata" />
-      <p class="message">Your loan records will appear here</p>
-      <div class="btn-holder">
-        <button class="request">Request Loan Offer</button>
-      </div>
+     
+      <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan"/>
+      <NoData v-else/>
+    </div>
+    <div class="btn-holder">
+      <button class="request"><b-icon icon="plus"></b-icon> Request Loan Offer</button>
     </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex"
+import LoanHistory from "../../components/Staff/LoanHistory"
+import NoData from "../../components/Staff/NoData"
 export default {
+  components:{
+    LoanHistory,
+    NoData
+  },
 computed:{
     ...mapGetters({
         user:"Auth/user"
@@ -62,15 +69,18 @@ img.nodata {
   margin: 130px auto 16px auto;
 }
 .btn-holder {
-  width: 300px;
+  max-width: 400px;
   margin: 0 auto;
 }
 button.request {
-  width: 100%;
+  width: 500px;
   border: none;
   background: #27be58;
   color: white;
   padding: 10px;
+  font-weight: 500;
+  position: absolute;
+  bottom: 20px;
 }
 .message {
     color: #A6A6A6;

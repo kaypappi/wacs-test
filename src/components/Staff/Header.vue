@@ -1,20 +1,21 @@
 <template>
   <div class="Staff-Header d-flex">
     <div class="page-title h3 mr-auto">Home</div>
-    <div @click="logout" class="logout ml-auto">
+    <b-icon icon="bell" class="ml-auto"></b-icon>
+    <!-- <div @click="logout" class="logout ml-auto">
       <span>Logout</span>
       <span class="ml-2">
         <BIconBoxArrowRight />
       </span>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { BIconBoxArrowRight } from "bootstrap-vue";
+//import { BIconBoxArrowRight } from "bootstrap-vue";
 export default {
   components: {
-    BIconBoxArrowRight
+    //BIconBoxArrowRight
   },
   methods: {
     logout() {
