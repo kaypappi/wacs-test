@@ -49,7 +49,7 @@ export default {
     }
   },
   computed: {
-    rowClass(item) {
+    rowClass() {
       return "rowClass";
     }
   }
