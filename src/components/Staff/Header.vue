@@ -4,13 +4,13 @@
       <div class="top-title">
         {{details.title}}
       </div>
-      <span
+      <div v-if="details.parents" class="parent-links"><span
         v-for="(parent, index) in details.parents"
         :key="index"
-        @click="goBack((details.parents.length - index)*-1)"
+        @click="goBack(parent.name)"
         class="back-link h6"
-      >{{parent}} </span>
-      <span class="h6">/{{details.title}}</span>
+      >{{parent.title}} </span>
+      <span class="h6">/{{details.title}}</span></div>
     </div>
     <div class="right-header h3 ml-auto">
       <b-icon icon="bell"></b-icon>
@@ -29,8 +29,8 @@ export default {
     //BIconBoxArrowRight
   },
   methods: {
-    goBack(times) {
-      this.$router.go(times);
+    goBack(name) {
+      this.$router.push({name});
     }
   }
 };
