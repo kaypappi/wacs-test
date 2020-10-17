@@ -3,5 +3,7 @@ export const FETCH_LOAN_OFFERS_SUCCESS=(state,data)=>{
 }
 
 export const FETCHING_LOAN_OFFERS=(state,status)=>{
+    
     state.fetchingLoanOffers=status
+    console.log(state.fetchingLoanOffers);
 }

@@ -1,4 +1,4 @@
 export default {
   loanOffers: null,
-  etchingLoanOffers:false,
+  fetchingLoanOffers:false,
 };
