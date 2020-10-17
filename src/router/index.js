@@ -444,6 +444,7 @@ const routes = [
         meta: {
           title: "Loan Offers",
           nameSpace: "home",
+          parents:['Loan requests']
         },
       },
     ],

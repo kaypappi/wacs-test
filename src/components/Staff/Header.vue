@@ -1,13 +1,16 @@
 <template>
   <div class="Staff-Header d-flex">
     <div class="page-title h3 mr-auto">
+      <div class="top-title">
+        {{details.title}}
+      </div>
       <span
         v-for="(parent, index) in details.parents"
         :key="index"
         @click="goBack((details.parents.length - index)*-1)"
-        class="back-link"
-      >{{parent}} /</span>
-      <span>{{details.title}}</span>
+        class="back-link h6"
+      >{{parent}} </span>
+      <span class="h6">/{{details.title}}</span>
     </div>
     <div class="right-header h3 ml-auto">
       <b-icon icon="bell"></b-icon>
@@ -40,6 +43,10 @@ export default {
 }
 .page-title {
   color: #738191;
+}
+.back-link{
+  color: #27be58;
+  cursor: pointer;
 }
 .right-header {
   position: relative;

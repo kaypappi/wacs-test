@@ -1,7 +1,7 @@
 <template>
   <div class="loan-offers-wrapper">
-    <div class="top">
-      <div class="filter">
+    <div class="top d-flex mb-4">
+      <div class="filter ml-auto">
         <b-icon class="icon" icon="sliders"></b-icon>Filter By :
       </div>
     </div>
@@ -48,5 +48,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.filter{
+    border: 1px solid #DBDBDB;
+    border-radius: 5px;
+    padding: 5px 50px 5px 10px;
+}
 </style>
