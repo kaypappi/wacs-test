@@ -13,7 +13,7 @@
       <div
         v-for="(menu, index) in menus"
         :key="index"
-        class="left-menu-items"
+        :class="{'left-menu-items':true,'active-menu': currentNameSpace === menu.nameSpace}"
         @click="goTo(menu.to)"
       >
         <span class="icon">
@@ -30,9 +30,8 @@
     </Push>
 
     <div id="page-wrap" class="right">
-      <Header />
+      <Header :details="$route.meta" />
       <div class="main-body">
-        <!-- <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'" /> -->
         <div class="main-body-content">
           <router-view />
         </div>
@@ -44,19 +43,22 @@
 <script>
 import Header from "../Staff/Header";
 import { Push } from "vue-burger-menu";
-//import LeftMenuItems from "../Staff/LeftMenuItems";
 export default {
   components: {
     Header,
-    //LeftMenuItems,
     Push
   },
   data() {
     return {
       menuOpen: true,
       menus: [
-        { name: "Home", to: "/user", icon: "house-door" },
-        { name: "Profile", to: "/user/profile", icon: "person-circle" }
+        { name: "Home", to: "/user", icon: "house-door", nameSpace: "home" },
+        {
+          name: "Profile",
+          to: "/user/profile",
+          icon: "person-circle",
+          nameSpace: "profile"
+        }
       ],
       collasped: false,
       window: {
@@ -84,6 +86,11 @@ export default {
       });
     }
   },
+  computed: {
+    currentNameSpace() {
+      return this.$route.meta.nameSpace;
+    }
+  },
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
@@ -101,9 +108,13 @@ export default {
   background: white;
 }
 
+.staffmain >>> .active-menu{
+  color: #27be58;
+}
+
 .right {
   width: calc(100vw - 300px);
-  position: relative;
+  padding: 0 30px;
 }
 
 img {
@@ -168,23 +179,30 @@ img {
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
+
 .staffmain >>> .bm-item-list {
-  color: #b8b7ad;
+  color:#697d69;
   margin-left: 0;
   font-size: 20px;
   position: relative;
   height: 100%;
+  overflow-y: hidden;
 }
+
 .staffmain >>> .bm-item-list > * {
   display: flex;
   text-decoration: none;
   padding: 0;
 }
+
 .staffmain >>> .bm-item-list > * > span {
   margin-left: 0px;
   color: #697d69;
   font-size: 18px;
   font-weight: 400;
+}
+.staffmain >>> .bm-item-list > .active-menu > span {
+  color: #27be58;
 }
 .staffmain >>> .left-menu-items {
   padding: 10px 30px;
@@ -202,6 +220,7 @@ img {
   bottom: 20px;
   color: #697686;
   cursor: pointer;
+  padding: 0 30px;
 }
 
 @media screen and (max-width: 1000px) {

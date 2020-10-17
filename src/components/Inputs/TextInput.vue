@@ -1,6 +1,7 @@
 <template>
     <div :class="[length == 'short' ? 'short-tagged-input' : 'long-text-input']">
         <label :for="id" :class="labelClass">{{label}}</label>
+        <span class="form-field-info" v-if="fieldInfo">{{fieldInfo}}</span>
         <input 
             :value="value" 
             @change="$emit('input', $event.target.value)" 
@@ -31,6 +32,10 @@
            'disabled': {
                type: Boolean,
                default: false,
+           },
+           'fieldInfo': {
+               type: String,
+               default: '',
            },
            'error': {
                type: Array,

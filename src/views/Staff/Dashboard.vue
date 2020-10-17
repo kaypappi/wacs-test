@@ -8,41 +8,45 @@
       </div>
     </div>
     <div class="content">
-     
-      <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan"/>
-      <NoData v-else/>
+      <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan" />
+      <NoData v-else />
     </div>
     <div class="btn-holder">
-      <button class="request"><b-icon icon="plus"></b-icon> Request Loan Offer</button>
+      <button @click="$router.push({name:'newLoanRequest'})" class="request">
+        <b-icon icon="plus"></b-icon>Request Loan Offer
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex"
-import LoanHistory from "../../components/Staff/LoanHistory"
-import NoData from "../../components/Staff/NoData"
+import { mapGetters } from "vuex";
+import LoanHistory from "../../components/Staff/LoanHistory";
+import NoData from "../../components/Staff/NoData";
 export default {
-  components:{
+  components: {
     LoanHistory,
     NoData
   },
-computed:{
+  computed: {
     ...mapGetters({
-        user:"Auth/user"
+      user: "Auth/user"
     })
-}
+  }
 };
 </script>
 
 <style scoped>
 .dashboard-wrapper {
-  padding: 35px;
 }
 
 .summary-card {
-  background: #176229;
-  background-size: 150px 150px;
+  background: /* url("/assets/images/Circles.svg") -10% -100px no-repeat,
+    url("/assets/images/Circles.svg") 30% 100px no-repeat,
+    url("/assets/images/Circles.svg") 75% 100px no-repeat,
+    url("/assets/images/Circles.svg") 52% 100px no-repeat,
+    url("/assets/images/Circles.svg") 110% -100px no-repeat, */ #176229;
+  background-size: 200px;
   background-repeat: no-repeat;
   color: white;
   display: flex;
@@ -69,11 +73,11 @@ img.nodata {
   margin: 130px auto 16px auto;
 }
 .btn-holder {
-  max-width: 400px;
+  width: 300px;
   margin: 0 auto;
 }
 button.request {
-  width: 500px;
+  width: inherit;
   border: none;
   background: #27be58;
   color: white;
@@ -83,11 +87,11 @@ button.request {
   bottom: 20px;
 }
 .message {
-    color: #A6A6A6;
-    font-size: 18px;
-    letter-spacing: 0;
-    line-height: 30px;
-    text-align: center;
-    margin-bottom: 30px;
+  color: #a6a6a6;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 </style>

@@ -40,6 +40,8 @@ import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue";
 import StaffMainAuth from "../views/Staff/Auth/Main.vue";
 import StaffDashboard from "../views/Staff/Dashboard.vue";
 import StaffMain from "../components/Layout/StaffMain.vue"
+import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue"
+import StaffLoanOffers from  "../views/Staff/LoanOffers.vue"
 
 Vue.use(VueRouter);
 
@@ -421,10 +423,28 @@ const routes = [
         path: "/user",
         name: "staffDashboard",
         component: StaffDashboard,
-        /* meta: {
-          title: "Loan Request",
-          nameSpace: "loan",
-        }, */
+        meta: {
+          title: "Home",
+          nameSpace: "home",
+        },
+      },
+      {
+        path: "/user/new-request",
+        name: "newLoanRequest",
+        component: StaffNewLoanRequest,
+        meta: {
+          title: "New Loan Request",
+          nameSpace: "home",
+        },
+      },
+      {
+        path: "/user/loan-offers",
+        name: "StaffLoanOffers",
+        component: StaffLoanOffers,
+        meta: {
+          title: "Loan Offers",
+          nameSpace: "home",
+        },
       },
     ],
   },

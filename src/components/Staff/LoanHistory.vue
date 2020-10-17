@@ -98,4 +98,8 @@ span.status-oval.active-status.Pending {
     font-size: 16px;
     font-weight: 400;
 }
+
+.staff-loan-history >>> .table th {
+  background-color: white;
+}
 </style>

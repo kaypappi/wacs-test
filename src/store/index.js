@@ -22,6 +22,7 @@ import Auth from "./module/Auth/Auth"
 import PasswordReset from "./module/Auth/PasswordReset"
 
 import UserAuth from "./module/User/Auth"
+import UserLoanOffers from "./module/User/LoanOffers"
 
 
 
@@ -43,6 +44,7 @@ export default new Vuex.Store({
     IppisLoanRequest,
     Auth,
     PasswordReset,
-    UserAuth
+    UserAuth,
+    UserLoanOffers
   }
 })

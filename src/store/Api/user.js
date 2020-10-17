@@ -43,11 +43,22 @@ export default {
   resendToken(form) {
     return new Promise((resolve, reject) => {
       axios
-        .post("user/resendcode",form)
+        .post("user/resendcode", form)
         .then((response) => {
           resolve(response);
         })
-        .catch((err) => [reject(err)]);
+        .catch((err) => reject(err));
+    });
+  },
+
+  fetchLoanOffers(query) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("user/filter", { params: query })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
     });
   },
 };

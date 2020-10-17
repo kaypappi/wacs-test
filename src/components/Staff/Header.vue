@@ -1,31 +1,33 @@
 <template>
   <div class="Staff-Header d-flex">
-    <div class="page-title h3 mr-auto">Home</div>
-    <b-icon icon="bell" class="ml-auto"></b-icon>
-    <!-- <div @click="logout" class="logout ml-auto">
-      <span>Logout</span>
-      <span class="ml-2">
-        <BIconBoxArrowRight />
-      </span>
-    </div> -->
+    <div class="page-title h3 mr-auto">
+      <span
+        v-for="(parent, index) in details.parents"
+        :key="index"
+        @click="goBack((details.parents.length - index)*-1)"
+        class="back-link"
+      >{{parent}} /</span>
+      <span>{{details.title}}</span>
+    </div>
+    <div class="right-header h3 ml-auto">
+      <b-icon icon="bell"></b-icon>
+      <span class="red-dot"></span>
+    </div>
   </div>
 </template>
 
 <script>
 //import { BIconBoxArrowRight } from "bootstrap-vue";
 export default {
+  props:{
+    details:Object
+  },
   components: {
     //BIconBoxArrowRight
   },
   methods: {
-    logout() {
-      this.$store.dispatch("Auth/logout").then(() => {
-        this.$router
-          .push({
-            name: "StaffLogin"
-          })
-          .catch(() => {});
-      });
+    goBack(times) {
+      this.$router.go(times);
     }
   }
 };
@@ -35,13 +37,24 @@ export default {
 .Staff-Header {
   align-items: center;
   height: 130px;
-  padding: 0 35px;
 }
 .page-title {
   color: #738191;
 }
-.logout {
+.right-header {
+  position: relative;
   color: #697686;
   cursor: pointer;
+}
+
+.red-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background: red;
+  border: 2px solid white;
+  position: absolute;
+  top: 3px;
+  right: 3px;
 }
 </style>
