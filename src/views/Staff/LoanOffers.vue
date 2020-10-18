@@ -15,21 +15,32 @@
       <template v-for="(loanOffer,index) in loanOffers.data">
         <LoanOfferCard :key="index" :loanOffer="loanOffer" />
       </template>
+      <NoData :onclick="newRequest" v-if="!fetchingLoanOffers && loanOffers.data.length<1">
+        <template v-slot:message>No Loan Offers Found!</template>
+        <template v-slot:button>
+         Request New Loan Offer
+        </template>
+      </NoData>
     </div>
   </div>
 </template>
 
 <script>
 import LoanOfferCard from "../../components/Staff/LoanOfferCard";
+import NoData from  "../../components/Staff/NoData"
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
-    LoanOfferCard
+    LoanOfferCard,
+    NoData
   },
   methods: {
     ...mapActions({
       fetchLoanOffers: "UserLoanOffers/fetchLoanOffers"
-    })
+    }),
+    newRequest(){
+        this.$router.push({name:"newLoanRequest"})
+    }
   },
   computed: {
     ...mapGetters({
@@ -37,10 +48,6 @@ export default {
       fetchingLoanOffers: "UserLoanOffers/fetchingLoanOffers"
     })
 
-    /* loanOffers(){
-        console.log(this.$store.state.UserLoanOffers.loanOffers)
-        return this.$store.state.UserLoanOffers.loanOffers
-    } */
   },
   watch: {
     "$route.query": {

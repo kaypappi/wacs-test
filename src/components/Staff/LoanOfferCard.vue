@@ -20,7 +20,7 @@
         <span class="label">Payback Period: </span>
         <span
           class="value "
-        >{{`${loanOffer.payback_period}months`}}</span>
+        >{{` ${loanOffer.payback_period}months`}}</span>
         <span class="ml-auto apply">Apply <b-icon icon="arrow-right"></b-icon></span>
       </p>
     </div>

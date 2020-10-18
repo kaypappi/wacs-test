@@ -9,7 +9,12 @@
     </div>
     <div class="content">
       <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan" />
-      <NoData v-else />
+      <NoData v-else>
+        <template v-slot:message>Your loan records will appear here</template>
+        <template v-slot:button>
+          <button class="request">Request Loan Offer</button>
+        </template>
+      </NoData>
     </div>
     <div class="btn-holder">
       <button @click="$router.push({name:'newLoanRequest'})" class="request">
@@ -68,10 +73,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-img.nodata {
-  width: 300px;
-  margin: 130px auto 16px auto;
-}
 .btn-holder {
   width: 300px;
   margin: 0 auto;
@@ -86,12 +87,5 @@ button.request {
   position: absolute;
   bottom: 20px;
 }
-.message {
-  color: #a6a6a6;
-  font-size: 18px;
-  letter-spacing: 0;
-  line-height: 30px;
-  text-align: center;
-  margin-bottom: 30px;
-}
+
 </style>

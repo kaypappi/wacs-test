@@ -1,7 +1,7 @@
 <template>
   <div class="new-loan-wrapper">
     <div class="form-wrapper">
-      <form>
+      <form @submit="submit">
           <TaggedInput 
       label="Amount" 
       fieldInfo="Enter loan amount you want"
@@ -15,6 +15,7 @@
       :tagLeft="true"
       :tagRight="false"
       leftImage="naira.svg"
+      v-model="form.amount"
       />
       <TextInput 
       label="Payback Period" 
@@ -27,11 +28,12 @@
       type="number"
       inputClass="inputClasses"
       :required="true"
+      v-model="form.payback"
       />
 
       <label for="moratorium" class="form-modal-label margin-top-30">Moratorium Period</label>
       <span class="form-field-info">Select when you wish to start repayment</span>
-      <select name="moratorium" id="moratorium" class="form-modal-inputs">
+      <select v-model="form.monotarium" name="moratorium" id="moratorium" class="form-modal-inputs">
           <option :value="0" hidden>Select Month</option>
           <option :value="1">1 Month</option>
           <option :value="2">2 Months</option>
@@ -50,7 +52,21 @@ export default {
   components: {
     TaggedInput,
     TextInput,
-  }
+  },
+  data(){
+      return{
+          form:{
+              amount:"",
+              payback:"",
+              monotarium:""
+          }
+      }
+  },
+  methods:{
+      submit(){
+          this.$router.push({name:'StaffLoanOffers',query:this.form})
+      }
+  },
 };
 </script>
 
