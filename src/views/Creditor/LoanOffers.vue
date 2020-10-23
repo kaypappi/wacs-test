@@ -265,7 +265,7 @@ export default {
     fetchLoanOffers(query) {
       this.$store.dispatch(
         "CreditorLoanOffer/fetchLoanOffers",
-        this.serialize(query)
+        query
       );
     },
     updateLoanOffers(newRow) {
@@ -348,9 +348,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchLoanOffers(this.$router.history.current.query);
-  },
   watch: {
     "$route.query": {
       handler(query) {
@@ -360,7 +357,8 @@ export default {
           this.fetchLoanOffers(query);
         }
       },
-      deep: true
+      deep: true,
+      immediate:true
     }
   }
 };

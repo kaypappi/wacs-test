@@ -4,7 +4,7 @@ export default {
   fetchLoanOffers(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/offer/view?${query}`)
+        .get(`creditor/offer/view`,{params:query})
         .then((response) => {
           resolve(response);
         })
