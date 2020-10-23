@@ -218,10 +218,9 @@ export default {
     },
     onSubmit() {
       const data = this.getSubmitData();
-      this.$store.dispatch("CreditorLoanOffer/createLoanOffer", {
-        data,
-        closeModal: this.closeModal
-      });
+      this.$store.dispatch("CreditorLoanOffer/createLoanOffer",data).then(()=>{
+        this.closeModal()
+      })
     },
     getSubmitData() {
       const data = {
@@ -242,22 +241,6 @@ export default {
     },
     onHide() {
       this.addOffer = {};
-    },
-    serialize(obj, prefix) {
-      var str = [],
-        p;
-      for (p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          var k = prefix ? prefix + "[" + p + "]" : p,
-            v = obj[p];
-          str.push(
-            v !== null && typeof v === "object"
-              ? this.serialize(v, k)
-              : k + "=" + v
-          );
-        }
-      }
-      return str.join("&");
     },
     handleSearch(event) {
       return this.$store.dispatch("CreditorLoanOffer/updateSearchTerm", event);

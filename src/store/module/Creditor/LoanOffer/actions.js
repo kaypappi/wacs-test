@@ -28,7 +28,7 @@ export const updateSearchTerm = ({ commit }, searchTerm) => {
 export const updateSearchFound = ({ commit }, status) => {
   commit("UPDATE_SEARCH_FOUND", status);
 };
-export const createLoanOffer = ({ commit, dispatch }, { data, closeModal }) => {
+export const createLoanOffer = async ({ commit, dispatch }, data) => {
   commit("CREATING_OFFER", true);
   creditor
     .createLoanOffer(data)
@@ -40,7 +40,6 @@ export const createLoanOffer = ({ commit, dispatch }, { data, closeModal }) => {
         message: "You created a loan offer",
         success: true,
       });
-      closeModal();
       dispatch("fetchLoanOffers");
     })
     .catch((err) => {
