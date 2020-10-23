@@ -96,6 +96,18 @@ const routes = [
         },
       },
       {
+        path: "creditor/password-reset/:token",
+        name: "resetPassword",
+        component: ResetPassword,
+        meta: {
+          title: "Reset Password",
+        },
+        beforeEnter: (to, from, next) => {
+          store.dispatch("ResetPassword/confirmToken", to.params.token);
+          next();
+        },
+      },
+      {
         path: "/creditor/home",
         name: "home",
         component: Home,

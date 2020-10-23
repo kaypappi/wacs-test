@@ -113,4 +113,37 @@ export default {
 .main-auth-wrapper >>> input[type=number] {
   -moz-appearance: textfield;
 }
+
+@media screen and (max-width: 1024px) {
+  .content{
+    grid-template-columns:  1fr !important;
+  }
+  .left-section{
+    display: none;
+  }
+  .info-text{
+    display: none;
+  }
+  .right-content{
+    margin: 0 auto;
+    width: 90%;
+  }
+  
+}
+
+@media screen and (max-width: 700px) {
+  .top-menu-right{
+    grid-template-columns: 50px 1fr;
+    grid-gap: 10px;
+  }
+
+  .top-menu-right p{
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .redirect-btn{
+    font-size: 12px;
+    padding: 5px;
+  }
+}
 </style>
