@@ -82,7 +82,7 @@ export default {
   fetchLoanRequests(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`/creditor/request/view?${query}`)
+        .get(`/creditor/request/view`,{params:query})
         .then((response) => {
           resolve(response);
         })

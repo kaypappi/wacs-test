@@ -5,3 +5,11 @@ export const FETCH_LOAN_OFFERS_SUCCESS = (state, data) => {
 export const FETCHING_LOAN_OFFERS = (state, status) => {
   state.fetchingLoanOffers = status;
 };
+
+export const MAKING_LOAN_REQUEST=(state,status)=>{
+  state.makingLoanRequest=status
+}
+
+export const MAKE_LOAN_REQUEST_ERROR=(state,error)=>{
+  state.errors=error
+}

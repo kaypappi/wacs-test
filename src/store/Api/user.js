@@ -61,4 +61,14 @@ export default {
         .catch((err) => reject(err));
     });
   },
+  makeLoanRequest({ amount, id }) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/user/loanRequest/${id}`, { amount })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    });
+  },
 };

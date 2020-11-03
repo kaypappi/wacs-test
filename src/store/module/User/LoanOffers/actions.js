@@ -14,3 +14,16 @@ export const fetchLoanOffers=async({commit},query)=>{
         return Promise.reject(e)
     }
 }
+
+export const makeLoanRequest=async({commit},{amount,id})=>{
+    commit("MAKING_LOAN_REQUEST",true)
+    try{
+        const response=await user.makeLoanRequest({amount,id})
+        commit("MAKING_LOAN_REQUEST", false);
+        return response
+    }
+    catch(e){
+        commit("MAKE_LOAN_REQUEST_ERROR",e.errors)
+        return Promise.reject(e)
+    }
+}

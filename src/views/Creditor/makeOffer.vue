@@ -467,11 +467,7 @@
                 return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                 },
             submitWizard(){
-                const data=this.getSubmitData
-                const formData=new FormData()
-                for ( var key in data ) {
-                    formData.append(key, data[key]);
-                }                
+                const data=this.getSubmitData             
                 if(this.equalRepayment){
                     const amount=parseInt(this.stripString(this.offer.repayment_amount))
                     const startDate=moment().add(this.offer.moratorium,'months');
@@ -484,8 +480,6 @@
                     if(this.offer.csv_repayment.length>0){
                         data.plan_type="unequal"
                         data.plan=[...this.offer.csv_repayment]
-                        /* formData.append("plan_type", "unequal");
-                        formData.append("csvUpload",this.formValues); */
                     }
                     else{
                         data.plan_type="unequal"

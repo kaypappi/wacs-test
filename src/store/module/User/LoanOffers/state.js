@@ -1,4 +1,6 @@
 export default {
   loanOffers: null,
-  fetchingLoanOffers:false,
+  fetchingLoanOffers: false,
+  makingLoanRequest:false,
+  errors:null
 };
