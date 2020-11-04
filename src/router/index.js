@@ -42,6 +42,7 @@ import StaffDashboard from "../views/Staff/Dashboard.vue";
 import StaffMain from "../components/Layout/StaffMain.vue"
 import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue"
 import StaffLoanOffers from  "../views/Staff/LoanOffers.vue"
+import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue"
 
 Vue.use(VueRouter);
 
@@ -231,6 +232,18 @@ const routes = [
     path: "/ippis",
     component: IppisMain,
     children: [
+      {
+        path: "ippis/password-reset/:token",
+        name: "resetPassword",
+        component: ResetPassword,
+        meta: {
+          title: "Reset Password",
+        },
+        beforeEnter: (to, from, next) => {
+          store.dispatch("ResetPassword/confirmToken", to.params.token);
+          next();
+        },
+      },
       {
         path: "/ippis/dashboard",
         name: "ippisLoanRequest",
@@ -458,6 +471,11 @@ const routes = [
           nameSpace: "home",
           parents: [{ title: "Loan requests", name: "newLoanRequest" }],
         },
+      },
+      {
+        path: "/user/loan-request-success",
+        name: "StaffLoanRequestSuccess",
+        component: StaffLoanRequestSuccess,
       },
     ],
   },

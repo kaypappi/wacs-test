@@ -149,6 +149,7 @@ export default {
         id: this.loanOffer.id
       }).then(() => {
         this.showToast("Success","Loan request was successful",true)
+        this.$router.push({name:"StaffLoanRequestSuccess"})
       }).catch(e=>{
         this.showToast("Error",e.response.data.message,false)
       })
