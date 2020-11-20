@@ -43,6 +43,7 @@ import StaffMain from "../components/Layout/StaffMain.vue"
 import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue"
 import StaffLoanOffers from  "../views/Staff/LoanOffers.vue"
 import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue"
+import StaffLoanDetails from "../views//Staff/LoanDetails.vue"
 
 Vue.use(VueRouter);
 
@@ -470,6 +471,16 @@ const routes = [
           title: "Loan Offers",
           nameSpace: "home",
           parents: [{ title: "Loan requests", name: "newLoanRequest" }],
+        },
+      },
+      {
+        path: "/user/loan-details",
+        name: "StaffLoanDeatils",
+        component: StaffLoanDetails,
+        meta: {
+          title: "Loan Details",
+          nameSpace: "home",
+          parents: [{ title: "Loan History", name: "staffDashboard" }],
         },
       },
       {
