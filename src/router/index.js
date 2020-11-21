@@ -474,7 +474,7 @@ const routes = [
         },
       },
       {
-        path: "/user/loan-details",
+        path: "/user/loan-details/:id",
         name: "StaffLoanDeatils",
         component: StaffLoanDetails,
         meta: {

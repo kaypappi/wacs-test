@@ -71,4 +71,14 @@ export default {
         .catch((err) => reject(err));
     });
   },
+  fetchLoanDetails(id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`user/loans/${id}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    });
+  },
 };

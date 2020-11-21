@@ -2,11 +2,12 @@
   <div class="staff-loan-history">
     <div class="top d-flex">
       <span class="title h4 mr-auto">Loan History</span>
-      <span class="view-all h6  ml-auto">View All</span>
+      <span class="view-all h6 ml-auto">View All</span>
     </div>
     <div class="lone-history-table">
       <b-table
-        
+        @row-clicked="openLoanDetails"
+        hover
         borderless
         :items="loanHistory"
         responsive
@@ -46,6 +47,9 @@ export default {
   methods: {
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    },
+    openLoanDetails(item) {
+      this.$router.push({ name: "StaffLoanDeatils", params: { id: item.id } });
     }
   },
   computed: {
@@ -57,17 +61,17 @@ export default {
 </script>
 
 <style scoped>
-.staff-loan-history{
-    margin-top: 64px;
+.staff-loan-history {
+  margin-top: 64px;
 }
 
 .title {
-    color: #656A72;
+  color: #656a72;
 }
 
-.view-all{
-    color: #27BE58;
-    cursor: pointer;
+.view-all {
+  color: #27be58;
+  cursor: pointer;
 }
 
 .status-oval {
@@ -88,15 +92,14 @@ span.status-oval.active-status.Pending {
   border-bottom: 0px;
 }
 
-.staff-loan-history >>> .rowClass{
-    border-bottom: 1px solid #E5E5E5;
-    
+.staff-loan-history >>> .rowClass {
+  border-bottom: 1px solid #e5e5e5;
 }
 
-.staff-loan-history >>> .table td{
-    color: #656A72;
-    font-size: 16px;
-    font-weight: 400;
+.staff-loan-history >>> .table td {
+  color: #656a72;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .staff-loan-history >>> .table th {

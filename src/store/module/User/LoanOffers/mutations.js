@@ -13,3 +13,11 @@ export const MAKING_LOAN_REQUEST=(state,status)=>{
 export const MAKE_LOAN_REQUEST_ERROR=(state,error)=>{
   state.errors=error
 }
+
+export const FETCHING_LOAN_DETAILS=(state,status)=>{
+  state.fetchingLoanDetails=status
+}
+
+export const FETCHING_LOANDETAILS_SUCCESS=(state,data)=>{
+  state.loanDetails=data
+}
