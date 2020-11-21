@@ -115,6 +115,7 @@ export default {
 .right {
   width: calc(100vw - 300px);
   padding: 0 30px;
+  overflow-y: auto;
 }
 
 img {

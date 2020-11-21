@@ -1,5 +1,10 @@
 <template>
   <div class="dashboard-wrapper">
+    <div class="btn-holder">
+      <button @click="$router.push({name:'newLoanRequest'})" class="request">
+      <b-icon icon="plus"></b-icon>Request Loan Offer
+    </button>
+    </div>
     <div class="summary-card">
       <p class="title">Eligibility Credit Amount</p>
       <div class="h1">
@@ -7,6 +12,7 @@
         <span>{{user.data.eligibility}}</span>
       </div>
     </div>
+    <div class="btn-holder"></div>
     <div class="content">
       <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan" />
       <NoData v-else>
@@ -15,11 +21,6 @@
           <button class="request">Request Loan Offer</button>
         </template>
       </NoData>
-    </div>
-    <div class="btn-holder">
-      <button @click="$router.push({name:'newLoanRequest'})" class="request">
-        <b-icon icon="plus"></b-icon>Request Loan Offer
-      </button>
     </div>
   </div>
 </template>
@@ -76,6 +77,8 @@ export default {
 .btn-holder {
   width: 300px;
   margin: 0 auto;
+  position: sticky;
+  top: calc(100vh - 70px);
 }
 button.request {
   width: inherit;
@@ -84,8 +87,6 @@ button.request {
   color: white;
   padding: 10px;
   font-weight: 500;
-  position: absolute;
-  bottom: 20px;
+  
 }
-
 </style>
