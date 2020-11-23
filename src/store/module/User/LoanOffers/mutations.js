@@ -21,3 +21,11 @@ export const FETCHING_LOAN_DETAILS=(state,status)=>{
 export const FETCHING_LOANDETAILS_SUCCESS=(state,data)=>{
   state.loanDetails=data
 }
+
+export const ACCEPTING_LOAN_OFFER=(state,status)=>{
+  state.acceptingLoanOffer=status
+}
+
+export const DECLINING_LOAN_OFFER = (state, status) => {
+  state.decliningLoanOffer = status;
+};

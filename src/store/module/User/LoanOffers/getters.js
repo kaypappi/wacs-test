@@ -13,3 +13,11 @@ export const loanDetails = (state) => {
 export const fetchingLoanDetails = (state) => {
   return state.fetchingLoanDetails;
 };
+
+export const acceptingLoanOffer=(state)=>{
+    return state.acceptingLoanOffer;
+}
+
+export const decliningLoanOffer = (state) => {
+  return state.decliningLoanOffer;
+};

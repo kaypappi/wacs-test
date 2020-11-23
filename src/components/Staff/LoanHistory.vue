@@ -83,10 +83,12 @@ span.status-oval.active-status.Declined {
   background: rgba(245, 6, 6, 0.15);
 }
 
-span.status-oval.active-status.Pending {
+span.status-oval.active-status.Pending ,.Awaiting.IPPIS.Approval {
   color: #e47a00;
   background: rgba(228, 122, 0, 0.15);
 }
+
+
 
 .staff-loan-history >>> .table thead {
   border-bottom: 0px;

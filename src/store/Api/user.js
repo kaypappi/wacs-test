@@ -81,4 +81,24 @@ export default {
         .catch((err) => reject(err));
     });
   },
+  acceptLoanOffer(id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/user/loanRequest/accept/${id}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    });
+  },
+  declineLoanOffer(id) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/user/loanRequest/decline/${id}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    });
+  },
 };

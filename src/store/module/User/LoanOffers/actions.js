@@ -38,3 +38,27 @@ export const fetchLoanDetails = async ({ commit }, id) => {
     return Promise.reject(e);
   }
 };
+
+export const acceptLoanOffer = async ({ commit }, id) => {
+  commit("ACCEPTING_LOAN_OFFER", true);
+  try {
+    commit("ACCEPTING_LOAN_OFFER", false);
+    const response = await user.acceptLoanOffer(id);
+    return response;
+  } catch (e) {
+    commit("ACCEPTING_LOAN_OFFER", false);
+    return Promise.reject(e);
+  }
+};
+
+export const declineLoanOffer = async ({ commit }, id) => {
+  commit("DECLINING_LOAN_OFFER", true);
+  try {
+    commit("DECLINING_LOAN_OFFER", false);
+    const response = await user.declineLoanOffer(id);
+    return response;
+  } catch (e) {
+    commit("DECLINING_LOAN_OFFER", false);
+    return Promise.reject(e);
+  }
+};
