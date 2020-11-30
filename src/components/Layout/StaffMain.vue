@@ -54,10 +54,10 @@ export default {
       menus: [
         { name: "Home", to: "/user", icon: "house-door", nameSpace: "home" },
         {
-          name: "Profile",
-          to: "/user/profile",
+          name: "Account",
+          to: "/user/account",
           icon: "person-circle",
-          nameSpace: "profile"
+          nameSpace: "account"
         }
       ],
       collasped: false,

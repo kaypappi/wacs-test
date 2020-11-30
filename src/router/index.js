@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Auth/Login.vue";
 import ResetPassword from "../views/Auth/Reset-password.vue";
-import ForgotPassword from "../views/Auth/ForgotPassword.vue"
+import ForgotPassword from "../views/Auth/ForgotPassword.vue";
 import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
 import Main from "../components/Layout/Main";
@@ -39,11 +39,12 @@ import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue";
 
 import StaffMainAuth from "../views/Staff/Auth/Main.vue";
 import StaffDashboard from "../views/Staff/Dashboard.vue";
-import StaffMain from "../components/Layout/StaffMain.vue"
-import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue"
-import StaffLoanOffers from  "../views/Staff/LoanOffers.vue"
-import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue"
-import StaffLoanDetails from "../views//Staff/LoanDetails.vue"
+import StaffMain from "../components/Layout/StaffMain.vue";
+import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue";
+import StaffLoanOffers from "../views/Staff/LoanOffers.vue";
+import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue";
+import StaffLoanDetails from "../views//Staff/LoanDetails.vue";
+import StaffAccount from "../views/Staff/Account/Account.vue";
 
 Vue.use(VueRouter);
 
@@ -487,6 +488,17 @@ const routes = [
         path: "/user/loan-request-success",
         name: "StaffLoanRequestSuccess",
         component: StaffLoanRequestSuccess,
+      },
+      {
+        path: "/user/account",
+        component:StaffAccount,
+        meta:{
+          nameSpace:"account",
+          title:"Account"
+        },
+        children: [
+          
+        ],
       },
     ],
   },
