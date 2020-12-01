@@ -45,6 +45,8 @@ import StaffLoanOffers from "../views/Staff/LoanOffers.vue";
 import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue";
 import StaffLoanDetails from "../views//Staff/LoanDetails.vue";
 import StaffAccount from "../views/Staff/Account/Account.vue";
+import StaffHelp from "../views/Staff/Account/Help.vue"
+import StaffAbout from "../views/Staff/Account/About.vue"
 
 Vue.use(VueRouter);
 
@@ -491,13 +493,31 @@ const routes = [
       },
       {
         path: "/user/account",
-        component:StaffAccount,
-        meta:{
-          nameSpace:"account",
-          title:"Account"
+        name: "StaffAccount",
+        component: StaffAccount,
+        meta: {
+          nameSpace: "account",
+          title: "Account",
         },
         children: [
-          
+          {
+            path: "/user/account/help",
+            name: "StaffHelp",
+            component: StaffHelp,
+            meta: {
+              nameSpace: "account",
+              title:"Account"
+            },
+          },
+          {
+            path: "/user/account/about",
+            name: "StaffAbout",
+            component: StaffAbout,
+            meta: {
+              nameSpace: "account",
+              title:"Account"
+            },
+          },
         ],
       },
     ],
