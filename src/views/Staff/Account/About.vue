@@ -1,14 +1,12 @@
 <template>
   <div class="about-wrapper">
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, earum? Corporis quibusdam quasi exercitationem. Ipsam nisi consequuntur quos laboriosam numquam, cum totam vel necessitatibus perferendis, itaque provident unde vero ut.
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi minima ab omnis voluptas dolorum ipsum impedit possimus dicta a voluptatum odit excepturi, saepe est similique consectetur quam tenetur accusantium id.
+      Workers Aggregated Credit Scheme (WACS) is a service that provides workers a simple, streamlined and reliable process of accessing credit backed by their salaries.
     </p>
     <br />
     <br />
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, earum? Corporis quibusdam quasi exercitationem. Ipsam nisi consequuntur quos laboriosam numquam, cum totam vel necessitatibus perferendis, itaque provident unde vero ut.
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi minima ab omnis voluptas dolorum ipsum impedit possimus dicta a voluptatum odit excepturi, saepe est similique consectetur quam tenetur accusantium id.
+      Your loan is serviced by your monthly salary and deductions are made monthly. This platform is accessible to all Federal Government Workers.
     </p>
   </div>
 </template>

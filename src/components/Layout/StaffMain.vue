@@ -55,7 +55,7 @@ export default {
         { name: "Home", to: "/user", icon: "house-door", nameSpace: "home" },
         {
           name: "Account",
-          to: "/user/account",
+          to: "/user/account/help",
           icon: "person-circle",
           nameSpace: "account"
         }
