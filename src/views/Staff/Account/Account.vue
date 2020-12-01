@@ -2,12 +2,12 @@
   <div class="account-wrapper">
       <div class="account-head">
           <div class="account-name">
-              <span >OM</span>
+              <span >{{userData.data.user.initial}}</span>
           </div>
           <div class="account-details">
-              <p class="account-name mb-1">Okafor Mustapha</p>
-              <p class="numbers mb-1"><span>+234 8145858300</span> | <span>+234 8145858300</span></p>
-              <p class="account-email text-break">mustaphadotun@gmail.com</p>
+              <p class="account-name mb-1">{{userData.data.user.full_name}}</p>
+              <p class="numbers mb-1"><span>{{userData.data.user.profile.mobile_number}}</span> | <span>{{userData.data.user.user_name}}</span></p>
+              <p class="account-email text-break">{{userData.data.user.email}}</p>
           </div>
       </div>
       <div class="account-body">
@@ -24,9 +24,15 @@
 
 <script>
 import AccountManagementMenu from "../../../components/Staff/AccountManagementMenu"
+import {mapGetters} from "vuex"
 export default {
 components:{
     AccountManagementMenu
+},
+computed:{
+    ...mapGetters({
+        userData:"Auth/user"
+    })
 }
 }
 </script>
