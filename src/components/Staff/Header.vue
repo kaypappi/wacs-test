@@ -12,25 +12,32 @@
       >{{parent.title}} </span>
       <span class="h6">/{{details.title}}</span></div>
     </div>
-    <div class="right-header h3 ml-auto">
+    <div v-b-toggle.sidebar-right class="right-header h3 ml-auto">
       <b-icon icon="bell"></b-icon>
       <span class="red-dot"></span>
     </div>
+    
   </div>
 </template>
 
 <script>
-//import { BIconBoxArrowRight } from "bootstrap-vue";
+import {EventBus} from "../../event"
 export default {
   props:{
-    details:Object
+    details:Object,
   },
   components: {
-    //BIconBoxArrowRight
+   
+  },
+  data(){
+    
   },
   methods: {
     goBack(name) {
       this.$router.push({name});
+    },
+    openNotifications(){
+      EventBus.$emit('open-notifications',true)
     }
   }
 };
@@ -64,4 +71,5 @@ export default {
   top: 3px;
   right: 3px;
 }
+
 </style>

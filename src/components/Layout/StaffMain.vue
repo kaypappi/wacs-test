@@ -37,20 +37,28 @@
         </div>
       </div>
     </div>
+
+    <b-sidebar v-model="notificationsOpen" backdrop width="500px" id="sidebar-right" bg-variant="white" no-header right shadow>
+      <Notification />
+    </b-sidebar>
   </div>
 </template>
 
 <script>
 import Header from "../Staff/Header";
+import Notification from "../Staff/Notification";
 import { Push } from "vue-burger-menu";
+import {EventBus} from "../../event"
 export default {
   components: {
     Header,
-    Push
+    Push,
+    Notification
   },
   data() {
     return {
       menuOpen: true,
+      notificationsOpen:false,
       menus: [
         { name: "Home", to: "/user", icon: "house-door", nameSpace: "home" },
         {
@@ -94,6 +102,9 @@ export default {
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
+    EventBus.$on('open-notifications',(value)=>{
+      this.notificationsOpen=value
+    })
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -108,7 +119,7 @@ export default {
   background: white;
 }
 
-.staffmain >>> .active-menu{
+.staffmain >>> .active-menu {
   color: #27be58;
 }
 
@@ -116,6 +127,10 @@ export default {
   width: calc(100vw - 300px);
   padding: 0 30px;
   overflow-y: auto;
+}
+
+.staffmain >>> .b-sidebar{
+  max-width: 80% !important;
 }
 
 img {
@@ -182,7 +197,7 @@ img {
 }
 
 .staffmain >>> .bm-item-list {
-  color:#697d69;
+  color: #697d69;
   margin-left: 0;
   font-size: 20px;
   position: relative;
