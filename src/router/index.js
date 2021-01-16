@@ -14,6 +14,7 @@ import MakeOffer from "../views/Creditor/makeOffer";
 import LoanRequestDetails from "../views/Creditor/LoanRequestDetails";
 import Home from "../views/Creditor/Home.vue";
 import Repayment from "../views/Creditor/Repayment";
+import Loans from "../views/Creditor/Loans.vue"
 import Schedule from "../views/Creditor/Schedule";
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
@@ -164,7 +165,7 @@ const routes = [
         props: true,
         meta: {
           title: "Make Offer",
-          nameSpace: "loan",
+          nameSpace: "report",
           parents: ["Loan Request", "Loan Details"],
         },
       },
@@ -174,7 +175,7 @@ const routes = [
         component: Schedule,
         meta: {
           title: "Schedule Details",
-          nameSpace: "loan",
+          nameSpace: "report",
           parents: ["Report"],
         },
       },
@@ -184,7 +185,16 @@ const routes = [
         component: Repayment,
         meta: {
           title: "Report",
-          nameSpace: "loan",
+          nameSpace: "report",
+        },
+      },
+      {
+        path: "/creditor/loans",
+        name: "loans",
+        component: Loans,
+        meta: {
+          title: "Loans",
+          nameSpace: "report",
         },
       },
 
@@ -506,7 +516,7 @@ const routes = [
             component: StaffHelp,
             meta: {
               nameSpace: "account",
-              title:"Account"
+              title: "Account",
             },
           },
           {
@@ -515,7 +525,7 @@ const routes = [
             component: StaffAbout,
             meta: {
               nameSpace: "account",
-              title:"Account"
+              title: "Account",
             },
           },
         ],
