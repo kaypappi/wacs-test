@@ -27,9 +27,23 @@
       length="long"
       type="number"
       inputClass="inputClasses"
-      :required="true"
+      :required="false"
       v-model="form.payback"
       />
+       <TaggedInput
+          label="Interest Rate"
+          id="interest"
+          length="long"
+          name="interest"
+          fieldInfo="Enter Interest Rate you want"
+          placeholder="e.g 4"
+          labelClass="form-modal-label margin-top-30"
+          :tagLeft="false"
+          :tagRight="true"
+          :required="false"
+          rightImage="percent.svg"
+          v-model="form.interest"
+        />
 
       <label for="moratorium" class="form-modal-label margin-top-30">Moratorium Period</label>
       <span class="form-field-info">Select when you wish to start repayment</span>
