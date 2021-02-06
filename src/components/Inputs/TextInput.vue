@@ -13,6 +13,7 @@
             :placeholder="placeholder" 
             :class="inputClass"
             @keyup="keyupEven"
+            :max="max"
         >
         <span v-if="error" class="form-input-error">{{error[0]}}</span>
     </div>
@@ -62,6 +63,7 @@
            'name': String,
            'placeholder': String,
            'value': [String,Number],
+           max:Number
        },
        methods: {
            keyupEven() {

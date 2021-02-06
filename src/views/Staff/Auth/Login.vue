@@ -5,6 +5,7 @@
     <form @submit.prevent="submit">
       <TextInput
         type="number"
+        :max="7"
         label="Ippis Number"
         id="username"
         name="user_name"
