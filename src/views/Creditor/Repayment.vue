@@ -17,7 +17,7 @@
         />
       </div>
     </div>
-    <template v-if="!fetchingRepayments">
+    <template v-if="!fetchingRepayment">
       <div class="schedule-wrapper">
         <RepaymentScheduleTable v-if="allRepayments" :repayments="allRepayments.data" />
       </div>
@@ -33,7 +33,7 @@
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
-      v-if="fetchingRepayments"
+      v-else
       class="page-loader"
     />
   </div>
@@ -83,6 +83,9 @@ export default {
   computed: {
     allRepayments() {
       return this.$store.state.CreditorLoanRequest.allRepayments;
+    },
+    fetchingRepayment(){
+      return this.$store.state.CreditorLoanRequest.fetchingRepayments
     }
   },
   watch: {

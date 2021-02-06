@@ -109,7 +109,6 @@ export default {
   },
   methods: {
     fetchLoanRequests(query) {
-      query = this.serialize(query);
       this.$store.dispatch("CreditorLoanRequest/fetchLoanRequests", query);
     },
     filterQuickDates(type) {
@@ -158,22 +157,6 @@ export default {
     },
     toggleSearchFound(state) {
       this.searchFound = state;
-    },
-    serialize(obj, prefix) {
-      var str = [],
-        p;
-      for (p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          var k = prefix ? prefix + "[" + p + "]" : p,
-            v = obj[p];
-          str.push(
-            v !== null && typeof v === "object"
-              ? this.serialize(v, k)
-              : k + "=" + v
-          );
-        }
-      }
-      return str.join("&");
     },
     getSearchTerm() {
       return this.$store.state.CreditorLoanRequest.searchTerm;
@@ -227,7 +210,8 @@ export default {
           this.fetchLoanRequests(query);
         }
       },
-      deep: true
+      deep: true,
+      immediate:true
     }
   }
 };

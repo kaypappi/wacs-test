@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Auth/Login.vue";
 import ResetPassword from "../views/Auth/Reset-password.vue";
-import ForgotPassword from "../views/Auth/ForgotPassword.vue"
+import ForgotPassword from "../views/Auth/ForgotPassword.vue";
 import Dashboard from "../views/Dashboard.vue";
 import store from "../store";
 import Main from "../components/Layout/Main";
@@ -14,6 +14,7 @@ import MakeOffer from "../views/Creditor/makeOffer";
 import LoanRequestDetails from "../views/Creditor/LoanRequestDetails";
 import Home from "../views/Creditor/Home.vue";
 import Repayment from "../views/Creditor/Repayment";
+import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
@@ -39,7 +40,14 @@ import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue";
 
 import StaffMainAuth from "../views/Staff/Auth/Main.vue";
 import StaffDashboard from "../views/Staff/Dashboard.vue";
-import StaffMain from "../components/Layout/StaffMain.vue"
+import StaffMain from "../components/Layout/StaffMain.vue";
+import StaffNewLoanRequest from "../views/Staff/NewLoanRequest.vue";
+import StaffLoanOffers from "../views/Staff/LoanOffers.vue";
+import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue";
+import StaffLoanDetails from "../views//Staff/LoanDetails.vue";
+import StaffAccount from "../views/Staff/Account/Account.vue";
+import StaffHelp from "../views/Staff/Account/Help.vue";
+import StaffAbout from "../views/Staff/Account/About.vue";
 
 Vue.use(VueRouter);
 
@@ -58,7 +66,7 @@ const routes = [
     },
   },
   {
-    path: "/creditor/password-reset/:token",
+    path: "/password-reset/:token",
     name: "resetPassword",
     component: ResetPassword,
     meta: {
@@ -90,6 +98,18 @@ const routes = [
           if (!store.getters["Auth/isSuperAdmin"]) {
             return next("home");
           }
+          next();
+        },
+      },
+      {
+        path: "creditor/password-reset/:token",
+        name: "resetPassword",
+        component: ResetPassword,
+        meta: {
+          title: "Reset Password",
+        },
+        beforeEnter: (to, from, next) => {
+          store.dispatch("ResetPassword/confirmToken", to.params.token);
           next();
         },
       },
@@ -145,7 +165,7 @@ const routes = [
         props: true,
         meta: {
           title: "Make Offer",
-          nameSpace: "loan",
+          nameSpace: "report",
           parents: ["Loan Request", "Loan Details"],
         },
       },
@@ -155,7 +175,7 @@ const routes = [
         component: Schedule,
         meta: {
           title: "Schedule Details",
-          nameSpace: "loan",
+          nameSpace: "report",
           parents: ["Report"],
         },
       },
@@ -165,7 +185,16 @@ const routes = [
         component: Repayment,
         meta: {
           title: "Report",
-          nameSpace: "loan",
+          nameSpace: "report",
+        },
+      },
+      {
+        path: "/creditor/loans",
+        name: "loans",
+        component: Loans,
+        meta: {
+          title: "Loans",
+          nameSpace: "report",
         },
       },
 
@@ -217,6 +246,18 @@ const routes = [
     path: "/ippis",
     component: IppisMain,
     children: [
+      {
+        path: "ippis/password-reset/:token",
+        name: "resetPassword",
+        component: ResetPassword,
+        meta: {
+          title: "Reset Password",
+        },
+        beforeEnter: (to, from, next) => {
+          store.dispatch("ResetPassword/confirmToken", to.params.token);
+          next();
+        },
+      },
       {
         path: "/ippis/dashboard",
         name: "ippisLoanRequest",
@@ -421,12 +462,86 @@ const routes = [
         path: "/user",
         name: "staffDashboard",
         component: StaffDashboard,
-        /* meta: {
-          title: "Loan Request",
-          nameSpace: "loan",
-        }, */
+        meta: {
+          title: "Home",
+          nameSpace: "home",
+        },
+      },
+      {
+        path: "/user/new-request",
+        name: "newLoanRequest",
+        component: StaffNewLoanRequest,
+        meta: {
+          title: "New Loan Request",
+          nameSpace: "home",
+        },
+      },
+      {
+        path: "/user/loan-offers",
+        name: "StaffLoanOffers",
+        component: StaffLoanOffers,
+        meta: {
+          title: "Loan Offers",
+          nameSpace: "home",
+          parents: [{ title: "Loan requests", name: "newLoanRequest" }],
+        },
+      },
+      {
+        path: "/user/loan-details/:id",
+        name: "StaffLoanDeatils",
+        component: StaffLoanDetails,
+        meta: {
+          title: "Loan Details",
+          nameSpace: "home",
+          parents: [{ title: "Loan History", name: "staffDashboard" }],
+        },
+      },
+      {
+        path: "/user/loan-request-success",
+        name: "StaffLoanRequestSuccess",
+        component: StaffLoanRequestSuccess,
+      },
+      {
+        path: "/user/account",
+        name: "StaffAccount",
+        component: StaffAccount,
+        meta: {
+          nameSpace: "account",
+          title: "Account",
+        },
+        children: [
+          {
+            path: "/user/account/help",
+            name: "StaffHelp",
+            component: StaffHelp,
+            meta: {
+              nameSpace: "account",
+              title: "Account",
+            },
+          },
+          {
+            path: "/user/account/about",
+            name: "StaffAbout",
+            component: StaffAbout,
+            meta: {
+              nameSpace: "account",
+              title: "Account",
+            },
+          },
+        ],
       },
     ],
+    beforeEnter: (to, from, next) => {
+      if (
+        !store.getters["Auth/authenticated"] &&
+        to.name != "userChangePassword"
+      ) {
+        return next({
+          name: "StaffLogin",
+        });
+      }
+      next();
+    },
   },
   {
     path: "/password",

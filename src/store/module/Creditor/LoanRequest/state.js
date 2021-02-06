@@ -32,5 +32,8 @@ export default {
   },
   searchTerm: "",
   allRepayments: null,
+  fetchingRepayments:false,
+  fetchingLoansReport:false,
+  allLoansReport:null,
   schedule:null,
 };

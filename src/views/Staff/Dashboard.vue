@@ -1,5 +1,10 @@
 <template>
   <div class="dashboard-wrapper">
+    <div class="btn-holder">
+      <button @click="$router.push({name:'newLoanRequest'})" class="request">
+      <b-icon icon="plus"></b-icon>Request Loan Offer
+    </button>
+    </div>
     <div class="summary-card">
       <p class="title">Eligibility Credit Amount</p>
       <div class="h1">
@@ -7,35 +12,47 @@
         <span>{{user.data.eligibility}}</span>
       </div>
     </div>
+    <div class="btn-holder"></div>
     <div class="content">
-      <img src="/assets/images/nodata.png" alt class="nodata" />
-      <p class="message">Your loan records will appear here</p>
-      <div class="btn-holder">
-        <button class="request">Request Loan Offer</button>
-      </div>
+      <LoanHistory v-if="user.data.loan" :loanHistory="user.data.loan" />
+      <NoData v-else>
+        <template v-slot:message>Your loan records will appear here</template>
+        <template v-slot:button>
+          <button class="request">Request Loan Offer</button>
+        </template>
+      </NoData>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
+import LoanHistory from "../../components/Staff/LoanHistory";
+import NoData from "../../components/Staff/NoData";
 export default {
-computed:{
+  components: {
+    LoanHistory,
+    NoData
+  },
+  computed: {
     ...mapGetters({
-        user:"Auth/user"
+      user: "Auth/user"
     })
-}
+  }
 };
 </script>
 
 <style scoped>
 .dashboard-wrapper {
-  padding: 35px;
 }
 
 .summary-card {
-  background: #176229;
-  background-size: 150px 150px;
+  background: /* url("/assets/images/Circles.svg") -10% -100px no-repeat,
+    url("/assets/images/Circles.svg") 30% 100px no-repeat,
+    url("/assets/images/Circles.svg") 75% 100px no-repeat,
+    url("/assets/images/Circles.svg") 52% 100px no-repeat,
+    url("/assets/images/Circles.svg") 110% -100px no-repeat, */ #176229;
+  background-size: 200px;
   background-repeat: no-repeat;
   color: white;
   display: flex;
@@ -57,27 +74,19 @@ computed:{
   display: flex;
   flex-direction: column;
 }
-img.nodata {
-  width: 300px;
-  margin: 130px auto 16px auto;
-}
 .btn-holder {
   width: 300px;
   margin: 0 auto;
+  position: sticky;
+  top: calc(100vh - 70px);
 }
 button.request {
-  width: 100%;
+  width: inherit;
   border: none;
   background: #27be58;
   color: white;
   padding: 10px;
-}
-.message {
-    color: #A6A6A6;
-    font-size: 18px;
-    letter-spacing: 0;
-    line-height: 30px;
-    text-align: center;
-    margin-bottom: 30px;
+  font-weight: 500;
+  
 }
 </style>

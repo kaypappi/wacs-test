@@ -107,8 +107,18 @@ export const makeOffer = async({ commit }, data) => {
 };
 
 export const getAllRepayments=({commit},query)=>{
+  commit("FETCHING_REPAYMENTS",true)
   creditor.getAllRepayments(query).then(response=>{
+    commit("FETCHING_REPAYMENTS", false);
     commit("FETCH_REPAYMENTS_SUCCESS",response.data)
+  })
+}
+
+export const getAllLoansReport=({commit},query)=>{
+  commit("FETCHING_LOANS_REPORT",true)
+  creditor.getAllLoansReport(query).then(response=>{
+    commit("FETCHING_LOANS_REPORT", false);
+    commit("GET_LOANS_REPORT_SUCCESS",response.data)
   })
 }
 
@@ -121,6 +131,8 @@ export const getSchedule= async({commit},{query,scheduleId})=>{
    return Promise.reject(e)
   }
 }
+
+
 
 export const updateSearchTerm = ({ commit }, searchTerm) => {
   commit("UPDATE_SEARCH_TERM", searchTerm);

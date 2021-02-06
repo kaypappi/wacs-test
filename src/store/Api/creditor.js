@@ -4,7 +4,7 @@ export default {
   fetchLoanOffers(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/offer/view?${query}`)
+        .get(`creditor/offer/view`, { params: query })
         .then((response) => {
           resolve(response);
         })
@@ -82,7 +82,7 @@ export default {
   fetchLoanRequests(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`/creditor/request/view?${query}`)
+        .get(`/creditor/request/view`, { params: query })
         .then((response) => {
           resolve(response);
         })
@@ -243,7 +243,16 @@ export default {
   getAllRepayments(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/repayments/reports`, { params: query })
+        .get(`creditor/reports/repayments`, { params: query })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  getAllLoansReport(query) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/reports/loans`,{params:query})
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
@@ -252,7 +261,7 @@ export default {
   getSchedule(query, scheduleId) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/repayments/reports/${scheduleId}`, {
+        .get(`creditor/reports/repayments/${scheduleId}`, {
           params: query,
         })
         .then((response) => resolve(response))

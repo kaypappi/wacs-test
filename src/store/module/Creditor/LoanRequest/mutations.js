@@ -106,6 +106,17 @@
     state.allRepayments=data
   }
 
+  export const FETCHING_REPAYMENTS=(state,status)=>{
+    state.fetchingRepayments=status
+  }
+
+  export const GET_LOANS_REPORT_SUCCESS=(state,data)=>{
+    state.allLoansReport=data
+  }
+
+  export const FETCHING_LOANS_REPORT=(state,status)=>{
+    state.fetchingLoansReport=status
+  }
   export const FETCH_SCHEDULE_SUCCESS=(state,data)=>{
     state.schedule=data
   }

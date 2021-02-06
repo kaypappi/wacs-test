@@ -1,7 +1,7 @@
 <template>
   <div class="staff-left-menu">
     <div v-for="(menu, index) in menus" :key="index" class="left-menu-items" @click="goTo(menu.to)">
-      <!-- <img :src="menu.iconPath" :alt="menu.altText" /> -->
+     <span class="icon"><b-icon :icon="menu.icon"></b-icon></span>
       <span>{{menu.name}}</span>
     </div>
   </div>
@@ -12,9 +12,8 @@ export default {
   data() {
     return {
       menus: [
-        { name: "Home", to: "/user" },
-        { name: "Profile", to: "/user/profile" },
-        { name: "Notifications", to: "/user/notifications" }
+        { name: "Home", to: "/user" ,icon:"house-door"},
+        { name: "Profile", to: "/user/profile" ,icon:"person-circle"},
       ]
     };
   },
@@ -30,8 +29,13 @@ export default {
 .left-menu-items {
   padding: 10px 30px;
   color: #697686;
+  cursor: pointer;
 }
 .staff-left-menu {
     margin-top: 20px;
+}
+
+.icon{
+  margin-right: 20px;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div :class="[length == 'short' ? 'short-tagged-input' : 'long-text-input']">
         <label :for="id" :class="labelClass">{{label}}</label>
+        <span class="form-field-info" v-if="fieldInfo">{{fieldInfo}}</span>
         <input 
             :value="value" 
             @change="$emit('input', $event.target.value)" 
@@ -12,6 +13,7 @@
             :placeholder="placeholder" 
             :class="inputClass"
             @keyup="keyupEven"
+            :max="max"
         >
         <span v-if="error" class="form-input-error">{{error[0]}}</span>
     </div>
@@ -31,6 +33,10 @@
            'disabled': {
                type: Boolean,
                default: false,
+           },
+           'fieldInfo': {
+               type: String,
+               default: '',
            },
            'error': {
                type: Array,
@@ -57,6 +63,7 @@
            'name': String,
            'placeholder': String,
            'value': [String,Number],
+           max:Number
        },
        methods: {
            keyupEven() {

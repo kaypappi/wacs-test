@@ -149,6 +149,31 @@ svg.icon {
     display: flex;
 }
 
+.menu-logo-wrapper {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  grid-gap: 5px;
+  max-width: 170px;
+  background: white;
+  margin: 20px auto 0 auto;
+  padding: 5px;
+}
+
+.menu-logo-wrapper img {
+  width: 100%;
+}
+
+.menu-logo-wrapper p {
+  margin-bottom: 0;
+  color: #27be58;
+  font-family: "Work Sans";
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 10px;
+}
+
 .main .left {
     height: auto;
     min-width: 201px;
@@ -708,10 +733,11 @@ li.page-title .back-link {
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.24px;
-    width: 90px;
+    min-width: 90px;
     height: 20px;
     border-radius: 12.5px;
     display: inline-block;
+    padding: 0 5px;
     padding-top: 2px;
 }
 

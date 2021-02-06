@@ -21,10 +21,10 @@
           <img src="/assets/images/cancel.svg" alt="Plus sign" />
           Decline
         </Button>
-        <Button class="cta-button margin-left-30" @click="approveOffer">
+        <!-- <Button class="cta-button margin-left-30" @click="approveOffer">
           <img src="/assets/images/Double-check.svg" alt="Plus sign" />
           Approve
-        </Button>
+        </Button> -->
         </template>
       </div>
       <table class="table personal-info-table no-border-table">
