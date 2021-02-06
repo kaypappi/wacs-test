@@ -14,7 +14,7 @@ import MakeOffer from "../views/Creditor/makeOffer";
 import LoanRequestDetails from "../views/Creditor/LoanRequestDetails";
 import Home from "../views/Creditor/Home.vue";
 import Repayment from "../views/Creditor/Repayment";
-import Loans from "../views/Creditor/Loans.vue"
+import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
@@ -46,8 +46,8 @@ import StaffLoanOffers from "../views/Staff/LoanOffers.vue";
 import StaffLoanRequestSuccess from "../views/Staff/LoanRequestSuccess.vue";
 import StaffLoanDetails from "../views//Staff/LoanDetails.vue";
 import StaffAccount from "../views/Staff/Account/Account.vue";
-import StaffHelp from "../views/Staff/Account/Help.vue"
-import StaffAbout from "../views/Staff/Account/About.vue"
+import StaffHelp from "../views/Staff/Account/Help.vue";
+import StaffAbout from "../views/Staff/Account/About.vue";
 
 Vue.use(VueRouter);
 
@@ -531,6 +531,17 @@ const routes = [
         ],
       },
     ],
+    beforeEnter: (to, from, next) => {
+      if (
+        !store.getters["Auth/authenticated"] &&
+        to.name != "userChangePassword"
+      ) {
+        return next({
+          name: "StaffLogin",
+        });
+      }
+      next();
+    },
   },
   {
     path: "/password",
