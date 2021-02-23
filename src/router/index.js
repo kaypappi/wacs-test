@@ -16,6 +16,7 @@ import Home from "../views/Creditor/Home.vue";
 import Repayment from "../views/Creditor/Repayment";
 import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
+import Deduction from "../views/Creditor/Deduction.vue"
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
 
@@ -200,7 +201,7 @@ const routes = [
       {
         path: "/creditor/deduction",
         name: "deduction",
-        component: LoanRequest,
+        component: Deduction,
         meta: {
           title: "Deduction File",
           nameSpace: "deduction",
