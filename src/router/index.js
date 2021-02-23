@@ -197,6 +197,15 @@ const routes = [
           nameSpace: "report",
         },
       },
+      {
+        path: "/creditor/deduction",
+        name: "deduction",
+        component: LoanRequest,
+        meta: {
+          title: "Deduction File",
+          nameSpace: "deduction",
+        },
+      },
 
       {
         path: "/creditor/change-password",
