@@ -44,14 +44,14 @@
                         permission: ["create", "user"],
                         nameSpace: 'report',
                     },
-                    {
+                    /* {
                         name: "Upload Deduction",
                         iconPath: "/assets/images/Chart-bar.svg",
                         altText: "Chart",
                         to: "/creditor/deduction",
                         permission: ["create", "user"],
                         nameSpace: 'deduction',
-                    },
+                    }, */
                     
                 ],
             }
