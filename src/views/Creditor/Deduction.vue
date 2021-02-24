@@ -7,14 +7,20 @@
       <span class="arrow-separator">></span>
       <MakeOfferSectionTitle :section="3" title="Title & Description" :steps="steps" />
     </div>
+
+    <div class="deduction-body ">
+        <UploadDeduction/>
+    </div>
   </div>
 </template>
 
 <script>
 import MakeOfferSectionTitle from "../../components/MakeOfferSectionsTitle";
+import UploadDeduction from "../../components/UploadDeduction"
 export default {
   components: {
-    MakeOfferSectionTitle
+    MakeOfferSectionTitle,
+    UploadDeduction
   },
   data() {
     return {
@@ -33,5 +39,10 @@ export default {
 }
 .arrow-separator {
   margin: 0 20px;
+}
+
+.deduction-body{
+    max-width: 400px;
+    margin: 0 auto;
 }
 </style>
