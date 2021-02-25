@@ -23,7 +23,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="d-flex flex-column justify-content-center w-100 h-100 pt-2">
+        <div class="d-flex flex-column justify-content-center w-100 h-100 pt-3">
           <img src="/assets/images/Cloud-upload.svg" alt />
           <span>Drag & Drop to upload</span>
           <p class="subtext">
