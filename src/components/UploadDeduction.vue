@@ -48,7 +48,7 @@ export default {
       this.formValues = this.formData;
       this.file = file;
       if(this.file!==null){
-          console.log(file)
+          
           this.startCountdown(0);
       }
     },
@@ -67,7 +67,7 @@ export default {
       }, 1000);
     },
     uploadFile(file){
-     console.log(file)
+     
     }
   }
 };
