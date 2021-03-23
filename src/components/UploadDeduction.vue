@@ -67,7 +67,7 @@ export default {
       }, 1000);
     },
     uploadFile(file){
-     
+     return file
     }
   }
 };
