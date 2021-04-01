@@ -252,7 +252,7 @@ export default {
   getAllLoansReport(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/reports/loans`,{params:query})
+        .get(`creditor/reports/loans`, { params: query })
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
@@ -263,6 +263,17 @@ export default {
       axios
         .get(`creditor/reports/repayments/${scheduleId}`, {
           params: query,
+        })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  uploadSchedule(file, handleProgress) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("creditor/schedules/staging", file, {
+          onUploadProgress: (event)=>{handleProgress(event)},
         })
         .then((response) => resolve(response))
         .catch((err) => reject(err));

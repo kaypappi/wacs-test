@@ -28,6 +28,7 @@
 <script>
 import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
+import creditor from "../store/Api/creditor"
 export default {
   components: {
     LineBreakTitle,
@@ -35,22 +36,25 @@ export default {
   },
   data() {
     return {
-      formData: new FormData(),
       file: new File([""], ""),
-      formValues: "",
       fileLoading: false,
-      loadingCount: 0,
+      loadingCount: 0
     };
   },
   methods: {
-    fileChange(file) {
-      this.formData.append("csvUpload", file);
-      this.formValues = this.formData;
+    async fileChange(file) {
       this.file = file;
-      if(this.file!==null){
-          
-          this.startCountdown(0);
+      let formData= new FormData()
+      formData.append('excel_file',this.file)
+      if (this.file !== null) {
+        const response= await creditor.uploadSchedule(formData,this.handleProgress)
+        return response
       }
+    },
+    handleProgress(progressEvent) {
+      this.loadingCount = parseInt(
+        Math.round((progressEvent.loaded / progressEvent.total) * 100)
+      );
     },
     deleteFile() {
       this.loadingCount = 0;
@@ -66,8 +70,8 @@ export default {
         }
       }, 1000);
     },
-    uploadFile(file){
-     return file
+    uploadFile(file) {
+      return file;
     }
   }
 };
