@@ -17,7 +17,7 @@
           <div class="fileLoading-info d-flex flex-column justify-content-center">
             <span class="filename text-start mr-auto">{{value.name}}</span>
             <b-progress :value="loadingCount" height="5px" variant="secondary" :max="max" class="mb-0"></b-progress>
-            <span :style="{visibility:loadingCount<100 ? 'hidden' : 'visible'}"  class="mr-auto complete">Upload Complete</span>
+            <span :style="{visibility:loadingCount<120 ? 'hidden' : 'visible'}"  class="mr-auto complete">Upload Complete</span>
           </div>
           <b-icon @click="deleteFile" class="trash" icon="trash-fill"></b-icon>
         </div>

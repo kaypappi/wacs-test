@@ -22,7 +22,7 @@
       :max="120"
       label="Upload Deduction Schedule"
     />
-    <button v-if="loadingCount>=120">Continue To Preview</button>
+    <button @click="next" v-if="loadingCount>=120">Continue To Preview</button>
   </div>
 </template>
 
@@ -32,6 +32,9 @@ import DragDropFileInput from "./Inputs/DragDropFileInput";
 import creditor from "../store/Api/creditor";
 import { mapActions } from "vuex";
 export default {
+  props:{
+    next:Function
+  },
   components: {
     LineBreakTitle,
     DragDropFileInput
@@ -59,6 +62,7 @@ export default {
           );
           this.loadingCount = this.loadingCount + 20;
           await this.fetchUploadedBatchItem(response.data.data["batch-id"]);
+          
           return response;
         } catch (e) {
           return e;
@@ -92,6 +96,10 @@ export default {
 </script>
 
 <style scoped>
+.upload-deduction-wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+}
 .sample-box {
   border: #32ac59 1px solid;
   background: #27be581c;

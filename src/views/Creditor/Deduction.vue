@@ -1,31 +1,49 @@
 <template>
   <div class="deduction-wrapper">
     <div class="section-header">
-      <MakeOfferSectionTitle :section="1" title="Upload" :steps="steps" />
+      <MakeOfferSectionTitle :section="0" title="Upload" :steps="steps" />
       <span class="arrow-separator">></span>
-      <MakeOfferSectionTitle :section="2" title="Preview" :steps="steps" />
+      <MakeOfferSectionTitle :section="1" title="Preview" :steps="steps" />
       <span class="arrow-separator">></span>
-      <MakeOfferSectionTitle :section="3" title="Title & Description" :steps="steps" />
+      <MakeOfferSectionTitle :section="2" title="Title & Description" :steps="steps" />
     </div>
 
-    <div class="deduction-body ">
-        <UploadDeduction/>
+    <div class="deduction-body">
+      <keep-alive>
+        <component :prev="goToPrev" :next="goToNext" v-bind:is="currentTab" class="tab"></component>
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
 import MakeOfferSectionTitle from "../../components/MakeOfferSectionsTitle";
-import UploadDeduction from "../../components/UploadDeduction"
+import UploadDeduction from "../../components/UploadDeduction";
+import DeductionPreview from "../../components/DeductionPreview";
 export default {
   components: {
     MakeOfferSectionTitle,
-    UploadDeduction
+    UploadDeduction,
+    DeductionPreview
   },
   data() {
     return {
-      steps: 1
+      steps: 0,
+      tabs: ["UploadDeduction", "DeductionPreview"]
     };
+  },
+  methods: {
+    goToNext() {
+      this.steps = this.steps + 1;
+    },
+    goToPrev() {
+      this.steps = this.steps > 0 ? this.steps - 1 : 0;
+    }
+  },
+  computed: {
+    currentTab() {
+      return this.tabs[this.steps];
+    }
   }
 };
 </script>
@@ -41,8 +59,6 @@ export default {
   margin: 0 20px;
 }
 
-.deduction-body{
-    max-width: 400px;
-    margin: 0 auto;
+.deduction-body {
 }
 </style>
