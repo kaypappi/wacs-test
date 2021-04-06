@@ -15,6 +15,7 @@ import AdminUser from "./module/Admin/User"
 import CreditorLoanOffer from "./module/Creditor/LoanOffer"
 import CreditorLoanRequest from "./module/Creditor/LoanRequest"
 import CreditorUser from "./module/Creditor/User"
+import CreditorDeduction from "./module/Creditor/Deduction"
 
 import IppisLoanRequest from "./module/Ippis/LoanRequest"
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     CreditorLoanOffer,
     CreditorLoanRequest,
     CreditorUser,
+    CreditorDeduction,
     IppisLoanRequest,
     Auth,
     PasswordReset,

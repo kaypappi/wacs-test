@@ -29,7 +29,8 @@
 <script>
 import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
-import creditor from "../store/Api/creditor"
+import creditor from "../store/Api/creditor";
+import { mapActions } from "vuex";
 export default {
   components: {
     LineBreakTitle,
@@ -43,18 +44,25 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem"
+    }),
     async fileChange(file) {
       this.file = file;
-      let formData= new FormData()
-      formData.append('excel_file',this.file)
+      let formData = new FormData();
+      formData.append("excel_file", this.file);
       if (this.file !== null) {
-       try{
-          const response= await creditor.uploadSchedule(formData,this.handleProgress)
-        this.loadingCount=this.loadingCount+20
-        return response
-       }catch(e){
-         return e
-       }
+        try {
+          const response = await creditor.uploadSchedule(
+            formData,
+            this.handleProgress
+          );
+          this.loadingCount = this.loadingCount + 20;
+          await this.fetchUploadedBatchItem(response.data.data["batch-id"]);
+          return response;
+        } catch (e) {
+          return e;
+        }
       }
     },
     handleProgress(progressEvent) {

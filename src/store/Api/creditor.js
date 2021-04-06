@@ -273,8 +273,19 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .post("creditor/schedules/staging", file, {
-          onUploadProgress: (event)=>{handleProgress(event)},
+          onUploadProgress: (event) => {
+            handleProgress(event);
+          },
         })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  fetchUploadedBatchItem(batchId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/schedules/${batchId}`)
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
