@@ -16,7 +16,7 @@
           <img src="/assets/images/file.svg" alt />
           <div class="fileLoading-info d-flex flex-column justify-content-center">
             <span class="filename text-start mr-auto">{{value.name}}</span>
-            <b-progress :value="loadingCount" height="5px" variant="secondary" :max="100" class="mb-0"></b-progress>
+            <b-progress :value="loadingCount" height="5px" variant="secondary" :max="max" class="mb-0"></b-progress>
             <span :style="{visibility:loadingCount<100 ? 'hidden' : 'visible'}"  class="mr-auto complete">Upload Complete</span>
           </div>
           <b-icon @click="deleteFile" class="trash" icon="trash-fill"></b-icon>
@@ -53,6 +53,10 @@ export default {
     value: File,
     isLoading: Boolean,
     loadingCount: Number,
+    max:{
+      type:Number,
+      default:100
+    },
     deleteFile:{
       type:Function,
       default:()=>{}

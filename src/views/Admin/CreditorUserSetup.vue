@@ -66,17 +66,6 @@
             v-model="addUser.email"
             :keyupEvent="keyupEvent"
           />
-          <TextInput
-            v-if="!changingUserRole"
-            label="Phone Number"
-            id="phone_number"
-            name="phone_number"
-            :error="error.phone_number"
-            inputClass="form-modal-inputs"
-            labelClass="form-modal-label"
-            v-model="addUser.phone_number"
-            :keyupEvent="keyupEvent"
-          />
           <label
             v-if="!edittingUser || changingUserRole"
             for="role"

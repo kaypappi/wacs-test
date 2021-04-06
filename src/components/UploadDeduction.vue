@@ -19,9 +19,10 @@
       :deleteFile="deleteFile"
       :loadingCount="loadingCount"
       :value="file"
+      :max="120"
       label="Upload Deduction Schedule"
     />
-    <button v-if="loadingCount>=100">Continue To Preview</button>
+    <button v-if="loadingCount>=120">Continue To Preview</button>
   </div>
 </template>
 
@@ -47,8 +48,13 @@ export default {
       let formData= new FormData()
       formData.append('excel_file',this.file)
       if (this.file !== null) {
-        const response= await creditor.uploadSchedule(formData,this.handleProgress)
+       try{
+          const response= await creditor.uploadSchedule(formData,this.handleProgress)
+        this.loadingCount=this.loadingCount+20
         return response
+       }catch(e){
+         return e
+       }
       }
     },
     handleProgress(progressEvent) {
