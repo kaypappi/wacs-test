@@ -290,4 +290,13 @@ export default {
         .catch((err) => reject(err));
     });
   },
+
+  saveUploadedBatchItem(file){
+    return new Promise((resolve, reject) => {
+      axios
+        .post("creditor/schedules/upload", file)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  }
 };

@@ -5,3 +5,7 @@ export const fetchingItem=(state)=>{
 export const getBatchItem=(state)=>{
     return state.batchItem;
 }
+
+export const getFileFromState=(state)=>{
+    return state.scheduleFile
+}

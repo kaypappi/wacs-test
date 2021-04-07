@@ -61,6 +61,7 @@ export default {
             this.handleProgress
           );
           this.loadingCount = this.loadingCount + 20;
+          this.$store.commit("SAVE_FILE_TO_STATE",file)
           await this.fetchUploadedBatchItem(response.data.data["batch-id"]);
           
           return response;

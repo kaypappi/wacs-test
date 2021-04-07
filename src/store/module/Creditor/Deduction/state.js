@@ -1,5 +1,6 @@
 export default {
   namespaced: true,
   batchItem: null,
-  fetchingItem:false
+  fetchingItem:false,
+  scheduleFile:null
 };

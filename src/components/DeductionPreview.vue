@@ -28,7 +28,7 @@
 
 <script>
 import BatchSchedulePreviewTable from "./Table/BatchSchedulePreviewTable";
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 export default {
   props: {
     prev: { type: Function, default: () => {} }
@@ -36,14 +36,27 @@ export default {
   components: {
     BatchSchedulePreviewTable
   },
+  methods:{
+    ...mapActions({
+      saveBatchSchedule:"CreditorDeduction/saveBatchSchedule"
+    }),
+    saveSchedule(){
+      if(this.getFileFromState){
+        this.saveBatchSchedule(this.getFileFromState)
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       fetchingItem: "CreditorDeduction/fetchingItem",
-      getBatchItem: "CreditorDeduction/getBatchItem"
+      getBatchItem: "CreditorDeduction/getBatchItem",
+      getFileFromState:"CreditorDeduction/getFileFromState",
+
     }),
     findError(){
         return this.getBatchItem.data.some(item=>{item['error_occurred']===1})
-    }
+    },
+    
   }
 };
 </script>
