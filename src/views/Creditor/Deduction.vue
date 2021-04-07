@@ -4,8 +4,8 @@
       <MakeOfferSectionTitle :section="0" title="Upload" :steps="steps" />
       <span class="arrow-separator">></span>
       <MakeOfferSectionTitle :section="1" title="Preview" :steps="steps" />
-      <span class="arrow-separator">></span>
-      <MakeOfferSectionTitle :section="2" title="Title & Description" :steps="steps" />
+      <!-- <span class="arrow-separator">></span>
+      <MakeOfferSectionTitle :section="2" title="Title & Description" :steps="steps" /> -->
     </div>
 
     <div class="deduction-body">
