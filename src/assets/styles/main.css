@@ -111,7 +111,7 @@ svg.icon {
 }
 
 .modal-content {
-    width: 368px;
+    min-width: 368px;
     background-color: inherit;
     display: flex;
     flex-direction: row-reverse;

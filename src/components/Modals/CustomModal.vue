@@ -1,5 +1,5 @@
 <template>
-    <b-modal :id="id" hide-footer no-close-on-backdrop @hidden="onHide">
+    <b-modal :scrollable="scrollable" :size="size" :id="id" hide-footer no-close-on-backdrop @hidden="onHide">
         <template v-slot:modal-header="{ close }">
             <div class="close"  @click="close()">
                 <span aria-hidden="true">&times;</span>
@@ -18,6 +18,14 @@
                type: Function,
                default: () => '',
             },
+            size:{
+                type:String,
+                default:"md"
+            },
+            scrollable:{
+                type:Boolean,
+                default:false
+            }
         },
     }
 </script>
