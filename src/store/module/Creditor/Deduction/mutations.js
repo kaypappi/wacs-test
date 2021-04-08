@@ -1,3 +1,7 @@
+export const SCHEDULE_UPLOAD_SUCCESS=(state,data)=>{
+    state.currentBatchFile=data
+}
+
 export const IS_FETCHING_ITEM=(state,status)=>{
     state.fetchingItem=status
 }

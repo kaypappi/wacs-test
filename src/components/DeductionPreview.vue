@@ -6,6 +6,9 @@
     class="page-loader"
   />
   <div v-else class="preview-wrapper relative">
+    <div class="preview-header">
+      <div><span class="label">Batch Name: </span> <span class="value"></span></div>
+    </div>
     <BatchSchedulePreviewTable :previewItem="getBatchItem.data" />
     <div class="summary-nav-buttons">
       <button @click="prev" class="previous-btn" type="button">

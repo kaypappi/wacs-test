@@ -9,3 +9,7 @@ export const getBatchItem=(state)=>{
 export const getFileFromState=(state)=>{
     return state.scheduleFile
 }
+
+export const getCurrentBatchFile=(state)=>{
+    return state.currentBatchFile;
+}

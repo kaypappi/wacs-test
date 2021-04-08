@@ -29,7 +29,7 @@
 <script>
 import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
-import creditor from "../store/Api/creditor";
+//import creditor from "../store/Api/creditor";
 import { mapActions } from "vuex";
 export default {
   props:{
@@ -48,20 +48,26 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem"
+      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem",
+      uploadBatchSchedule:"CreditorDeduction/uploadSchedule"
     }),
-    async fileChange(file) {
+   async fileChange(file) {
       this.file = file;
       let formData = new FormData();
       formData.append("excel_file", this.file);
       if (this.file !== null) {
-        try {
-          const response = await creditor.uploadSchedule(
-            formData,
-            this.handleProgress
-          );
+
+        /* this.uploadBatchSchedule({file:formData,handleProgress:this.handleProgress}).then(async (response)=>{
+          console.log(this.loadingCount)
           this.loadingCount = this.loadingCount + 20;
-          this.$store.commit("SAVE_FILE_TO_STATE",file)
+          console.log(this.loadingCount,response)
+          this.$store.commit("CreditorDeduction/SAVE_FILE_TO_STATE",file)
+          await this.fetchUploadedBatchItem(response.data.data["batch-id"]);
+        }) */
+        try {
+          const response = await this.uploadBatchSchedule({file:formData,handleProgress:this.handleProgress});
+          this.loadingCount = this.loadingCount + 20;
+          this.$store.commit("CreditorDeduction/SAVE_FILE_TO_STATE",file)
           await this.fetchUploadedBatchItem(response.data.data["batch-id"]);
           
           return response;
@@ -71,7 +77,7 @@ export default {
       }
     },
     handleProgress(progressEvent) {
-      this.loadingCount = parseInt(
+      this.loadingCount =this.loadingCount +  parseInt(
         Math.round((progressEvent.loaded / progressEvent.total) * 100)
       );
     },

@@ -1,5 +1,5 @@
 <template>
-    <b-modal :scrollable="scrollable" :size="size" :id="id" hide-footer no-close-on-backdrop @hidden="onHide">
+    <b-modal :hover="hover" :scrollable="scrollable" :size="size" :id="id" hide-footer no-close-on-backdrop @hidden="onHide">
         <template v-slot:modal-header="{ close }">
             <div class="close"  @click="close()">
                 <span aria-hidden="true">&times;</span>
@@ -23,6 +23,10 @@
                 default:"md"
             },
             scrollable:{
+                type:Boolean,
+                default:false
+            },
+            hover:{
                 type:Boolean,
                 default:false
             }

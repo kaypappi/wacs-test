@@ -6,17 +6,14 @@
       <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
       <template v-slot:cell(Middle_Name)="data">{{data.item.employee_middle_name}}</template>
       <template v-slot:cell(IPPIS_Number)="data">{{data.item.ippis_number}}</template>
-      <template v-slot:cell(Payroll_Name)="data">{{data.item.payroll_name}}</template>
       <template v-slot:cell(Staff_Id)="data">{{data.item.staff_id}}</template>
-      <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
-      <template v-slot:cell(Bank_Name)="data">{{data.item.bank_name}}</template>
       <template v-slot:cell(EarningsDeductions)="data">{{data.item.earning_or_deduction}}</template>
       <template v-slot:cell(Amount(N))="data">{{formatNumber(data.item.amount)}}</template>
     </b-table>
-    <CustomModal  id="single-batch-item" size="lg" :scrollable="true">
+    <CustomModal  id="single-batch-item" size="lg" :scrollable="true" :hover="true">
       <div v-if="currentItem" class="details-wrapper">
         <template v-for="(value,name,index) in previewDetails">
-          <div :key="currentItem.ippis_number + index" class="detail-holder">
+          <div :key="currentItem.ippis_number + index" class="detail-holder mb-2">
             <p class="detail-title mb-0">{{formatLabel(name)}}</p>
             <p class="detail-body">{{value}}</p>
           </div>
@@ -47,10 +44,7 @@ export default {
         "Surname",
         "Middle_Name",
         "IPPIS_Number",
-        "Payroll_Name",
         "Staff_Id",
-        "MDA",
-        "Bank_Name",
         "EarningsDeductions",
         "Amount(N)"
       ],
@@ -84,7 +78,8 @@ export default {
         "error_message",
         "created_at",
         "updated_at",
-        "file_staging"
+        "file_staging",
+        "is_validated",
       ];
       const filtered = Object.keys(Item)
   .filter(key => !reject.includes(key)).reduce((obj, key) => ({ ...obj, [key]: Item[key] }), {});
