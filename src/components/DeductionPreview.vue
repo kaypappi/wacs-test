@@ -2,7 +2,7 @@
   <img
     src="/assets/images/page-ring-loader.svg"
     alt="loader"
-    v-if="fetchingItem || getBatchItem===null "
+    v-if="fetchingBatchItem || getBatchItem===null "
     class="page-loader"
   />
   <div v-else class="preview-wrapper p-4 relative">
@@ -20,6 +20,10 @@
       <div class="mb-2">
         <span class="label">Status:</span>
         <span class="ml-1 value">{{previewMeta.status}}</span>
+        <span class="ml-2">
+          <b-spinner v-if="previewMeta.status!=='validated'" variant="warning" small></b-spinner>
+          <b-icon v-else icon="check" class="h4 mb-0" variant="success"></b-icon>
+        </span>
       </div>
       <div class="row">
         <span class="label col-sm-2">Progress:</span>
@@ -76,7 +80,9 @@ export default {
     Pagination
   },
   data() {
-    return {};
+    return {
+      fetchingBatchItem:false
+    };
   },
   methods: {
     ...mapActions({
@@ -89,9 +95,11 @@ export default {
       }
     },
     fetchUploadedBatchFileJob() {
+      this.fetchingBatchItem=true
       const interval = setInterval(async () => {
         const batchId = this.getCurrentBatchFile.data["batch-id"];
         const response = await this.fetchUploadedBatchItem(batchId);
+        this.fetchingBatchItem=false
         const status = response.data[0]["file_staging"]["status"];
 
         if (status === "validated") {
