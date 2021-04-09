@@ -5,19 +5,26 @@ export const uploadSchedule= async ({commit},{file,handleProgress})=>{
   
   try{
     const response = await creditor.uploadSchedule(file, handleProgress);
+    commit("SAVE_FILE_TO_STATE", file);
     commit("SCHEDULE_UPLOAD_SUCCESS", response.data);
-    return Promise.resolve(response);
+    return Promise.resolve(response.data);
   }catch(e){
     return Promise.reject(e)
   }
 }
 
-export const fetchUploadedBatchItem = ({ commit }, batchId) => {
+export const fetchUploadedBatchItem = async ({ commit }, batchId) => {
   commit("IS_FETCHING_ITEM", true);
-  creditor.fetchUploadedBatchItem(batchId).then((response) => {
+  try{
+    const response= await creditor.fetchUploadedBatchItem(batchId)
     commit("FETCH_BATCH_ITEM_SUCCESS", response.data);
     commit("IS_FETCHING_ITEM", false);
-  });
+    return Promise.resolve(response.data);
+  }catch(e){
+    commit("IS_FETCHING_ITEM", false);
+    return Promise.reject(e)
+  }
+  
 };
 
 export const saveBatchSchedule=({commit},file)=>{

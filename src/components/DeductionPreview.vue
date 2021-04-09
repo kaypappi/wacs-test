@@ -2,7 +2,7 @@
   <img
     src="/assets/images/page-ring-loader.svg"
     alt="loader"
-    v-if="fetchingItem"
+    v-if="fetchingItem || getBatchItem===null "
     class="page-loader"
   />
   <div v-else class="preview-wrapper p-4 relative">
@@ -35,7 +35,7 @@
         </span>
       </div>
     </div>
-    <BatchSchedulePreviewTable  :previewItem="getBatchItem.data" />
+    <BatchSchedulePreviewTable :previewItem="getBatchItem.data" />
     <Pagination
       v-if="getBatchItem"
       :total="getBatchItem.total"
@@ -65,7 +65,7 @@
 
 <script>
 import BatchSchedulePreviewTable from "./Table/BatchSchedulePreviewTable";
-import Pagination from "./Pagination/Pagination"
+import Pagination from "./Pagination/Pagination";
 import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
@@ -75,21 +75,37 @@ export default {
     BatchSchedulePreviewTable,
     Pagination
   },
+  data() {
+    return {};
+  },
   methods: {
     ...mapActions({
-      saveBatchSchedule: "CreditorDeduction/saveBatchSchedule"
+      saveBatchSchedule: "CreditorDeduction/saveBatchSchedule",
+      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem"
     }),
     saveSchedule() {
       if (this.getFileFromState) {
         this.saveBatchSchedule(this.getFileFromState);
       }
+    },
+    fetchUploadedBatchFileJob() {
+      const interval = setInterval(async () => {
+        const batchId = this.getCurrentBatchFile.data["batch-id"];
+        const response = await this.fetchUploadedBatchItem(batchId);
+        const status = response.data[0]["file_staging"]["status"];
+
+        if (status === "validated") {
+          clearInterval(interval);
+        }
+      }, 15000);
     }
   },
   computed: {
     ...mapGetters({
       fetchingItem: "CreditorDeduction/fetchingItem",
       getBatchItem: "CreditorDeduction/getBatchItem",
-      getFileFromState: "CreditorDeduction/getFileFromState"
+      getFileFromState: "CreditorDeduction/getFileFromState",
+      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
     }),
     findError() {
       return this.getBatchItem.data.some(item => {
@@ -121,6 +137,9 @@ export default {
       }
       return null;
     }
+  },
+  created() {
+    this.fetchUploadedBatchFileJob();
   }
 };
 </script>
@@ -156,12 +175,11 @@ button {
   max-width: 400px;
 }
 
-.preview-header span{
+.preview-header span {
   font-weight: 500;
 }
 
 .preview-header .value {
   color: #6c757d;
-  
 }
 </style>
