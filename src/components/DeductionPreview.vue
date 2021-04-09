@@ -35,7 +35,15 @@
         </span>
       </div>
     </div>
-    <BatchSchedulePreviewTable :previewItem="getBatchItem.data" />
+    <BatchSchedulePreviewTable  :previewItem="getBatchItem.data" />
+    <Pagination
+      v-if="getBatchItem"
+      :total="getBatchItem.total"
+      :currentPage="getBatchItem.current_page"
+      :lastPage="getBatchItem.last_page"
+      :from="getBatchItem.from"
+      :to="getBatchItem.to"
+    />
     <div class="summary-nav-buttons">
       <button @click="prev" class="previous-btn" type="button">
         <span>
@@ -57,13 +65,15 @@
 
 <script>
 import BatchSchedulePreviewTable from "./Table/BatchSchedulePreviewTable";
+import Pagination from "./Pagination/Pagination"
 import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     prev: { type: Function, default: () => {} }
   },
   components: {
-    BatchSchedulePreviewTable
+    BatchSchedulePreviewTable,
+    Pagination
   },
   methods: {
     ...mapActions({
