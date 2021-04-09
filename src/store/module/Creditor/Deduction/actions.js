@@ -2,6 +2,7 @@ import creditor from "../../../Api/creditor";
 
 
 export const uploadSchedule= async ({commit},{file,handleProgress})=>{
+  
   try{
     const response = await creditor.uploadSchedule(file, handleProgress);
     commit("SCHEDULE_UPLOAD_SUCCESS", response.data);

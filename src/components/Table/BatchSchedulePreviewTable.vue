@@ -9,8 +9,12 @@
       <template v-slot:cell(Staff_Id)="data">{{data.item.staff_id}}</template>
       <template v-slot:cell(EarningsDeductions)="data">{{data.item.earning_or_deduction}}</template>
       <template v-slot:cell(Amount(N))="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Data_Validation)="data">
+        <b-icon v-if="data.item['error_occured']===1" class="data-validation mx-auto h1" icon="X" variant="danger"></b-icon>
+        <b-icon v-else class="data-validation mx-auto h1" icon="X" variant="danger"></b-icon>
+      </template>
     </b-table>
-    <CustomModal  id="single-batch-item" size="lg" :scrollable="true" :hover="true">
+    <CustomModal id="single-batch-item" size="lg" :scrollable="true" :hover="true">
       <div v-if="currentItem" class="details-wrapper">
         <template v-for="(value,name,index) in previewDetails">
           <div :key="currentItem.ippis_number + index" class="detail-holder mb-2">
@@ -22,7 +26,7 @@
       <!-- <div v-if="currentItem" class="error-block">
           vcuhjuyvu
           <p class="error-msg danger">{{currentItem.error_message}}</p>
-      </div> -->
+      </div>-->
     </CustomModal>
   </div>
 </template>
@@ -46,7 +50,8 @@ export default {
         "IPPIS_Number",
         "Staff_Id",
         "EarningsDeductions",
-        "Amount(N)"
+        "Amount(N)",
+        "Data_Validation"
       ],
       currentItem: null
     };
@@ -72,18 +77,19 @@ export default {
   },
   computed: {
     previewDetails() {
-        const Item=this.currentItem
+      const Item = this.currentItem;
       const reject = [
         "error_occurred",
         "error_message",
         "created_at",
         "updated_at",
         "file_staging",
-        "is_validated",
+        "is_validated"
       ];
       const filtered = Object.keys(Item)
-  .filter(key => !reject.includes(key)).reduce((obj, key) => ({ ...obj, [key]: Item[key] }), {});
-        return filtered
+        .filter(key => !reject.includes(key))
+        .reduce((obj, key) => ({ ...obj, [key]: Item[key] }), {});
+      return filtered;
     }
   }
 };
@@ -96,8 +102,8 @@ export default {
   cursor: pointer;
 }
 .details-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 .detail-title {
   font-weight: 500;
@@ -106,4 +112,9 @@ export default {
   font-size: 14px;
   font-weight: 300;
 }
+/* .data-validation{
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+} */
 </style>

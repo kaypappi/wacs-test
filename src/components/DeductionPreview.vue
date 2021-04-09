@@ -5,9 +5,35 @@
     v-if="fetchingItem"
     class="page-loader"
   />
-  <div v-else class="preview-wrapper relative">
-    <div class="preview-header">
-      <div><span class="label">Batch Name: </span> <span class="value"></span></div>
+  <div v-else class="preview-wrapper p-4 relative">
+    <div v-if="previewMeta" class="preview-header mb-5">
+      <div class="mb-2">
+        <span class="label">Batch Name:</span>
+        <span class="value">{{previewMeta.title}}</span>
+      </div>
+      <div class="mb-2">
+        <span class="label">Records Validated:</span>
+        <span
+          class="value"
+        >{{`${previewMeta.validated_records} (${previewMeta.passed} Passed, ${previewMeta.failed} Failed)`}}</span>
+      </div>
+      <div class="mb-2">
+        <span class="label">Status:</span>
+        <span class="value">{{previewMeta.status}}</span>
+      </div>
+      <div class="row">
+        <span class="label col-sm-2">Progress:</span>
+        <span class="value col-sm-10 pt-2">
+          <b-progress
+            :value="previewMeta.progress"
+            show-progress
+            height="10px"
+            variant="success"
+            :max="100"
+            class="mb-0"
+          ></b-progress>
+        </span>
+      </div>
     </div>
     <BatchSchedulePreviewTable :previewItem="getBatchItem.data" />
     <div class="summary-nav-buttons">
@@ -31,7 +57,7 @@
 
 <script>
 import BatchSchedulePreviewTable from "./Table/BatchSchedulePreviewTable";
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     prev: { type: Function, default: () => {} }
@@ -39,13 +65,13 @@ export default {
   components: {
     BatchSchedulePreviewTable
   },
-  methods:{
+  methods: {
     ...mapActions({
-      saveBatchSchedule:"CreditorDeduction/saveBatchSchedule"
+      saveBatchSchedule: "CreditorDeduction/saveBatchSchedule"
     }),
-    saveSchedule(){
-      if(this.getFileFromState){
-        this.saveBatchSchedule(this.getFileFromState)
+    saveSchedule() {
+      if (this.getFileFromState) {
+        this.saveBatchSchedule(this.getFileFromState);
       }
     }
   },
@@ -53,13 +79,38 @@ export default {
     ...mapGetters({
       fetchingItem: "CreditorDeduction/fetchingItem",
       getBatchItem: "CreditorDeduction/getBatchItem",
-      getFileFromState:"CreditorDeduction/getFileFromState",
-
+      getFileFromState: "CreditorDeduction/getFileFromState"
     }),
-    findError(){
-        return this.getBatchItem.data.some(item=>{item['error_occurred']===1})
+    findError() {
+      return this.getBatchItem.data.some(item => {
+        item["error_occurred"] === 1;
+      });
     },
-    
+    previewMeta() {
+      if (this.getBatchItem) {
+        const sample = this.getBatchItem.data[0]["file_staging"];
+        const total = this.getBatchItem.total;
+        const title = sample["batch_name"];
+        const status = sample["status"];
+        const validated_records = sample["records_validated"];
+        const passed = sample["validation_passed"];
+        const failed = sample["validation_failed"];
+        const progress = parseInt(
+          Math.round((validated_records / total) * 100)
+        );
+        const data = {
+          title,
+          total,
+          status,
+          validated_records,
+          passed,
+          failed,
+          progress
+        };
+        return data;
+      }
+      return null;
+    }
   }
 };
 </script>
@@ -68,7 +119,7 @@ export default {
 .summary-nav-buttons {
   display: flex;
   justify-content: space-between;
-  padding:0 30px;
+  padding: 0 30px;
 }
 
 .summary-nav-buttons button {
@@ -89,5 +140,9 @@ button {
   background-color: white !important;
   color: #27be58 !important;
   text-align: start;
+}
+
+.preview-header {
+  max-width: 400px;
 }
 </style>

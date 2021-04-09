@@ -7,11 +7,11 @@
             :failureMessage="getToast.message"
             :success="getToast.success"
         />
-        <div class="section-header">
+        <div class="section-header align-items-center">
             <MakeOfferSectionTitle :section="1" title="Basic Info" :steps="steps"/>
-            <span class="arrow-separator">></span>
+            <b-icon class="arrow-separator" icon="chevron-right"/>
             <MakeOfferSectionTitle :section="2" title="Repayment Schedule" :steps="steps"/>
-            <span class="arrow-separator">></span>
+            <b-icon class="arrow-separator" icon="chevron-right"/>
             <MakeOfferSectionTitle :section="3" title="Summary" :steps="steps"/>
         </div>
         <img

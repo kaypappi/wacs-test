@@ -1,16 +1,14 @@
 <template>
   <div class="deduction-wrapper">
-    <div class="section-header">
+    <div class="section-header align-items-center">
       <MakeOfferSectionTitle :section="0" title="Upload" :steps="steps" />
-      <span class="arrow-separator">></span>
+      <b-icon class="arrow-separator" icon="chevron-right"/>
       <MakeOfferSectionTitle :section="1" title="Preview" :steps="steps" />
-      <!-- <span class="arrow-separator">></span>
-      <MakeOfferSectionTitle :section="2" title="Title & Description" :steps="steps" /> -->
     </div>
 
     <div class="deduction-body">
       <keep-alive>
-        <component :prev="goToPrev" :next="goToNext" v-bind:is="currentTab" class="tab"></component>
+        <component :prev="goToPrev" :next="goToNext" :is="currentTab" class="tab"></component>
       </keep-alive>
     </div>
   </div>
