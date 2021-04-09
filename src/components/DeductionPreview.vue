@@ -9,17 +9,17 @@
     <div v-if="previewMeta" class="preview-header mb-5">
       <div class="mb-2">
         <span class="label">Batch Name:</span>
-        <span class="value">{{previewMeta.title}}</span>
+        <span class="ml-1 value">{{previewMeta.title}}</span>
       </div>
       <div class="mb-2">
         <span class="label">Records Validated:</span>
         <span
-          class="value"
+          class="ml-1 value"
         >{{`${previewMeta.validated_records} (${previewMeta.passed} Passed, ${previewMeta.failed} Failed)`}}</span>
       </div>
       <div class="mb-2">
         <span class="label">Status:</span>
-        <span class="value">{{previewMeta.status}}</span>
+        <span class="ml-1 value">{{previewMeta.status}}</span>
       </div>
       <div class="row">
         <span class="label col-sm-2">Progress:</span>
@@ -144,5 +144,14 @@ button {
 
 .preview-header {
   max-width: 400px;
+}
+
+.preview-header span{
+  font-weight: 500;
+}
+
+.preview-header .value {
+  color: #6c757d;
+  
 }
 </style>
