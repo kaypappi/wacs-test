@@ -51,7 +51,6 @@
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
             v-model="addUser.user_name"
-            
           />
           <TextInput
             type="email"
@@ -62,13 +61,8 @@
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
             v-model="addUser.email"
-            
           />
-          <SubmitButton
-            buttonClass="form-modal-button"
-            :name="`Save`"
-            :isLoading="isPosting"
-          />
+          <SubmitButton buttonClass="form-modal-button" :name="`Save`" :isLoading="isPosting" />
         </form>
       </template>
     </CustomModal>
@@ -78,8 +72,9 @@
 <script>
 import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
 import CustomModal from "../../components/Modals/CustomModal";
-import TextInput from "../../components/Inputs/TextInput"
-import SubmitButton from "../../components/Buttons/SubmitButton"
+import TextInput from "../../components/Inputs/TextInput";
+import SubmitButton from "../../components/Buttons/SubmitButton";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     SearchFilterInput,
@@ -87,24 +82,32 @@ export default {
     TextInput,
     SubmitButton
   },
-  data(){
-    return{
-      addUser:{
-
-      },
-      isPosting:false
-    }
+  data() {
+    return {
+      addUser: {},
+      isPosting: false
+    };
   },
   methods: {
+    ...mapActions({
+      createMiniIppis: "IppisUserMangement/createMiniIppis"
+    }),
     getSearchTerm() {},
     handleSearch() {},
     enterSearch() {},
-    onSubmit(){},
+    async onSubmit() {
+      const response = await this.createMiniIppis(this.addUser);
+      console.log(response);
+    }
   },
-  computed:{
+  computed: {
+    ...mapGetters({
+      creatingMiniIppis: "IppisUserMangement/creatingMiniIppis"
+    }),
+
     error() {
       return this.$store.state.validation;
-    },
+    }
   }
 };
 </script>

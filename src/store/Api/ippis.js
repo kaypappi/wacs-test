@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 export default {
   fetchIppisLoanRequests(query) {
@@ -82,6 +82,19 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get("creditor/request/totals")
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  createMiniIppis(user) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/ippis/`, user)
         .then((response) => {
           resolve(response);
         })
