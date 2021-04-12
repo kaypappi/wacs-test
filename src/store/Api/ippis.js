@@ -94,7 +94,7 @@ export default {
   createMiniIppis(user) {
     return new Promise((resolve, reject) => {
       axios
-        .post(`/ippis/`, user)
+        .post(`/ippis`, user)
         .then((response) => {
           resolve(response);
         })

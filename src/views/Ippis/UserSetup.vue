@@ -16,18 +16,13 @@
         </Button>
       </div>
     </div>
-    <CustomModal size="sm" :onHide="onHide" id="add-user-form-modal">
+    <CustomModal size="sm" id="add-user-form-modal">
       <div v-if="postSuccess">
-        <p class="modal-success-message" v-if="edittingUser">Edit Successful</p>
-        <p
-          class="modal-success-message"
-          v-else-if="changingUserRole"
-        >Users role has been changed successfully</p>
-        <p class="modal-success-message" v-else>
+        <p class="modal-success-message" >
           You have successfully added
           <b>{{addUser.full_name}}</b> as an admin
         </p>
-        <button class="form-modal-button" @click="$bvModal.hide('add-user-form-modal')">Close</button>
+        <button class="form-modal-button" @click="closeModal">Close</button>
       </div>
       <template v-else>
         <h5 class="form-modal-title">New User</h5>
@@ -46,7 +41,6 @@
             label="Username"
             id="username"
             name="user_name"
-            :disabled="edittingUser"
             :error="error.user_name"
             inputClass="form-modal-inputs"
             labelClass="form-modal-label"
@@ -62,7 +56,7 @@
             labelClass="form-modal-label"
             v-model="addUser.email"
           />
-          <SubmitButton buttonClass="form-modal-button" :name="`Save`" :isLoading="isPosting" />
+          <SubmitButton buttonClass="form-modal-button" :name="`Save`" :isLoading="creatingMiniIppis" />
         </form>
       </template>
     </CustomModal>
@@ -85,7 +79,8 @@ export default {
   data() {
     return {
       addUser: {},
-      isPosting: false
+      isPosting: false,
+      postSuccess:false
     };
   },
   methods: {
@@ -95,9 +90,15 @@ export default {
     getSearchTerm() {},
     handleSearch() {},
     enterSearch() {},
+    closeModal(){
+      this.postSuccess=false
+      this.addUser={}
+      this.$bvModal.hide('add-user-form-modal')
+    },
     async onSubmit() {
       const response = await this.createMiniIppis(this.addUser);
-      console.log(response);
+      this.postSuccess=true
+      return response
     }
   },
   computed: {
