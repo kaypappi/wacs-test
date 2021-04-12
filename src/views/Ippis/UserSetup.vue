@@ -10,31 +10,101 @@
       />
 
       <div class="cta-div">
-        <Button v-b-modal.add-form-modal class="cta-button">
+        <Button v-b-modal.add-user-form-modal class="cta-button">
           <img src="/assets/images/Plus.svg" alt="Plus sign" />
-          Create New Offer
+          Create 3rd Party
         </Button>
       </div>
     </div>
+    <CustomModal size="sm" :onHide="onHide" id="add-user-form-modal">
+      <div v-if="postSuccess">
+        <p class="modal-success-message" v-if="edittingUser">Edit Successful</p>
+        <p
+          class="modal-success-message"
+          v-else-if="changingUserRole"
+        >Users role has been changed successfully</p>
+        <p class="modal-success-message" v-else>
+          You have successfully added
+          <b>{{addUser.full_name}}</b> as an admin
+        </p>
+        <button class="form-modal-button" @click="$bvModal.hide('add-user-form-modal')">Close</button>
+      </div>
+      <template v-else>
+        <h5 class="form-modal-title">New User</h5>
+        <div class="form-modal-title-border"></div>
+        <form @submit.prevent="onSubmit">
+          <TextInput
+            label="Full Name"
+            id="name"
+            name="full_name"
+            :error="error.full_name"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.full_name"
+          />
+          <TextInput
+            label="Username"
+            id="username"
+            name="user_name"
+            :disabled="edittingUser"
+            :error="error.user_name"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.user_name"
+            
+          />
+          <TextInput
+            type="email"
+            label="Email"
+            id="email"
+            name="email"
+            :error="error.email"
+            inputClass="form-modal-inputs"
+            labelClass="form-modal-label"
+            v-model="addUser.email"
+            
+          />
+          <SubmitButton
+            buttonClass="form-modal-button"
+            :name="`Save`"
+            :isLoading="isPosting"
+          />
+        </form>
+      </template>
+    </CustomModal>
   </div>
 </template>
 
 <script>
-import SearchFilterInput from "../../components/Inputs/SearchFilterInput"
+import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
+import CustomModal from "../../components/Modals/CustomModal";
+import TextInput from "../../components/Inputs/TextInput"
+import SubmitButton from "../../components/Buttons/SubmitButton"
 export default {
-  components:{
-    SearchFilterInput
+  components: {
+    SearchFilterInput,
+    CustomModal,
+    TextInput,
+    SubmitButton
   },
-  methods:{
-    getSearchTerm(){
+  data(){
+    return{
+      addUser:{
 
-    },
-    handleSearch(){
-
-    },
-    enterSearch(){
-      
+      },
+      isPosting:false
     }
+  },
+  methods: {
+    getSearchTerm() {},
+    handleSearch() {},
+    enterSearch() {},
+    onSubmit(){},
+  },
+  computed:{
+    error() {
+      return this.$store.state.validation;
+    },
   }
 };
 </script>
