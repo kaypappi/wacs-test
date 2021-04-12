@@ -16,7 +16,7 @@ import Home from "../views/Creditor/Home.vue";
 import Repayment from "../views/Creditor/Repayment";
 import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
-import Deduction from "../views/Creditor/Deduction.vue"
+import Deduction from "../views/Creditor/Deduction.vue";
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
 
@@ -24,6 +24,7 @@ import IppisLoanRequest from "../views/Ippis/LoanRequest";
 import IppisLoanRequestDetails from "../views/Ippis/LoanRequestDetails";
 import IppisLogin from "../views/Ippis/Auth/Login.vue";
 import IppisSchedule from "../views/Ippis/IppisSchedule.vue";
+import IppisUserManagement from "../views/Ippis/UserSetup.vue";
 import { beforeEach } from "./beforeEach";
 import IppisMain from "../components/Layout/IppisMain.vue";
 
@@ -96,6 +97,7 @@ const routes = [
           nameSpace: "users",
         },
         beforeEnter: (to, from, next) => {
+          console.log(store.getters["Auth/isSuperAdmin"]);
           if (!store.getters["Auth/isSuperAdmin"]) {
             return next("home");
           }
@@ -244,7 +246,10 @@ const routes = [
     name: "ippisLogin",
     component: IppisLogin,
     beforeEnter: (to, from, next) => {
-      if (store.getters["Auth/authenticated"]) {
+      if (
+        store.getters["Auth/authenticated"] &&
+        store.getters["Auth/isIppisAdmin"]
+      ) {
         return next({
           name: "ippisLoanRequest",
         });
@@ -278,6 +283,15 @@ const routes = [
         },
       },
       {
+        path: "/ippis/usermanagement",
+        name: "ippisUserManagement",
+        component: IppisUserManagement,
+        meta: {
+          title: "User Management",
+          nameSpace: "usermanagement",
+        },
+      },
+      {
         path: "/ippis/notifications",
         name: "ippisNotifications",
         component: Notifications,
@@ -306,14 +320,17 @@ const routes = [
         parents: ["Loan Request", "Loan Details"],
       },
     ],
-    /* beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/isIppisAdmin']) {
+    beforeEnter: (to, from, next) => {
+      if (
+        !store.getters["Auth/authenticated"] ||
+        !store.getters["Auth/isIppisAdmin"]
+      ) {
         return next({
-          name: 'ippisLogin'
-        })
+          name: "ippisLogin",
+        });
       }
-      next()
-    } */
+      next();
+    },
   },
   {
     path: "/admin",

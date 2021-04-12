@@ -28,6 +28,14 @@
                         permission: ["manage", "repayment"],
                         nameSpace: 'loan',
                     },
+                    {
+                        name: "User Management",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/ippis/usermanagement",
+                        permission: ["manage", "repayment"],
+                        nameSpace: 'usermanagement',
+                    },
                     
                 ],
             }

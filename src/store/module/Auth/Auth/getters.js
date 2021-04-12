@@ -2,13 +2,13 @@ export const authenticated = (state) => {
   return state.access_token && state.user;
 };
 export const isSuperAdmin = (state) => {
-  return state.user.data.roles[0].name === "Super Admin";
+  return state.user.data.roles[0].name.includes("Super Admin");
 };
 export const isParkwayAdmin = (state) => {
   return state.user.data.roles[0].name === "Admin";
 };
 export const isIppisAdmin = (state) => {
-  return state.user.data.roles[0].name === "IPPIS";
+  return state.user.data.roles[0].name === "Ippis";
 };
 export const isStaff = (state) => {
   return state.user.data.roles[0].name === "USER";
