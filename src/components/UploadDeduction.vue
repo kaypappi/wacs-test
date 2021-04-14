@@ -30,7 +30,7 @@
 import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
 //import creditor from "../store/Api/creditor";
-import { mapActions } from "vuex";
+import { mapActions,mapGetters } from "vuex";
 export default {
   props: {
     next: Function
@@ -48,7 +48,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      uploadBatchSchedule: "CreditorDeduction/uploadSchedule"
+      uploadBatchSchedule: "CreditorDeduction/uploadSchedule",
+      clearBatchSchedule:"CreditorDeduction/clearBatchSchedule"
     }),
     async fileChange(file) {
       this.file = file;
@@ -76,23 +77,23 @@ export default {
         );
     },
     deleteFile() {
+      const batchId=this.getCurrentBatchFile.data["batch-id"];
+      this.clearBatchSchedule(batchId)
       this.loadingCount = 0;
     },
-    startCountdown(seconds) {
-      this.loadingCount = seconds;
-
-      const interval = setInterval(() => {
-        this.loadingCount = this.loadingCount + 20;
-
-        if (this.loadingCount === 100) {
-          clearInterval(interval);
-        }
-      }, 1000);
-    },
-    uploadFile(file) {
-      return file;
+  },
+  computed:{
+    ...mapGetters({
+      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
+    })
+  },
+  watch:{
+    getCurrentBatchFile: function(file){
+      if(file===null){
+        this.loadingCount=0
+      }
     }
-  }
+  },
 };
 </script>
 

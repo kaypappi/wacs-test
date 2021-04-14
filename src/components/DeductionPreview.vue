@@ -21,7 +21,7 @@
         <span class="label">Status:</span>
         <span class="ml-1 value">{{previewMeta.status}}</span>
         <span class="ml-2">
-          <b-spinner v-if="previewMeta.status!=='validated'" variant="warning" small></b-spinner>
+          <b-spinner v-if="previewMeta.status!=='Validated'" variant="warning" small></b-spinner>
           <b-icon v-else icon="check" class="h4 mb-0" variant="success"></b-icon>
         </span>
       </div>
@@ -48,14 +48,14 @@
       :from="getBatchItem.from"
       :to="getBatchItem.to"
     />
-    <div class="summary-nav-buttons">
+    <div class="summary-nav-buttons w-100 mt-4">
       <button @click="prev" class="previous-btn" type="button">
         <span>
           <BIconArrowLeft />
         </span>
         Back
       </button>
-      <button v-if="findError" @click="saveSchedule">
+      <button v-if="!findError" @click="saveSchedule">
         <img
           :style="{height:'100%',width:'auto'}"
           v-if="savingSchedule"
@@ -82,23 +82,27 @@ export default {
   data() {
     return {
       fetchingBatchItem: false,
-      savingSchedule:false
+      savingSchedule: false
     };
   },
   methods: {
     ...mapActions({
       saveBatchSchedule: "CreditorDeduction/saveBatchSchedule",
-      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem"
+      fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem",
+      clearBatchSchedule: "CreditorDeduction/clearBatchSchedule"
     }),
     async saveSchedule() {
-      
+      console.log('saving')
       if (!this.findError) {
-        this.savingSchedule=true
+        this.savingSchedule = true;
         const response = await this.saveBatchSchedule(
           this.getCurrentBatchFile.data["batch-id"]
         );
-        this.savingSchedule=false
-        return response
+        this.savingSchedule = false;
+        const clearCurrentFile = await this.clearBatchSchedule(
+          this.getCurrentBatchFile.data["batch-id"]
+        );
+        return (response,clearCurrentFile);
       }
     },
     fetchUploadedBatchFileJob() {
@@ -108,8 +112,8 @@ export default {
         const response = await this.fetchUploadedBatchItem(batchId);
         this.fetchingBatchItem = false;
         const status = response.data[0]["file_staging"]["status"];
-
-        if (status === "validated") {
+        console.log(status)
+        if (status === "Validated") {
           clearInterval(interval);
         }
       }, 15000);
@@ -124,8 +128,8 @@ export default {
     }),
     findError() {
       return (
-        this.previewMeta.status === "validated" &&
-        this.previewMeta.passed === this.previewMeta.validated_records
+        this.previewMeta.status === "Validated" &&
+        this.previewMeta.passed < this.previewMeta.validated_records
       );
     },
     previewMeta() {

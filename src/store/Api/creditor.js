@@ -294,7 +294,16 @@ export default {
   saveUploadedBatchItem(batchId){
     return new Promise((resolve, reject) => {
       axios
-        .get("creditor/schedules/upload", batchId)
+        .get(`creditor/schedules/upload/${batchId}`)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  clearUploadedBatchItem(batchId){
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/schedules/clear/${batchId}`)
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });

@@ -10,8 +10,17 @@
       <template v-slot:cell(EarningsDeductions)="data">{{data.item.earning_or_deduction}}</template>
       <template v-slot:cell(Amount(N))="data">{{formatNumber(data.item.amount)}}</template>
       <template v-slot:cell(Data_Validation)="data">
-        <b-icon v-if="data.item['error_occured']===1" class="data-validation mx-auto h1" icon="X" variant="danger"></b-icon>
-        <b-icon v-else class="data-validation mx-auto h1" icon="X" variant="danger"></b-icon>
+        <div v-if="data.item['error_occurred']===1">
+          <b-icon
+            id="tooltip-target-1"
+            class="data-validation mx-auto h1"
+            icon="X"
+            variant="danger"
+          ></b-icon>
+          <b-tooltip target="tooltip-target-1" bottom triggers="hover">{{data.item['error_message']}}</b-tooltip>
+        </div>
+        <b-icon v-else class="data-validation mx-auto h1" icon="check" variant="success"></b-icon>
+        
       </template>
     </b-table>
     <CustomModal id="single-batch-item" size="lg" :scrollable="true" :hover="true">
