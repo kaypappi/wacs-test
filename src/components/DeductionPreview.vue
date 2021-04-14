@@ -55,13 +55,13 @@
         </span>
         Back
       </button>
-      <button v-if="findError" @click="submitWizard">
+      <button v-if="findError" @click="saveSchedule">
         <img
           :style="{height:'100%',width:'auto'}"
-          v-if="isMakingOffer"
+          v-if="savingSchedule"
           src="/assets/images/button-ring-loader.svg"
         />
-        <span v-if="!isMakingOffer">Submit</span>
+        <span v-else>Submit</span>
       </button>
     </div>
   </div>
@@ -81,7 +81,8 @@ export default {
   },
   data() {
     return {
-      fetchingBatchItem:false
+      fetchingBatchItem: false,
+      savingSchedule:false
     };
   },
   methods: {
@@ -89,17 +90,23 @@ export default {
       saveBatchSchedule: "CreditorDeduction/saveBatchSchedule",
       fetchUploadedBatchItem: "CreditorDeduction/fetchUploadedBatchItem"
     }),
-    saveSchedule() {
-      if (this.getFileFromState) {
-        this.saveBatchSchedule(this.getFileFromState);
+    async saveSchedule() {
+      
+      if (!this.findError) {
+        this.savingSchedule=true
+        const response = await this.saveBatchSchedule(
+          this.getCurrentBatchFile.data["batch-id"]
+        );
+        this.savingSchedule=false
+        return response
       }
     },
     fetchUploadedBatchFileJob() {
-      this.fetchingBatchItem=true
+      this.fetchingBatchItem = true;
       const interval = setInterval(async () => {
         const batchId = this.getCurrentBatchFile.data["batch-id"];
         const response = await this.fetchUploadedBatchItem(batchId);
-        this.fetchingBatchItem=false
+        this.fetchingBatchItem = false;
         const status = response.data[0]["file_staging"]["status"];
 
         if (status === "validated") {
@@ -116,9 +123,10 @@ export default {
       getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
     }),
     findError() {
-      return this.getBatchItem.data.some(item => {
-        item["error_occurred"] === 1;
-      });
+      return (
+        this.previewMeta.status === "validated" &&
+        this.previewMeta.passed === this.previewMeta.validated_records
+      );
     },
     previewMeta() {
       if (this.getBatchItem) {

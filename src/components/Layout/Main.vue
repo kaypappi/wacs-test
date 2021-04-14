@@ -18,9 +18,17 @@
         logoutRoute="login"
         notificationRoute="notifications"
       />
+
       <div class="main-body">
+        <Toast
+          :show="getToast.show"
+          :title="getToast.title"
+          :successMessage="getToast.message"
+          :failureMessage="getToast.message"
+          :success="getToast.success"
+        />
         <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'" />
-        <ReportManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'report'"/>
+        <ReportManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'report'" />
         <div class="main-body-content">
           <router-view />
         </div>
@@ -33,13 +41,13 @@
 import Header from "../Header";
 import LeftMenuItems from "../LeftMenuItems";
 import LoanManagementMenu from "../LoanManagementMenu";
-import ReportManagementMenu from "../ReportManagementMenu"
+import ReportManagementMenu from "../ReportManagementMenu";
 export default {
   components: {
     Header,
     LeftMenuItems,
     LoanManagementMenu,
-    ReportManagementMenu,
+    ReportManagementMenu
   },
   computed: {
     fullName() {
@@ -56,6 +64,9 @@ export default {
     },
     currentNameSpace() {
       return this.$route.meta.nameSpace;
+    },
+    getToast() {
+      return this.$store.state.toast;
     }
   }
 };

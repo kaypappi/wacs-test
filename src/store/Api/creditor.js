@@ -291,10 +291,10 @@ export default {
     });
   },
 
-  saveUploadedBatchItem(file){
+  saveUploadedBatchItem(batchId){
     return new Promise((resolve, reject) => {
       axios
-        .post("creditor/schedules/upload", file)
+        .get("creditor/schedules/upload", batchId)
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });

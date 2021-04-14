@@ -1,4 +1,5 @@
-export default{
-    validation: []
-
-}
+export default {
+  validation: [],
+  ToastArray: [],
+  toast:{}
+};
