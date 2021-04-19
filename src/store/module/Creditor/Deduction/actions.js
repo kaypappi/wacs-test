@@ -25,10 +25,8 @@ export const fetchUploadedBatchItem = async ({ commit }, batchId) => {
 };
 
 export const saveBatchSchedule = async ({ commit }, batchId) => {
-  commit("SAVING_BATCH_SCHEDULE", true);
   try {
     const response = await creditor.saveUploadedBatchItem(batchId);
-    commit("SAVING_BATCH_SCHEDULE", false);
     const data = {
       title: "Successful!",
       message: response.data.message,
@@ -37,7 +35,6 @@ export const saveBatchSchedule = async ({ commit }, batchId) => {
     commit("SHOW_TOAST", data, { root: true });
     return Promise.resolve(response);
   } catch (e) {
-    commit("SAVING_BATCH_SCHEDULE", false);
     const data = {
       title: "Error!",
       message: e.response.data.message,

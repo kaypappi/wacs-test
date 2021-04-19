@@ -8,7 +8,10 @@ export const isParkwayAdmin = (state) => {
   return state.user.data.roles[0].name === "Admin";
 };
 export const isIppisAdmin = (state) => {
-  return state.user.data.roles[0].name === "Ippis";
+  return state.user.data.roles[0].name.includes("Ippis");
+};
+export const isIppisMini = (state) => {
+  return state.user.data.roles[0].name === "Ippis Mini";
 };
 export const isStaff = (state) => {
   return state.user.data.roles[0].name === "USER";

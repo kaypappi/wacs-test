@@ -28,6 +28,8 @@ import IppisUserManagement from "../views/Ippis/UserSetup.vue";
 import { beforeEach } from "./beforeEach";
 import IppisMain from "../components/Layout/IppisMain.vue";
 
+import IppisMasterRecords from "../views/Ippis/Mini/IppisMasterRecords.vue";
+
 import AdminLogin from "../views/Admin/Auth/AdminLogin.vue";
 import AdminMain from "../components/Layout/AdminMain.vue";
 import AdminDashboard from "../views/Admin/AdminDashboard.vue";
@@ -250,9 +252,13 @@ const routes = [
         store.getters["Auth/authenticated"] &&
         store.getters["Auth/isIppisAdmin"]
       ) {
-        return next({
-          name: "ippisLoanRequest",
-        });
+        if (store.getters["Auth/isIppisMini"]) {
+          return next({ name: "ippisMasterRecords" });
+        } else {
+          return next({
+            name: "ippisLoanRequest",
+          });
+        }
       }
       next();
     },
@@ -274,12 +280,35 @@ const routes = [
         },
       },
       {
+        path: "/ippis/masterrecords",
+        name: "ippisMasterRecords",
+        component: IppisMasterRecords,
+        meta: {
+          title: "Employee Records",
+          nameSpace: "ippis mini",
+        },
+        beforeEnter: (to, from, next) => {
+          if (!store.getters["Auth/isIppisMini"]) {
+            return next({
+              name: "ippisLogin",
+            });
+          }
+          next();
+        },
+      },
+      {
         path: "/ippis/dashboard",
         name: "ippisLoanRequest",
         component: IppisLoanRequest,
         meta: {
           title: "Loan Request",
           nameSpace: "loan",
+        },
+        beforeEnter: (to, from, next) => {
+          if (store.getters["Auth/isIppisMini"]) {
+            return next({ name: "ippisMasterRecords" });
+          }
+          next();
         },
       },
       {

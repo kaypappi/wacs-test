@@ -19,6 +19,7 @@ import CreditorDeduction from "./module/Creditor/Deduction"
 
 import IppisLoanRequest from "./module/Ippis/LoanRequest"
 import IppisUserMangement from "./module/Ippis/UserManagement"
+import IppisMini from "./module/Ippis/IppisMini"
 
 import Auth from "./module/Auth/Auth"
 import PasswordReset from "./module/Auth/PasswordReset"
@@ -46,6 +47,7 @@ export default new Vuex.Store({
     CreditorDeduction,
     IppisLoanRequest,
     IppisUserMangement,
+    IppisMini,
     Auth,
     PasswordReset,
     UserAuth,

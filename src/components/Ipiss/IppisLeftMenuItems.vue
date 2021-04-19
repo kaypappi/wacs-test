@@ -36,6 +36,14 @@
                         permission: ["manage", "repayment"],
                         nameSpace: 'usermanagement',
                     },
+                    {
+                        name: "Employee Records",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/ippis/masterrecords",
+                        permission: ["view", "master-records"],
+                        nameSpace: 'ippis mini',
+                    },
                     
                 ],
             }

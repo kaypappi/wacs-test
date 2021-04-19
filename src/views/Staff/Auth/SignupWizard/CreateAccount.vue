@@ -6,7 +6,6 @@
       <TextInput
         type="number"
         label="What is your Ippis number"
-        :max="7"
         id="ippis_number"
         name="ippis_number"
         inputClass="input-field"

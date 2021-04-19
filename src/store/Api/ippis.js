@@ -103,4 +103,17 @@ export default {
         });
     });
   },
+
+  getTransactionalRecords(query) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`ippis/transactional-records`, { params: query })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
 };

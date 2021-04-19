@@ -95,7 +95,8 @@ export default {
       console.log('saving')
       if (!this.findError) {
         this.savingSchedule = true;
-        const response = await this.saveBatchSchedule(
+       try{
+          const response = await this.saveBatchSchedule(
           this.getCurrentBatchFile.data["batch-id"]
         );
         this.savingSchedule = false;
@@ -103,6 +104,9 @@ export default {
           this.getCurrentBatchFile.data["batch-id"]
         );
         return (response,clearCurrentFile);
+       }catch(e){
+         return this.savingSchedule=false
+       }
       }
     },
     fetchUploadedBatchFileJob() {

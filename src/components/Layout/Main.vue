@@ -42,12 +42,14 @@ import Header from "../Header";
 import LeftMenuItems from "../LeftMenuItems";
 import LoanManagementMenu from "../LoanManagementMenu";
 import ReportManagementMenu from "../ReportManagementMenu";
+import Toast from "../Toast"
 export default {
   components: {
     Header,
     LeftMenuItems,
     LoanManagementMenu,
-    ReportManagementMenu
+    ReportManagementMenu,
+    Toast
   },
   computed: {
     fullName() {
