@@ -116,4 +116,17 @@ export default {
         });
     });
   },
+
+  checkMasterRecords(ippis){
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`ippis/transactional-records/${ippis}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 };

@@ -29,6 +29,7 @@ import { beforeEach } from "./beforeEach";
 import IppisMain from "../components/Layout/IppisMain.vue";
 
 import IppisMasterRecords from "../views/Ippis/Mini/IppisMasterRecords.vue";
+import IppisEmployeeDetails from  "../views/Ippis/Mini/IppisEmployeeDetails.vue"
 
 import AdminLogin from "../views/Admin/Auth/AdminLogin.vue";
 import AdminMain from "../components/Layout/AdminMain.vue";
@@ -286,6 +287,24 @@ const routes = [
         meta: {
           title: "Employee Records",
           nameSpace: "ippis mini",
+        },
+        beforeEnter: (to, from, next) => {
+          if (!store.getters["Auth/isIppisMini"]) {
+            return next({
+              name: "ippisLogin",
+            });
+          }
+          next();
+        },
+      },
+      {
+        path: "/ippis/masterrecords/:ippis",
+        name: "ippisEmployeeDetails",
+        component: IppisEmployeeDetails,
+        meta: {
+          title: "Employee Details",
+          nameSpace: "ippis mini",
+          parents:["Employee Records"]
         },
         beforeEnter: (to, from, next) => {
           if (!store.getters["Auth/isIppisMini"]) {

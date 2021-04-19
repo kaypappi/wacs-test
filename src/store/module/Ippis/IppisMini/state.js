@@ -1,3 +1,4 @@
 export default {
-  transactionalRecords:null
+  transactionalRecords: null,
+  masterRecord:null
 };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table @row-clicked="handleRowClick" small :fields="fields" :items="records" responsive>
+    <b-table @row-clicked="handleRowClick" small :fields="fields" :items="records" responsive hover>
       <template v-slot:cell(Data_Source)="data">{{data.item.data_source}}</template>
       <template v-slot:cell(Refrence_Id)="data">{{data.item.reference_id}}</template>
       <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
@@ -43,8 +43,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-      this.currentItem = item;
-      this.$bvModal.show("single-batch-item");
+      this.$router.push({name:"ippisEmployeeDetails", params:{ippis:item.ippis_number}})
     },
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });
