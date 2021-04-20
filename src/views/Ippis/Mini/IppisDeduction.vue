@@ -27,17 +27,13 @@
 </template>
 
 <script>
-import SearchFilterInput from "../../../components/Inputs/SearchFilterInput";
 import IppisDeductionTable from "../../../components/Ipiss/IppisDeductionTable";
 import IppisEmployeeFilter from "../../../components/Ipiss/IppisEmployeeFilter"
-import Button from "../../../components/Buttons/Botton";
 import Pagination from "../../../components/Pagination/Pagination"
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     IppisDeductionTable,
-    SearchFilterInput,
-    Button,
     Pagination,
     IppisEmployeeFilter
   },
