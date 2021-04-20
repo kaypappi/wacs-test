@@ -13,7 +13,8 @@
             :placeholder="placeholder" 
             :class="inputClass"
             @keyup="keyupEven"
-            :max="max"
+            :maxlength="max"
+            :size="max"
         >
         <span v-if="error" class="form-input-error">{{error[0]}}</span>
     </div>
