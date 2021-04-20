@@ -42,7 +42,15 @@
                         altText: "money",
                         to: "/ippis/masterrecords",
                         permission: ["view", "master-records"],
-                        nameSpace: 'ippis mini',
+                        nameSpace: 'ippis masterRecords',
+                    },
+                    {
+                        name: "Deduction",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/ippis/deduction",
+                        permission: ["view", "historical-records"],
+                        nameSpace: 'ippis Deduction',
                     },
                     
                 ],

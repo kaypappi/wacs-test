@@ -21,7 +21,7 @@
         v-if="fetchingRecords "
         class="page-loader"
       />
-      <IppisEmployeeRecordsTable
+      <IppisDeductionTable
         v-else
         :records="transactionalRecords.data.data"
       />
@@ -39,14 +39,14 @@
 
 <script>
 import SearchFilterInput from "../../../components/Inputs/SearchFilterInput";
-import IppisEmployeeRecordsTable from "../../../components/Ipiss/IppisEmployeeRecordsTable";
+import IppisDeductionTable from "../../../components/Ipiss/IppisDeductionTable";
 import IppisEmployeeFilter from "../../../components/Ipiss/IppisEmployeeFilter"
 import Button from "../../../components/Buttons/Botton";
 import Pagination from "../../../components/Pagination/Pagination"
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
-    IppisEmployeeRecordsTable,
+    IppisDeductionTable,
     SearchFilterInput,
     Button,
     Pagination,
@@ -84,9 +84,6 @@ export default {
       immediate: true
     }
   },
-  mounted() {
-    // this.fetchTransactionalRecords({})
-  }
 };
 </script>
 

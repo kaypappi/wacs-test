@@ -130,4 +130,17 @@ export default {
         });
     });
   },
+
+  checkTransactonalRecords(ippis){
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`ippis/transactional/${ippis}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 };
