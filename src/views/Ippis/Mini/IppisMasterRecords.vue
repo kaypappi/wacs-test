@@ -6,6 +6,7 @@
         v-model="searchTerm"
         :onSearch="searchAdmin"
       />
+      <IppisEmployeeFilter />
       <div class="cta-div">
         <Button v-b-modal.add-user-form-modal class="cta-button">
           <img src="/assets/images/Plus.svg" alt="Plus sign" />
@@ -39,6 +40,7 @@
 <script>
 import SearchFilterInput from "../../../components/Inputs/SearchFilterInput";
 import IppisEmployeeRecordsTable from "../../../components/Ipiss/IppisEmployeeRecordsTable";
+import IppisEmployeeFilter from "../../../components/Ipiss/IppisEmployeeFilter"
 import Button from "../../../components/Buttons/Botton";
 import Pagination from "../../../components/Pagination/Pagination"
 import { mapActions, mapGetters } from "vuex";
@@ -47,7 +49,8 @@ export default {
     IppisEmployeeRecordsTable,
     SearchFilterInput,
     Button,
-    Pagination
+    Pagination,
+    IppisEmployeeFilter
   },
   data() {
     return {

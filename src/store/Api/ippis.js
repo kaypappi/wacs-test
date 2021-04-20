@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export default {
   fetchIppisLoanRequests(query) {
     return new Promise((resolve, reject) => {
@@ -117,10 +118,10 @@ export default {
     });
   },
 
-  checkMasterRecords(ippis){
+  checkMasterRecords(ippis) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`ippis/transactional-records/${ippis}`)
+        .get(`ippis/masters/${ippis}`)
         .then((response) => {
           resolve(response);
         })
@@ -128,5 +129,5 @@ export default {
           reject(err);
         });
     });
-  }
+  },
 };
