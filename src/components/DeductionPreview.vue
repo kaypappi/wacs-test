@@ -92,7 +92,6 @@ export default {
       clearBatchSchedule: "CreditorDeduction/clearBatchSchedule"
     }),
     async saveSchedule() {
-      console.log('saving')
       if (!this.findError) {
         this.savingSchedule = true;
        try{
@@ -116,7 +115,6 @@ export default {
         const response = await this.fetchUploadedBatchItem(batchId);
         this.fetchingBatchItem = false;
         const status = response.data[0]["file_staging"]["status"];
-        console.log(status)
         if (status === "Validated") {
           clearInterval(interval);
         }

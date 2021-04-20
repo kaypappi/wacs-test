@@ -47,10 +47,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-      this.$router.push({name:"ippisEmployeeDetails", params:{ippis:item.ippis_number}})
-    },
-    viewSchedule(id) {
-      this.$router.push({ name: "repaymentsSchedule", params: { id } });
+      //this.$router.push({name:"ippisDeductionDetails", params:{ippis:item.ippis_number}})
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");

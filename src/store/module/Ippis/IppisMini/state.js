@@ -1,4 +1,5 @@
 export default {
   transactionalRecords: null,
-  masterRecord:null
+  masterRecord: null,
+  singleTransactionalRecords:null
 };

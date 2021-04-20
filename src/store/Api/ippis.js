@@ -134,7 +134,7 @@ export default {
   checkTransactonalRecords(ippis){
     return new Promise((resolve, reject) => {
       axios
-        .get(`ippis/transactional/${ippis}`)
+        .get(`ippis/transactionals/${ippis}`)
         .then((response) => {
           resolve(response);
         })

@@ -1,14 +1,13 @@
 <template>
-  <div>
-    ippis employee details
-<!--     <div v-if="currentItem" class="details-wrapper">
-      <template v-for="(value,name,index) in previewDetails">
-        <div :key="currentItem.ippis_number + index" class="detail-holder mb-2">
+  <div class="p-4">
+    <div v-if="details" class="details-wrapper">
+      <template v-for="(value,name,index) in details">
+        <div :key="name + index" class="detail-holder mb-2">
           <p class="detail-title mb-0">{{formatLabel(name)}}</p>
           <p class="detail-body">{{value}}</p>
         </div>
       </template>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -28,19 +27,35 @@ export default {
       this.checkingMaster = true;
       const response = await this.checkMasterRecords(ippis);
       this.checkingMaster = false;
-      console.log(response.data)
       return response;
+    },
+    formatLabel(sentence) {
+      const newSentence = sentence
+        .replace(/_/g, " ")
+        .replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+
+      return newSentence;
     }
   },
-  computed:{
-      ...mapGetters({
-          masterRecord:"IppisMini/masterRecord"
-      }),
-      
+  computed: {
+    ...mapGetters({
+      masterRecord: "IppisMini/masterRecord"
+    }),
+    details() {
+      if (this.masterRecord) {
+        const Item = this.masterRecord.data.data[0];
+        const reject = ["created_at", "updated_at", "id"];
+        const filtered = Object.keys(Item)
+          .filter(key => !reject.includes(key))
+          .reduce((obj, key) => ({ ...obj, [key]: Item[key] }), {});
+        return filtered;
+      }
+      return null;
+    }
   },
-  mounted(){
-      //const ippis=this.$route.params.ippis
-     // this.CheckMasterRecords(ippis)
+  mounted() {
+    const ippis = this.$route.params.ippis;
+    this.CheckMasterRecords(ippis);
   }
 };
 </script>

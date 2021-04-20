@@ -5,3 +5,7 @@ export const transactionalRecords=(state)=>{
 export const masterRecord=(state)=>{
     return state.masterRecord
 }
+
+export const  singleTransactionalRecords=(state)=>{
+    return state.singleTransactionalRecords
+}

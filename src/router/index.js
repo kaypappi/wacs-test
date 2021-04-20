@@ -31,6 +31,7 @@ import IppisMain from "../components/Layout/IppisMain.vue";
 import IppisMasterRecords from "../views/Ippis/Mini/IppisMasterRecords.vue";
 import IppisEmployeeDetails from  "../views/Ippis/Mini/IppisEmployeeDetails.vue"
 import IppisDeduction from  "../views/Ippis/Mini/IppisDeduction.vue"
+import ippisDeductionDetails from "../views/Ippis/Mini/IppisDeductionDetails.vue"
 
 import AdminLogin from "../views/Admin/Auth/AdminLogin.vue";
 import AdminMain from "../components/Layout/AdminMain.vue";
@@ -101,7 +102,6 @@ const routes = [
           nameSpace: "users",
         },
         beforeEnter: (to, from, next) => {
-          console.log(store.getters["Auth/isSuperAdmin"]);
           if (!store.getters["Auth/isSuperAdmin"]) {
             return next("home");
           }
@@ -333,6 +333,24 @@ const routes = [
           next();
         },
       },
+      /* {
+        path: "/ippis/deduction/:ippis",
+        name: "ippisDeductionDetails",
+        component: ippisDeductionDetails,
+        meta: {
+          title: "Deduction Details",
+          nameSpace: "ippis Deduction",
+          parents: ["Deduction"],
+        },
+        beforeEnter: (to, from, next) => {
+          if (!store.getters["Auth/isIppisMini"]) {
+            return next({
+              name: "ippisLogin",
+            });
+          }
+          next();
+        },
+      }, */
       {
         path: "/ippis/dashboard",
         name: "ippisLoanRequest",
