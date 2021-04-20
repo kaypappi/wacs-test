@@ -2,12 +2,15 @@
   <div class="upload-deduction-wrapper pt-5">
     <LineBreakTitle title="Step 1" />
     <div class="deduction-sample">
-      <div class="sample-box py-2 pl-3">
-        <span class="mr-2">
-          <b-icon icon="download"></b-icon>
-        </span>
-        <span>Download sample deduction schedule</span>
-      </div>
+      <a class href="/assets/file/transactional-records-template.xlsx" target="_blank">
+        <div class="sample-box py-2 pl-3">
+          <span class="mr-2">
+            <b-icon icon="download"></b-icon>
+          </span>
+          <span>Download sample deduction schedule</span>
+        </div>
+      </a>
+
       <div class="readme-box mt-2">
         <span class="readme">Read Me:</span>
         <span>Download the sample schedule. Input repayment entries and re-upload below as repayment schedule</span>
@@ -22,6 +25,11 @@
       :max="120"
       label="Upload Deduction Schedule"
     />
+    <template v-if="uploadErrors">
+      <template v-for="item in uploadErrors">
+        <p :key="item" class="error-msg">{{item}}</p>
+      </template>
+    </template>
     <button @click="next" v-if="loadingCount>=120">Continue To Preview</button>
   </div>
 </template>
@@ -30,7 +38,7 @@
 import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
 //import creditor from "../store/Api/creditor";
-import { mapActions,mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
     next: Function
@@ -43,13 +51,14 @@ export default {
     return {
       file: new File([""], ""),
       fileLoading: false,
+      uploadErrors:null,
       loadingCount: 0
     };
   },
   methods: {
     ...mapActions({
       uploadBatchSchedule: "CreditorDeduction/uploadSchedule",
-      clearBatchSchedule:"CreditorDeduction/clearBatchSchedule"
+      clearBatchSchedule: "CreditorDeduction/clearBatchSchedule"
     }),
     async fileChange(file) {
       this.file = file;
@@ -57,6 +66,7 @@ export default {
       formData.append("excel_file", this.file);
       if (this.file !== null) {
         try {
+          this.uploadErrors=null
           const response = await this.uploadBatchSchedule({
             file: formData,
             handleProgress: this.handleProgress
@@ -65,6 +75,8 @@ export default {
 
           return response;
         } catch (e) {
+          this.uploadErrors=e.response.data.errors["excel_file"]
+          this.loadingCount=0
           return e;
         }
       }
@@ -77,23 +89,23 @@ export default {
         );
     },
     deleteFile() {
-      const batchId=this.getCurrentBatchFile.data["batch-id"];
-      this.clearBatchSchedule(batchId)
+      const batchId = this.getCurrentBatchFile.data["batch-id"];
+      this.clearBatchSchedule(batchId);
       this.loadingCount = 0;
-    },
-  },
-  computed:{
-    ...mapGetters({
-      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
-    })
-  },
-  watch:{
-    getCurrentBatchFile: function(file){
-      if(file===null){
-        this.loadingCount=0
-      }
     }
   },
+  computed: {
+    ...mapGetters({
+      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile",
+    })
+  },
+  watch: {
+    getCurrentBatchFile: function(file) {
+      if (file === null) {
+        this.loadingCount = 0;
+      }
+    }
+  }
 };
 </script>
 
@@ -126,5 +138,10 @@ button {
   color: #ffffff;
   font-size: 20.6px;
   line-height: 24px;
+}
+
+.error-msg{
+  color: red;
+  font-size: 12px;
 }
 </style>

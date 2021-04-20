@@ -9,7 +9,7 @@
         <img class="download-img" src="/assets/images/download.svg" alt="download" />Download sample payment schedule
       </a>-->
     </div>
-    <b-form-file v-if="loadingCount===0" v-model="inputVal" plain></b-form-file>
+    <b-form-file v-if="loadingCount===0" v-model="inputVal" plain accept=".xls, .xlsx, .csv"></b-form-file>
     <div class="file-input-background">
       <template v-if="loadingCount>0">
         <div class="fileLoading w-100 h-100">

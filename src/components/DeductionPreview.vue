@@ -102,6 +102,7 @@ export default {
         const clearCurrentFile = await this.clearBatchSchedule(
           this.getCurrentBatchFile.data["batch-id"]
         );
+        this.prev()
         return (response,clearCurrentFile);
        }catch(e){
          return this.savingSchedule=false
