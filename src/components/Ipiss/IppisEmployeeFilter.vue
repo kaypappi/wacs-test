@@ -111,6 +111,7 @@ export default {
   },
   props: {
     isLoading: Boolean,
+    nextRoute:String,
     filterRequests: {
       type: Function,
       default: () => {}
@@ -136,7 +137,7 @@ export default {
       this.applyFilter();
     },
     applyFilter() {
-        this.$router.push({name:"ippisMasterRecords",query:this.filters})
+        this.$router.push({name:this.nextRoute,query:this.filters})
     }
   },
    watch: {

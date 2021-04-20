@@ -6,7 +6,7 @@
         v-model="searchTerm"
         :onSearch="searchAdmin"
       />
-      <IppisEmployeeFilter :isloading="fetchingRecords"/>
+      <IppisEmployeeFilter :isloading="fetchingRecords" nextRoute="ippisMasterRecords"/>
       <div class="cta-div">
         <Button v-b-modal.add-user-form-modal class="cta-button">
           <img src="/assets/images/Plus.svg" alt="Plus sign" />
@@ -24,6 +24,7 @@
       <IppisEmployeeRecordsTable
         v-else
         :records="transactionalRecords.data.data"
+        
       />
       <Pagination
       v-if="transactionalRecords"

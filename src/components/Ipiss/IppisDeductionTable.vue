@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
+        return item
       //this.$router.push({name:"ippisDeductionDetails", params:{ippis:item.ippis_number}})
     },
     formatNumber(num) {

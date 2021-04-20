@@ -6,7 +6,7 @@
         v-model="searchTerm"
         :onSearch="searchAdmin"
       />
-      <IppisEmployeeFilter :isloading="fetchingRecords"/>
+      <IppisEmployeeFilter :isloading="fetchingRecords" nextRoute="ippisDeduction"/>
       <div class="cta-div">
         <Button v-b-modal.add-user-form-modal class="cta-button">
           <img src="/assets/images/Plus.svg" alt="Plus sign" />
