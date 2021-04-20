@@ -1,18 +1,7 @@
 <template>
   <div class="master-records-wrapper">
     <div class="page-filters">
-      <SearchFilterInput
-        placeholder="Search by name, role, status"
-        v-model="searchTerm"
-        :onSearch="searchAdmin"
-      />
       <IppisEmployeeFilter :isLoading="fetchingRecords" nextRoute="ippisMasterRecords"/>
-      <div class="cta-div">
-        <Button v-b-modal.add-user-form-modal class="cta-button">
-          <img src="/assets/images/Plus.svg" alt="Plus sign" />
-          Apply Filter
-        </Button>
-      </div>
     </div>
     <div class="master-records-body">
       <img
