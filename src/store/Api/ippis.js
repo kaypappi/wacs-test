@@ -131,10 +131,10 @@ export default {
     });
   },
 
-  checkTransactonalRecords(ippis){
+  checkTransactonalRecords(ippis,query){
     return new Promise((resolve, reject) => {
       axios
-        .get(`ippis/transactionals/${ippis}`)
+        .get(`ippis/transactionals/${ippis}`,{params:query})
         .then((response) => {
           resolve(response);
         })

@@ -31,7 +31,7 @@ import IppisMain from "../components/Layout/IppisMain.vue";
 import IppisMasterRecords from "../views/Ippis/Mini/IppisMasterRecords.vue";
 import IppisEmployeeDetails from  "../views/Ippis/Mini/IppisEmployeeDetails.vue"
 import IppisDeduction from  "../views/Ippis/Mini/IppisDeduction.vue"
-//import ippisDeductionDetails from "../views/Ippis/Mini/IppisDeductionDetails.vue"
+import ippisDeductionDetails from "../views/Ippis/Mini/IppisDeductionDetails.vue"
 
 import AdminLogin from "../views/Admin/Auth/AdminLogin.vue";
 import AdminMain from "../components/Layout/AdminMain.vue";
@@ -333,7 +333,7 @@ const routes = [
           next();
         },
       },
-      /* {
+      {
         path: "/ippis/deduction/:ippis",
         name: "ippisDeductionDetails",
         component: ippisDeductionDetails,
@@ -350,7 +350,7 @@ const routes = [
           }
           next();
         },
-      }, */
+      },
       {
         path: "/ippis/dashboard",
         name: "ippisLoanRequest",

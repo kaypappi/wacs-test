@@ -33,9 +33,9 @@ export const checkMasterRecord = async ({ commit }, ippisNumber) => {
 };
 
 
-export const checkTransactionalRecord = async ({ commit }, ippisNumber) => {
+export const checkTransactionalRecord = async ({ commit }, {ippisNumber,query}) => {
   try {
-    const response = await ippis.checkTransactonalRecords(ippisNumber);
+    const response = await ippis.checkTransactonalRecords(ippisNumber,query);
     commit("CHECK_TRANSACTION_RECORDS", response.data);
     return Promise.resolve(response.data);
   } catch (e) {

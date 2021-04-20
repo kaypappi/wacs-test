@@ -47,8 +47,8 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-        return item
-      //this.$router.push({name:"ippisDeductionDetails", params:{ippis:item.ippis_number}})
+    
+      this.$router.push({name:"ippisDeductionDetails", params:{ippis:item.ippis_number}})
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
