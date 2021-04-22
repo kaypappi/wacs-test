@@ -44,6 +44,7 @@ export default {
 
 <style scoped>
 .dashboard-wrapper {
+  min-height: 80vh;
 }
 
 .summary-card {
