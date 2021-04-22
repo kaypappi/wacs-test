@@ -289,14 +289,14 @@ const routes = [
           title: "Employee Records",
           nameSpace: "ippis masterRecords",
         },
-        beforeEnter: (to, from, next) => {
+        /* beforeEnter: (to, from, next) => {
           if (!store.getters["Auth/isIppisMini"]) {
             return next({
               name: "ippisLogin",
             });
           }
           next();
-        },
+        }, */
       },
       {
         path: "/ippis/masterrecords/:ippis",
@@ -307,14 +307,14 @@ const routes = [
           nameSpace: "ippis masterRecords",
           parents: ["Employee Records"],
         },
-        beforeEnter: (to, from, next) => {
+        /* beforeEnter: (to, from, next) => {
           if (!store.getters["Auth/isIppisMini"]) {
             return next({
               name: "ippisLogin",
             });
           }
           next();
-        },
+        }, */
       },
       {
         path: "/ippis/deduction",
@@ -324,14 +324,14 @@ const routes = [
           title: "Deduction",
           nameSpace: "ippis Deduction",
         },
-        beforeEnter: (to, from, next) => {
+        /* beforeEnter: (to, from, next) => {
           if (!store.getters["Auth/isIppisMini"]) {
             return next({
               name: "ippisLogin",
             });
           }
           next();
-        },
+        }, */
       },
       {
         path: "/ippis/deduction/:ippis",
@@ -342,14 +342,14 @@ const routes = [
           nameSpace: "ippis Deduction",
           parents: ["Deduction"],
         },
-        beforeEnter: (to, from, next) => {
+        /* beforeEnter: (to, from, next) => {
           if (!store.getters["Auth/isIppisMini"]) {
             return next({
               name: "ippisLogin",
             });
           }
           next();
-        },
+        }, */
       },
       {
         path: "/ippis/dashboard",
