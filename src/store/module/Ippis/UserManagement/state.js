@@ -1,4 +1,5 @@
 export default {
   namespaced: true,
-  creatingMiniIppis:false,
+  creatingMiniIppis: false,
+  allIppis:null,
 };

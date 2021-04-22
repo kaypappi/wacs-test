@@ -11,3 +11,14 @@ export const createMiniIppis=async ({commit},user)=>{
         return Promise.reject(e)
     }
 }
+
+export const getAllIppis= async({commit})=>{
+    try{
+        const response= await ippis.getAllIppis()
+        commit("ALL_IPPIS",response.data)
+        return Promise.resolve(response.data)
+    }
+    catch(e){
+        return Promise.reject(e)
+    }
+}

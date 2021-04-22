@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export default {
   fetchIppisLoanRequests(query) {
     return new Promise((resolve, reject) => {
@@ -105,6 +104,19 @@ export default {
     });
   },
 
+  getAllIppis() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`ippis/users`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
   getTransactionalRecords(query) {
     return new Promise((resolve, reject) => {
       axios
@@ -131,10 +143,10 @@ export default {
     });
   },
 
-  checkTransactonalRecords(ippis,query){
+  checkTransactonalRecords(ippis, query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`ippis/transactionals/${ippis}`,{params:query})
+        .get(`ippis/transactionals/${ippis}`, { params: query })
         .then((response) => {
           resolve(response);
         })
@@ -142,5 +154,5 @@ export default {
           reject(err);
         });
     });
-  }
+  },
 };

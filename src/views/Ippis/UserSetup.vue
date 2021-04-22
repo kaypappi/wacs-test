@@ -60,6 +60,10 @@
         </form>
       </template>
     </CustomModal>
+
+    <div class="users-body">
+      <IppisUserTable v-if="allIppis" :users="allIppis.data"/>
+    </div>
   </div>
 </template>
 
@@ -68,13 +72,16 @@ import SearchFilterInput from "../../components/Inputs/SearchFilterInput";
 import CustomModal from "../../components/Modals/CustomModal";
 import TextInput from "../../components/Inputs/TextInput";
 import SubmitButton from "../../components/Buttons/SubmitButton";
+import IppisUserTable from "../../components/Ipiss/IppisUsersTable"
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     SearchFilterInput,
     CustomModal,
     TextInput,
-    SubmitButton
+    SubmitButton,
+    IppisUserTable,
+
   },
   data() {
     return {
@@ -85,7 +92,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      createMiniIppis: "IppisUserMangement/createMiniIppis"
+      createMiniIppis: "IppisUserMangement/createMiniIppis",
+      fetchAllIppis:"IppisUserMangement/getAllIppis"
     }),
     getSearchTerm() {},
     handleSearch() {},
@@ -99,16 +107,26 @@ export default {
       const response = await this.createMiniIppis(this.addUser);
       this.postSuccess=true
       return response
+    },
+    async GetAllIppis(){
+      this.gettingIppis=true
+      const response=await this.fetchAllIppis()
+      this.gettingIppis=false
+      return response
     }
   },
   computed: {
     ...mapGetters({
-      creatingMiniIppis: "IppisUserMangement/creatingMiniIppis"
+      creatingMiniIppis: "IppisUserMangement/creatingMiniIppis",
+      allIppis:"IppisUserMangement/allIppis"
     }),
 
     error() {
       return this.$store.state.validation;
     }
+  },
+  created(){
+    this.GetAllIppis()
   }
 };
 </script>
