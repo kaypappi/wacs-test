@@ -18,7 +18,7 @@
 //import CustomModal from "../Modals/CustomModal";
 export default {
   props: {
-    users: Object
+    users: Array
   },
   components: {
     //CustomModal
@@ -54,9 +54,6 @@ export default {
     } */
   },
   computed: {},
-  mounted(){
-      console.log(this.users)
-  }
 };
 </script>
 

@@ -62,7 +62,21 @@
     </CustomModal>
 
     <div class="users-body">
-      <IppisUserTable v-if="allIppis" :users="allIppis.data"/>
+      <img
+        src="/assets/images/page-ring-loader.svg"
+        alt="loader"
+        v-if="gettingIppis "
+        class="page-loader"
+      />
+      <IppisUserTable v-else :users="allIppis.data"/>
+      <Pagination
+      v-if="allIppis"
+      :total="allIppis.meta.total"
+      :currentPage="allIppis.meta.current_page"
+      :lastPage="allIppis.meta.last_page"
+      :from="allIppis.meta.from"
+      :to="allIppis.meta.to"
+    />
     </div>
   </div>
 </template>
@@ -73,6 +87,7 @@ import CustomModal from "../../components/Modals/CustomModal";
 import TextInput from "../../components/Inputs/TextInput";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import IppisUserTable from "../../components/Ipiss/IppisUsersTable"
+import Pagination from "../../components/Pagination/Pagination"
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
@@ -81,13 +96,15 @@ export default {
     TextInput,
     SubmitButton,
     IppisUserTable,
+    Pagination
 
   },
   data() {
     return {
       addUser: {},
       isPosting: false,
-      postSuccess:false
+      postSuccess:false,
+      gettingIppis:false,
     };
   },
   methods: {
