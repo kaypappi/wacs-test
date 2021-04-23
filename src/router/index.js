@@ -544,7 +544,7 @@ const routes = [
     name: "StaffLogin",
     component: StaffMainAuth,
     beforeEnter: (to, from, next) => {
-      if (store.getters["Auth/authenticated"]) {
+      if (store.getters["Auth/authenticated"] && store.getters["Auth/isStaff"]) {
         return next({
           name: "staffDashboard",
         });
@@ -557,7 +557,7 @@ const routes = [
     name: "StaffSignup",
     component: StaffMainAuth,
     beforeEnter: (to, from, next) => {
-      if (store.getters["Auth/authenticated"]) {
+      if (store.getters["Auth/authenticated"] && store.getters["Auth/isStaff"]) {
         return next({
           name: "staffDashboard",
         });
@@ -644,7 +644,7 @@ const routes = [
     ],
     beforeEnter: (to, from, next) => {
       if (
-        !store.getters["Auth/authenticated"] &&
+        (!store.getters["Auth/authenticated"] || !store.getters["Auth/isStaff"]) &&
         to.name != "userChangePassword"
       ) {
         return next({

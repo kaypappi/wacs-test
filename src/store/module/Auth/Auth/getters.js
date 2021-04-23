@@ -14,7 +14,7 @@ export const isIppisMini = (state) => {
   return state.user.data.roles[0].name === "Ippis Mini";
 };
 export const isStaff = (state) => {
-  return state.user.data.roles[0].name === "USER";
+  return state.user.data.user.roles[0].name === "Staff";
 };
 export const user = (state) => {
   return state.user;
