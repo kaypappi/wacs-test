@@ -6,12 +6,12 @@
       :message="Toast.message"
       :success="Toast.success"
     />
-    <div class="card-holder">
+    <div class="card-holder row">
     
-    <div class="card-left">
+    <div class="card-left col-sm-2">
       <img :src="loanOffer.company.logo" alt class="company-logo" />
     </div>
-    <div class="card-right">
+    <div class="card-right col-sm-10">
       <p class="offer-title">{{loanOffer.title}}</p>
       <p class="offer-description">{{loanOffer.description}}</p>
       <p class="properties">
@@ -163,12 +163,14 @@ export default {
 
 <style scoped>
 .card-holder {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
   border: 1px solid #dbdbdb;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 30px;
+}
+
+.long-text-input {
+    width: 100%;
 }
 
 .card-left img {
