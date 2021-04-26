@@ -24,7 +24,7 @@
         </Button>
       </div>
     </div>
-    <CustomModal :onHide="onHide" id="add-form-modal">
+    <CustomModal size="sm" :onHide="onHide" id="add-form-modal">
       <h5 class="form-modal-title">Create Offer</h5>
       <div class="form-modal-title-border"></div>
       <form @submit.prevent="onSubmit">
