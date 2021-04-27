@@ -11,8 +11,8 @@
         name="user_name"
         inputClass="input-field"
         placeholder="Enter Ippis Number"
-        v-model="form.ippis_number"
-        :error="validation.ippis_number"
+        v-model="form.user_name"
+        :error="validation.user_name"
         :keyupEvent="keyupEvent"
       />
 
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       form: {
-        ippis_number: "",
+        user_name: "",
         password: ""
       }
     };
