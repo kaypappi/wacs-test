@@ -13,7 +13,7 @@
         </Button>
       </div>
     </div>
-    <CustomModal :onHide="onHide" id="add-user-form-modal">
+    <CustomModal  :onHide="onHide" id="add-user-form-modal">
       <div v-if="postSuccess">
         <p class="modal-success-message" v-if="edittingUser">Edit Successful</p>
         <p
