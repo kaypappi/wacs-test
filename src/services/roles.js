@@ -9,9 +9,7 @@ export const defineAbilities = () => {
     function defineAbilitiesFor() {
         const { rules, can } = AbilityBuilder.extract();
         if(store.getters['Auth/authenticated']){
-            console.log(store.getters["Auth/user"]);
             store.getters['Auth/user'].data.permissions.forEach((permission)=>{
-                console.log(permission)
                 can(...permission)
             })
         }
