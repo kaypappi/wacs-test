@@ -9,6 +9,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/styles/main.css';
 
+import "@carbon/charts/styles.css";
+import chartsVue from "@carbon/charts-vue";
+
+// IBM Plex should either be imported in your project by using Carbon
+// or consumed manually through an import
+//import "../ibm-plex-font.css";
+Vue.use(chartsVue);
+
+
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
 

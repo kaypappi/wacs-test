@@ -1,5 +1,9 @@
 <template>
   <div class="home-wrapper">
+    <div class="top-control mb-3 d-flex justify-content-between flex-wrap">
+      <div class="cv-switch"></div>
+      <DateInput />
+    </div>
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
@@ -7,25 +11,93 @@
       class="page-loader"
     />
     <div v-else class="statscard-section">
-      <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
-      <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
-      <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
       <StatsCard
-        title="Bank Approved Requests"
+        icon="pie-chart-fill"
+        title="Total Requests"
+        textColor="green"
+        :value="requestsSummary.total"
+      />
+      <StatsCard
+        icon="clock-fill"
+        title="Pending"
+        textColor="orange"
+        :value="requestsSummary.pending"
+      />
+      <StatsCard
+        icon="check-circle-fill"
+        title="Running "
+        textColor="green"
+        :value="requestsSummary.running"
+      />
+      <StatsCard
+        icon="check-circle-fill"
+        title="Bank Approved"
         textColor="green"
         :value="requestsSummary.bank_approved"
       />
       <StatsCard
-        title="Awaiting IPPIS Requests"
+        icon="alarm-fill"
+        title="Awaiting IPPIS"
         textColor="green"
         :value="requestsSummary.awaiting_ippis"
       />
-      <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
+      <StatsCard
+        icon="x-circle-fill"
+        title="Rejected "
+        textColor="red"
+        :value="requestsSummary.rejected"
+      />
+    </div>
+
+    <div class="total-loans py-4 px-4 mb-4" id="chart-1">
+      <ccv-simple-bar-chart :data="totalLoansDetails.data" :options="totalLoansDetails.options"></ccv-simple-bar-chart>
+    </div>
+
+    <div class="row px-3 g-5">
+      <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4 col-md-8">
+        <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+          <p class="section-title h6 mb-0">Counts per Loan offer</p>
+          <div class="d-flex align-items-center flex-wrap">
+            <label class="mb-0 mr-md-2 h6" for="Loan Offers">Loan Offers</label>
+            <SelectField
+              inputClass="small-select"
+              v-model="selected"
+              name="Loan Offers"
+              :options="SelectOptions"
+            />
+          </div>
+        </div>
+        <ccv-simple-bar-chart
+          :data="countsPerLoanDetails.data"
+          :options="countsPerLoanDetails.options"
+        ></ccv-simple-bar-chart>
+      </div>
+      <div class="loan-request-chart total-loans py-4 px-4 mb-4 col-md-4">
+        <p class="h6">Loan request</p>
+        <p class="subtitle">Conversion Indicator</p>
+        <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
+      </div>
+    </div>
+
+    <div class="total-loans py-4 px-4 mb-4" id="chart-1">
+      <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+        <p class="section-title h6 mb-0">Outstanding per MDAs</p>
+        <div class="d-flex align-items-center flex-wrap">
+          <label class="mb-0 mr-md-2 h6 fw-normal" for="Loan Offers">MDA</label>
+          <SelectField
+            inputClass="small-select"
+            v-model="selected"
+            name="Loan Offers"
+            :options="SelectOptions"
+          />
+        </div>
+      </div>
+      <ccv-simple-bar-chart :data="outstandingPerMda.data" :options="outstandingPerMda.options"></ccv-simple-bar-chart>
     </div>
 
     <div class="recent-requests">
       <div class="recent-requests-top">
-        <p>Recent Loan Requests</p>
+        <p>Most Recent</p>
         <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
       </div>
       <div class="recent-request-table">
@@ -76,14 +148,34 @@
 import StatsCard from "../../components/StatsCard";
 import Table from "../../components/Table/Table";
 import LoanRequestTableRow from "../../components/Table/LoanRequestTableRow";
+import SelectField from "../../components/Inputs/SelectField";
+import DateInput from "../../components/Inputs/DateInput";
 
 export default {
   name: "home",
   components: {
     StatsCard,
     Table,
-    LoanRequestTableRow
+    LoanRequestTableRow,
+    SelectField,
+    DateInput
   },
+  data() {
+    return {
+      selected: "placeholder",
+      SelectOptions: [
+        {
+          value: "placeholder",
+          text: "Select Loan offers",
+          disabled: true
+        },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Selected Option" },
+        { value: { C: "3PO" }, text: "This is an option with object value" }
+      ]
+    };
+  },
+
   methods: {
     fetchLoanRequests(query) {
       query = this.serialize(query);
@@ -124,6 +216,340 @@ export default {
     },
     isFetchingSummary() {
       return this.$store.state.CreditorLoanRequest.fetchingSummary;
+    },
+    totalLoansDetails() {
+      const data = [
+        {
+          group: "GTB",
+          value: 34000
+        },
+        {
+          group: "Bank1",
+          value: 30000
+        },
+        {
+          group: "Bank2",
+          value: 20000
+        },
+        {
+          group: "Bank3",
+          value: 48000
+        },
+        {
+          group: "Bank4",
+          value: 65000
+        },
+        {
+          group: "Bank5",
+          value: 25000
+        },
+        {
+          group: "Bank6",
+          value: 10000
+        },
+        {
+          group: "Bank7",
+          value: 47000
+        },
+        {
+          group: "Bank8",
+          value: 70000
+        },
+        {
+          group: "Bank9",
+          value: 27123
+        },
+        {
+          group: "Bank10",
+          value: 15000
+        }
+      ];
+
+      const options = {
+        title: "Total Loans processed",
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {
+          scale: {
+            GTB: "#23699F",
+            Bank1: "#23699F",
+            Bank2: "#23699F",
+            Bank3: "#23699F",
+            Bank4: "#23699F",
+            Bank5: "#23699F",
+            Bank6: "#23699F",
+            Bank7: "#23699F",
+            Bank8: "#23699F",
+            Bank9: "#23699F",
+            Bank10: "#23699F"
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 30
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+          }
+        }
+      };
+
+      return { data, options };
+    },
+    countsPerLoanDetails() {
+      const data = [
+        {
+          group: "Jan",
+          value: 34000
+        },
+        {
+          group: "Feb",
+          value: 30000
+        },
+        {
+          group: "Mar",
+          value: 20000
+        },
+        {
+          group: "Apr",
+          value: 48000
+        },
+        {
+          group: "May",
+          value: 65000
+        },
+        {
+          group: "Jun",
+          value: 25000
+        },
+        {
+          group: "Jul",
+          value: 10000
+        },
+        {
+          group: "Aug",
+          value: 47000
+        },
+        {
+          group: "Sep",
+          value: 70000
+        },
+        {
+          group: "Oct",
+          value: 27123
+        },
+        {
+          group: "Nov",
+          value: 15000
+        },
+        {
+          group: "Dec",
+          value: 35000
+        }
+      ];
+
+      const options = {
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {
+          scale: {
+            Jan: "#23699F",
+            Feb: "#23699F",
+            Mar: "#23699F",
+            Apr: "#23699F",
+            May: "#23699F",
+            Jun: "#23699F",
+            Jul: "#23699F",
+            Aug: "#23699F",
+            Sep: "#23699F",
+            Oct: "#23699F",
+            Nov: "#23699F",
+            Dec: "#23699F"
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 15
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+          }
+        }
+      };
+
+      return { data, options };
+    },
+    outstandingPerMda() {
+      const data = [
+        {
+          group: "Jan",
+          value: 34000
+        },
+        {
+          group: "Feb",
+          value: 30000
+        },
+        {
+          group: "Mar",
+          value: 20000
+        },
+        {
+          group: "Apr",
+          value: 48000
+        },
+        {
+          group: "May",
+          value: 65000
+        },
+        {
+          group: "Jun",
+          value: 25000
+        },
+        {
+          group: "Jul",
+          value: 10000
+        },
+        {
+          group: "Aug",
+          value: 47000
+        },
+        {
+          group: "Sep",
+          value: 70000
+        },
+        {
+          group: "Oct",
+          value: 27123
+        },
+        {
+          group: "Nov",
+          value: 15000
+        },
+        {
+          group: "Dec",
+          value: 35000
+        }
+      ];
+
+      const options = {
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {
+          scale: {
+            Jan: "#006F8F",
+            Feb: "#006F8F",
+            Mar: "#006F8F",
+            Apr: "#006F8F",
+            May: "#006F8F",
+            Jun: "#006F8F",
+            Jul: "#006F8F",
+            Aug: "#006F8F",
+            Sep: "#006F8F",
+            Oct: "#006F8F",
+            Nov: "#006F8F",
+            Dec: "#006F8F"
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 30
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  N${tip[0].value}</span>`;
+          }
+        }
+      };
+
+      return { data, options };
+    },
+    loanRequestsDetails() {
+      const data = [
+        {
+          group: "Approved",
+          value: 7000
+        },
+        {
+          group: "Declined",
+          value: 3000
+        }
+      ];
+      const options = {
+        resizable: true,
+        legend: {
+          alignment: "center"
+        },
+        donut: {
+          alignment: "center",
+          center: {
+            label: "",
+            numberFormatter() {
+              return "";
+            }
+          }
+        },
+        color: {
+          scale: {
+            Approved: "#3CB279",
+            Declined: "#EFAE73"
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].value}  ${tip[0].label}</span>`;
+          }
+        },
+        height: "400px"
+      };
+
+      return { data, options };
     }
   },
   mounted() {
@@ -136,7 +562,7 @@ export default {
 <style scoped>
 .statscard-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 20px;
   margin-bottom: 40px;
 }
@@ -145,9 +571,6 @@ export default {
 }
 
 .home-wrapper .recent-requests {
-  box-shadow: -6px 4px 7px -1px rgba(0, 0, 0, 0.4);
-  padding: 10px 20px;
-  border: 1px solid #e8e7e794;
   border-radius: 5px;
 }
 
@@ -161,5 +584,29 @@ export default {
 .recent-requests-top .view-all {
   color: #27be58;
   cursor: pointer;
+}
+
+.total-loans {
+  border: 1px solid #dee4df;
+  border-radius: 6px;
+}
+
+.home-wrapper >>> .tooltip-class {
+  border-radius: 4px;
+  background-color: #2d2e2e;
+  box-shadow: 0 2px 4px 0 rgba(188, 188, 188, 0.5);
+  color: white;
+  padding: 10px 20px;
+}
+
+.small-select {
+  max-width: 200px;
+}
+
+.subtitle {
+  color: #b4b4b4;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 15px;
 }
 </style>

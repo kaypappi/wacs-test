@@ -21,6 +21,14 @@
             return {
                 menuItems: [
                     {
+                        name: "Dashboard",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/creditor/dashboard",
+                        permission: ["manage", "loan"],
+                        nameSpace: 'loan',
+                    },
+                    {
                         name: "Loan Management",
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
