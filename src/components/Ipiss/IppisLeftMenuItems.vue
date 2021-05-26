@@ -21,10 +21,18 @@
             return {
                 menuItems: [
                     {
-                        name: "Loan Management",
+                        name: "Dashboard",
                         iconPath: "/assets/images/Money.svg",
                         altText: "money",
                         to: "/ippis/dashboard",
+                        permission: ["manage", "repayment"],
+                        nameSpace: 'dashboard',
+                    },
+                    {
+                        name: "Loan Management",
+                        iconPath: "/assets/images/Money.svg",
+                        altText: "money",
+                        to: "/ippis/loanrequest",
                         permission: ["manage", "repayment"],
                         nameSpace: 'loan',
                     },

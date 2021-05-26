@@ -32,6 +32,7 @@ import IppisMasterRecords from "../views/Ippis/Mini/IppisMasterRecords.vue";
 import IppisEmployeeDetails from  "../views/Ippis/Mini/IppisEmployeeDetails.vue"
 import IppisDeduction from  "../views/Ippis/Mini/IppisDeduction.vue"
 import ippisDeductionDetails from "../views/Ippis/Mini/IppisDeductionDetails.vue"
+import IppisDashboard from "../views/Ippis/IpissDashboard.vue"
 
 import AdminLogin from "../views/Admin/Auth/AdminLogin.vue";
 import AdminMain from "../components/Layout/AdminMain.vue";
@@ -352,12 +353,27 @@ const routes = [
         }, */
       },
       {
-        path: "/ippis/dashboard",
+        path: "/ippis/loanrequest",
         name: "ippisLoanRequest",
         component: IppisLoanRequest,
         meta: {
           title: "Loan Request",
           nameSpace: "loan",
+        },
+        beforeEnter: (to, from, next) => {
+          if (store.getters["Auth/isIppisMini"]) {
+            return next({ name: "ippisMasterRecords" });
+          }
+          next();
+        },
+      },
+      {
+        path: "/ippis/dashboard",
+        name: "ippisDashboard",
+        component: IppisDashboard,
+        meta: {
+          title: "Loan Request",
+          nameSpace: "dashboard",
         },
         beforeEnter: (to, from, next) => {
           if (store.getters["Auth/isIppisMini"]) {

@@ -65,7 +65,7 @@
             :mda="loanRequest.user.profile.mda"
             :creditAdmin="loanRequest.credit_admin"
             :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-            :loanRequest="formatNumber(loanRequest.loan_repayment_details.amount)"
+            :loanRequest="formatNumber(loanRequest.loan_repayment_details[0].amount_requested)"
             :status="loanRequest.ippis_status"
           />
         </template>

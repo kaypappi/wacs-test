@@ -58,7 +58,7 @@
             <!-- <td>Amount Paid</td> -->
           </tr>
           <template v-for="history in loanHistory.data">
-            <tr class="t-field" :key="history.date">
+            <tr class="t-field" :key="history.id">
               <td>{{history.date}}</td>
               <td>{{history.offer.title}}</td>
               <td>{{history.offer.company.name}}</td>

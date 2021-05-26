@@ -5,11 +5,11 @@
         <b-input-group-prepend is-text>
           <b-icon icon="calendar2-date"></b-icon>
         </b-input-group-prepend>
-        <b-form-input v-model="calendarData.dateRange.start" type="text" placeholder="Start Date"></b-form-input>
+        <b-form-input size="sm" v-model="calendarData.dateRange.start" type="text" placeholder="Start Date"></b-form-input>
       </b-input-group>
       <span class="separator">|</span>
       <b-input-group class="input-right">
-        <b-form-input v-model="calendarData.dateRange.end" type="text" placeholder="End Date"></b-form-input>
+        <b-form-input size="sm" v-model="calendarData.dateRange.end" type="text" placeholder="End Date"></b-form-input>
         <b-input-group-prepend @click.stop="clearInput" is-text>
           <b-icon icon="x"></b-icon>
         </b-input-group-prepend>
@@ -17,8 +17,8 @@
     </div>
     <b-popover
       target="popover-3"
-      triggers="focus click"
-      placement="bottom"
+      triggers="focus"
+      placement="bottomleft"
       custom-class="date-popover p-0"
       boundary-padding="1px"
       boundary="#popover-3"
@@ -116,7 +116,7 @@ span {
 
 .date-input-box >>> .form-control {
   border: none;
-  padding: 0.375rem 0.15rem;
+  padding: 0rem 0.15rem;
   outline: none;
 }
 

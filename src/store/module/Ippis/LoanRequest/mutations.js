@@ -70,7 +70,7 @@ export const SPILT_DETAILS = (state) => {
     { name: "Email", value: loanData.user.email },
   ];
   state.splitDetails.thirdRowBio = [
-    { name: "Religion", value: loanData.user.profile.religion },
+    { name: "Eligibility", value: 'N'+format(loanData.user.profile.loan_eligibility) },
     { name: "State Of Origin", value: loanData.user.profile.state },
     { name: "Nationality", value: loanData.user.profile.nationality },
     { name: "Address", value: loanData.user.profile.address },
@@ -80,7 +80,7 @@ export const SPILT_DETAILS = (state) => {
     { name: "Loan Offer", value: loanData.offer.title },
     {
       name: "Amount",
-      value: format(loanData.loan_repayment_details.amount),
+      value: format(loanData.loan_repayment_details[0].amount_requested),
     },
     {
       name: "Repayment Period",

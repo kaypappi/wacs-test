@@ -10,7 +10,7 @@
 export default {
   props: {
     title: String,
-    value: Number,
+    value: Number||String,
     textColor: String,
     icon:String
   }

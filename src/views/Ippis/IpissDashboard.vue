@@ -24,133 +24,73 @@
     <div v-else class="statscard-section">
       <StatsCard
         icon="pie-chart-fill"
-        title="Total Requests"
+        title="Total no of MDAs"
         textColor="green"
-        :value="requestsSummary.total"
+        :value="cvSelected==='A'? ippisSummary.total.counts : ippisSummary.total.value"
       />
       <StatsCard
         icon="clock-fill"
-        title="Pending"
+        title="Employees"
         textColor="orange"
-        :value="requestsSummary.pending"
+        :value="cvSelected==='A'? ippisSummary.employees.counts : ippisSummary.employees.value"
       />
       <StatsCard
         icon="check-circle-fill"
-        title="Running "
+        title="Banks "
         textColor="green"
-        :value="requestsSummary.running"
-      />
-      <StatsCard
-        icon="check-circle-fill"
-        title="Bank Approved"
-        textColor="green"
-        :value="requestsSummary.bank_approved"
-      />
-      <StatsCard
-        icon="alarm-fill"
-        title="Awaiting IPPIS"
-        textColor="green"
-        :value="requestsSummary.awaiting_ippis"
-      />
-      <StatsCard
-        icon="x-circle-fill"
-        title="Rejected "
-        textColor="red"
-        :value="requestsSummary.rejected"
+        :value="cvSelected==='A'? ippisSummary.banks.counts : ippisSummary.banks.value"
       />
     </div>
 
-    <div class="total-loans py-4 px-4 mb-4" id="chart-1">
-      <ccv-simple-bar-chart :data="totalLoansDetails.data" :options="totalLoansDetails.options"></ccv-simple-bar-chart>
-    </div>
-
-    
-      <div class="middle-row ">
-        <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
-          <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
-            <p class="section-title h6 mb-0">Counts per Loan offer</p>
-            <div class="d-flex align-items-center flex-wrap">
-              <label class="mb-0 mr-md-2 h6" for="Loan Offers">Loan Offers</label>
-              <SelectField
-                inputClass="small-select"
-                v-model="selected"
-                name="Loan Offers"
-                :options="SelectOptions"
-              />
-            </div>
+    <div class="middle-row">
+      <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
+        <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+          <p class="section-title h6 mb-0">Toatal loans processed</p>
+          <div class="d-flex align-items-center flex-wrap">
+            <SelectField
+              inputClass="small-select"
+              v-model="selected"
+              name="Loans processed"
+              :options="SelectOptions"
+            />
           </div>
-          <ccv-simple-bar-chart
-            :data="countsPerLoanDetails.data"
-            :options="countsPerLoanDetails.options"
-          ></ccv-simple-bar-chart>
         </div>
-        <div class="loan-request-chart total-loans px-4 py-4 mb-4">
-          <p class="h6">Loan request</p>
-          <p class="subtitle">Conversion Indicator</p>
-          <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
-        </div>
+        <ccv-simple-bar-chart :data="totalLoansDetails.data" :options="totalLoansDetails.options"></ccv-simple-bar-chart>
       </div>
-    
-
-    <div class="total-loans py-4 px-4 mb-4" id="chart-1">
-      <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
-        <p class="section-title h6 mb-0">Outstanding per MDAs</p>
-        <div class="d-flex align-items-center flex-wrap">
-          <label class="mb-0 mr-md-2 h6 fw-normal" for="Loan Offers">MDA</label>
-          <SelectField
-            inputClass="small-select"
-            v-model="selected"
-            name="Loan Offers"
-            :options="SelectOptions"
-          />
-        </div>
+      <div class="loan-request-chart total-loans px-4 py-4 mb-4">
+        <p class="h6">Gender Ratio</p>
+        <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
       </div>
-      <ccv-simple-bar-chart :data="outstandingPerMda.data" :options="outstandingPerMda.options"></ccv-simple-bar-chart>
     </div>
 
-    <div class="recent-requests">
-      <div class="recent-requests-top">
-        <p>Most Recent</p>
-        <p @click="$router.push({name:'loanRequest'})" class="view-all">View All</p>
+    <div class="split-grid">
+      <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
+        <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+          <p class="section-title h6 mb-0">Total Monthly Repayments</p>
+          <div class="d-flex align-items-center flex-wrap">
+            <SelectField
+              inputClass="small-select"
+              v-model="selected"
+              name="Loans processed"
+              :options="SelectOptions"
+            />
+          </div>
+        </div>
+        <ccv-simple-bar-chart :data="totalMonthlyRepayment.data" :options="totalMonthlyRepayment.options"></ccv-simple-bar-chart>
       </div>
-      <div class="recent-request-table">
-        <img
-          src="/assets/images/page-ring-loader.svg"
-          alt="loader"
-          v-if="isFetchingRequests"
-          class="page-loader"
-        />
-        <template v-else>
-          <Table
-            v-if="loanRequests"
-            :tableHeaders="['Date', 'Name', 'IPPIS Number', 'Monthly Salary', 'Loan Request', 'Status']"
-          >
-            <template>
-              <LoanRequestTableRow
-                v-for="loanRequest in loanRequests.data"
-                :userData="loanRequest"
-                :key="loanRequest.id"
-                :id="loanRequest.id"
-                :date="loanRequest.date"
-                :name="loanRequest.user.full_name"
-                :ippissNo="loanRequest.user.user_name"
-                :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-                :loanRequest="formatNumber(loanRequest.amount)"
-                :status="loanRequest.status"
-              />
-            </template>
-          </Table>
-          <template v-else>
-            <NoData>
-              <template v-slot:title>
-                <h4>No Loan Requests</h4>
-              </template>
-              <template v-slot:subtitle>
-                <p>There are no loan requests currently available.</p>
-              </template>
-            </NoData>
-          </template>
-        </template>
+      <div class="loan-request-chart total-loans px-4 py-4 mb-4">
+          <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+          <p class="section-title h6 mb-0">Approved Loan Count</p>
+          <div class="d-flex align-items-center flex-wrap">
+            <SelectField
+              inputClass="small-select"
+              v-model="selected"
+              name="Loans processed"
+              :options="SelectOptions"
+            />
+          </div>
+        </div>
+       <ccv-simple-bar-chart :data="approvedLoanCount.data" :options="approvedLoanCount.options"></ccv-simple-bar-chart>
       </div>
     </div>
   </div>
@@ -159,17 +99,12 @@
 <script>
 // @ is an alias to /src
 import StatsCard from "../../components/StatsCard";
-import Table from "../../components/Table/Table";
-import LoanRequestTableRow from "../../components/Table/LoanRequestTableRow";
 import SelectField from "../../components/Inputs/SelectField";
 import DateInput from "../../components/Inputs/DateInput";
 
 export default {
-  name: "home",
   components: {
     StatsCard,
-    Table,
-    LoanRequestTableRow,
     SelectField,
     DateInput
   },
@@ -181,10 +116,24 @@ export default {
         { text: "Count", value: "A" },
         { text: "Value", value: "B" }
       ],
+      ippisSummary: {
+        total: {
+          counts: 350,
+          value: "N200,000"
+        },
+        employees: {
+          counts: 47000,
+          value: "N2,000,000"
+        },
+        banks: {
+          counts: 20,
+          value: "N2,000,000"
+        }
+      },
       SelectOptions: [
         {
           value: "placeholder",
-          text: "Select Loan offers",
+          text: "Filter by banks, MDAs",
           disabled: true
         },
         { value: "a", text: "This is First option" },
@@ -238,10 +187,6 @@ export default {
     totalLoansDetails() {
       const data = [
         {
-          group: "GTB",
-          value: 34000
-        },
-        {
           group: "Bank1",
           value: 30000
         },
@@ -284,7 +229,6 @@ export default {
       ];
 
       const options = {
-        title: "Total Loans processed",
         axes: {
           left: {
             mapsTo: "value"
@@ -308,6 +252,184 @@ export default {
             Bank8: "#23699F",
             Bank9: "#23699F",
             Bank10: "#23699F"
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 30
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+          }
+        }
+      };
+
+      return { data, options };
+    },
+    totalMonthlyRepayment() {
+      const data = [
+        {
+          group: "Bk1",
+          value: 30000
+        },
+        {
+          group: "Bk2",
+          value: 20000
+        },
+        {
+          group: "Bk3",
+          value: 48000
+        },
+        {
+          group: "Bk4",
+          value: 65000
+        },
+        {
+          group: "Bk5",
+          value: 25000
+        },
+        {
+          group: "Bk6",
+          value: 10000
+        },
+        {
+          group: "Bk7",
+          value: 47000
+        },
+        {
+          group: "Bk8",
+          value: 70000
+        },
+        {
+          group: "Bk9",
+          value: 27123
+        },
+        {
+          group: "Bk10",
+          value: 15000
+        }
+      ];
+
+      const options = {
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {
+          scale: {
+            Bk1: "#56B7AE",
+            Bk2: "#56B7AE",
+            Bk3: "#56B7AE",
+            Bk4: "#56B7AE",
+            Bk5: "#56B7AE",
+            Bk6: "#56B7AE",
+            Bk7: "#56B7AE",
+            Bk8: "#56B7AE",
+            Bk9: "#56B7AE",
+            Bk10: "#56B7AE",
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 30
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+          }
+        }
+      };
+
+      return { data, options };
+    },
+    approvedLoanCount() {
+      const data = [
+        {
+          group: "Bk1",
+          value: 30000
+        },
+        {
+          group: "Bk2",
+          value: 20000
+        },
+        {
+          group: "Bk3",
+          value: 48000
+        },
+        {
+          group: "Bk4",
+          value: 65000
+        },
+        {
+          group: "Bk5",
+          value: 25000
+        },
+        {
+          group: "Bk6",
+          value: 10000
+        },
+        {
+          group: "Bk7",
+          value: 47000
+        },
+        {
+          group: "Bk8",
+          value: 70000
+        },
+        {
+          group: "Bk9",
+          value: 27123
+        },
+        {
+          group: "Bk10",
+          value: 15000
+        }
+      ];
+
+      const options = {
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {
+          scale: {
+            Bk1: "#23699F",
+            Bk2: "#23699F",
+            Bk3: "#23699F",
+            Bk4: "#23699F",
+            Bk5: "#23699F",
+            Bk6: "#23699F",
+            Bk7: "#23699F",
+            Bk8: "#23699F",
+            Bk9: "#23699F",
+            Bk10: "#23699F",
           }
         },
         legend: {
@@ -531,12 +653,12 @@ export default {
     loanRequestsDetails() {
       const data = [
         {
-          group: "Approved",
-          value: 7000
+          group: "Male",
+          value: 23500
         },
         {
-          group: "Declined",
-          value: 3000
+          group: "Female",
+          value: 23500
         }
       ];
       const options = {
@@ -555,8 +677,8 @@ export default {
         },
         color: {
           scale: {
-            Approved: "#3CB279",
-            Declined: "#EFAE73"
+            Male: "#3CB279",
+            Female: "#EFAE73"
           }
         },
         tooltip: {
@@ -571,8 +693,8 @@ export default {
     }
   },
   mounted() {
-    this.fetchRequestsSummary();
-    this.fetchLoanRequests(this.$router.history.current.query);
+    //this.fetchRequestsSummary();
+    //this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
 </script>
@@ -653,15 +775,22 @@ export default {
   font-size: 13px;
 }
 
-.middle-row{
+.middle-row {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 10px
+  grid-gap: 10px;
 }
-
-@media screen and (max-width:768px){
-  .middle-row{
+.split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+@media screen and (max-width: 768px) {
+  .middle-row {
     grid-template-columns: 1fr;
+  }
+  .split-grid {
+      grid-template-columns: 1fr;
   }
 }
 </style>
