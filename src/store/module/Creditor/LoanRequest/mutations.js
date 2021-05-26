@@ -70,7 +70,10 @@
       { name: "Email", value: loanData.user.email },
     ];
     state.splitDetails.thirdRowBio = [
-      { name: "Religion", value: loanData.user.profile.religion },
+      {
+        name: "Eligibility",
+        value: "N" + format(loanData.user.profile.loan_eligibility),
+      },
       { name: "State Of Origin", value: loanData.user.profile.state },
       { name: "Nationality", value: loanData.user.profile.nationality },
       { name: "Address", value: loanData.user.profile.address },

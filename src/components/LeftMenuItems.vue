@@ -26,7 +26,7 @@
                         altText: "money",
                         to: "/creditor/dashboard",
                         permission: ["manage", "loan"],
-                        nameSpace: 'loan',
+                        nameSpace: 'dashboard',
                     },
                     {
                         name: "Loan Management",

@@ -1,14 +1,14 @@
 <template>
   <div>
     <b-table @row-clicked="handleRowClick" small :fields="fields" :items="previewItem" responsive>
-      <template v-slot:cell(Data_Source)="data">{{data.item.data_source}}</template>
-      <template v-slot:cell(Refrence_Id)="data">{{data.item.reference_id}}</template>
+      <template v-slot:cell(First_Name)="data">{{data.item.employee_first_name}}</template>
       <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
       <template v-slot:cell(Middle_Name)="data">{{data.item.employee_middle_name}}</template>
+       <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
       <template v-slot:cell(IPPIS_Number)="data">{{data.item.ippis_number}}</template>
-      <template v-slot:cell(Staff_Id)="data">{{data.item.staff_id}}</template>
-      <template v-slot:cell(EarningsDeductions)="data">{{data.item.earning_or_deduction}}</template>
-      <template v-slot:cell(Amount(N))="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Loan_Amount)="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Bank_Name)="data">{{data.item.bank_name}}</template>
+      <template v-slot:cell(Loan_Deduction)="data">{{formatNumber(data.item.total_deduction)}}</template>
       <template v-slot:cell(Data_Validation)="data">
         <div v-if="data.item['error_occurred']===1">
           <b-icon
@@ -17,10 +17,13 @@
             icon="X"
             variant="danger"
           ></b-icon>
-          <b-tooltip target="tooltip-target-1" bottom triggers="hover">{{data.item['error_message']}}</b-tooltip>
+          <b-tooltip
+            target="tooltip-target-1"
+            bottom
+            triggers="hover"
+          >{{data.item['error_message']}}</b-tooltip>
         </div>
         <b-icon v-else class="data-validation mx-auto h1" icon="check" variant="success"></b-icon>
-        
       </template>
     </b-table>
     <CustomModal id="single-batch-item" size="lg" :scrollable="true" :hover="true">
@@ -52,14 +55,14 @@ export default {
   data() {
     return {
       fields: [
-        "Data_Source",
-        "Refrence_Id",
+        "First_Name",
         "Surname",
         "Middle_Name",
+        "MDA",
         "IPPIS_Number",
-        "Staff_Id",
-        "EarningsDeductions",
-        "Amount(N)",
+        "Loan_Amount",
+        "Loan_Deduction",
+        "Bank_Name",
         "Data_Validation"
       ],
       currentItem: null

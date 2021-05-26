@@ -127,6 +127,7 @@ const routes = [
         component: Home,
         meta: {
           title: "Workers Aggregated Credit Scheme",
+          nameSpace:"dashboard"
         },
       },
       {
