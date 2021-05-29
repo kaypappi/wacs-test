@@ -23,39 +23,33 @@
     />
     <div v-else class="statscard-section">
       <StatsCard
-        icon="pie-chart-fill"
+        icon="pie-chart"
         title="Total Requests"
-        textColor="green"
         :value="requestsSummary.total"
       />
       <StatsCard
-        icon="clock-fill"
+        icon="clock"
         title="Pending"
-        textColor="orange"
         :value="requestsSummary.pending"
       />
       <StatsCard
-        icon="check-circle-fill"
+        icon="loading-process"
         title="Running "
-        textColor="green"
         :value="requestsSummary.running"
       />
       <StatsCard
-        icon="check-circle-fill"
+        icon="safe"
         title="Bank Approved"
-        textColor="green"
         :value="requestsSummary.bank_approved"
       />
       <StatsCard
-        icon="alarm-fill"
+        icon="alarm"
         title="Awaiting IPPIS"
-        textColor="green"
         :value="requestsSummary.awaiting_ippis"
       />
       <StatsCard
-        icon="x-circle-fill"
+        icon="x-circle"
         title="Rejected "
-        textColor="red"
         :value="requestsSummary.rejected"
       />
     </div>

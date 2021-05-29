@@ -17,11 +17,11 @@
         <template v-slot:cell(Date)="data">{{data.item.date}}</template>
         <template
           v-slot:cell(Interest)="data"
-        >{{data.item.repayment?data.item.repayment.interest_rate:data.item.offer.interest_rate}}</template>
+        >{{data.item.offer.interest_rate}}%.co</template>
         <template v-slot:cell(Amount)="data">{{formatNumber(data.item.amount)}}</template>
         <template
           v-slot:cell(PaybackPeriod)="data"
-        >{{data.item.repayment?data.item.repayment.repayment_period:data.item.offer.payback_period}}months</template>
+        >{{data.item.offer.payback_period}}months</template>
         <template v-slot:cell(Status)="data">
           <span :class="`status-oval active-status ${data.item.status}`">{{data.item.status}}</span>
         </template>

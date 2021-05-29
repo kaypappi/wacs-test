@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>1F8EEDFE-04AC-4F67-9505-E57071016222</title>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Banks-view" transform="translate(-272.000000, -227.000000)" fill="#10852C" fill-rule="nonzero">
+            <g id="Group" transform="translate(272.000000, 227.000000)">
+                <path d="M0,8 C0,5.87827 0.842855,3.84344 2.34315,2.34315 C3.84344,0.842855 5.87827,0 8,0 L8,8 L16,8 C16,10.1217 15.1571,12.1566 13.6569,13.6569 C12.1566,15.1571 10.1217,16 8,16 C5.87827,16 3.84344,15.1571 2.34315,13.6569 C0.842855,12.1566 0,10.1217 0,8 Z" id="Path"></path>
+                <path d="M10,0.252014 C11.3836,0.610478 12.6462,1.33246 13.6569,2.34313 C14.6676,3.35381 15.3895,4.61639 15.748,6.00001 L10,6.00001 L10,0.252014 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

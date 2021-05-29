@@ -1,18 +1,30 @@
 <template>
   <div class="stascard-wrapper">
-    
-    <div class="stats-top mt-2"><span class="icon green mr-2"><b-icon :icon="icon"></b-icon></span><span :class="['stats-value']">{{value}}</span></div>
+    <div class="stats-top mt-2 d-flex">
+      <span :style="{color:'#10852C'}" class="icon mr-2">
+        <IconBase  :icon="icon"/>
+      </span>
+      <span :class="['stats-value']">{{value}}</span>
+    </div>
     <div class="stats-title">{{title}}</div>
   </div>
 </template>
 
 <script>
+import IconBase from "./Icons/IconBase"
 export default {
   props: {
     title: String,
-    value: Number||String,
-    textColor: String,
-    icon:String
+    value: Number || String,
+    icon: String,
+  },
+  components:{
+    IconBase
+  },
+  data(){
+    return{
+     
+    }
   }
 };
 </script>
@@ -28,7 +40,7 @@ export default {
 .stascard-wrapper .stats-title {
   font-size: 14px;
   font-weight: 400;
-  color: #6F6C6C;
+  color: #6f6c6c;
 }
 .stascard-wrapper .stats-value {
   color: #424242;

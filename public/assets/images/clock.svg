@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>D8C64789-B375-417E-9CCD-60A045C42376</title>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Banks-view" transform="translate(-455.000000, -227.000000)">
+            <g id="x-circle-copy" transform="translate(455.000000, 227.000000)">
+                <circle id="Oval" fill="#10852C" cx="8" cy="8" r="8"></circle>
+                <line x1="7.56687284" y1="2.50273107" x2="7.40683847" y2="8.50297378" id="Path" stroke="#FFFFFF" stroke-width="1.5" fill="#009831" stroke-linecap="round" stroke-linejoin="round" transform="translate(7.368235, 5.832876) rotate(-2.000000) translate(-7.368235, -5.832876) "></line>
+                <line x1="7.5" y1="8.5" x2="11.6666667" y2="8.66666667" id="Path" stroke="#FFFFFF" stroke-width="1.5" fill="#009831" stroke-linecap="round" stroke-linejoin="round" transform="translate(9.833333, 8.333333) rotate(-2.000000) translate(-9.833333, -8.333333) "></line>
+            </g>
+        </g>
+    </g>
+</svg>
