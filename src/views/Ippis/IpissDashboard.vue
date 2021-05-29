@@ -23,21 +23,18 @@
     />
     <div v-else class="statscard-section">
       <StatsCard
-        icon="pie-chart-fill"
+        icon="pie-chart"
         title="Total no of MDAs"
-        textColor="green"
         :value="cvSelected==='A'? ippisSummary.total.counts : ippisSummary.total.value"
       />
       <StatsCard
-        icon="clock-fill"
+        icon="people"
         title="Employees"
-        textColor="orange"
         :value="cvSelected==='A'? ippisSummary.employees.counts : ippisSummary.employees.value"
       />
       <StatsCard
-        icon="check-circle-fill"
+        icon="safe"
         title="Banks "
-        textColor="green"
         :value="cvSelected==='A'? ippisSummary.banks.counts : ippisSummary.banks.value"
       />
     </div>
