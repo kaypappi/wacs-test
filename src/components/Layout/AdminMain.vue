@@ -19,6 +19,13 @@
         notificationRoute="AdminNotifications"
       />
       <div class="main-body">
+        <Toast
+          :show="getToast.show"
+          :title="getToast.title"
+          :successMessage="getToast.message"
+          :failureMessage="getToast.message"
+          :success="getToast.success"
+        />
         <LoanManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'loan'" />
         <AdminUserManagementMenu v-if="!$route.meta.parents && currentNameSpace === 'users'" />
         <div class="main-body-content">
@@ -34,12 +41,14 @@ import Header from "../Header";
 import LeftMenuItems from "../Admin/AdminLeftMenuItems";
 import LoanManagementMenu from "../Admin/AdminLoanManagementMenu";
 import AdminUserManagementMenu from "../Admin/AdminUserManagementMenu";
+import Toast from "../Toast"
 export default {
   components: {
     Header,
     LeftMenuItems,
     LoanManagementMenu,
-    AdminUserManagementMenu
+    AdminUserManagementMenu,
+    Toast
   },
   computed: {
     fullName() {
@@ -56,6 +65,9 @@ export default {
     },
     currentNameSpace() {
       return this.$route.meta.nameSpace;
+    },
+    getToast() {
+      return this.$store.state.toast;
     }
   }
 };

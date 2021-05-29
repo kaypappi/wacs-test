@@ -45,6 +45,7 @@ import AdminLoanRequestDetails from "../views/Admin/AdminLoanrequestDetails.vue"
 import AdminCompany from "../views/Admin/AdminCompany.vue";
 import IppisUserSetup from "../views/Admin/IppisUserSetup.vue";
 import CreditorUserSetup from "../views/Admin/CreditorUserSetup.vue";
+import AdminSettings from "../views/Admin/AdminSettings.vue"
 
 import StaffMainAuth from "../views/Staff/Auth/Main.vue";
 import StaffDashboard from "../views/Staff/Dashboard.vue";
@@ -127,7 +128,7 @@ const routes = [
         component: Home,
         meta: {
           title: "Workers Aggregated Credit Scheme",
-          nameSpace:"dashboard"
+          nameSpace: "dashboard",
         },
       },
       {
@@ -458,12 +459,6 @@ const routes = [
           title: "Admin Dashboard",
           nameSpace: "Admin",
         },
-        beforeEnter: (to, from, next) => {
-          if (!store.getters["Auth/isParkwayAdmin"]) {
-            return next("Adminlogin");
-          }
-          next();
-        },
       },
       {
         path: "/admin/notifications",
@@ -553,7 +548,22 @@ const routes = [
           nameSpace: "users",
         },
       },
+      {
+        path: "/admin/settings",
+        name: "AdminSettings",
+        component: AdminSettings,
+        meta: {
+          title: "Settings",
+          nameSpace: "settings",
+        },
+      },
     ],
+    beforeEnter: (to, from, next) => {
+      if (!store.getters["Auth/isParkwayAdmin"]) {
+        return next("Adminlogin");
+      }
+      next();
+    },
   },
 
   {

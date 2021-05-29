@@ -11,6 +11,7 @@ import state from "./state"
 import AdminLoanOffer from "./module/Admin/LoanOffer"
 import AdminLoanRequest from "./module/Admin/LoanRequest"
 import AdminUser from "./module/Admin/User"
+import AdminSettings from "./module/Admin/Settings"
 
 import CreditorLoanOffer from "./module/Creditor/LoanOffer"
 import CreditorLoanRequest from "./module/Creditor/LoanRequest"
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     AdminLoanOffer,
     AdminLoanRequest,
     AdminUser,
+    AdminSettings,
     CreditorLoanOffer,
     CreditorLoanRequest,
     CreditorUser,

@@ -7,20 +7,36 @@
       class="page-loader"
     />
     <div v-else class="statscard-section">
-      <StatsCard title="Total Requests" textColor="green" :value="requestsSummary.total" />
-      <StatsCard title="Pending Requests" textColor="orange" :value="requestsSummary.pending" />
-      <StatsCard title="Running Requests" textColor="green" :value="requestsSummary.running" />
       <StatsCard
-        title="Bank Approved Requests"
-        textColor="green"
+        icon="pie-chart"
+        title="Total Requests"
+        :value="requestsSummary.total"
+      />
+      <StatsCard
+        icon="clock"
+        title="Pending"
+        :value="requestsSummary.pending"
+      />
+      <StatsCard
+        icon="loading-process"
+        title="Running "
+        :value="requestsSummary.running"
+      />
+      <StatsCard
+        icon="safe"
+        title="Bank Approved"
         :value="requestsSummary.bank_approved"
       />
       <StatsCard
-        title="Awaiting Ippis Requests"
-        textColor="green"
+        icon="alarm"
+        title="Awaiting IPPIS"
         :value="requestsSummary.awaiting_ippis"
       />
-      <StatsCard title="Rejected Requests" textColor="red" :value="requestsSummary.rejected" />
+      <StatsCard
+        icon="x-circle"
+        title="Rejected "
+        :value="requestsSummary.rejected"
+      />
     </div>
 
     <div class="recent-requests">
@@ -153,7 +169,7 @@ export default {
 <style scoped>
 .statscard-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 20px;
   margin-bottom: 40px;
 }

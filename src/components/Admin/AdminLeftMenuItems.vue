@@ -36,6 +36,14 @@
                         permission: ["view", "loan"],
                         nameSpace: 'users',
                     },
+                    {
+                        name: "Settings",
+                        iconPath: "/assets/images/User.svg",
+                        altText: "money",
+                        to: "/admin/settings",
+                        permission: ["view", "loan"],
+                        nameSpace: 'settings',
+                    },
                     
                 ],
             }

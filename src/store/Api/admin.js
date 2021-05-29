@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export default {
   fetchLoanOffers(query) {
     return new Promise((resolve, reject) => {
@@ -110,59 +111,86 @@ export default {
     });
   },
 
-  createAdmin({ userData, userType }){
+  createAdmin({ userData, userType }) {
     return new Promise((resolve, reject) => {
-        axios
+      axios
         .post(`admin/${userType}`, userData)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
-  editAdmin({ userData, userType }){
+  editAdmin({ userData, userType }) {
     return new Promise((resolve, reject) => {
-        axios
+      axios
         .patch(`admin/${userType}/` + userData.userId, userData)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
-  fetchCompanies({ page, query }){
+  fetchCompanies({ page, query }) {
     return new Promise((resolve, reject) => {
-        axios
+      axios
         .get("admin/companies", {
           params: {
             page,
             ...query,
           },
         })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
-  createCompany(userData){
+  createCompany(userData) {
     return new Promise((resolve, reject) => {
-        axios.post("admin/companies", userData)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+      axios
+        .post("admin/companies", userData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getSettings() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("admin/settings")
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  updateSettings(setting){
+    return new Promise((resolve, reject) => {
+      axios
+        .post("admin/settings", setting)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 };
