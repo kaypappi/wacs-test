@@ -160,7 +160,7 @@ export default {
   requestsSummary() {
     return new Promise((resolve, reject) => {
       axios
-        .get("creditor/request/totals")
+        .post("creditor/request/totals")
         .then((response) => {
           resolve(response);
         })

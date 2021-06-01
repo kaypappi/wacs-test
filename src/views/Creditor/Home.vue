@@ -25,32 +25,32 @@
       <StatsCard
         icon="pie-chart"
         title="Total Requests"
-        :value="requestsSummary.total"
+        :value="cvSelected==='A'? requestsSummary.total:requestsSummary.total_sum"
       />
       <StatsCard
         icon="clock"
         title="Pending"
-        :value="requestsSummary.pending"
+        :value="cvSelected==='A'? requestsSummary.pending:requestsSummary.pending_sum"
       />
       <StatsCard
         icon="loading-process"
         title="Running "
-        :value="requestsSummary.running"
+        :value="cvSelected==='A'? requestsSummary.running:requestsSummary.running_sum"
       />
       <StatsCard
         icon="safe"
         title="Bank Approved"
-        :value="requestsSummary.bank_approved"
+        :value="cvSelected==='A'? requestsSummary.bank_approved:requestsSummary.bank_approved_sum"
       />
       <StatsCard
         icon="alarm"
         title="Awaiting IPPIS"
-        :value="requestsSummary.awaiting_ippis"
+        :value="cvSelected==='A'? requestsSummary.awaiting_ippis:requestsSummary.awaiting_ippis_sum"
       />
       <StatsCard
         icon="x-circle"
         title="Rejected "
-        :value="requestsSummary.rejected"
+        :value="cvSelected==='A'? requestsSummary.rejected:requestsSummary.rejected_sum"
       />
     </div>
 
