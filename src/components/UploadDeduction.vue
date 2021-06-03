@@ -1,6 +1,6 @@
 <template>
   <div class="upload-deduction-wrapper pt-5">
-    <LineBreakTitle title="Step 1" />
+    <!-- <LineBreakTitle title="Step 1" />
     <div class="deduction-sample">
       <a class href="/assets/file/transactional-records-template.xlsx" target="_blank">
         <div class="sample-box py-2 pl-3">
@@ -13,10 +13,14 @@
 
       <div class="readme-box mt-2">
         <span class="readme">Read Me:</span>
-        <span>Download the sample schedule. Input repayment entries and re-upload below as repayment schedule</span>
+        
       </div>
     </div>
-    <LineBreakTitle title="Step 2" />
+    <LineBreakTitle title="Step 2" /> -->
+    <p class="h5">Upload sample deduction </p>
+    <p
+      class="sub mt-3"
+    >Upload the sample deduction file in step 1</p>
     <DragDropFileInput
       @changed="fileChange($event)"
       :deleteFile="deleteFile"
@@ -30,12 +34,11 @@
         <p :key="item" class="error-msg">{{item}}</p>
       </template>
     </template>
-    <button @click="next" v-if="loadingCount>=120">Continue To Preview</button>
   </div>
 </template>
 
 <script>
-import LineBreakTitle from "./LineBreakTitle";
+//import LineBreakTitle from "./LineBreakTitle";
 import DragDropFileInput from "./Inputs/DragDropFileInput";
 //import creditor from "../store/Api/creditor";
 import { mapActions, mapGetters } from "vuex";
@@ -44,7 +47,7 @@ export default {
     next: Function
   },
   components: {
-    LineBreakTitle,
+    //LineBreakTitle,
     DragDropFileInput
   },
   data() {
@@ -104,6 +107,13 @@ export default {
       if (file === null) {
         this.loadingCount = 0;
       }
+    },
+    loadingCount:{
+      handler(loadingCount){
+        if(loadingCount>=120){
+          this.next()
+        }
+      }
     }
   }
 };
@@ -118,6 +128,10 @@ export default {
   border: #32ac59 1px solid;
   background: #27be581c;
   color: #27be58;
+}
+.sub {
+  color: #8f8f8f;
+  font-size: 14px;
 }
 
 .readme-box {

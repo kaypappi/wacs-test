@@ -24,6 +24,16 @@ export const fetchUploadedBatchItem = async ({ commit }, batchId) => {
   }
 };
 
+export const fetchAllBatchItems = async ({ commit }) => {
+  try {
+    const response = await creditor.fetchAllBatchItems();
+    commit("FETCH_ALL_BATCH_ITEMS", response.data);
+    return Promise.resolve(response.data);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
 export const saveBatchSchedule = async ({ commit }, batchId) => {
   try {
     const response = await creditor.saveUploadedBatchItem(batchId);
@@ -48,7 +58,7 @@ export const saveBatchSchedule = async ({ commit }, batchId) => {
 export const clearBatchSchedule = async ({ commit }, batchId) => {
   try {
     const response = await creditor.clearUploadedBatchItem(batchId);
-    commit("CLEAR_CURRENT_BATCH_FILE")
+    commit("CLEAR_CURRENT_BATCH_FILE");
     return response;
   } catch (e) {
     const data = {

@@ -282,6 +282,15 @@ export default {
     });
   },
 
+  fetchAllBatchItems() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/schedules`)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
   fetchUploadedBatchItem(batchId) {
     return new Promise((resolve, reject) => {
       axios
@@ -291,7 +300,7 @@ export default {
     });
   },
 
-  saveUploadedBatchItem(batchId){
+  saveUploadedBatchItem(batchId) {
     return new Promise((resolve, reject) => {
       axios
         .get(`creditor/schedules/upload/${batchId}`)
@@ -300,12 +309,12 @@ export default {
     });
   },
 
-  clearUploadedBatchItem(batchId){
+  clearUploadedBatchItem(batchId) {
     return new Promise((resolve, reject) => {
       axios
         .get(`creditor/schedules/clear/${batchId}`)
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
-  }
+  },
 };

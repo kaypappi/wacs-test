@@ -17,3 +17,7 @@ export const SAVE_FILE_TO_STATE=(state,file)=>{
 export const CLEAR_CURRENT_BATCH_FILE=(state)=>{
     state.currentBatchFile=null
 }
+
+export const FETCH_ALL_BATCH_ITEMS=(state,data)=>{
+    state.allBatchItems=data
+}

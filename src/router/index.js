@@ -17,6 +17,7 @@ import Repayment from "../views/Creditor/Repayment";
 import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
 import Deduction from "../views/Creditor/Deduction.vue";
+import UploadDetails from "../views/Creditor/UploadDetails.vue"
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
 
@@ -214,6 +215,15 @@ const routes = [
         meta: {
           title: "Deduction File",
           nameSpace: "deduction",
+        },
+      },
+      {
+        path: "/creditor/upload-details",
+        name: "uploadDetails",
+        component: UploadDetails,
+        meta: {
+          title: "Deduction File",
+          nameSpace: "deduction details",
         },
       },
 

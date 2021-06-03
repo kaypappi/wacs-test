@@ -60,6 +60,14 @@
                         permission: ["create", "user"],
                         nameSpace: 'deduction',
                     },
+                    {
+                        name: "Upload Details",
+                        iconPath: "/assets/images/Chart-bar.svg",
+                        altText: "Chart",
+                        to: "/creditor/upload-details",
+                        permission: ["create", "user"],
+                        nameSpace: 'deduction details',
+                    },
                     
                 ],
             }

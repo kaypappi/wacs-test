@@ -3,5 +3,6 @@ export default {
   batchItem: null,
   fetchingItem: false,
   scheduleFile: null,
-  currentBatchFile:null,
+  currentBatchFile: null,
+  allBatchItems:null,
 };
