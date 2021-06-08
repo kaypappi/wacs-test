@@ -18,6 +18,10 @@ import Loans from "../views/Creditor/Loans.vue";
 import Schedule from "../views/Creditor/Schedule";
 import Deduction from "../views/Creditor/Deduction.vue";
 import UploadDetails from "../views/Creditor/UploadDetails.vue"
+import UploadDetails2 from "../views/Creditor/UploadDetails2.vue";
+import DeductionPreview from "../views/Creditor/DeductionPreview.vue"
+import DeductionPreview2 from "../views/Creditor/DeductionPreview2.vue";
+import DeductionPerIppis from "../views/Creditor/DeductionPerIppis.vue"
 import Notifications from "../views/Notifcations.vue";
 import FrontPage from "../views/FrontPage.vue";
 
@@ -224,6 +228,46 @@ const routes = [
         meta: {
           title: "Deduction File",
           nameSpace: "deduction details",
+        },
+      },
+      {
+        path: "/creditor/upload-details2",
+        name: "uploadDetails2",
+        component: UploadDetails2,
+        meta: {
+          title: "Deduction File",
+          nameSpace: "deduction details2",
+        },
+      },
+      {
+        path: "/creditor/upload-details/:id",
+        name: "deductionPreview",
+        component: DeductionPreview,
+        meta: {
+          title: "Summary",
+          nameSpace: "deduction details",
+          parents: ["uploadDetails"],
+        },
+      },
+      {
+        path: "/creditor/upload-details/two/:id",
+        name: "deductionPreview2",
+        component: DeductionPreview2,
+        meta: {
+          title: "Summary",
+          nameSpace: "deduction details",
+          parents: ["uploadDetails"],
+        },
+      },
+
+      {
+        path: "/creditor/upload-details/two/:id/ippis/:ippis",
+        name: "deductionPerIppis",
+        component: DeductionPerIppis,
+        meta: {
+          title: "Deduction Per Ippis",
+          nameSpace: "deduction details",
+          parents: ["uploadDetails2"],
         },
       },
 

@@ -6,13 +6,17 @@
       class="sub mt-1 text-center"
     >You have succesfully uploaded your deduction schedule</p>
     <div  :style="{width:'200px'}" class="d-flex mx-auto ">
-        <button @click="$router.push({name:'uploadDetails'})" >view details</button>
+        <button @click="$router.push({name:'deductionPreview',params:{id:batch.data.batch_id}})" >view details</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props:{
+        batch:Array||Object
+    },
+};
 </script>
 
 <style scoped>

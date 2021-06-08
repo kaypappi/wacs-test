@@ -157,10 +157,10 @@ export default {
     });
   },
 
-  requestsSummary() {
+  requestsSummary(date) {
     return new Promise((resolve, reject) => {
       axios
-        .post("creditor/request/totals")
+        .post("creditor/request/totals",date)
         .then((response) => {
           resolve(response);
         })
@@ -282,19 +282,47 @@ export default {
     });
   },
 
-  fetchAllBatchItems() {
+  fetchAllBatchItems(query) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/schedules`)
+        .get(`creditor/schedules`, {
+          params: query,
+        })
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
   },
 
-  fetchUploadedBatchItem(batchId) {
+  fetchUploadedBatchItem(batchId, query, type) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/schedules/${batchId}`)
+        .get(`creditor/schedules/${batchId}${type ? "/" + type : ""}`, {
+          params: query,
+        })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+  fetchUploadedBatchItem2(batchId, query, type) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/schedule-groups/${batchId}${type ? "/" + type : ""}`, {
+          params: query,
+        })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  fetchUploadedBatchItemByIppis(ippis, query, type) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `creditor/schedule-groups/${ippis}/type${type ? "/" + type : ""}`,
+          {
+            params: query,
+          }
+        )
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });
@@ -313,6 +341,52 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(`creditor/schedules/clear/${batchId}`)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  getLoanProcessedAndRequestPercent(date) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("creditor/analytics/loan-request", date)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getRegisteredMda(date) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/analytics/mdas`, { params: date })
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  repaymentPerMda(data) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("creditor/analytics/repayments", data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  countsByLoanOffer(offerId, year, date) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`creditor/analytics/offers/${offerId}/year/${year}`, {
+          params: date,
+        })
         .then((response) => resolve(response))
         .catch((err) => reject(err));
     });

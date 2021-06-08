@@ -140,9 +140,9 @@ export const updateSearchTerm = ({ commit }, searchTerm) => {
 export const updateSearchFound = ({ commit }, status) => {
   commit("UPDATE_SEARCH_FOUND", status);
 };
-export const requestsSummary = ({ commit }) => {
+export const requestsSummary = ({ commit },date) => {
   commit("FETCHING_SUMMARY", true);
-  creditor.requestsSummary().then((response) => {
+  creditor.requestsSummary(date).then((response) => {
     commit("FETCH_REQUEST_SUMMARY_SUCCESS", response.data);
     commit("FETCHING_SUMMARY", false);
   });

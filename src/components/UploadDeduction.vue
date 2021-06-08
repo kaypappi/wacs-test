@@ -75,7 +75,7 @@ export default {
             handleProgress: this.handleProgress
           });
           this.loadingCount = this.loadingCount + 20;
-
+          
           return response;
         } catch (e) {
           this.uploadErrors=e.response.data.errors["excel_file"]

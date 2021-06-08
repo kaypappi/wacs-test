@@ -6,7 +6,7 @@
         <template #loading>
           <b-skeleton-table :rows="5" :columns="4" :table-props="{ small:true, }"></b-skeleton-table>
         </template>
-        <BatchItemsTable :previewItem="allBatchItems.data" />
+        <BatchItemsTable2 :previewItem="allBatchItems.data" />
         <Pagination
           :total="allBatchItems.meta.total"
           :currentPage="allBatchItems.meta.current_page"
@@ -20,11 +20,11 @@
 </template>
 
 <script>
-import BatchItemsTable from "../../components/Table/BatchItemsTable";
+import BatchItemsTable2 from "../../components/Table/BatchItemsTable2";
 import Pagination from "../../components/Pagination/Pagination"
 export default {
   components: {
-    BatchItemsTable,
+    BatchItemsTable2,
     Pagination
   },
   data() {

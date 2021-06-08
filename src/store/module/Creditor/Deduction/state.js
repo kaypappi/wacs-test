@@ -4,5 +4,11 @@ export default {
   fetchingItem: false,
   scheduleFile: null,
   currentBatchFile: null,
-  allBatchItems:null,
+  allBatchItems: null,
+  validated: {},
+  failed: {},
+  validated2:[],
+  failed2: [],
+  validatedIppis:[],
+  failedIppis:[],
 };

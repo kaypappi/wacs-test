@@ -8,7 +8,7 @@
 
     <div class="deduction-body">
       <keep-alive>
-        <component :prev="goToPrev" :next="goToNext" :is="currentTab" class="tab"></component>
+        <component :prev="goToPrev" :next="goToNext" :batch="getCurrentBatchFile" :is="currentTab" class="tab"></component>
       </keep-alive>
     </div>
   </div>
@@ -16,14 +16,13 @@
 
 <script>
 import UploadDeduction from "../../components/UploadDeduction";
-import DeductionPreview from "../../components/DeductionPreview";
 import StepNavigation from "../../components/Wizard/StepNavigation";
 import DownloadTemplate from "../../components/DownloadTemplate";
 import UploadComplete from "../../components/UploadComplete";
+import {mapGetters} from "vuex"
 export default {
   components: {
     UploadDeduction,
-    DeductionPreview,
     StepNavigation,
     DownloadTemplate,
     UploadComplete
@@ -64,6 +63,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile",
+    }),
     currentTab() {
       return this.tabs[this.currentstep - 1];
     }

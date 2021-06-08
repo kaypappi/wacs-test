@@ -13,7 +13,7 @@
           ></b-form-radio-group>
         </b-form-group>
       </div>
-      <DateInput />
+      <DateInput v-model="dateRange" />
     </div>
     <img
       src="/assets/images/page-ring-loader.svg"
@@ -58,45 +58,38 @@
       <ccv-simple-bar-chart :data="totalLoansDetails.data" :options="totalLoansDetails.options"></ccv-simple-bar-chart>
     </div>
 
-    
-      <div class="middle-row ">
-        <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
-          <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
-            <p class="section-title h6 mb-0">Counts per Loan offer</p>
-            <div class="d-flex align-items-center flex-wrap">
-              <label class="mb-0 mr-md-2 h6" for="Loan Offers">Loan Offers</label>
-              <SelectField
-                inputClass="small-select"
-                v-model="selected"
-                name="Loan Offers"
-                :options="SelectOptions"
-              />
-            </div>
+    <div class="middle-row">
+      <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
+        <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+          <p class="section-title h6 mb-0">Counts per Loan offer</p>
+          <div class="d-flex align-items-center flex-wrap">
+            <label class="mb-0 mr-md-2 h6" for="Loan Offers">Loan Offers</label>
+            <SelectField
+              inputClass="small-select"
+              v-model="selectedLoanOffer"
+              name="Loan Offers"
+              :options="loanOffersOptions"
+            />
           </div>
-          <ccv-simple-bar-chart
-            :data="countsPerLoanDetails.data"
-            :options="countsPerLoanDetails.options"
-          ></ccv-simple-bar-chart>
         </div>
-        <div class="loan-request-chart total-loans px-4 py-4 mb-4">
-          <p class="h6">Loan request</p>
-          <p class="subtitle">Conversion Indicator</p>
-          <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
-        </div>
+        <ccv-simple-bar-chart
+          :data="countsPerLoanDetails.data"
+          :options="countsPerLoanDetails.options"
+        ></ccv-simple-bar-chart>
       </div>
-    
+      <div class="loan-request-chart total-loans px-4 py-4 mb-4">
+        <p class="h6">Loan request</p>
+        <p class="subtitle">Conversion Indicator</p>
+        <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
+      </div>
+    </div>
 
     <div class="total-loans py-4 px-4 mb-4" id="chart-1">
       <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
         <p class="section-title h6 mb-0">Outstanding per MDAs</p>
         <div class="d-flex align-items-center flex-wrap">
           <label class="mb-0 mr-md-2 h6 fw-normal" for="Loan Offers">MDA</label>
-          <SelectField
-            inputClass="small-select"
-            v-model="selected"
-            name="Loan Offers"
-            :options="SelectOptions"
-          />
+          <SelectField inputClass="small-select" v-model="mda" name="MDA" :options="registerdMdas" />
         </div>
       </div>
       <ccv-simple-bar-chart :data="outstandingPerMda.data" :options="outstandingPerMda.options"></ccv-simple-bar-chart>
@@ -157,6 +150,7 @@ import Table from "../../components/Table/Table";
 import LoanRequestTableRow from "../../components/Table/LoanRequestTableRow";
 import SelectField from "../../components/Inputs/SelectField";
 import DateInput from "../../components/Inputs/DateInput";
+import moment from "moment";
 
 export default {
   name: "home",
@@ -170,6 +164,8 @@ export default {
   data() {
     return {
       selected: "placeholder",
+      selectedLoanOffer: "",
+      mda: "",
       cvSelected: "A",
       cvOptions: [
         { text: "Count", value: "A" },
@@ -184,7 +180,16 @@ export default {
         { value: "a", text: "This is First option" },
         { value: "b", text: "Selected Option" },
         { value: { C: "3PO" }, text: "This is an option with object value" }
-      ]
+      ],
+      dateRange: {
+        start: moment()
+          .subtract(1, "month")
+          .format("YYYY-MM-DD"),
+        end: moment().format("YYYY-MM-DD")
+      },
+      gettingLoanProcessedAndRequestPercent: false,
+      gettingRepaymentsByMdas: false,
+      gettingCountsPerLoanOffer:false
     };
   },
 
@@ -193,8 +198,8 @@ export default {
       query = this.serialize(query);
       this.$store.dispatch("CreditorLoanRequest/fetchLoanRequests", query);
     },
-    fetchRequestsSummary() {
-      this.$store.dispatch("CreditorLoanRequest/requestsSummary");
+    fetchRequestsSummary(date) {
+      this.$store.dispatch("CreditorLoanRequest/requestsSummary", date);
     },
     serialize(obj, prefix) {
       var str = [],
@@ -214,6 +219,55 @@ export default {
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    },
+
+    async getLoanProcessedAndRequestPercent(date) {
+      this.gettingLoanProcessedAndRequestPercent = true;
+      const response = await this.$store.dispatch(
+        "CreditorAnalytics/getLoanProcessedAndRequestPercent",
+        date
+      );
+      this.gettingLoanProcessedAndRequestPercent = false;
+      return response;
+    },
+
+    async getRegisteredMdas(date) {
+      const response = await this.$store.dispatch(
+        "CreditorAnalytics/getRegisteredMdas",
+        date
+      );
+      return response;
+    },
+    async getRepaymentsByMdas(mda) {
+      const data = {
+        mda,
+        year: moment().format("YYYY")
+      };
+      this.gettingRepaymentsByMdas = true;
+      const response = await this.$store.dispatch(
+        "CreditorAnalytics/repaymentByMda",
+        data
+      );
+      this.gettingRepaymentsByMdas = false;
+      return response;
+    },
+    fetchLoanOffers(query) {
+      this.$store.dispatch("CreditorLoanOffer/fetchLoanOffers", query);
+    },
+
+    async getCountsPerLoanOffer(offerId, date) {
+      const data = {
+        offerId,
+        year: moment().format("YYYY"),
+        date
+      };
+      this.gettingCountsPerLoanOffer = true;
+      const response = await this.$store.dispatch(
+        "CreditorAnalytics/countsByLoanOffer",
+        data
+      );
+      this.gettingCountsPerLoanOffer = false;
+      return response;
     }
   },
   computed: {
@@ -229,154 +283,83 @@ export default {
     isFetchingSummary() {
       return this.$store.state.CreditorLoanRequest.fetchingSummary;
     },
+    loanOffers() {
+      return this.$store.state.CreditorLoanOffer.loanOffers;
+    },
+    loanOffersOptions() {
+      if (this.loanOffers.data) {
+        const options = this.loanOffers.data.map(item => {
+          return {
+            text: item.title,
+            value: item.id
+          };
+        });
+        return options;
+      }
+      return [];
+    },
     totalLoansDetails() {
-      const data = [
-        {
-          group: "GTB",
-          value: 34000
-        },
-        {
-          group: "Bank1",
-          value: 30000
-        },
-        {
-          group: "Bank2",
-          value: 20000
-        },
-        {
-          group: "Bank3",
-          value: 48000
-        },
-        {
-          group: "Bank4",
-          value: 65000
-        },
-        {
-          group: "Bank5",
-          value: 25000
-        },
-        {
-          group: "Bank6",
-          value: 10000
-        },
-        {
-          group: "Bank7",
-          value: 47000
-        },
-        {
-          group: "Bank8",
-          value: 70000
-        },
-        {
-          group: "Bank9",
-          value: 27123
-        },
-        {
-          group: "Bank10",
-          value: 15000
-        }
-      ];
+      if (this.LoanProcessedAndRequestPercent) {
+        const data = this.LoanProcessedAndRequestPercent[
+          "total_loan_processed"
+        ].map(item => {
+          return { group: item.bank, value: item.amount };
+        });
 
-      const options = {
-        title: "Total Loans processed",
-        axes: {
-          left: {
-            mapsTo: "value"
+        const colors = {};
+        this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
+          item => {
+            return (colors[item.bank] = "#23699F");
+          }
+        );
+
+        const options = {
+          title: "Total Loans processed",
+          data: {
+            loading: this.gettingLoanProcessedAndRequestPercent
           },
-          bottom: {
-            mapsTo: "group",
-            scaleType: "labels"
-          }
-        },
-        height: "400px",
-        color: {
-          scale: {
-            GTB: "#23699F",
-            Bank1: "#23699F",
-            Bank2: "#23699F",
-            Bank3: "#23699F",
-            Bank4: "#23699F",
-            Bank5: "#23699F",
-            Bank6: "#23699F",
-            Bank7: "#23699F",
-            Bank8: "#23699F",
-            Bank9: "#23699F",
-            Bank10: "#23699F"
-          }
-        },
-        legend: {
-          enabled: false
-        },
-        bars: {
-          width: 30
-        },
-        grid: {
-          x: {
+          axes: {
+            left: {
+              mapsTo: "value"
+            },
+            bottom: {
+              mapsTo: "group",
+              scaleType: "labels"
+            }
+          },
+          height: "400px",
+          color: {
+            scale: colors
+          },
+          legend: {
             enabled: false
+          },
+          bars: {
+            width: 30
+          },
+          grid: {
+            x: {
+              enabled: false
+            }
+          },
+          tooltip: {
+            customHTML(tip) {
+              return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            }
           }
-        },
-        tooltip: {
-          customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
-          }
-        }
-      };
+        };
 
-      return { data, options };
+        return { data, options };
+      }
+      return null;
     },
     countsPerLoanDetails() {
-      const data = [
-        {
-          group: "Jan",
-          value: 34000
-        },
-        {
-          group: "Feb",
-          value: 30000
-        },
-        {
-          group: "Mar",
-          value: 20000
-        },
-        {
-          group: "Apr",
-          value: 48000
-        },
-        {
-          group: "May",
-          value: 65000
-        },
-        {
-          group: "Jun",
-          value: 25000
-        },
-        {
-          group: "Jul",
-          value: 10000
-        },
-        {
-          group: "Aug",
-          value: 47000
-        },
-        {
-          group: "Sep",
-          value: 70000
-        },
-        {
-          group: "Oct",
-          value: 27123
-        },
-        {
-          group: "Nov",
-          value: 15000
-        },
-        {
-          group: "Dec",
-          value: 35000
-        }
-      ];
+      let data = [];
 
-      const options = {
+      let options = {
+        data: {
+          loading: this.countsPerLoanOfferStatus
+        },
         axes: {
           left: {
             mapsTo: "value"
@@ -387,22 +370,6 @@ export default {
           }
         },
         height: "400px",
-        color: {
-          scale: {
-            Jan: "#23699F",
-            Feb: "#23699F",
-            Mar: "#23699F",
-            Apr: "#23699F",
-            May: "#23699F",
-            Jun: "#23699F",
-            Jul: "#23699F",
-            Aug: "#23699F",
-            Sep: "#23699F",
-            Oct: "#23699F",
-            Nov: "#23699F",
-            Dec: "#23699F"
-          }
-        },
         legend: {
           enabled: false
         },
@@ -416,15 +383,38 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  N${tip[0].value}</span>`;
           }
         }
       };
+      if (Array.isArray(this.countsPerLoanOffer)) {
+        data = this.countsPerLoanOffer.map(item => {
+          return {
+            group: moment()
+              .month(item.Month - 1)
+              .format("MMM"),
+            value: item.sum
+          };
+        });
+
+
+        const colors = {};
+        this.countsPerLoanOffer.map(item => {
+          return (colors[
+            moment()
+              .month(item.Month - 1)
+              .format("MMM")
+          ] = "#006F8F");
+        });
+        options.color = {
+          scale: colors
+        };
+      }
 
       return { data, options };
     },
     outstandingPerMda() {
-      const data = [
+      let data = [
         {
           group: "Jan",
           value: 34000
@@ -475,7 +465,10 @@ export default {
         }
       ];
 
-      const options = {
+      let options = {
+        data: {
+          loading: this.repaymentPerMdaStatus
+        },
         axes: {
           left: {
             mapsTo: "value"
@@ -486,22 +479,6 @@ export default {
           }
         },
         height: "400px",
-        color: {
-          scale: {
-            Jan: "#006F8F",
-            Feb: "#006F8F",
-            Mar: "#006F8F",
-            Apr: "#006F8F",
-            May: "#006F8F",
-            Jun: "#006F8F",
-            Jul: "#006F8F",
-            Aug: "#006F8F",
-            Sep: "#006F8F",
-            Oct: "#006F8F",
-            Nov: "#006F8F",
-            Dec: "#006F8F"
-          }
-        },
         legend: {
           enabled: false
         },
@@ -519,6 +496,29 @@ export default {
           }
         }
       };
+      if (Array.isArray(this.repaymentPerMda)) {
+        data = this.repaymentPerMda.map(item => {
+          return {
+            group: moment()
+              .month(item["repayment_month"] - 1)
+              .format("MMM"),
+            value: item.sum
+          };
+        });
+
+
+        const colors = {};
+        this.repaymentPerMda.map(item => {
+          return (colors[
+            moment()
+              .month(item["repayment_month"] - 1)
+              .format("MMM")
+          ] = "#006F8F");
+        });
+        options.color = {
+          scale: colors
+        };
+      }
 
       return { data, options };
     },
@@ -526,14 +526,21 @@ export default {
       const data = [
         {
           group: "Approved",
-          value: 7000
+          value: this.LoanProcessedAndRequestPercent["loan_request_percentage"][
+            "approved_percentage"
+          ]
         },
         {
           group: "Declined",
-          value: 3000
+          value: this.LoanProcessedAndRequestPercent["loan_request_percentage"][
+            "declined_percentage"
+          ]
         }
       ];
       const options = {
+        data: {
+          loading: this.gettingLoanProcessedAndRequestPercent
+        },
         resizable: true,
         legend: {
           alignment: "center"
@@ -562,11 +569,58 @@ export default {
       };
 
       return { data, options };
+    },
+    LoanProcessedAndRequestPercent() {
+      return this.$store.state.CreditorAnalytics.loanRequestPercent;
+    },
+    registerdMdas() {
+      return this.$store.state.CreditorAnalytics.registerdMdas;
+    },
+    repaymentPerMda() {
+      return this.$store.state.CreditorAnalytics.repaymentPerMda;
+    },
+    repaymentPerMdaStatus() {
+      return (
+        !Array.isArray(this.repaymentPerMda) || this.gettingRepaymentsByMdas
+      );
+    },
+    countsPerLoanOffer() {
+      return this.$store.state.CreditorAnalytics.countsPerLoanOffer;
+    },
+    countsPerLoanOfferStatus() {
+      return !Array.isArray(this.countsPerLoanOffer) || !this.selectedLoanOffer || this.gettingCountsPerLoanOffer;
     }
   },
-  mounted() {
-    this.fetchRequestsSummary();
-    this.fetchLoanRequests(this.$router.history.current.query);
+  mounted() {},
+  watch: {
+    "dateRange": {
+      handler(dateRange) {
+        if (dateRange.end) {
+          this.fetchRequestsSummary(dateRange);
+          this.fetchLoanRequests(this.$router.history.current.query);
+          this.getLoanProcessedAndRequestPercent(dateRange);
+          this.getRegisteredMdas(dateRange);
+          this.fetchLoanOffers({});
+          this.getRepaymentsByMdas(this.mda);
+          if(this.selectedLoanOffer){
+            this.getCountsPerLoanOffer(this.selectedLoanOffer, dateRange);
+          }
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    mda: {
+      handler(mda) {
+        this.getRepaymentsByMdas(mda);
+      },
+      immediate: true
+    },
+    selectedLoanOffer: {
+      handler(selectedLoanOffer) {
+        this.getCountsPerLoanOffer(selectedLoanOffer, this.dateRange);
+      }
+    }
   }
 };
 </script>
@@ -647,14 +701,14 @@ export default {
   font-size: 13px;
 }
 
-.middle-row{
+.middle-row {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 10px
+  grid-gap: 10px;
 }
 
-@media screen and (max-width:768px){
-  .middle-row{
+@media screen and (max-width: 768px) {
+  .middle-row {
     grid-template-columns: 1fr;
   }
 }

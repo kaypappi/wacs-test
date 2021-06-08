@@ -11,22 +11,102 @@ export const uploadSchedule = async ({ commit }, { file, handleProgress }) => {
   }
 };
 
-export const fetchUploadedBatchItem = async ({ commit }, batchId) => {
+export const fetchUploadedBatchItem = async (
+  { commit },
+  { batchId, query, type }
+) => {
   commit("IS_FETCHING_ITEM", true);
   try {
-    const response = await creditor.fetchUploadedBatchItem(batchId);
-    commit("FETCH_BATCH_ITEM_SUCCESS", response.data);
-    commit("IS_FETCHING_ITEM", false);
-    return Promise.resolve(response.data);
+    const response = await creditor.fetchUploadedBatchItem(
+      batchId,
+      query,
+      type
+    );
+    switch (type) {
+      case "scrap":
+        commit("SCRAP", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      case "clean":
+        commit("CLEAN", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      default:
+        commit("FETCH_BATCH_ITEM_SUCCESS", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+    }
   } catch (e) {
     commit("IS_FETCHING_ITEM", false);
     return Promise.reject(e);
   }
 };
 
-export const fetchAllBatchItems = async ({ commit }) => {
+export const fetchUploadedBatchItem2 = async (
+  { commit },
+  { batchId, query, type }
+) => {
+  commit("IS_FETCHING_ITEM", true);
   try {
-    const response = await creditor.fetchAllBatchItems();
+    const response = await creditor.fetchUploadedBatchItem2(
+      batchId,
+      query,
+      type
+    );
+    switch (type) {
+      case "scrap":
+        commit("SCRAP2", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      case "clean":
+        commit("CLEAN2", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      default:
+        commit("FETCH_BATCH_ITEM_SUCCESS", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+    }
+  } catch (e) {
+    commit("IS_FETCHING_ITEM", false);
+    return Promise.reject(e);
+  }
+};
+
+export const fetchUploadedBatchItemByIppis = async (
+  { commit },
+  { ippis, query, type }
+) => {
+  commit("IS_FETCHING_ITEM", true);
+  try {
+    const response = await creditor.fetchUploadedBatchItemByIppis(
+      ippis,
+      query,
+      type
+    );
+    switch (type) {
+      case "scrap":
+        commit("SCRAP_IPPIS", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      case "clean":
+        commit("CLEAN_IPPIS", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+      default:
+        commit("FETCH_BATCH_ITEM_SUCCESS", response.data);
+        commit("IS_FETCHING_ITEM", false);
+        return Promise.resolve(response.data);
+    }
+  } catch (e) {
+    commit("IS_FETCHING_ITEM", false);
+    return Promise.reject(e);
+  }
+};
+
+export const fetchAllBatchItems = async ({ commit }, query) => {
+  try {
+    const response = await creditor.fetchAllBatchItems(query);
     commit("FETCH_ALL_BATCH_ITEMS", response.data);
     return Promise.resolve(response.data);
   } catch (e) {

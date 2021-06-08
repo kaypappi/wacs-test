@@ -28,28 +28,10 @@
         </div>
       </template>
       <template v-slot:cell(Status)="data">
-        <div
-          :class="{completed:data.item.batch_status==='Validated'||data.item.batch_status==='Processed',processing:data.item.batch_status==='processing','d-flex':true}"
-        >
+        <div :class="{completed:data.item.batch_status==='Validated'||data.item.batch_status==='Processed',processing:data.item.batch_status==='processing','d-flex':true}">
           <span>{{data.item.batch_status}}</span>
           <b-icon class="ml-2" v-if="data.item.batch_status==='Processed'" icon="check-circle-fill"></b-icon>
         </div>
-      </template>
-      <template v-slot:cell(Data_Validation)="data">
-        <div v-if="data.item['error_occurred']===1">
-          <b-icon
-            id="tooltip-target-1"
-            class="data-validation mx-auto h1"
-            icon="X"
-            variant="danger"
-          ></b-icon>
-          <b-tooltip
-            target="tooltip-target-1"
-            bottom
-            triggers="hover"
-          >{{data.item['error_message']}}</b-tooltip>
-        </div>
-        <b-icon v-else class="data-validation mx-auto h1" icon="check" variant="success"></b-icon>
       </template>
     </b-table>
   </div>
@@ -77,10 +59,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-      this.$router.push({
-        name: "deductionPreview",
-        params: { id: item.batch_id }
-      });
+      this.$router.push({name:"deductionPreview2",params:{id:item.batch_id}})
     },
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });

@@ -1,19 +1,19 @@
 <template>
   <div>
-    <b-table @row-clicked="handleRowClick" small :fields="fields" :items="PreviewItems" responsive>
-      <template v-slot:cell(First_Name)="data">{{data.item.breakdown[0].employee_first_name }}</template>
-      <template v-slot:cell(Surname)="data">{{data.item.breakdown[0].employee_surname}}</template>
-      <template v-slot:cell(Middle_Name)="data">{{data.item.breakdown[0].employee_middle_name}}</template>
-       <template v-slot:cell(MDA)="data">{{data.item.breakdown[0].mda}}</template>
-      <template v-slot:cell(IPPIS_Number)="data">{{data.item.breakdown[0].ippis_number}}</template>
-      <template v-slot:cell(Loan_Amount)="data">{{formatNumber(data.item.breakdown[0].amount)}}</template>
-      <template v-slot:cell(Bank_Name)="data">{{data.item.breakdown[0].bank_name}}</template>
-      <template v-slot:cell(Loan_Deduction)="data">{{formatNumber(data.item.breakdown[0].total_deduction)}}</template>
-      <template v-slot:cell(Line_Items)="row"><b-button size="sm" @click="row.toggleDetails" class="mr-2">
+    <b-table @row-clicked="handleRowClick" small :fields="fields" :items="previewItem" responsive>
+      <template v-slot:cell(First_Name)="data">{{data.item.employee_first_name }}</template>
+      <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
+      <template v-slot:cell(Middle_Name)="data">{{data.item.employee_middle_name}}</template>
+       <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
+      <template v-slot:cell(IPPIS_Number)="data">{{data.item.ippis_number}}</template>
+      <template v-slot:cell(Loan_Amount)="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Bank_Name)="data">{{data.item.bank_name}}</template>
+      <template v-slot:cell(Loan_Deduction)="data">{{formatNumber(data.item.total_deduction)}}</template>
+<!--       <template v-slot:cell(Line_Items)="row"><b-button size="sm" @click="row.toggleDetails" class="mr-2">
           {{ row.detailsShowing ? 'Hide' : 'Show'}} Details{{row.item.breakdown.length}}
-        </b-button></template>
+        </b-button></template> -->
       <template v-slot:cell(Data_Validation)="data">
-        <div v-if="data.item.breakdown[0]['error_occurred']===1">
+        <div v-if="data.item['error_occurred']===1">
           <b-icon
             id="tooltip-target-1"
             class="data-validation mx-auto h1"
@@ -24,16 +24,16 @@
             target="tooltip-target-1"
             bottom
             triggers="hover"
-          >{{data.item.breakdown[0]['error_message']}}</b-tooltip>
+          >{{data.item['error_message']}}</b-tooltip>
         </div>
         <b-icon v-else class="data-validation mx-auto h1" icon="check" variant="success"></b-icon>
       </template>
-      <template #row-details="row">
+     <!--  <template #row-details="row">
         <b-card>
           <BatchItemDetailsTable :previewItem="row.item.breakdown"/>
           <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
         </b-card>
-      </template>
+      </template> -->
     </b-table>
     <!-- <CustomModal id="single-batch-item" size="lg" :scrollable="true" :hover="true">
       <div v-if="currentItem" class="details-wrapper">
@@ -54,14 +54,14 @@
 
 <script>
 //import CustomModal from "../Modals/CustomModal";
-import BatchItemDetailsTable from  "./BatchItemDetailsTable"
+//import BatchItemDetailsTable from  "./BatchItemDetailsTable"
 export default {
   props: {
-    previewItem: Object
+    previewItem: Array
   },
   components: {
    // CustomModal
-   BatchItemDetailsTable
+   //BatchItemDetailsTable
   },
   data() {
     return {
@@ -82,8 +82,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-      this.currentItem = item;
-      this.$bvModal.show("single-batch-item");
+      this.$router.push({name:"deductionPerIppis",params:{ippis:item.ippis_number}})
     },
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });

@@ -5,11 +5,21 @@
         <b-input-group-prepend is-text>
           <b-icon icon="calendar2-date"></b-icon>
         </b-input-group-prepend>
-        <b-form-input size="sm" v-model="calendarData.dateRange.start" type="text" placeholder="Start Date"></b-form-input>
+        <b-form-input
+          size="sm"
+          v-model="calendarData.dateRange.start"
+          type="text"
+          placeholder="Start Date"
+        ></b-form-input>
       </b-input-group>
       <span class="separator">|</span>
       <b-input-group class="input-right">
-        <b-form-input size="sm" v-model="calendarData.dateRange.end" type="text" placeholder="End Date"></b-form-input>
+        <b-form-input
+          size="sm"
+          v-model="calendarData.dateRange.end"
+          type="text"
+          placeholder="End Date"
+        ></b-form-input>
         <b-input-group-prepend @click.stop="clearInput" is-text>
           <b-icon icon="x"></b-icon>
         </b-input-group-prepend>
@@ -26,8 +36,8 @@
       <FunctionalCalendar v-model="calendarData" :configs="calendarConfigs">
         <template slot="footer">
           <div>
-            <b-button @click="clearInput" class="clear-button  px-4 mr-4">Clear</b-button>
-            <b-button class="a-button  px-4">Apply</b-button>
+            <b-button @click="clearInput" class="clear-button px-4 mr-4">Clear</b-button>
+            <b-button class="a-button px-4">Apply</b-button>
           </div>
         </template>
       </FunctionalCalendar>
@@ -38,6 +48,9 @@
 <script>
 import { FunctionalCalendar } from "vue-functional-calendar";
 export default {
+  props:{
+    value:Object
+  },
   components: {
     FunctionalCalendar
   },
@@ -51,14 +64,14 @@ export default {
       },
       calendarConfigs: {
         sundayStart: false,
-        dateFormat: "dd/mm/yyyy",
+        dateFormat: "yyyy-mm-dd",
         isDateRange: true,
         isModal: false,
         isTypeable: true,
         isSeparately: true,
         isMultiple: true,
         calendarsCount: "2",
-        dayNames:['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        dayNames: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
       }
     };
   },
@@ -70,6 +83,28 @@ export default {
       };
     }
   },
+  watch: {
+    // Handles internal model changes.
+    /* innerValue(newVal) {
+      this.$emit("input", newVal);
+    }, */
+
+    "calendarData.dateRange": {
+      handler(dateRange) {
+        this.$emit("input", dateRange);
+      },
+      deep: true
+    },
+    // Handles external model changes.
+    value(newVal) {
+      this.calendarData.dateRange = newVal;
+    }
+  },
+  created() {
+    if (this.value) {
+      this.calendarData.dateRange = this.value;
+    }
+  }
 };
 </script>
 
@@ -96,7 +131,7 @@ span {
 }
 
 .date-input-box {
-  border: 1px solid #D8DED9;
+  border: 1px solid #d8ded9;
   border-radius: 4px;
   background-color: #ffffff;
   max-width: 250px;
@@ -136,17 +171,18 @@ span {
   font-family: "Work Sans";
 }
 
-.popover >>>  .vfc-top-date.vfc-center{
+.popover >>> .vfc-top-date.vfc-center {
   font-size: 1rem;
 }
 
-.popover >>> .vfc-arrow-left,.popover>>> .vfc-arrow-right{
-width: 8px;
-height: 8px;
-border-color: #515653;
+.popover >>> .vfc-arrow-left,
+.popover >>> .vfc-arrow-right {
+  width: 8px;
+  height: 8px;
+  border-color: #515653;
 }
 
-.popover >>> .vfc-dayNames span{
+.popover >>> .vfc-dayNames span {
   font-size: 0.8rem;
 }
 .clear-button {
