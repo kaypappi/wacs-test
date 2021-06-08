@@ -384,7 +384,7 @@ export default {
   countsByLoanOffer(offerId, year, date) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`creditor/analytics/offers/${offerId}/year/${year}`, {
+        .get(`creditor/analytics/year/${year}/offers/${offerId}`, {
           params: date,
         })
         .then((response) => resolve(response))

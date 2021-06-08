@@ -1,7 +1,7 @@
 <template>
   <div class="home-wrapper">
     <div class="top-control mb-3 d-flex justify-content-between flex-wrap">
-      <div class="cv-switch">
+      <!-- <div class="cv-switch">
         <b-form-group v-slot="{ ariaDescribedby }">
           <b-form-radio-group
             id="btn-radios-2"
@@ -12,31 +12,19 @@
             buttons
           ></b-form-radio-group>
         </b-form-group>
-      </div>
-      <DateInput />
+      </div>-->
+      <DateInput v-model="dateRange" class="ml-auto" />
     </div>
     <img
       src="/assets/images/page-ring-loader.svg"
       alt="loader"
-      v-if="isFetchingSummary"
+      v-if="fetchingSummary"
       class="page-loader"
     />
     <div v-else class="statscard-section">
-      <StatsCard
-        icon="pie-chart"
-        title="Total no of MDAs"
-        :value="cvSelected==='A'? ippisSummary.total.counts : ippisSummary.total.value"
-      />
-      <StatsCard
-        icon="people"
-        title="Employees"
-        :value="cvSelected==='A'? ippisSummary.employees.counts : ippisSummary.employees.value"
-      />
-      <StatsCard
-        icon="safe"
-        title="Banks "
-        :value="cvSelected==='A'? ippisSummary.banks.counts : ippisSummary.banks.value"
-      />
+      <StatsCard icon="pie-chart" title="Total no of MDAs" :value="dashboardCount.mdas" />
+      <StatsCard icon="people" title="Employees" :value="dashboardCount.employees" />
+      <StatsCard icon="safe" title="Banks " :value="dashboardCount.creditors" />
     </div>
 
     <div class="middle-row">
@@ -46,7 +34,7 @@
           <div class="d-flex align-items-center flex-wrap">
             <SelectField
               inputClass="small-select"
-              v-model="selected"
+              v-model="selectedTotalLoansProcessed"
               name="Loans processed"
               :options="SelectOptions"
             />
@@ -67,27 +55,30 @@
           <div class="d-flex align-items-center flex-wrap">
             <SelectField
               inputClass="small-select"
-              v-model="selected"
+              v-model="selectedTotalRepayments"
               name="Loans processed"
               :options="SelectOptions"
             />
           </div>
         </div>
-        <ccv-simple-bar-chart :data="totalMonthlyRepayment.data" :options="totalMonthlyRepayment.options"></ccv-simple-bar-chart>
+        <ccv-simple-bar-chart
+          :data="totalMonthlyRepayment.data"
+          :options="totalMonthlyRepayment.options"
+        ></ccv-simple-bar-chart>
       </div>
       <div class="loan-request-chart total-loans px-4 py-4 mb-4">
-          <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
           <p class="section-title h6 mb-0">Approved Loan Count</p>
           <div class="d-flex align-items-center flex-wrap">
             <SelectField
               inputClass="small-select"
-              v-model="selected"
+              v-model="selectedApprovedLoanCount"
               name="Loans processed"
               :options="SelectOptions"
             />
           </div>
         </div>
-       <ccv-simple-bar-chart :data="approvedLoanCount.data" :options="approvedLoanCount.options"></ccv-simple-bar-chart>
+        <ccv-simple-bar-chart :data="approvedLoanCount.data" :options="approvedLoanCount.options"></ccv-simple-bar-chart>
       </div>
     </div>
   </div>
@@ -98,6 +89,7 @@
 import StatsCard from "../../components/StatsCard";
 import SelectField from "../../components/Inputs/SelectField";
 import DateInput from "../../components/Inputs/DateInput";
+import moment from "moment";
 
 export default {
   components: {
@@ -107,36 +99,27 @@ export default {
   },
   data() {
     return {
+      fetchingSummary: true,
+      gettingTotalLoansProcessed: false,
+      gettingGenderRatio: false,
+      gettingApprovedLoanCount: false,
+      gettingTotalRepayments:false,
+      dateRange: {
+        start: moment()
+          .subtract(1, "month")
+          .format("YYYY-MM-DD"),
+        end: moment().format("YYYY-MM-DD")
+      },
       selected: "placeholder",
+      selectedTotalLoansProcessed: "bank",
+      selectedTotalRepayments: "bank",
+      selectedApprovedLoanCount: "bank",
       cvSelected: "A",
       cvOptions: [
         { text: "Count", value: "A" },
         { text: "Value", value: "B" }
       ],
-      ippisSummary: {
-        total: {
-          counts: 350,
-          value: "N200,000"
-        },
-        employees: {
-          counts: 47000,
-          value: "N2,000,000"
-        },
-        banks: {
-          counts: 20,
-          value: "N2,000,000"
-        }
-      },
-      SelectOptions: [
-        {
-          value: "placeholder",
-          text: "Filter by banks, MDAs",
-          disabled: true
-        },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option" },
-        { value: { C: "3PO" }, text: "This is an option with object value" }
-      ]
+      SelectOptions: ["bank", "mda"]
     };
   },
 
@@ -145,8 +128,13 @@ export default {
       query = this.serialize(query);
       this.$store.dispatch("CreditorLoanRequest/fetchLoanRequests", query);
     },
-    fetchRequestsSummary() {
-      this.$store.dispatch("CreditorLoanRequest/requestsSummary");
+    async fetchRequestsSummary() {
+      this.fetchingSummary = true;
+      const response = await this.$store.dispatch(
+        "IppisAnalytics/getDashboardCounts"
+      );
+      this.fetchingSummary = false;
+      return response;
     },
     serialize(obj, prefix) {
       var str = [],
@@ -166,14 +154,52 @@ export default {
     },
     formatNumber(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    },
+    async getTotalLoansProcessed(data) {
+      this.gettingTotalLoansProcessed = true;
+      const response = await this.$store.dispatch(
+        "IppisAnalytics/getTotalLoansProcessed",
+        data
+      );
+      this.gettingTotalLoansProcessed = false;
+      return response;
+    },
+
+    async getGenderRatio(date) {
+      this.gettingGenderRatio = true;
+      const response = await this.$store.dispatch(
+        "IppisAnalytics/getGenderRatio",
+        date
+      );
+      this.gettingGenderRatio = false;
+      return response;
+    },
+
+    async getTotalRepayments(data) {
+      this.gettingTotalRepayments = true;
+      const response = await this.$store.dispatch(
+        "IppisAnalytics/getTotalRepayments",
+        data
+      );
+      this.gettingTotalRepayments = false;
+      return response;
+    },
+    async getApprovedLoanCount(data) {
+      this.gettingApprovedLoanCount = true;
+      const response = await this.$store.dispatch(
+        "IppisAnalytics/getApprovedLoanCount",
+        data
+      );
+      this.gettingApprovedLoanCount = false;
+      return response;
     }
   },
   computed: {
     loanRequests() {
       return this.$store.state.CreditorLoanRequest.loanRequests;
     },
-    requestsSummary() {
-      return this.$store.state.CreditorLoanRequest.requestsSummary;
+    dashboardCount() {
+      return this.$store.state.IppisAnalytics.dashboardCount;
     },
     isFetchingRequests() {
       return this.$store.state.CreditorLoanRequest.isFetchingLoanRequests;
@@ -182,50 +208,11 @@ export default {
       return this.$store.state.CreditorLoanRequest.fetchingSummary;
     },
     totalLoansDetails() {
-      const data = [
-        {
-          group: "Bank1",
-          value: 30000
-        },
-        {
-          group: "Bank2",
-          value: 20000
-        },
-        {
-          group: "Bank3",
-          value: 48000
-        },
-        {
-          group: "Bank4",
-          value: 65000
-        },
-        {
-          group: "Bank5",
-          value: 25000
-        },
-        {
-          group: "Bank6",
-          value: 10000
-        },
-        {
-          group: "Bank7",
-          value: 47000
-        },
-        {
-          group: "Bank8",
-          value: 70000
-        },
-        {
-          group: "Bank9",
-          value: 27123
-        },
-        {
-          group: "Bank10",
-          value: 15000
-        }
-      ];
-
+      let data = [];
       const options = {
+        data: {
+          loading: this.gettingTotalLoansProcessed || !this.totalLoansProcessed
+        },
         axes: {
           left: {
             mapsTo: "value"
@@ -238,17 +225,6 @@ export default {
         height: "400px",
         color: {
           scale: {
-            GTB: "#23699F",
-            Bank1: "#23699F",
-            Bank2: "#23699F",
-            Bank3: "#23699F",
-            Bank4: "#23699F",
-            Bank5: "#23699F",
-            Bank6: "#23699F",
-            Bank7: "#23699F",
-            Bank8: "#23699F",
-            Bank9: "#23699F",
-            Bank10: "#23699F"
           }
         },
         legend: {
@@ -268,54 +244,33 @@ export default {
           }
         }
       };
+
+      if (this.totalLoansProcessed) {
+        const colors = {};
+        data = this.totalLoansProcessed.map(item => {
+          if (this.selectedTotalLoansProcessed === "bank") {
+            colors[item.bank] = "#23699F";
+            return { group: item.bank, value: item.sum };
+          } else {
+            colors[item.mda] = "#23699F";
+            return { group: item.mda, value: item.sum };
+          }
+        });
+
+        options.color = {
+          scale: colors
+        };
+      }
 
       return { data, options };
     },
     totalMonthlyRepayment() {
-      const data = [
-        {
-          group: "Bk1",
-          value: 30000
-        },
-        {
-          group: "Bk2",
-          value: 20000
-        },
-        {
-          group: "Bk3",
-          value: 48000
-        },
-        {
-          group: "Bk4",
-          value: 65000
-        },
-        {
-          group: "Bk5",
-          value: 25000
-        },
-        {
-          group: "Bk6",
-          value: 10000
-        },
-        {
-          group: "Bk7",
-          value: 47000
-        },
-        {
-          group: "Bk8",
-          value: 70000
-        },
-        {
-          group: "Bk9",
-          value: 27123
-        },
-        {
-          group: "Bk10",
-          value: 15000
-        }
-      ];
+      let data = [];
 
       const options = {
+        data: {
+          loading: this.gettingTotalRepayments || !this.totalRepayments
+        },
         axes: {
           left: {
             mapsTo: "value"
@@ -328,16 +283,7 @@ export default {
         height: "400px",
         color: {
           scale: {
-            Bk1: "#56B7AE",
-            Bk2: "#56B7AE",
-            Bk3: "#56B7AE",
-            Bk4: "#56B7AE",
-            Bk5: "#56B7AE",
-            Bk6: "#56B7AE",
-            Bk7: "#56B7AE",
-            Bk8: "#56B7AE",
-            Bk9: "#56B7AE",
-            Bk10: "#56B7AE",
+            
           }
         },
         legend: {
@@ -357,54 +303,32 @@ export default {
           }
         }
       };
+
+      if (this.totalRepayments) {
+        const colors = {};
+        data = this.totalRepayments.map(item => {
+          if (this.selectedTotalRepayments === "bank") {
+            colors[item.bank] = "#56B7AE";
+            return { group: item.bank, value: item.sum };
+          } else {
+            colors[item.mda] = "#56B7AE";
+            return { group: item.mda, value: item.sum };
+          }
+        });
+
+        options.color = {
+          scale: colors
+        };
+      }
 
       return { data, options };
     },
     approvedLoanCount() {
-      const data = [
-        {
-          group: "Bk1",
-          value: 30000
-        },
-        {
-          group: "Bk2",
-          value: 20000
-        },
-        {
-          group: "Bk3",
-          value: 48000
-        },
-        {
-          group: "Bk4",
-          value: 65000
-        },
-        {
-          group: "Bk5",
-          value: 25000
-        },
-        {
-          group: "Bk6",
-          value: 10000
-        },
-        {
-          group: "Bk7",
-          value: 47000
-        },
-        {
-          group: "Bk8",
-          value: 70000
-        },
-        {
-          group: "Bk9",
-          value: 27123
-        },
-        {
-          group: "Bk10",
-          value: 15000
-        }
-      ];
-
+      let data = [];
       const options = {
+        data: {
+          loading: this.gettingApprovedLoanCount || !this.approvedLoanCounts
+        },
         axes: {
           left: {
             mapsTo: "value"
@@ -416,18 +340,7 @@ export default {
         },
         height: "400px",
         color: {
-          scale: {
-            Bk1: "#23699F",
-            Bk2: "#23699F",
-            Bk3: "#23699F",
-            Bk4: "#23699F",
-            Bk5: "#23699F",
-            Bk6: "#23699F",
-            Bk7: "#23699F",
-            Bk8: "#23699F",
-            Bk9: "#23699F",
-            Bk10: "#23699F",
-          }
+          scale: {}
         },
         legend: {
           enabled: false
@@ -447,218 +360,31 @@ export default {
         }
       };
 
-      return { data, options };
-    },
-    countsPerLoanDetails() {
-      const data = [
-        {
-          group: "Jan",
-          value: 34000
-        },
-        {
-          group: "Feb",
-          value: 30000
-        },
-        {
-          group: "Mar",
-          value: 20000
-        },
-        {
-          group: "Apr",
-          value: 48000
-        },
-        {
-          group: "May",
-          value: 65000
-        },
-        {
-          group: "Jun",
-          value: 25000
-        },
-        {
-          group: "Jul",
-          value: 10000
-        },
-        {
-          group: "Aug",
-          value: 47000
-        },
-        {
-          group: "Sep",
-          value: 70000
-        },
-        {
-          group: "Oct",
-          value: 27123
-        },
-        {
-          group: "Nov",
-          value: 15000
-        },
-        {
-          group: "Dec",
-          value: 35000
-        }
-      ];
+      if (this.approvedLoanCounts) {
+        const colors = {};
+        data = this.approvedLoanCounts.map(item => {
+          if (this.selectedApprovedLoanCount === "bank") {
+            colors[item["bank_name"]] = "#5D91B9";
+            return { group: item["bank_name"], value: item.sum };
+          } else {
+            colors[item.mda] = "#5D91B9";
+            return { group: item.mda, value: item.sum };
+          }
+        });
 
-      const options = {
-        axes: {
-          left: {
-            mapsTo: "value"
-          },
-          bottom: {
-            mapsTo: "group",
-            scaleType: "labels"
-          }
-        },
-        height: "400px",
-        color: {
-          scale: {
-            Jan: "#23699F",
-            Feb: "#23699F",
-            Mar: "#23699F",
-            Apr: "#23699F",
-            May: "#23699F",
-            Jun: "#23699F",
-            Jul: "#23699F",
-            Aug: "#23699F",
-            Sep: "#23699F",
-            Oct: "#23699F",
-            Nov: "#23699F",
-            Dec: "#23699F"
-          }
-        },
-        legend: {
-          enabled: false
-        },
-        bars: {
-          width: 15
-        },
-        grid: {
-          x: {
-            enabled: false
-          }
-        },
-        tooltip: {
-          customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
-          }
-        }
-      };
-
-      return { data, options };
-    },
-    outstandingPerMda() {
-      const data = [
-        {
-          group: "Jan",
-          value: 34000
-        },
-        {
-          group: "Feb",
-          value: 30000
-        },
-        {
-          group: "Mar",
-          value: 20000
-        },
-        {
-          group: "Apr",
-          value: 48000
-        },
-        {
-          group: "May",
-          value: 65000
-        },
-        {
-          group: "Jun",
-          value: 25000
-        },
-        {
-          group: "Jul",
-          value: 10000
-        },
-        {
-          group: "Aug",
-          value: 47000
-        },
-        {
-          group: "Sep",
-          value: 70000
-        },
-        {
-          group: "Oct",
-          value: 27123
-        },
-        {
-          group: "Nov",
-          value: 15000
-        },
-        {
-          group: "Dec",
-          value: 35000
-        }
-      ];
-
-      const options = {
-        axes: {
-          left: {
-            mapsTo: "value"
-          },
-          bottom: {
-            mapsTo: "group",
-            scaleType: "labels"
-          }
-        },
-        height: "400px",
-        color: {
-          scale: {
-            Jan: "#006F8F",
-            Feb: "#006F8F",
-            Mar: "#006F8F",
-            Apr: "#006F8F",
-            May: "#006F8F",
-            Jun: "#006F8F",
-            Jul: "#006F8F",
-            Aug: "#006F8F",
-            Sep: "#006F8F",
-            Oct: "#006F8F",
-            Nov: "#006F8F",
-            Dec: "#006F8F"
-          }
-        },
-        legend: {
-          enabled: false
-        },
-        bars: {
-          width: 30
-        },
-        grid: {
-          x: {
-            enabled: false
-          }
-        },
-        tooltip: {
-          customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  N${tip[0].value}</span>`;
-          }
-        }
-      };
+        options.color = {
+          scale: colors
+        };
+      }
 
       return { data, options };
     },
     loanRequestsDetails() {
-      const data = [
-        {
-          group: "Male",
-          value: 23500
-        },
-        {
-          group: "Female",
-          value: 23500
-        }
-      ];
+      let data = [];
       const options = {
+        data: {
+          loading: this.gettingGenderRatio || !this.genderRatio
+        },
         resizable: true,
         legend: {
           alignment: "center"
@@ -686,11 +412,96 @@ export default {
         height: "400px"
       };
 
+      if (this.genderRatio) {
+        data = [
+          {
+            group: "Male",
+            value: this.genderRatio["male_percentage"]
+          },
+          {
+            group: "Female",
+            value: this.genderRatio["female_percentage"]
+          }
+        ];
+      }
+
       return { data, options };
+    },
+    totalLoansProcessed() {
+      return this.$store.state.IppisAnalytics.totalLoansProcessed;
+    },
+    genderRatio() {
+      return this.$store.state.IppisAnalytics.genderRatio;
+    },
+    totalRepayments() {
+      return this.$store.state.IppisAnalytics.totalRepayments;
+    },
+    approvedLoanCounts() {
+      return this.$store.state.IppisAnalytics.approvedLoanCount;
+    }
+  },
+
+  watch: {
+    dateRange: {
+      handler(dateRange) {
+        if (dateRange.end) {
+          const data = {
+            start: this.dateRange.start,
+            end: this.dateRange.end,
+            search: this.selectedTotalLoansProcessed
+          };
+          const repaymentsData = {
+            ...data,
+            search: this.selectedTotalRepayments
+          };
+          const approvedLoanCountData = {
+            ...data,
+            search: this.selectedApprovedLoanCount,
+            status: "approved"
+          };
+          this.getTotalLoansProcessed(data);
+          this.getGenderRatio(this.dateRange);
+          this.getTotalRepayments(repaymentsData);
+          this.getApprovedLoanCount(approvedLoanCountData);
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    selectedTotalLoansProcessed: {
+      handler(selectedTotalLoansProcessed) {
+        const data = {
+          start: this.dateRange.start,
+          end: this.dateRange.end,
+          search: selectedTotalLoansProcessed
+        };
+        this.getTotalLoansProcessed(data);
+      }
+    },
+    selectedTotalRepayments:{
+      handler(selectedTotalRepayments){
+        const data = {
+          start: this.dateRange.start,
+          end: this.dateRange.end,
+          search: selectedTotalRepayments,
+        };
+        this.getTotalRepayments(data)
+      }
+    },
+    selectedApprovedLoanCount:{
+      handler(selectedApprovedLoanCount){
+        const data = {
+          start: this.dateRange.start,
+          end: this.dateRange.end,
+          search: selectedApprovedLoanCount,
+          status:"approved"
+        };
+        this.getApprovedLoanCount(data)
+      }
     }
   },
   mounted() {
-    //this.fetchRequestsSummary();
+    this.fetchRequestsSummary();
     //this.fetchLoanRequests(this.$router.history.current.query);
   }
 };
@@ -787,7 +598,7 @@ export default {
     grid-template-columns: 1fr;
   }
   .split-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 </style>

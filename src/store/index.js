@@ -22,6 +22,7 @@ import CreditorAnalytics from "./module/Creditor/Analytics"
 import IppisLoanRequest from "./module/Ippis/LoanRequest"
 import IppisUserMangement from "./module/Ippis/UserManagement"
 import IppisMini from "./module/Ippis/IppisMini"
+import IppisAnalytics from "./module/Ippis/Analytics"
 
 import Auth from "./module/Auth/Auth"
 import PasswordReset from "./module/Auth/PasswordReset"
@@ -52,6 +53,7 @@ export default new Vuex.Store({
     IppisLoanRequest,
     IppisUserMangement,
     IppisMini,
+    IppisAnalytics,
     Auth,
     PasswordReset,
     UserAuth,

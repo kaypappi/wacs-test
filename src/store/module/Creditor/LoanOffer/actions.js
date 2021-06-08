@@ -1,15 +1,20 @@
-import creditor from "../../../Api/creditor"
+import creditor from "../../../Api/creditor";
 
-export const fetchLoanOffers = ({ commit }, query) => {
-  commit("IS_FETCHING_LOANOFFERS", true);
-  creditor.fetchLoanOffers(query).then((response) => {
+export const fetchLoanOffers = async ({ commit }, query) => {
+  try {
+    commit("IS_FETCHING_LOANOFFERS", true);
+    const response = await creditor.fetchLoanOffers(query);
     commit("IS_FETCHING_LOANOFFERS", false);
     if (response.data.data.length === 0) {
       commit("FETCH_LOANOFFERS_NOTFOUND");
     } else {
       commit("FETCH_LOANOFFERS_FOUND", response.data);
     }
-  });
+    return Promise.resolve(response.data);
+  } catch (err) {
+    commit("IS_FETCHING_LOANOFFERS", false);
+    return Promise.reject(err);
+  }
 };
 export const searchOffers = ({ commit }, query) => {
   commit("IS_FETCHING_LOANOFFERS", true);

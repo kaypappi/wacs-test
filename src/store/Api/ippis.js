@@ -155,4 +155,68 @@ export default {
         });
     });
   },
+
+  getDashboardCounts() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`ippis/analytics`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getTotalLoansProcessed(data) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`ippis/analytics/loans-processed`, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getGenderRatio(date) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`ippis/analytics/gender-ratio`, date)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+  getTotalRepayments(data) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`ippis/analytics/repayments`, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  getApprovedLoanCount(data){
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`ippis/analytics/loans-count`, data)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 };

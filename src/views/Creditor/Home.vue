@@ -189,7 +189,7 @@ export default {
       },
       gettingLoanProcessedAndRequestPercent: false,
       gettingRepaymentsByMdas: false,
-      gettingCountsPerLoanOffer:false
+      gettingCountsPerLoanOffer: false
     };
   },
 
@@ -236,6 +236,7 @@ export default {
         "CreditorAnalytics/getRegisteredMdas",
         date
       );
+      this.mda = response[0];
       return response;
     },
     async getRepaymentsByMdas(mda) {
@@ -251,8 +252,12 @@ export default {
       this.gettingRepaymentsByMdas = false;
       return response;
     },
-    fetchLoanOffers(query) {
-      this.$store.dispatch("CreditorLoanOffer/fetchLoanOffers", query);
+    async fetchLoanOffers(query) {
+      const response = await this.$store.dispatch(
+        "CreditorLoanOffer/fetchLoanOffers",
+        query
+      );
+      this.selectedLoanOffer = response.data[0].id;
     },
 
     async getCountsPerLoanOffer(offerId, date) {
@@ -268,6 +273,18 @@ export default {
       );
       this.gettingCountsPerLoanOffer = false;
       return response;
+    },
+    getDaysBetweenDates(startDate, endDate) {
+      startDate=moment(startDate),
+      endDate=moment(endDate).format()
+      const interim = startDate.clone();
+      let timeValues = [];
+
+      while (endDate > interim) {
+        timeValues.push({ group: interim.format("MMM"), value: 0 });
+        interim.add(1, "month");
+      }
+      return timeValues;
     }
   },
   computed: {
@@ -354,7 +371,56 @@ export default {
       return null;
     },
     countsPerLoanDetails() {
-      let data = [];
+      let data = [
+        {
+          group: "Jan",
+          value: 0
+        },
+        {
+          group: "Feb",
+          value: 0
+        },
+        {
+          group: "Mar",
+          value: 0
+        },
+        {
+          group: "Apr",
+          value: 0
+        },
+        {
+          group: "May",
+          value: 0
+        },
+        {
+          group: "Jun",
+          value: 0
+        },
+        {
+          group: "Jul",
+          value: 0
+        },
+        {
+          group: "Aug",
+          value: 0
+        },
+        {
+          group: "Sep",
+          value: 0
+        },
+        {
+          group: "Oct",
+          value: 0
+        },
+        {
+          group: "Nov",
+          value: 0
+        },
+        {
+          group: "Dec",
+          value: 0
+        }
+      ];
 
       let options = {
         data: {
@@ -388,27 +454,30 @@ export default {
         }
       };
       if (Array.isArray(this.countsPerLoanOffer)) {
-        data = this.countsPerLoanOffer.map(item => {
-          return {
-            group: moment()
-              .month(item.Month - 1)
-              .format("MMM"),
-            value: item.sum
+        this.countsPerLoanOffer.map(item => {
+          const itemIndex = data.findIndex(
+            x =>
+              x.group ===
+              moment()
+                .month(item.Month - 1)
+                .format("MMM")
+          );
+          if (itemIndex != -1) {
+            data[itemIndex].value = item.sum;
+          }
+
+          const colors = {};
+          this.countsPerLoanOffer.map(item => {
+            return (colors[
+              moment()
+                .month(item.Month - 1)
+                .format("MMM")
+            ] = "#006F8F");
+          });
+          options.color = {
+            scale: colors
           };
         });
-
-
-        const colors = {};
-        this.countsPerLoanOffer.map(item => {
-          return (colors[
-            moment()
-              .month(item.Month - 1)
-              .format("MMM")
-          ] = "#006F8F");
-        });
-        options.color = {
-          scale: colors
-        };
       }
 
       return { data, options };
@@ -506,7 +575,6 @@ export default {
           };
         });
 
-
         const colors = {};
         this.repaymentPerMda.map(item => {
           return (colors[
@@ -588,12 +656,16 @@ export default {
       return this.$store.state.CreditorAnalytics.countsPerLoanOffer;
     },
     countsPerLoanOfferStatus() {
-      return !Array.isArray(this.countsPerLoanOffer) || !this.selectedLoanOffer || this.gettingCountsPerLoanOffer;
+      return (
+        !Array.isArray(this.countsPerLoanOffer) ||
+        !this.selectedLoanOffer ||
+        this.gettingCountsPerLoanOffer
+      );
     }
   },
   mounted() {},
   watch: {
-    "dateRange": {
+    dateRange: {
       handler(dateRange) {
         if (dateRange.end) {
           this.fetchRequestsSummary(dateRange);
@@ -602,7 +674,7 @@ export default {
           this.getRegisteredMdas(dateRange);
           this.fetchLoanOffers({});
           this.getRepaymentsByMdas(this.mda);
-          if(this.selectedLoanOffer){
+          if (this.selectedLoanOffer) {
             this.getCountsPerLoanOffer(this.selectedLoanOffer, dateRange);
           }
         }
