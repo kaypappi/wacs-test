@@ -6,8 +6,9 @@
         <template #loading>
           <b-skeleton-table :rows="5" :columns="4" :table-props="{ small:true, }"></b-skeleton-table>
         </template>
-        <BatchItemsTable2 :previewItem="allBatchItems.data" />
+        <BatchItemsTable2 v-if="allBatchItems" :previewItem="allBatchItems.data" />
         <Pagination
+        v-if="allBatchItems"
           :total="allBatchItems.meta.total"
           :currentPage="allBatchItems.meta.current_page"
           :lastPage="allBatchItems.meta.last_page"

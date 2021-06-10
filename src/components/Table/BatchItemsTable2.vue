@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     handleRowClick(item) {
-      this.$router.push({name:"deductionPreview2",params:{id:item.batch_id}})
+      this.$router.push({name:"deductionPreview",params:{id:item.batch_id}})
     },
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });

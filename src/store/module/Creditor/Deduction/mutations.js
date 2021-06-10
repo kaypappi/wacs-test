@@ -18,6 +18,10 @@ export const CLEAR_CURRENT_BATCH_FILE = (state) => {
   state.currentBatchFile = null;
 };
 
+export const DOWNLOAD_SCRAP_FILE=(state)=>{
+  return state
+}
+
 export const FETCH_ALL_BATCH_ITEMS = (state, data) => {
   state.allBatchItems = data;
 };
@@ -108,20 +112,18 @@ export const CLEAN = (state, data) => {
 };
 
 export const SCRAP2 = (state, data) => {
-  
   state.failed2=data
 };
 
 export const CLEAN2 = (state, data) => {
-  
+  state.currentBatchFile = data.data[0]["file_staging"];
   state.validated2=data
 };
 
 export const SCRAP_IPPIS=(state,data)=>{
-  
-  state.validatedIppis=data
+  state.failedIppis=data
 }
 
 export const CLEAN_IPPIS = (state, data) => {
-  state.failedIppis = data;
+  state.validatedIppis = data;
 };

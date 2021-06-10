@@ -109,7 +109,7 @@
         />
         <template v-else>
           <Table
-            v-if="loanRequests"
+            v-if="loanRequests.data"
             :tableHeaders="['Date', 'Name', 'IPPIS Number', 'Monthly Salary', 'Loan Request', 'Status']"
           >
             <template>
@@ -275,8 +275,7 @@ export default {
       return response;
     },
     getDaysBetweenDates(startDate, endDate) {
-      startDate=moment(startDate),
-      endDate=moment(endDate).format()
+      (startDate = moment(startDate)), (endDate = moment(endDate).format());
       const interim = startDate.clone();
       let timeValues = [];
 
@@ -316,12 +315,47 @@ export default {
       return [];
     },
     totalLoansDetails() {
+      let data = [];
+      const options = {
+        title: "Total Loans processed",
+        data: {
+          loading: this.gettingLoanProcessedAndRequestPercent
+        },
+        axes: {
+          left: {
+            mapsTo: "value"
+          },
+          bottom: {
+            mapsTo: "group",
+            scaleType: "labels"
+          }
+        },
+        height: "400px",
+        color: {},
+        legend: {
+          enabled: false
+        },
+        bars: {
+          width: 30
+        },
+        grid: {
+          x: {
+            enabled: false
+          }
+        },
+        tooltip: {
+          customHTML(tip) {
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+          }
+        }
+      };
+
       if (this.LoanProcessedAndRequestPercent) {
-        const data = this.LoanProcessedAndRequestPercent[
-          "total_loan_processed"
-        ].map(item => {
-          return { group: item.bank, value: item.amount };
-        });
+        data = this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
+          item => {
+            return { group: item.bank, value: item.amount };
+          }
+        );
 
         const colors = {};
         this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
@@ -330,45 +364,11 @@ export default {
           }
         );
 
-        const options = {
-          title: "Total Loans processed",
-          data: {
-            loading: this.gettingLoanProcessedAndRequestPercent
-          },
-          axes: {
-            left: {
-              mapsTo: "value"
-            },
-            bottom: {
-              mapsTo: "group",
-              scaleType: "labels"
-            }
-          },
-          height: "400px",
-          color: {
-            scale: colors
-          },
-          legend: {
-            enabled: false
-          },
-          bars: {
-            width: 30
-          },
-          grid: {
-            x: {
-              enabled: false
-            }
-          },
-          tooltip: {
-            customHTML(tip) {
-              return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
-            }
-          }
+        options.color = {
+          scale: colors
         };
-
-        return { data, options };
       }
-      return null;
+      return { data, options };
     },
     countsPerLoanDetails() {
       let data = [
@@ -591,20 +591,7 @@ export default {
       return { data, options };
     },
     loanRequestsDetails() {
-      const data = [
-        {
-          group: "Approved",
-          value: this.LoanProcessedAndRequestPercent["loan_request_percentage"][
-            "approved_percentage"
-          ]
-        },
-        {
-          group: "Declined",
-          value: this.LoanProcessedAndRequestPercent["loan_request_percentage"][
-            "declined_percentage"
-          ]
-        }
-      ];
+      let data = [];
       const options = {
         data: {
           loading: this.gettingLoanProcessedAndRequestPercent
@@ -635,6 +622,23 @@ export default {
         },
         height: "400px"
       };
+
+      if (this.LoanProcessedAndRequestPercent) {
+        data = [
+          {
+            group: "Approved",
+            value: this.LoanProcessedAndRequestPercent[
+              "loan_request_percentage"
+            ]["approved_percentage"]
+          },
+          {
+            group: "Declined",
+            value: this.LoanProcessedAndRequestPercent[
+              "loan_request_percentage"
+            ]["declined_percentage"]
+          }
+        ];
+      }
 
       return { data, options };
     },

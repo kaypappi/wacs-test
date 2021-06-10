@@ -74,15 +74,6 @@ export default {
           permission: ["create", "user"],
           nameSpace: "deduction details"
         },
-
-        {
-          name: "Upload Details2",
-          iconPath: "/assets/images/Chart-bar.svg",
-          altText: "Chart",
-          to: "/creditor/upload-details2",
-          permission: ["create", "user"],
-          nameSpace: "deduction details2"
-        }
       ]
     };
   },

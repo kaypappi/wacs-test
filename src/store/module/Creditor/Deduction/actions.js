@@ -150,3 +150,25 @@ export const clearBatchSchedule = async ({ commit }, batchId) => {
     return Promise.reject(e);
   }
 };
+
+export const downloadScrapFile= async ({commit},batchId)=>{
+  try {
+    const response = await creditor.downloadScrapFile(batchId);
+    commit("DOWNLOAD_SCRAP_FILE");
+    const data = {
+      title: "Success",
+      message: "downloading scrap file",
+      success: true,
+    };
+    commit("SHOW_TOAST", data, { root: true });
+    return Promise.resolve(response);
+  } catch (e) {
+    const data = {
+      title: "Error!",
+      message: e.response.data.message,
+      success: false,
+    };
+    commit("SHOW_TOAST", data, { root: true });
+    return Promise.reject(e);
+  }
+}

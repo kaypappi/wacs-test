@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-table @row-clicked="handleRowClick" small :fields="fields" :items="previewItem" responsive>
+      <template v-slot:cell(Reference_Id)="data">{{data.item.reference_id }}</template>
       <template v-slot:cell(First_Name)="data">{{data.item.employee_first_name }}</template>
       <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
       <template v-slot:cell(Middle_Name)="data">{{data.item.employee_middle_name}}</template>
@@ -13,15 +14,15 @@
           {{ row.detailsShowing ? 'Hide' : 'Show'}} Details{{row.item.breakdown.length}}
         </b-button></template> -->
       <template v-slot:cell(Data_Validation)="data">
-        <div v-if="data.item['error_occurred']===1">
+        <div v-if="data.item.error_occurred===1">
           <b-icon
-            id="tooltip-target-1"
+            :id="data.item.reference_id + data.index"
             class="data-validation mx-auto h1"
             icon="X"
             variant="danger"
           ></b-icon>
           <b-tooltip
-            target="tooltip-target-1"
+           :target="data.item.reference_id +data.index "
             bottom
             triggers="hover"
           >{{data.item['error_message']}}</b-tooltip>
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       fields: [
+        "Reference_Id",
         "First_Name",
         "Surname",
         "Middle_Name",
@@ -75,7 +77,6 @@ export default {
         "Loan_Deduction",
         "Bank_Name",
         "Data_Validation",
-        "Line_Items"
       ],
       currentItem: null
     };

@@ -2,12 +2,14 @@
   <div class="deduction-preview-wrapper">
     <b-skeleton-wrapper :loading="!previewMeta">
       <template #loading>
-        <b-skeleton width="85%"></b-skeleton>
-        <b-skeleton width="55%"></b-skeleton>
-        <b-skeleton width="70%"></b-skeleton>
+        <div class="p-3">
+          <b-skeleton width="85%"></b-skeleton>
+          <b-skeleton width="55%"></b-skeleton>
+          <b-skeleton width="70%"></b-skeleton>
+        </div>
       </template>
 
-      <div v-if="previewMeta" class="preview-header mb-5">
+      <div v-if="previewMeta" class="preview-header mb-5 p-3">
         <div class="mb-2">
           <span class="label">Batch Name:</span>
           <span class="ml-1 value">{{previewMeta.title}}</span>
@@ -23,7 +25,7 @@
           <span class="ml-1 value">{{previewMeta.status}}</span>
           <span class="ml-2">
             <b-spinner
-              v-if="previewMeta.status!=='Validated'||previewMeta.status!=='Processed'"
+              v-if="previewMeta.status!=='Validated' && previewMeta.status!=='Processed'"
               variant="warning"
               small
             ></b-spinner>
@@ -59,26 +61,26 @@
             <b-skeleton-table :rows="5" :columns="4" :table-props="{ small:true, }"></b-skeleton-table>
           </template>
           <BatchSchedulePreviewTable2 :previewItem="getValidatedItems" />
-        <div class="summary-nav-buttons w-100 mt-4">
-          <button class="previous-btn" type="button">
-            <span>
-              <BIconArrowLeft />
-            </span>
-            Back
-          </button>
-          <button v-if="!findError" @click="saveSchedule">
-            <img
-              :style="{height:'100%',width:'auto'}"
-              v-if="savingSchedule"
-              src="/assets/images/button-ring-loader.svg"
-            />
-            <span v-else>Submit</span>
-          </button>
-        </div>
+          <div class="summary-nav-buttons w-100 mt-4">
+            <button class="previous-btn" type="button">
+              <span>
+                <BIconArrowLeft />
+              </span>
+              Back
+            </button>
+            <button v-if="!findError" @click="saveSchedule">
+              <img
+                :style="{height:'100%',width:'auto'}"
+                v-if="savingSchedule"
+                src="/assets/images/button-ring-loader.svg"
+              />
+              <span v-else>Submit</span>
+            </button>
+          </div>
         </b-skeleton-wrapper>
       </b-tab>
       <b-tab title="Failed Records">
-         <b-skeleton-wrapper :loading="fetchingBatchItem">
+        <b-skeleton-wrapper :loading="fetchingBatchItem">
           <template #loading>
             <b-skeleton-table :rows="5" :columns="4" :table-props="{ small:true, }"></b-skeleton-table>
           </template>
@@ -96,8 +98,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   props: {},
   components: {
-    BatchSchedulePreviewTable2,
-   // Pagination
+    BatchSchedulePreviewTable2
+    // Pagination
   },
   data() {
     return {
@@ -133,40 +135,48 @@ export default {
     async fetchUploadedBatchFileJob(query, type = "") {
       this.fetchingBatchItem = true;
       const ippis = this.$route.params.ippis;
-      const response = await this.fetchUploadedBatchItem({
-        ippis,
-        query,
-        type
-      });
+      const response = await this.$store.dispatch(
+        "CreditorDeduction/fetchUploadedBatchItemByIppis",
+        {
+          ippis,
+          query,
+          type
+        }
+      );
       this.fetchingBatchItem = false;
 
       return response;
     },
     handleChange() {
-      this.$router.push({query:{}})
+      this.$router.push({ query: {} });
     }
   },
   computed: {
     ...mapGetters({
       fetchingItem: "CreditorDeduction/fetchingItem",
       getBatchItem: "CreditorDeduction/getBatchItem",
-      getFileFromState: "CreditorDeduction/getFileFromState",
-      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
+      getFileFromState: "CreditorDeduction/getFileFromState"
     }),
     findError() {
-      if(this.previewMeta){
+      if (this.previewMeta) {
         return (
-        (this.previewMeta.status === "Validated" ||
-          this.previewMeta.status === "Processed") &&
-        this.previewMeta.passed < this.previewMeta.validated_records
-      );
+          (this.previewMeta.status === "Validated" ||
+            this.previewMeta.status === "Processed") &&
+          this.previewMeta.passed < this.previewMeta.validated_records
+        );
       }
-      return false
+      return false;
+    },
+    getCurrentBatchFile() {
+     
+      return this.$store.state.CreditorDeduction.currentBatchFile;
     },
     getValidatedItems() {
+      
       return this.$store.state.CreditorDeduction.validatedIppis;
     },
     getFailedItems() {
+
       return this.$store.state.CreditorDeduction.failedIppis;
     },
     previewMeta() {
@@ -236,7 +246,7 @@ button {
 }
 
 .preview-header {
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .preview-header span {
@@ -247,21 +257,19 @@ button {
   color: #6c757d;
 }
 
-.deduction-preview-wrapper >>> .nav-tabs .nav-link.active{
+.deduction-preview-wrapper >>> .nav-tabs .nav-link.active {
   border: none;
 }
 
-.deduction-preview-wrapper >>> .nav-tabs{
-  border-bottom:none;
+.deduction-preview-wrapper >>> .nav-tabs {
+  border-bottom: none;
 }
 
-.deduction-preview-wrapper >>> .nav-tabs .nav-link{
+.deduction-preview-wrapper >>> .nav-tabs .nav-link {
   border: none;
 }
 
-.deduction-preview-wrapper >>> .active-nav-tab{
+.deduction-preview-wrapper >>> .active-nav-tab {
   border-bottom: 3px solid #27be58 !important;
 }
-
-
 </style>

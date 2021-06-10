@@ -160,7 +160,7 @@ export default {
   requestsSummary(date) {
     return new Promise((resolve, reject) => {
       axios
-        .post("creditor/request/totals",date)
+        .post("creditor/request/totals", date)
         .then((response) => {
           resolve(response);
         })
@@ -333,6 +333,21 @@ export default {
       axios
         .get(`creditor/schedules/upload/${batchId}`)
         .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  },
+
+  downloadScrapFile(batchId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .request({
+          url: `creditor/schedules/scrap/${batchId}/download`,
+          method: "GET",
+          responseType: "blob",
+        })
+        .then((response) => {
+          resolve(response);
+        })
         .catch((err) => reject(err));
     });
   },

@@ -23,7 +23,7 @@
           <span class="ml-1 value">{{previewMeta.status}}</span>
           <span class="ml-2">
             <b-spinner
-              v-if="previewMeta.status!=='Validated'||previewMeta.status!=='Processed'"
+              v-if="previewMeta.status!=='Validated'&& previewMeta.status!=='Processed'"
               variant="warning"
               small
             ></b-spinner>
@@ -166,7 +166,6 @@ export default {
       fetchingItem: "CreditorDeduction/fetchingItem",
       getBatchItem: "CreditorDeduction/getBatchItem",
       getFileFromState: "CreditorDeduction/getFileFromState",
-      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
     }),
     findError() {
       if(this.previewMeta){
@@ -184,7 +183,12 @@ export default {
     getFailedItems() {
       return this.$store.state.CreditorDeduction.failed;
     },
+    getCurrentBatchFile(){
+
+      return this.$store.state.CreditorDeduction.currentBatchFile
+    },
     previewMeta() {
+     
       if (this.getCurrentBatchFile) {
         const sample = this.getCurrentBatchFile;
         const total = this.getCurrentBatchFile["total_records"];
