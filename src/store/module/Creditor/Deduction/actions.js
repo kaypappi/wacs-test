@@ -75,12 +75,13 @@ export const fetchUploadedBatchItem2 = async (
 
 export const fetchUploadedBatchItemByIppis = async (
   { commit },
-  { ippis, query, type }
+  { ippis,batchId, query, type }
 ) => {
   commit("IS_FETCHING_ITEM", true);
   try {
     const response = await creditor.fetchUploadedBatchItemByIppis(
       ippis,
+      batchId,
       query,
       type
     );

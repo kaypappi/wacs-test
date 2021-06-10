@@ -61,7 +61,7 @@
             <b-skeleton-table :rows="5" :columns="4" :table-props="{ small:true, }"></b-skeleton-table>
           </template>
           <BatchSchedulePreviewTable2 :previewItem="getValidatedItems" />
-          <div class="summary-nav-buttons w-100 mt-4">
+         <!--  <div class="summary-nav-buttons w-100 mt-4">
             <button class="previous-btn" type="button">
               <span>
                 <BIconArrowLeft />
@@ -76,7 +76,7 @@
               />
               <span v-else>Submit</span>
             </button>
-          </div>
+          </div> -->
         </b-skeleton-wrapper>
       </b-tab>
       <b-tab title="Failed Records">
@@ -135,10 +135,12 @@ export default {
     async fetchUploadedBatchFileJob(query, type = "") {
       this.fetchingBatchItem = true;
       const ippis = this.$route.params.ippis;
+      const batchId=this.$route.params.id
       const response = await this.$store.dispatch(
         "CreditorDeduction/fetchUploadedBatchItemByIppis",
         {
           ippis,
+          batchId,
           query,
           type
         }

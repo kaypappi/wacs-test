@@ -47,7 +47,7 @@
         </div>
       </div>
     </b-skeleton-wrapper>
-      <div v-if="!findError" @click="downloadScrapFile" class="sample-box ml-auto mb-2 d-flex justify-content-center py-2 px-3">
+      <div v-if="!findError &&  previewMeta.status!=='processing'" @click="downloadScrapFile" class="sample-box ml-auto mb-2 d-flex justify-content-center py-2 px-3">
         <span class="mr-2">
           <b-icon icon="download"></b-icon>
         </span>
@@ -62,12 +62,6 @@
       :to="getValidatedItems.to"
     />
     <div class="summary-nav-buttons w-100 mt-4">
-      <button class="previous-btn" type="button">
-        <span>
-          <BIconArrowLeft />
-        </span>
-        Back
-      </button>
       <button v-if="findError || (!findError && downloadedScrap)" @click="saveSchedule">
         <img
           :style="{height:'100%',width:'auto'}"

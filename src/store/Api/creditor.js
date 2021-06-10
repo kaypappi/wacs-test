@@ -314,11 +314,11 @@ export default {
     });
   },
 
-  fetchUploadedBatchItemByIppis(ippis, query, type) {
+  fetchUploadedBatchItemByIppis(ippis,batchId, query, type) {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `creditor/schedule-groups/${ippis}/type${type ? "/" + type : ""}`,
+          `creditor/schedule-groups/${ippis}/batch/${batchId}/type${type ? "/" + type : ""}`,
           {
             params: query,
           }

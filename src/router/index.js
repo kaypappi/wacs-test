@@ -235,7 +235,7 @@ const routes = [
         meta: {
           title: "Summary",
           nameSpace: "deduction details",
-          parents: ["uploadDetails"],
+          parents: ["UploadDetails"],
         },
       },
 
@@ -246,7 +246,7 @@ const routes = [
         meta: {
           title: "Deduction Per Ippis",
           nameSpace: "deduction details",
-          parents: ["uploadDetails", "deductionPreview"],
+          parents: ["UploadDetails", "Summary"],
         },
       },
 

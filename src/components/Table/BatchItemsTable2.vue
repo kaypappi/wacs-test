@@ -75,7 +75,7 @@ export default {
       return newSentence;
     },
     progress(total, records_validated) {
-      return parseInt(Math.round((records_validated / total) * 100));
+      return parseInt(Math.round((records_validated / total) * 100))? parseInt(Math.round((records_validated / total) * 100)):0;
     }
   },
   computed: {
