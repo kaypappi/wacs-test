@@ -1,22 +1,6 @@
 <template>
   <div class="upload-deduction-wrapper pt-5">
-    <!-- <LineBreakTitle title="Step 1" />
-    <div class="deduction-sample">
-      <a class href="/assets/file/transactional-records-template.xlsx" target="_blank">
-        <div class="sample-box py-2 pl-3">
-          <span class="mr-2">
-            <b-icon icon="download"></b-icon>
-          </span>
-          <span>Download sample deduction schedule</span>
-        </div>
-      </a>
-
-      <div class="readme-box mt-2">
-        <span class="readme">Read Me:</span>
-        
-      </div>
-    </div>
-    <LineBreakTitle title="Step 2" /> -->
+  
     <p class="h5">Upload sample deduction </p>
     <p
       class="sub mt-3"

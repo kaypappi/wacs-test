@@ -1,6 +1,6 @@
 <template>
   <div class="deduction-preview-wrapper">
-    <b-skeleton-wrapper :loading="!previewMeta">
+    <b-skeleton-wrapper :loading="previewMeta===null">
       <template #loading>
         <div class="p-3">
           <b-skeleton width="85%"></b-skeleton>
@@ -9,7 +9,7 @@
         </div>
       </template>
 
-      <div v-if="previewMeta" class="preview-header mb-5 p-3">
+      <div  class="preview-header mb-5 p-3">
         <div class="mb-2">
           <span class="label">Batch Name:</span>
           <span class="ml-1 value">{{previewMeta.title}}</span>
@@ -47,22 +47,30 @@
         </div>
       </div>
     </b-skeleton-wrapper>
-      <div v-if="!findError &&  previewMeta.status!=='processing'" @click="downloadScrapFile" class="sample-box ml-auto mb-2 d-flex justify-content-center py-2 px-3">
-        <span class="mr-2">
-          <b-icon icon="download"></b-icon>
-        </span>
-        <span>Download Scrap File</span>
-      </div>
-    <BatchSchedulePreviewTable v-if="getValidatedItems" :previewItem="getValidatedItems.data" />
+    <div
+      v-if="findError &&  previewMeta.status!=='processing'"
+      @click="downloadScrapFile"
+      class="sample-box ml-auto mb-2 d-flex justify-content-center py-2 px-3"
+    >
+      <span class="mr-2">
+        <b-spinner
+          v-if="downloadingScrap"
+          small
+        ></b-spinner>
+        <b-icon v-else icon="download"></b-icon>
+      </span>
+      <span>Download Scrap File</span>
+    </div>
+    <BatchSchedulePreviewTable v-if="getBatchItem" :previewItem="getBatchItem.data" />
     <Pagination
-      :total="getValidatedItems.total"
-      :currentPage="getValidatedItems.current_page"
-      :lastPage="getValidatedItems.last_page"
-      :from="getValidatedItems.from"
-      :to="getValidatedItems.to"
+      :total="getBatchItem.total"
+      :currentPage="getBatchItem.current_page"
+      :lastPage="getBatchItem.last_page"
+      :from="getBatchItem.from"
+      :to="getBatchItem.to"
     />
     <div class="summary-nav-buttons w-100 mt-4">
-      <button v-if="findError || (!findError && downloadedScrap)" @click="saveSchedule">
+      <button v-if="!findError || (findError && downloadedScrap)" @click="saveSchedule">
         <img
           :style="{height:'100%',width:'auto'}"
           v-if="savingSchedule"
@@ -92,7 +100,8 @@ export default {
       fetchingBatchItem: false,
       savingSchedule: false,
       tabIndex: 0,
-      downloadedScrap:false
+      downloadedScrap: false,
+      downloadingScrap: false
     };
   },
   methods: {
@@ -102,18 +111,17 @@ export default {
       clearBatchSchedule: "CreditorDeduction/clearBatchSchedule"
     }),
     async saveSchedule() {
-      if (!this.findError) {
-        this.savingSchedule = true;
-        try {
-          const response = await this.saveBatchSchedule(
-            this.getCurrentBatchFile.id
-          );
-          this.savingSchedule = false;
-          this.prev();
-          return response;
-        } catch (e) {
-          return (this.savingSchedule = false);
-        }
+      if (this.findError && !this.downloadedScrap) return;
+      this.savingSchedule = true;
+      try {
+        const response = await this.saveBatchSchedule(
+          this.getCurrentBatchFile.id
+        );
+        this.savingSchedule = false;
+        this.prev();
+        return response;
+      } catch (e) {
+        return (this.savingSchedule = false);
       }
     },
     async fetchUploadedBatchFileJob(query, type = "") {
@@ -131,9 +139,16 @@ export default {
     },
 
     async downloadScrapFile() {
-      const response = await creditor.downloadScrapFile(this.getCurrentBatchFile.id);
-      FileDownload(response.data, `scrap${this.getCurrentBatchFile.batch_name}`);
-      return this.downloadedScrap=true
+      this.downloadingScrap = true;
+      const response = await creditor.downloadScrapFile(
+        this.getCurrentBatchFile.id
+      );
+      FileDownload(
+        response.data,
+        `scrap${this.getCurrentBatchFile.batch_name}`
+      );
+      this.downloadingScrap = false;
+      return (this.downloadedScrap = true);
     },
 
     handleChange() {
@@ -157,7 +172,6 @@ export default {
       return false;
     },
     getCurrentBatchFile() {
-
       return this.$store.state.CreditorDeduction.currentBatchFile;
     },
     getValidatedItems() {
@@ -196,8 +210,7 @@ export default {
   watch: {
     "$route.query": {
       handler(query) {
-        this.fetchUploadedBatchFileJob(query, "clean");
-        this.fetchUploadedBatchFileJob(query, "scrap");
+        this.fetchUploadedBatchFileJob(query);
       },
       immediate: true,
       deep: true
@@ -265,5 +278,6 @@ button {
   background: rgba(248, 10, 10, 0.15);
   color: #f80a0a;
   max-width: 250px;
+  cursor: pointer;
 }
 </style>

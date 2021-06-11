@@ -7,6 +7,7 @@ export const IS_FETCHING_ITEM = (state, status) => {
 };
 
 export const FETCH_BATCH_ITEM_SUCCESS = (state, data) => {
+  state.currentBatchFile = data.data[0]["file_staging"];
   state.batchItem = data;
 };
 
