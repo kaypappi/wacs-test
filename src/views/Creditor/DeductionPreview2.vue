@@ -70,7 +70,7 @@
       :to="getBatchItem.to"
     />
     <div class="summary-nav-buttons w-100 mt-4">
-      <button v-if="!findError || (findError && downloadedScrap)" @click="saveSchedule">
+      <button v-if="(!findError ) || (findError && downloadedScrap && previewMeta.status!=='Processed') " @click="saveSchedule">
         <img
           :style="{height:'100%',width:'auto'}"
           v-if="savingSchedule"
@@ -118,7 +118,7 @@ export default {
           this.getCurrentBatchFile.id
         );
         this.savingSchedule = false;
-        this.prev();
+        this.$router.push({name:"uploadDetails"})
         return response;
       } catch (e) {
         return (this.savingSchedule = false);
