@@ -78,14 +78,14 @@ const routes = [
     },
   },
   {
-    path: "password/password-reset/:token",
+    path: "/password/password-reset/:token",
     name: "resetPassword",
     component: ResetPassword,
     meta: {
       title: "Reset Password",
     },
     beforeEnter: (to, from, next) => {
-      store.dispatch("ResetPassword/confirmToken", to.params.token);
+      store.dispatch("PasswordReset/confirmToken", to.params.token);
       next();
     },
   },
@@ -114,8 +114,8 @@ const routes = [
         },
       },
       {
-        path: "creditor/password-reset/:token",
-        name: "resetPassword",
+        path: "/creditor/password-reset/:token",
+        name: "creditorResetPassword",
         component: ResetPassword,
         meta: {
           title: "Reset Password",
@@ -307,7 +307,7 @@ const routes = [
     children: [
       {
         path: "ippis/password-reset/:token",
-        name: "resetPassword",
+        name: "ippisResetPassword",
         component: ResetPassword,
         meta: {
           title: "Reset Password",
