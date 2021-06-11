@@ -61,7 +61,7 @@
     <div class="middle-row">
       <div class="counts-per-loan-offer total-loans py-4 px-4 mb-4">
         <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
-          <p class="section-title h6 mb-0">Counts per Loan offer</p>
+          <p class="section-title h6 mb-0">Total Loan Issued</p>
           <div class="d-flex align-items-center flex-wrap">
             <label class="mb-0 mr-md-2 h6" for="Loan Offers">Loan Offers</label>
             <SelectField
@@ -78,7 +78,7 @@
         ></ccv-simple-bar-chart>
       </div>
       <div class="loan-request-chart total-loans px-4 py-4 mb-4">
-        <p class="h6">Loan request</p>
+        <p class="h6">Loan Request</p>
         <p class="subtitle">Conversion Indicator</p>
         <ccv-donut-chart :data="loanRequestsDetails.data" :options="loanRequestsDetails.options"></ccv-donut-chart>
       </div>
@@ -86,7 +86,7 @@
 
     <div class="total-loans py-4 px-4 mb-4" id="chart-1">
       <div class="details-top mb-3 d-flex justify-content-between align-items-center flex-wrap">
-        <p class="section-title h6 mb-0">Outstanding per MDAs</p>
+        <p class="section-title h6 mb-0">Total Monthly Deductions</p>
         <div class="d-flex align-items-center flex-wrap">
           <label class="mb-0 mr-md-2 h6 fw-normal" for="Loan Offers">MDA</label>
           <SelectField inputClass="small-select" v-model="mda" name="MDA" :options="registerdMdas" />
@@ -317,7 +317,7 @@ export default {
     totalLoansDetails() {
       let data = [];
       const options = {
-        title: "Total Loans processed",
+        title: "Lender's Ranking",
         data: {
           loading: this.gettingLoanProcessedAndRequestPercent
         },
