@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table @row-clicked="handleRowClick" small :fields="fields" :items="previewItem" responsive>
+    <b-table @row-clicked="handleRowClick" hover small :fields="fields" :items="previewItem" responsive>
       <template v-slot:cell(Reference_Id)="data">{{data.item.reference_id }}</template>
       <template v-slot:cell(First_Name)="data">{{data.item.employee_first_name }}</template>
       <template v-slot:cell(Surname)="data">{{data.item.employee_surname}}</template>
