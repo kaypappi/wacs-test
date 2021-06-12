@@ -351,18 +351,24 @@ export default {
       };
 
       if (this.LoanProcessedAndRequestPercent) {
+        let bankCount=1
+         const colors = {};
         data = this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
           item => {
+            if(item.bank==="Bank "){
+              
+               const data= { group:` ${item.bank}${bankCount}`, value: item.amount };
+               colors[` ${item.bank}${bankCount}`] = "#23699F"
+               bankCount=bankCount+1
+
+               return data
+            }
+            colors[item.bank] = "#23699F"
             return { group: item.bank, value: item.amount };
           }
         );
 
-        const colors = {};
-        this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
-          item => {
-            return (colors[item.bank] = "#23699F");
-          }
-        );
+       
 
         options.color = {
           scale: colors
