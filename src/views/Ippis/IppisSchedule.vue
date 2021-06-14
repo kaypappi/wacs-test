@@ -74,7 +74,7 @@ export default {
           this.schedule = { ...response.data };
           this.scheduleTitle = `Repayment Schedule Breakdown - ${
             this.schedule.data.name
-          } - ${this.schedule.data.ippis_number} - NGN ${ $options.filters.number(
+          } - ${this.schedule.data.ippis_number} - NGN ${ this.$options.filters.number(
             this.schedule.data.amount
           ,  '0,0')}`;
           this.fetchingSchedule = false;

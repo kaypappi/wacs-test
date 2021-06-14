@@ -128,8 +128,6 @@ export default {
         this.$emit("input", e.target.value);
         this.formatted = e.target.value;
       }
-
-      console.log(this.formatted, e.target.value);
     },
     handleFocus(e) {
       if (e.target.value) {
@@ -155,7 +153,6 @@ export default {
     },
     value(newVal) {
       if (this.commaSeparate && newVal) {
-        console.log(newVal);
         this.formatted = this.$options.filters.number(parseInt(newVal), "0,0");
       }
     }
