@@ -5,6 +5,7 @@ import store from './store'
 import axios from 'axios'
 
 import { BootstrapVue, BootstrapVueIcons, SkeletonPlugin } from "bootstrap-vue";
+import Vue2Filters from "vue2-filters";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/styles/main.css';
@@ -23,6 +24,7 @@ Vue.use(chartsVue);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
 Vue.use(SkeletonPlugin)
+Vue.use(Vue2Filters);
 
 Vue.config.devtools = true;
 

@@ -25,32 +25,32 @@
       <StatsCard
         icon="pie-chart"
         title="Total Requests"
-        :value="cvSelected==='A'? requestsSummary.total:requestsSummary.total_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.total:requestsSummary.total_sum,'0,0')"
       />
       <StatsCard
         icon="clock"
         title="Pending"
-        :value="cvSelected==='A'? requestsSummary.pending:requestsSummary.pending_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.pending:requestsSummary.pending_sum,'0,0')"
       />
       <StatsCard
         icon="loading-process"
         title="Running "
-        :value="cvSelected==='A'? requestsSummary.running:requestsSummary.running_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.running:requestsSummary.running_sum,'0,0')"
       />
       <StatsCard
         icon="safe"
         title="Bank Approved"
-        :value="cvSelected==='A'? requestsSummary.bank_approved:requestsSummary.bank_approved_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.bank_approved:requestsSummary.bank_approved_sum,'0,0')"
       />
       <StatsCard
         icon="alarm"
         title="Awaiting IPPIS"
-        :value="cvSelected==='A'? requestsSummary.awaiting_ippis:requestsSummary.awaiting_ippis_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.awaiting_ippis:requestsSummary.awaiting_ippis_sum,'0,0')"
       />
       <StatsCard
         icon="x-circle"
         title="Rejected "
-        :value="cvSelected==='A'? requestsSummary.rejected:requestsSummary.rejected_sum"
+        :value="$options.filters.number(cvSelected==='A'? requestsSummary.rejected:requestsSummary.rejected_sum,'0,0')"
       />
     </div>
 
@@ -121,8 +121,8 @@
                 :date="loanRequest.date"
                 :name="loanRequest.user.full_name"
                 :ippissNo="loanRequest.user.user_name"
-                :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-                :loanRequest="formatNumber(loanRequest.amount)"
+                :salary=" $options.filters.number(loanRequest.user.profile.monthly_salary,  '0,0')"
+                :loanRequest=" $options.filters.number(loanRequest.amount,  '0,0')"
                 :status="loanRequest.status"
               />
             </template>
@@ -216,9 +216,6 @@ export default {
         }
       }
       return str.join("&");
-    },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
 
     async getLoanProcessedAndRequestPercent(date) {
@@ -316,6 +313,9 @@ export default {
     },
     totalLoansDetails() {
       let data = [];
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       const options = {
         title: "Lender's Ranking",
         data: {
@@ -345,30 +345,30 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}:  ${formatNum(tip[0].value)}</span>`;
           }
         }
       };
 
       if (this.LoanProcessedAndRequestPercent) {
-        let bankCount=1
-         const colors = {};
+        let bankCount = 1;
+        const colors = {};
         data = this.LoanProcessedAndRequestPercent["total_loan_processed"].map(
           item => {
-            if(item.bank==="Bank "){
-              
-               const data= { group:` ${item.bank}${bankCount}`, value: item.amount };
-               colors[` ${item.bank}${bankCount}`] = "#23699F"
-               bankCount=bankCount+1
+            if (item.bank === "Bank ") {
+              const data = {
+                group: ` ${item.bank}${bankCount}`,
+                value: item.amount
+              };
+              colors[` ${item.bank}${bankCount}`] = "#23699F";
+              bankCount = bankCount + 1;
 
-               return data
+              return data;
             }
-            colors[item.bank] = "#23699F"
+            colors[item.bank] = "#23699F";
             return { group: item.bank, value: item.amount };
           }
         );
-
-       
 
         options.color = {
           scale: colors
@@ -377,6 +377,9 @@ export default {
       return { data, options };
     },
     countsPerLoanDetails() {
+       const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [
         {
           group: "Jan",
@@ -455,7 +458,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  N${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  N${formatNum(tip[0].value)}</span>`;
           }
         }
       };
@@ -489,6 +492,9 @@ export default {
       return { data, options };
     },
     outstandingPerMda() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [
         {
           group: "Jan",
@@ -567,7 +573,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  N${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  N${formatNum(tip[0].value)}</span>`;
           }
         }
       };
@@ -597,6 +603,9 @@ export default {
       return { data, options };
     },
     loanRequestsDetails() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [];
       const options = {
         data: {
@@ -623,7 +632,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].value}  ${tip[0].label}</span>`;
+            return `<span class='tooltip-class px-3'>${formatNum(tip[0].value)}  ${tip[0].label}</span>`;
           }
         },
         height: "400px"

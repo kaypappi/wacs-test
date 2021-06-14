@@ -36,22 +36,6 @@ export default {
     };
   },
   methods: {
-    /* handleRowClick(item) {
-      this.$router.push({name:"ippisEmployeeDetails", params:{ippis:item.ippis_number}})
-    },
-    viewSchedule(id) {
-      this.$router.push({ name: "repaymentsSchedule", params: { id } });
-    },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
-    formatLabel(sentence) {
-      const newSentence = sentence
-        .replace(/_/g, " ")
-        .replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
-
-      return newSentence;
-    } */
   },
   computed: {},
 };

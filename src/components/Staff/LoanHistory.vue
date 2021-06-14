@@ -17,8 +17,8 @@
         <template v-slot:cell(Date)="data">{{data.item.date}}</template>
         <template
           v-slot:cell(Interest)="data"
-        >{{data.item.offer.interest_rate}}%.co</template>
-        <template v-slot:cell(Amount)="data">{{formatNumber(data.item.amount)}}</template>
+        >{{data.item.offer.interest_rate}}%</template>
+        <template v-slot:cell(Amount)="data">{{data.item.amount}}</template>
         <template
           v-slot:cell(PaybackPeriod)="data"
         >{{data.item.offer.payback_period}}months</template>
@@ -45,9 +45,6 @@ export default {
     };
   },
   methods: {
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
     openLoanDetails(item) {
       this.$router.push({ name: "StaffLoanDeatils", params: { id: item.id } });
     }

@@ -152,9 +152,6 @@ export default {
       }
       return str.join("&");
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
     async getTotalLoansProcessed(data) {
       this.gettingTotalLoansProcessed = true;
       const response = await this.$store.dispatch(
@@ -208,6 +205,9 @@ export default {
       return this.$store.state.CreditorLoanRequest.fetchingSummary;
     },
     totalLoansDetails() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [];
       const options = {
         data: {
@@ -240,7 +240,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${formatNum(tip[0].value)}</span>`;
           }
         }
       };
@@ -265,6 +265,9 @@ export default {
       return { data, options };
     },
     totalMonthlyRepayment() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [];
 
       const options = {
@@ -299,7 +302,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${formatNum(tip[0].value)}</span>`;
           }
         }
       };
@@ -324,6 +327,9 @@ export default {
       return { data, options };
     },
     approvedLoanCount() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [];
       const options = {
         data: {
@@ -355,7 +361,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].group}  ${tip[0].value}</span>`;
+            return `<span class='tooltip-class px-3'>${tip[0].group}  ${formatNum(tip[0].value)}</span>`;
           }
         }
       };
@@ -380,6 +386,9 @@ export default {
       return { data, options };
     },
     loanRequestsDetails() {
+      const formatNum=(num)=>{
+        return this.$options.filters.number(num,'0,0')
+      }
       let data = [];
       const options = {
         data: {
@@ -406,7 +415,7 @@ export default {
         },
         tooltip: {
           customHTML(tip) {
-            return `<span class='tooltip-class px-3'>${tip[0].value}  ${tip[0].label}</span>`;
+            return `<span class='tooltip-class px-3'>${formatNum(tip[0].value)}  ${tip[0].label}</span>`;
           }
         },
         height: "400px"

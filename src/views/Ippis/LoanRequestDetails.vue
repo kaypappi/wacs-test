@@ -62,8 +62,7 @@
               <td>{{history.date}}</td>
               <td>{{history.offer.title}}</td>
               <td>{{history.offer.company.name}}</td>
-              <td>{{formatNumber(history.amount)}}</td>
-              <!-- <td>{{formatNumber(history.total_paid)}}</td> -->
+              <td>{{ $options.filters.number(history.amount,  '0,0')}}</td>
             </tr>
           </template>
         </table>
@@ -120,9 +119,6 @@ export default {
           setTimeout(()=>{this.$router.push({name:"ippisLoanRequest"})},3000)
         })
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
     
   },
   computed: {

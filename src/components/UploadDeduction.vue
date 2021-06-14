@@ -1,10 +1,9 @@
 <template>
   <div class="upload-deduction-wrapper pt-5">
-  
-    <p class="h5">Upload sample deduction </p>
+    <p class="h5">Upload deduction file</p>
     <p
       class="sub mt-3"
-    >Upload the sample deduction file in step 1</p>
+    >This utility enables the bank to provide a schedule of existing loans booked outside of WACS for booking on the IPPIS system. This feature will be available for a fixed window enabling all existing loans to be effectively transferred to the WACS system</p>
     <DragDropFileInput
       @changed="fileChange($event)"
       :deleteFile="deleteFile"
@@ -38,7 +37,7 @@ export default {
     return {
       file: new File([""], ""),
       fileLoading: false,
-      uploadErrors:null,
+      uploadErrors: null,
       loadingCount: 0
     };
   },
@@ -53,17 +52,17 @@ export default {
       formData.append("excel_file", this.file);
       if (this.file !== null) {
         try {
-          this.uploadErrors=null
+          this.uploadErrors = null;
           const response = await this.uploadBatchSchedule({
             file: formData,
             handleProgress: this.handleProgress
           });
           this.loadingCount = this.loadingCount + 20;
-          
+
           return response;
         } catch (e) {
-          this.uploadErrors=e.response.data.errors["excel_file"]
-          this.loadingCount=0
+          this.uploadErrors = e.response.data.errors["excel_file"];
+          this.loadingCount = 0;
           return e;
         }
       }
@@ -83,7 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile",
+      getCurrentBatchFile: "CreditorDeduction/getCurrentBatchFile"
     })
   },
   watch: {
@@ -92,10 +91,10 @@ export default {
         this.loadingCount = 0;
       }
     },
-    loadingCount:{
-      handler(loadingCount){
-        if(loadingCount>=120){
-          this.next()
+    loadingCount: {
+      handler(loadingCount) {
+        if (loadingCount >= 120) {
+          this.next();
         }
       }
     }
@@ -138,7 +137,7 @@ button {
   line-height: 24px;
 }
 
-.error-msg{
+.error-msg {
   color: red;
   font-size: 12px;
 }

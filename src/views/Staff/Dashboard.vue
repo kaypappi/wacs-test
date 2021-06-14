@@ -6,7 +6,7 @@
     </button>
     </div>
     <div class="summary-card">
-      <p class="title">Eligibility Credit Amount</p>
+      <p class="title">Maximum Loan Amount Allowable</p>
       <div class="h1">
         <span class="h5">₦</span>
         <span>{{user.data.eligibility}}</span>

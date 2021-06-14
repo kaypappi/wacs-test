@@ -8,11 +8,12 @@
             :success="getToast.success"
         />
         <div class="section-header align-items-center">
-            <MakeOfferSectionTitle :section="1" title="Basic Info" :steps="steps"/>
+            <!-- <MakeOfferSectionTitle :section="1" title="Basic Info" :steps="steps"/>
             <b-icon class="arrow-separator" icon="chevron-right"/>
             <MakeOfferSectionTitle :section="2" title="Repayment Schedule" :steps="steps"/>
             <b-icon class="arrow-separator" icon="chevron-right"/>
-            <MakeOfferSectionTitle :section="3" title="Summary" :steps="steps"/>
+            <MakeOfferSectionTitle :section="3" title="Summary" :steps="steps"/> -->
+            <step-navigation v-if="currentstep<4" :steps="Steps" :currentstep="currentstep"></step-navigation>
         </div>
         <img
                     src="/assets/images/page-ring-loader.svg"
@@ -43,7 +44,7 @@
                 <!-- <div v-if="serverResponse" class="error-div">{{serverResponse}}</div> -->
                 
                 <form  @submit.prevent="goToNext">
-                    <template v-if="steps===1">
+                    <template v-if="currentstep===1">
                          <div :style="{maxWidth:'400px',margin:'0 auto'}">
                              <div class="section-head">
                                 Basic Info
@@ -61,8 +62,8 @@
                             :tagLeft="true"
                             :tagRight="false"
                             leftImage="naira.svg"
-                            @input="tempDataPush($event,'loan_amount')"
                             v-model="offer.loan_amount"
+                            :commaSeparate="true"
                         />
                         <div class="first-repayment">
                             <div class="">
@@ -101,7 +102,7 @@
                 </form>
                 
                    
-                        <template v-if="steps===2">
+                        <template v-if="currentstep===2">
                             <div :style="{maxWidth:'400px',margin:'0 auto'}">
                                 <div class="section-head">
                                 Repayment Schedule
@@ -135,12 +136,11 @@
                                     placeholder="e.g 200,000"
                                     length="long"
                                     type="text"
-                                    :keyupEvent="formatNumber"
                                     :max="offer.loan_amount"
                                     :tagLeft="true"
                                     :tagRight="false"
                                     leftImage="naira.svg"
-                                    @input="formatNumberField($event,'repayment_amount')"
+                                    :commaSeparate="true"
                                     v-model="offer.repayment_amount"
                                 />
 
@@ -187,7 +187,7 @@
                                         type="text"
                                         :tagRight="false"
                                         leftImage="naira.svg"
-                                        @input="formatUnequalAmount($event,index)"
+                                        :commaSeparate="true"
                                         v-model="offer.unequal_repayment[index].amount"
                                     />
                             </div>
@@ -203,7 +203,7 @@
                         </div>
                             </div>
                     </template>
-                    <template v-if="steps===3">
+                    <template v-if="currentstep===3">
                          <div class="section-head">
                             Summary
                             <p>Preview your entries to complete your offer.</p>
@@ -211,7 +211,7 @@
                         <MakeOfferSummary :equalRepayment="equalRepayment" :offer="offer"/>
                         <div class="summary-total">
                             <p>Total</p>
-                            <p>{{formatNumber(summaryTotal)}}</p>
+                            <p>{{ $options.filters.number(summaryTotal,  '0,0')}}</p>
                         </div>
                         <div class="summary-nav-buttons">
                                     <button @click="goToPrev" class="previous-btn" type="button">
@@ -232,7 +232,8 @@
     import TaggedInput from '../../components/Inputs/TaggedInput';
     import TextInput from '../../components/Inputs/TextInput'
    // import DragDropFileInput from '../components/Inputs/DragDropFileInput';
-    import MakeOfferSectionTitle from '../../components/MakeOfferSectionsTitle'
+    //import MakeOfferSectionTitle from '../../components/MakeOfferSectionsTitle'
+    import StepNavigation from "../../components/Wizard/StepNavigation"
     import MakeOfferSummary from '../../components/MakeOfferSummary'
     import {BIconArrowLeft} from 'bootstrap-vue'
     import {baseUrl} from '../../router/api_routes'
@@ -243,11 +244,12 @@
         components: {
             TaggedInput,
            // DragDropFileInput,
-            MakeOfferSectionTitle,
+            //MakeOfferSectionTitle,
             BIconArrowLeft,
             MakeOfferSummary,
             Toast,
-            TextInput
+            TextInput,
+            StepNavigation
         },
         data() {
             return {
@@ -280,6 +282,24 @@
                 ],
                 equalRepayment: true,
                 steps:1,
+                currentstep: 1,
+                Steps: [
+        {
+          id: 1,
+          title: "Basic Info",
+          icon_class: "fa fa-map-marker"
+        },
+        {
+          id: 2,
+          title: "Repayment",
+          icon_class: "fa fa-folder-open"
+        },
+        {
+          id: 3,
+          title: "Summary",
+          icon_class: "fa fa-folder-open"
+        }
+      ],
                 offerId:'',
                 completeBasicInfo: false,
                 formData:new FormData(),
@@ -364,7 +384,7 @@
                     this.errors.step2.equal='All fields are required'
                     return false
                 } */
-                if(this.getTotalEqualRepaymentAmount() <this.stripString(this.offer.loan_amount)){
+                if(this.getTotalEqualRepaymentAmount() <this.offer.loan_amount){
                     this.errors.step2.equal='Total repayment amount cannot be less than loan amount'
                     return false
                 }
@@ -378,7 +398,7 @@
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
-                    else if(this.getTotalCsvRepaymentAmount() < this.stripString(this.offer.loan_amount)){
+                    else if(this.getTotalCsvRepaymentAmount() < this.offer.loan_amount){
                         valid=false
                         this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
                     }
@@ -394,7 +414,7 @@
                     if(!valid){
                         this.errors.step2.unequal='All fields are required for manual schedule entry'
                     }
-                    else if(this.getTotalUnequalRepaymentAmount() < this.stripString(this.offer.loan_amount)){
+                    else if(this.getTotalUnequalRepaymentAmount() < this.offer.loan_amount){
                         valid=false
                         this.errors.step2.unequal='Total repayment amount cannot be less than loan amount'
                     }
@@ -415,23 +435,23 @@
                 }
             },
             goToNext() {
-                if(this.steps===1){
+                if(this.currentstep===1){
                     const valid=this.validateStepOne()
                     if(valid){
-                        this.steps = this.steps+1;
+                        this.currentstep = this.currentstep+1;
                     }
                     return
                 }
-                if(this.steps===2){
+                if(this.currentstep===2){
                     const valid=this.validateStepTwo()
                     if(valid){
-                        this.steps=this.steps+1
+                        this.currentstep=this.currentstep+1
                     }
                     return
                 }
             },
             goToPrev() {
-                this.steps = this.steps-1;
+                this.currentstep = this.currentstep > 0 ? this.currentstep - 1 : 0;
             },
             handleInput(event,type,position){
                 if(position){
@@ -463,13 +483,12 @@
                 secondDate=moment(secondDate)
                 return firstDate.diff(secondDate,'months')
                 },
-                formatNumber(num) {
-                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-                },
+                
             submitWizard(){
                 const data=this.getSubmitData             
                 if(this.equalRepayment){
-                    const amount=parseInt(this.stripString(this.offer.repayment_amount))
+        
+                    const amount=this.offer.repayment_amount
                     const startDate=moment().add(this.offer.moratorium,'months');
                     let month=this.formatMonth(startDate.month()),
                     year=startDate.year();
@@ -506,7 +525,7 @@
             getDefaultValues(data){
                 //this.fetchLoanDetails(requestId)
                 if (data.amount){
-                    this.offer.loan_amount=this.formatNumber(data.amount)
+                    this.offer.loan_amount=data.amount
                     this.offer.repayment_period=data.offer.payback_period
                     this.offer.interest=data.offer.interest_rate
                     this.offer.moratorium=data.offer.moratorium_period
@@ -519,10 +538,7 @@
                 this.offerId=loanDetails.offer.id
                 return this.getDefaultValues(loanDetails)
             },
-            formatNumberField(num,position) {
-            num=this.stripString(num)
-            this.offer[position]= Number(num).toLocaleString() 
-            },
+        
             formatUnequalAmount(num,index){
                 num=this.stripString(num)
                 this.offer.unequal_repayment[index].amount=Number(num).toLocaleString() 
@@ -603,9 +619,6 @@
             },
             moratoriumPeriod() {
                 this.monthCount = 0;
-            },
-            'tempData.loan_amount' : function (){
-                this.formatNumberField(this.tempData.loan_amount,'loan_amount')
             },
             'offer.repayment_period': function(){
                 this.populateUnequalRepayment()

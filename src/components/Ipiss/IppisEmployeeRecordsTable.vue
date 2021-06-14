@@ -48,9 +48,6 @@ export default {
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
     formatLabel(sentence) {
       const newSentence = sentence
         .replace(/_/g, " ")

@@ -38,15 +38,13 @@
             <td>Loan Offer Collected</td>
             <td>Credit Administrator</td>
             <td>Loan Amount</td>
-           <!--  <td>Amount Paid</td> -->
           </tr>
           <template v-for="history in loanHistory.data">
             <tr class="t-field" :key="history.date">
               <td>{{history.date}}</td>
               <td>{{history.offer.title}}</td>
               <td>{{history.offer.company.name}}</td>
-              <td>{{formatNumber(history.amount)}}</td>
-              <!-- <td>{{formatNumber(history.total_paid)}}</td> -->
+              <td>{{$options.filters.numbertNumber(history.amount,  '0,0')}}</td>
             </tr>
           </template>
         </table>
@@ -90,9 +88,6 @@ export default {
         this.loanDetails.user.id
       );
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
     
   },
   computed: {

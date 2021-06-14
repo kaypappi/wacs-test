@@ -33,7 +33,10 @@
         <template v-for="(item, key, index) in loanDataFormatted.BreakDown">
           <div :key="`breakDown-${index}`" class="info-tile d-flex">
             <span class="info-title mr-auto">{{formatLabel(key)}}</span>
-            <span class="info-content ml-auto">{{item}}</span>
+            <span class="info-content ml-auto">
+              {{formatLabel(key)===`Requested Amount`
+              ? $options.filters.number(item,'0,0'):item}}
+            </span>
           </div>
         </template>
 

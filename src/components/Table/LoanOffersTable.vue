@@ -41,17 +41,19 @@
           :tagRight="false"
           leftImage="naira.svg"
           v-model="addOffer.amount_from"
+          :commaSeparate="true"
         />
         <div class="double-input-range-text">To</div>
         <TaggedInput
           :tagLeft="true"
           :tagRight="false"
           :required="true"
-          type="number"
+          type="text"
           :min="this.addOffer.amount_from"
           placeholder="e.g 500,000"
           leftImage="naira.svg"
-          v-model.number="addOffer.amount_to"
+          v-model="addOffer.amount_to"
+          :commaSeparate="true"
         />
         <div class="short-dropdown-box">
           <label for="payback-period" class="form-modal-label">Payback Period</label>
@@ -159,7 +161,7 @@
         {{data.item.title}}
       </template>
       <template v-slot:cell(Amount)="data">
-        {{formatNumber(data.item.amount_from)}} to {{formatNumber(data.item.amount_to)}}
+        {{ $options.filters.number(data.item.amount_from,  '0,0')}} to {{ $options.filters.number(data.item.amount_to,  '0,0')}}
       </template>
       <template v-slot:cell(Interest)="data">
         {{data.item.interest_rate}}%
@@ -251,6 +253,7 @@ export default {
     changeId(item){
       this.activeRow=item.id
       this.addOffer={...this.getFields()}
+       console.log(this.addOffer.amount_to)
     },
     getFields(){
       if(this.activeRow===null){
@@ -291,14 +294,12 @@ export default {
     closeModal(){
       this.$bvModal.hide("edit-form-modal");
     },
-    formatNumber(num) {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-},
     onSubmit() {
      const data= this.getEditedData()
      this.$store.dispatch("CreditorLoanOffer/editLoanOffer",{data,closeModal:this.closeModal})
     },
     getEditedData(){
+     
        let data={
         id:this.addOffer.id,
         code_name:this.addOffer.code_name,

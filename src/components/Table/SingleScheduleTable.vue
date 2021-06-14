@@ -3,7 +3,7 @@
     <template v-slot:cell(No)="data">{{data.item.no}}</template>
     <template v-slot:cell(Month)="data">{{data.item.month}}</template>
     <template v-slot:cell(Year)="data">{{data.item.year}}</template>
-    <template v-slot:cell(Amount)="data">{{formatNumber(data.item.amount)}}</template>
+    <template v-slot:cell(Amount)="data">{{ $options.filters.number(data.item.amount_requested,  '0,0')}}</template>
   </b-table>
 </template>
 
@@ -18,12 +18,8 @@ export default {
     };
   },
   methods: {
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
   },
   mounted(){
-
   }
 };
 </script>

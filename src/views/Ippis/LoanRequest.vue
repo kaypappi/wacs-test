@@ -64,8 +64,8 @@
             :ippissNo="loanRequest.user.user_name"
             :mda="loanRequest.user.profile.mda"
             :creditAdmin="loanRequest.credit_admin"
-            :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-            :loanRequest="formatNumber(loanRequest.loan_repayment_details[0].amount_requested)"
+            :salary=" $options.filters.number(loanRequest.user.profile.monthly_salary,  '0,0')"
+            :loanRequest=" $options.filters.number(loanRequest.loan_repayment_details[0].amount_requested,  '0,0')"
             :status="loanRequest.ippis_status"
           />
         </template>
@@ -188,9 +188,6 @@ export default {
       query = this.serialize(query);
       this.$store.dispatch("IppisLoanRequest/fetchIppissLoanRequests", query);
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
   },
   computed: {
     requests() {

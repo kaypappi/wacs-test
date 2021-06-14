@@ -6,7 +6,7 @@
     <!-- <template v-slot:cell(ScheduleNumber)="data">
           {{data.item.schedule_number}}
     </template>-->
-    <template v-slot:cell(Amount(N))="data">{{formatNumber(data.item.amount)}}</template>
+    <template v-slot:cell(Amount(N))="data">{{ $options.filters.number(data.item.amount,  '0,0')}}</template>
     <!--  <template v-slot:cell(Schedule)="data">
           <span @click="viewSchedule(data.item.id)" class="view-schedule">View Schedule Breakdown</span>
       </template>
@@ -30,9 +30,7 @@ export default {
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
+
   },
   computed:{
       loans(){

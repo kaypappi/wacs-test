@@ -12,7 +12,7 @@
       <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
       <template v-slot:cell(Bank)="data">{{data.item.bank_name}}</template>
       <template v-slot:cell(EarningsDeduction)="data">{{data.item.earning_or_deduction}}</template>
-      <template v-slot:cell(Amount_(N))="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Amount_(N))="data">{{ $options.filters.number(data.item.amount,  '0,0')}}</template>
     </b-table>
   </div>
 </template>
@@ -49,9 +49,6 @@ export default {
     handleRowClick(item) {
     
       this.$router.push({name:"ippisDeductionDetails", params:{ippis:item.ippis_number}})
-    },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
     formatLabel(sentence) {
       const newSentence = sentence

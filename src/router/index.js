@@ -215,7 +215,7 @@ const routes = [
         name: "deduction",
         component: Deduction,
         meta: {
-          title: "Deduction File",
+          title: "Deduction File (For existing loans originated outside WACS)",
           nameSpace: "deduction",
         },
       },
@@ -224,7 +224,7 @@ const routes = [
         name: "uploadDetails",
         component: UploadDetails2,
         meta: {
-          title: "Deduction File",
+          title: "Upload Details",
           nameSpace: "deduction details",
         },
       },
@@ -235,7 +235,7 @@ const routes = [
         meta: {
           title: "Summary",
           nameSpace: "deduction details",
-          parents: ["UploadDetails"],
+          parents: ["Upload Details"],
         },
       },
 
@@ -246,7 +246,7 @@ const routes = [
         meta: {
           title: "Deduction Per Ippis",
           nameSpace: "deduction details",
-          parents: ["UploadDetails", "Summary"],
+          parents: ["Upload Details", "Summary"],
         },
       },
 

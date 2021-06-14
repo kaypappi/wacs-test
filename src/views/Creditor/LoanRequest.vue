@@ -51,8 +51,8 @@
             :date="loanRequest.date"
             :name="loanRequest.user.full_name"
             :ippissNo="loanRequest.user.user_name"
-            :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-            :loanRequest="formatNumber(loanRequest.amount)"
+            :salary="$options.filters.number(loanRequest.user.profile.monthly_salary,'0,0')"
+            :loanRequest="$options.filters.number(loanRequest.amount,'0,0')"
             :status="loanRequest.status"
           />
         </template>

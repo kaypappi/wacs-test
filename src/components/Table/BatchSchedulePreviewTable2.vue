@@ -7,9 +7,9 @@
       <template v-slot:cell(Middle_Name)="data">{{data.item.employee_middle_name}}</template>
       <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
       <template v-slot:cell(IPPIS_Number)="data">{{data.item.ippis_number}}</template>
-      <template v-slot:cell(Loan_Amount)="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Loan_Amount)="data">{{ $options.filters.number(data.item.amount,  '0,0')}}</template>
       <template v-slot:cell(Bank_Name)="data">{{data.item.bank_name}}</template>
-      <template v-slot:cell(Loan_Deduction)="data">{{formatNumber(data.item.total_deduction)}}</template>
+      <template v-slot:cell(Loan_Deduction)="data">{{ $options.filters.number(data.item.total_deduction,  '0,0')}}</template>
       <template v-slot:cell(Data_Validation)="data">
         <div v-if="data.item.error_occurred===1">
           <b-icon
@@ -63,9 +63,6 @@ export default {
     },
     viewSchedule(id) {
       this.$router.push({ name: "repaymentsSchedule", params: { id } });
-    },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
     formatLabel(sentence) {
       const newSentence = sentence

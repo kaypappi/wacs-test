@@ -25,7 +25,7 @@
       <template v-slot:cell(MDA)="data">{{data.item.mda}}</template>
       <template v-slot:cell(Bank)="data">{{data.item.bank_name}}</template>
       <template v-slot:cell(EarningsDeduction)="data">{{data.item.earning_or_deduction}}</template>
-      <template v-slot:cell(Amount_(N))="data">{{formatNumber(data.item.amount)}}</template>
+      <template v-slot:cell(Amount_(N))="data">{{ $options.filters.number(data.item.amount,  '0,0')}}</template>
     </b-table>
     <Pagination
       v-if="singleTransactionalRecords"
@@ -99,9 +99,7 @@ export default {
 
       return newSentence;
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
+    
   },
   computed: {
     ...mapGetters({

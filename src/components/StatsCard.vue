@@ -15,7 +15,7 @@ import IconBase from "./Icons/IconBase"
 export default {
   props: {
     title: String,
-    value: Number || String,
+    value: String,
     icon: String,
   },
   components:{

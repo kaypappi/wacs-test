@@ -90,7 +90,7 @@ export default {
         { name: index === 0 ? "Year" : "", value: item.year },
         {
           name: index === 0 ? "Amount" : "",
-          value: this.formatNumber(item.amount)
+          value: this.$options.filters.number(item.amount,  '0,0')
         }
       );
       return data;
@@ -122,9 +122,6 @@ export default {
       secondDate = moment(secondDate);
       return firstDate.diff(secondDate, "months");
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
   },
   computed: {
     basicInfo() {

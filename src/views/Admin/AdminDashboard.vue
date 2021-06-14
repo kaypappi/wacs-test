@@ -77,8 +77,8 @@
                 :ippissNo="loanRequest.user.user_name"
                 :mda="loanRequest.user.profile.mda"
                 :creditAdmin="loanRequest.offer.company.name"
-                :salary="formatNumber(loanRequest.user.profile.monthly_salary)"
-                :loanRequest="formatNumber(loanRequest.amount)"
+                :salary=" $options.filters.number(loanRequest.user.profile.monthly_salary)"
+                :loanRequest=" $options.filters.number(loanRequest.amount)"
                 :status="loanRequest.status"
               />
             </template>
@@ -138,9 +138,6 @@ export default {
       }
       return str.join("&");
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
   },
   computed: {
     loanRequests() {

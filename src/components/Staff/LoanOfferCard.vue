@@ -15,8 +15,12 @@
       <p class="offer-title">{{loanOffer.title}}</p>
       <p class="offer-description">{{loanOffer.description}}</p>
       <p class="properties">
+        <span class="label">Bank:</span>
+        <span class="value">{{loanOffer.company.name}}</span>
+      </p>
+      <p class="properties">
         <span class="label">Amount Range:</span>
-        <span class="value">{{loanOffer.amount_from}} - {{loanOffer.amount_to}}</span>
+        <span class="value">{{loanOffer.amount_from|number('0,0')}} - {{loanOffer.amount_to|number('0,0')}}</span>
       </p>
       <p class="properties">
         <span class="label">Moratorium Period:</span>
@@ -48,6 +52,7 @@
       :tagRight="false"
       leftImage="naira.svg"
       v-model="amount"
+      :commaSeparated="true"
       />
       <TextInput 
       label="Moratorium Period" 

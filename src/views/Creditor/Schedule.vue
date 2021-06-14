@@ -71,15 +71,13 @@ export default {
         this.schedule = { ...response.data };
         this.scheduleTitle = `Repayment Schedule Breakdown - ${
           this.schedule.data.name
-        } - ${this.schedule.data.ippis_number} - NGN ${this.formatNumber(
-          this.schedule.data.amount
-        )}`;
+        } - ${this.schedule.data.ippis_number} - NGN ${ this.$options.filters.number(
+          this.schedule.data.amount_requested
+        ,  '0,0')}`;
         this.fetchingSchedule = false;
       });
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
+  
     downloadPdf() {
       let scheduleArray = [];
       this.schedule.data.breakdown.map(item => {

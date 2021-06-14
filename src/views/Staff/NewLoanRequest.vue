@@ -16,6 +16,7 @@
       :tagRight="false"
       leftImage="naira.svg"
       v-model="form.amount"
+      :commaSeparated="true"
       />
       <TextInput 
       label="Payback Period" 

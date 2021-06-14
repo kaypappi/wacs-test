@@ -47,8 +47,8 @@
             :date="loanOffer.date"
             :code="loanOffer.code_name"
             :title="loanOffer.title"
-            :amount_from="formatNumber(loanOffer.amount_from)"
-            :amount_to="formatNumber(loanOffer.amount_to)"
+            :amount_from=" $options.filters.number(loanOffer.amount_from,  '0,0')"
+            :amount_to=" $options.filters.number(loanOffer.amount_to,  '0,0')"
             :status="loanOffer.status"
             :interest="loanOffer.interest_rate"
             :duration="loanOffer.payback_period"
@@ -116,9 +116,7 @@ export default {
     onHide() {
       this.addOffer = {};
     },
-    formatNumber(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
+    
     serialize(obj, prefix) {
       var str = [],
         p;
