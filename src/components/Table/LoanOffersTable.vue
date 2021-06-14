@@ -253,7 +253,6 @@ export default {
     changeId(item){
       this.activeRow=item.id
       this.addOffer={...this.getFields()}
-       console.log(this.addOffer.amount_to)
     },
     getFields(){
       if(this.activeRow===null){
