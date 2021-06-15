@@ -59,7 +59,7 @@ export default {
           nameSpace: "report"
         },
         {
-          name: "Upload Deduction",
+          name: "Upload Existing Loans",
           iconPath: "/assets/images/Chart-bar.svg",
           altText: "Chart",
           to: "/creditor/deduction",
