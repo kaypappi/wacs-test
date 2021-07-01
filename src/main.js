@@ -34,7 +34,8 @@ require('@/store/subscriber');
 /* axios.defaults.baseURL ='https://testapi.wacs.ng:4433/api/v1' */
 /* axios.defaults.baseURL = 'https://wacs-refactor.herokuapp.com/api/v1'; */
 /* axios.defaults.baseURL = 'https://wacs2.herokuapp.com/api/v1'; */
-axios.defaults.baseURL = 'http://wacs.test/api/v1';
+//axios.defaults.baseURL = 'http://wacs.test/api/v1';
+axios.defaults.baseURL = "http://wacs.parkwayprojects.xyz/";
 
 Vue.config.productionTip = false;
 
